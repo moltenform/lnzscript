@@ -79,9 +79,13 @@ def createDoc():
 		namespaces[ns].functions.append(obj)
 	
 
+	if len(sys.argv)>2:
+		# Set the working directory to the second parameter passed to me
+		d = sys.argv[2]
+		os.chdir(d)
 	
 	#finally, write the xml
-	fout = open(r'..\..\..\documentation.xml','w')
+	fout = open(r'documentation.xml','w')
 	fout.write('<?xml version="1.0" encoding="UTF-8"?>')
 	fout.write('<?xml-stylesheet type="text/xsl" href="viewdoc.xsl"?>')
 	fout.write('<launchorzdoc version="0.1">')

@@ -1,0 +1,1 @@
+c:\python25\pythonw ..\.\lnzscript\provide_script\source\script_createxmldoc.py ..\.\lnzscript\provide_script\source ..\..\..\lnzscript_html_doc
