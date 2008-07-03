@@ -1,0 +1,13 @@
+#include <QtScript>
+#include "util_au3.h"
+
+// This is a template file. A Python script will fill it in with the necessary information and generate the real file.
+// This file contains functions provided by Qt, or possibly c++.
+
+namespace launchorz_functions
+{
+
+%%%INSERT_FUNCTIONS_HERE%%%
+	
+	
+}

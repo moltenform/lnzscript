@@ -1,0 +1,66 @@
+Todo
+=============
+Write general documentation for process, window, control.
+Note to use [[br]] in documentation for line break.
+Don't use sprintf for adding strings - it needlessly uses .toLatin1(). QStrToCStrPointer is a hack. Fix this by using string concat or .arg().
+right now there are tons of literal strings like "copyDialog: argument 2 is not a bool". should be replaced with something like FMTSTRINGERROR(2, STR_BOOL) or FMTSTRINGERROR(impl_copydialog_string, 2, STR_BOOL)
+
+
+Au3 Follow-up
+============
+Test relative coords, MouseCoordMode, PixelCoordMode
+Test registry read and write, ones that return array
+Registr.readKey - provide way to tell reason for failure - key ? value ? type of value?
+File.driveMapAdd - provide way to tell reason for failure
+AU3_ControlTreeView apparently isn't in the dll...
+
+Missing: AU3_RunAsSet
+	Would be good to implement, I guess, but FIRST find how to reset credentials.
+
+Planned Features
+================
+
+Internet
+------
+	Ftp class or something.
+	http://doc.trolltech.com/4.3-snapshot/qftp.html
+	UrlDownload. There's a getUrl in AutoIt3, a hacky solution would be to call it ...
+	OpenUrl - either a dll call, or "start" which uses shellExecute
+	getFavorites - look at Launchy source?
+	organizeIEFavorites - a dll call that opens the organizeFavorites box.
+
+Process
+------
+	LoadDll, CallDll would be *very* nice to have. Maybe from Autohotkey source?
+
+Control
+------
+	nircmd dlgany, try to unify between nircmd and what au3 provides.
+	
+Mouse
+------
+	Investigate relative coords for au3. Note that nircmd has, setcursorwin (relative to window), movecursor (relative to current)
+
+File
+------
+	Get special folder paths !!!! !! !
+	Get environment vars?
+	-optional feature File.dirWalk - to make recursing through directories easier
+	-optional feature File.dirListFilesPattern - list all entries matching *.txt and so on.
+
+Dialog
+--------
+	use qt for alert, msgbox, input, file dialogs, choice dialog, maybe even color dialog, etc.
+
+Screen
+-------
+	AU3_PixelChecksum
+	AU3_PixelSearch
+	
+	
+Window
+------
+	nircmd win
+
+(Add from xls for opening control panels, using rundll32, and so on.)
+(Look online for cool Au3 /autohotkey scripts and add features from them).

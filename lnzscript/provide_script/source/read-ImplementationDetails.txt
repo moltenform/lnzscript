@@ -1,0 +1,27 @@
+Scripts are run by QtScript, which provides an EcmaScript implementation.
+Currently, the libraries are implemented by Qt, Au3, and Nircmd.
+Qt is nice for more than QtScript - I use QStrings, and QFile/QDir/QProcess classes.
+
+How to work with Windows
+=========
+(object way)
+var win = Window.find('notepad')
+win.move(23,32);
+
+--this could be an ok interface.
+--the problem: you can get the handle from au3, but the manipulating the window based on handle seems buggy. It works the first time, but doesn't afterwards.
+
+So, we instead use an object.
+Here are the possible ways to specify a window:
+
+'Untitled'			Match starting with Untitled
+
+'"Untitled - Notepad"'		Match exact string
+
+'%Untitled%'			Match windows with part of string
+
+''				Empty string - currently active window
+
+{'title':'hello', 'class':'Notepad', 'instance':1} 	Pass an object. Specifies things.
+
+

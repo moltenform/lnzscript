@@ -1,0 +1,9 @@
+
+#include <QtScript>
+namespace launchorz_functions
+{
+	
+	
+	%%%INSERT_HEADERS_HERE%%%
+}
+

@@ -1,0 +1,53 @@
+#include <QtScript>
+#include "util_au3.h"
+#include "./autoit/AutoIt3.h"
+
+#include "functions_qt.h" //for adding objects
+#include "functions_nircmd.h" //for adding objects
+
+#define LARGEBUFSIZE 16384
+#define BUFSIZE 1024
+#define SMALLBUFSIZE 64
+
+// This is a template file. A Python script will fill it in with the necessary information and generate the real file.
+// This file contains functions provided by the AutoIt3 dll.
+
+namespace launchorz_functions
+{
+	QScriptValue superadd(QScriptContext *ctx, QScriptEngine *eng)
+	{
+		if (ctx->argumentCount() != 2)
+			return ctx->throwError("add() takes exactly two arguments");
+		if (!ctx->argument(0).isNumber())
+			return ctx->throwError(QScriptContext::TypeError, "add(): first argument is not a number");
+		if (!ctx->argument(1).isNumber())
+			return ctx->throwError(QScriptContext::TypeError, "add(): second argument is not a number");
+		double a = ctx->argument(0).toNumber();
+		double b = ctx->argument(1).toNumber();
+		return QScriptValue(eng, a + b);
+	}
+	QScriptValue getarray(QScriptContext *ctx, QScriptEngine *eng)
+	{
+		// QList<int> test; test << 3 << 5;
+		QScriptValue ar = eng->newArray(2);
+		ar.setProperty(0, QScriptValue(eng, 3));
+		ar.setProperty(1, QScriptValue(eng, 5));
+		return ar;
+	}
+	
+%%%INSERT_FUNCTIONS_HERE%%%
+	
+	void AddGlobalObjects(QScriptEngine *eng)
+	{
+		QScriptValue fnSuperadd = eng->newFunction(superadd);
+		eng->globalObject().setProperty("superadd", fnSuperadd);
+
+		QScriptValue fnGetArray = eng->newFunction(getarray);
+		eng->globalObject().setProperty("getarray", fnGetArray);
+		
+		%%%INSERT_PROPERTY_CREATION_HERE%%%
+		
+		// load JavaScript code
+		
+	}
+}
