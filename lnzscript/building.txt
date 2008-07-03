@@ -23,3 +23,7 @@ Run "make"
 5) If there were not errors, the "release" directory should contain a binary. Note that the binary must be able to find
 qt Dlls (found in /trunk/distribution/lnzscript/common/QtDlls_extract_here.rar, or in one of the distributions)
 as well as the autoit Dll.
+
+
+
+(If you build the console, and then want to build the form interface, you might have to run "make clean".)
