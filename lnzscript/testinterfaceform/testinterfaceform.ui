@@ -1,0 +1,81 @@
+<ui version="4.0" >
+ <class>TestInterfaceForm</class>
+ <widget class="QWidget" name="TestInterfaceForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>659</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>ScriptTest</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>21</y>
+     <width>659</width>
+     <height>550</height>
+    </rect>
+   </property>
+   <widget class="QPlainTextEdit" name="txtOutput" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>621</width>
+      <height>281</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="txtInput" >
+    <property name="geometry" >
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>621</width>
+      <height>201</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnGo" >
+    <property name="geometry" >
+     <rect>
+      <x>540</x>
+      <y>230</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string>Go</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>659</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>571</y>
+     <width>659</width>
+     <height>19</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
