@@ -91,7 +91,8 @@ def createDoc():
 	fout.write('<launchorzdoc version="0.1">')
 	
 	i = 0
-	for key in sorted(sections.keys()):
+	#actually, don't sort the keys - put "launchors" before "language"
+	for key in sections.keys():
 		section = sections[key]
 		fout.write('<section name="%s">'%xmlescape(section.name))
 		if section.doc: fout.write('<section_doc>%s</section_doc>'%xmlescape(section.doc))
@@ -116,7 +117,7 @@ def createDoc():
 	
 
 def xmlescape(s):
-	return s.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;').replace("'",'&apos;')
+	return s.replace('\r\n','\n').replace('\n','[[br]]').replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;').replace("'",'&apos;')
 	
 def main():
 	print
