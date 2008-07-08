@@ -7,11 +7,26 @@ int main(int argc, char *argv[])
 {
 	TestInterfaceConsole console;
 	
-	char doc[] = "LnzScript Console\n\tRun with /r, read from stdin until EOF\n\tRun with /e, and text for arg 2, execute the text and quit\n\tRun with no arguments, interactive mode.";
+	char doc[] = "LnzScript Console\n\tRun with /r, read from stdin until EOF\n\tRun with/f, and file name for arg 2, load .js script and run it\n\tRun with /e, and text for arg 2, execute the text and quit\n\tRun with no arguments, interactive mode.";
 
 	if (argc == 3 && strcmp(argv[1], "/e")==0)
 	{
 		console.evaluateAndPrintResults( argv[2] );
+	}
+	else if (argc == 3 && strcmp(argv[1], "/f")==0)
+	{
+		// read from file and run it
+		QString contents;
+		try
+		{
+		QFile file(argv[2]);
+		file.open(QIODevice::ReadOnly);
+		contents = file.readAll();
+		file.close();
+		} catch (...) { std::cerr << "Error."; return 0; }
+		
+		if (contents.isEmpty()) return 0; // string was empty
+		console.evaluateAndPrintResults( contents.toLatin1() );
 	}
 	else if (argc == 2 && strcmp(argv[1], "/r")==0)
 	{
