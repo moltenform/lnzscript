@@ -18,9 +18,14 @@ assertNotEq = function(v1, v2, strMsg)
 
 assert = function(bExp)
 {
-	
 	print('Last test was: '+g_lastSeenMethod );
-	throw('Assertion failed.');
+	abort('Assertion failed.');
+}
+
+abort = function(s)
+{
+	print(s);
+	throw(false);
 }
 
 print('Included: framework.js');

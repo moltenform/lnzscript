@@ -6,9 +6,9 @@ g_seenMethods = {}
 g_lastSeenMethod = '';
 function methods_list_init()
 {
-	if (!File.exists('methods_list.txt')) {print('methods_list.txt does not exist.'); throw(false);}
+	if (!File.exists('methods_list.txt')) abort('methods_list.txt does not exist.');
 	var strMethods = File.readFile('methods_list.txt');
-	if (!strMethods) throw('Could not read methods list.');
+	if (!strMethods) abort('Could not read methods list.');
 	strMethods = strMethods.replace(/\r\n/g,'\n');
 	var astrMethods = strMethods.split('\n');
 	for (var i=0; i<astrMethods.length; i++)
@@ -22,7 +22,7 @@ methods_list_init();
 
 registerTest = function(strMethod)
 {
-	if (!g_seenMethods[strMethod]) throw 'I have not heard of method '+strMethod;
+	if (!g_seenMethods[strMethod]) abort( 'I have not heard of method '+strMethod);
 	g_seenMethods[strMethod] = 1;
 	g_lastSeenMethod = strMethod;
 }
