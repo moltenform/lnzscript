@@ -23,8 +23,24 @@ methods_list_init();
 registerTest = function(strMethod)
 {
 	if (!g_seenMethods[strMethod]) abort( 'I have not heard of method '+strMethod);
+	if (g_seenMethods[strMethod] == 1) print('Warning: method '+strMethod+' is already registered.');
 	g_seenMethods[strMethod] = 1;
 	g_lastSeenMethod = strMethod;
+}
+
+methods_list_summary_namespace = function(strNamespace)
+{
+	print('Tests for namespace '+strNamespace+':');
+	var strMissing = '';
+	for(var key in g_seenMethods)
+	{
+		if (key.startsWith(strNamespace))
+		{
+			if (g_seenMethods[key]==-1) strMissing += key;
+		}
+	}
+	if (strMissing) print('Missing: '+strMissing);
+	else print('All pass');
 }
 
 methods_list_summary = function()

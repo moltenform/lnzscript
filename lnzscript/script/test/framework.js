@@ -3,7 +3,8 @@ assertEq = function(v1, v2, strMsg)
 	if (v1!=v2)
 	{
 		print('Assertion failed: '+v1+ ' != '+v2);
-		assert(false);
+		print('Last test was: '+g_lastSeenMethod );
+		abort('');
 	}
 }
 assertNotEq = function(v1, v2, strMsg)
@@ -11,7 +12,8 @@ assertNotEq = function(v1, v2, strMsg)
 	if (v1==v2)
 	{
 		print('Assertion failed: '+v1+ ' == '+v2);
-		assert(false);
+		print('Last test was: '+g_lastSeenMethod );
+		abort('');
 	}
 }
 
@@ -19,12 +21,13 @@ assertNotEq = function(v1, v2, strMsg)
 assert = function(bExp)
 {
 	print('Last test was: '+g_lastSeenMethod );
-	abort('Assertion failed.');
+	print('Assertion failed.');
+	abort('');
 }
 
 abort = function(s)
 {
-	print(s);
+	if (s) print(s);
 	throw(false);
 }
 

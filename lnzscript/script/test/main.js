@@ -10,7 +10,9 @@ include('methods_list.js');
 
 print('Beginning main tests\n\n');
 File.cd('temp'); // to make temporary files and so on
+
 include('..\\namespace_clipboard.js');
+//include('..\\namespace_file.js');
 
 
 
