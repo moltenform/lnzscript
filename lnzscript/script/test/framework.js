@@ -6,6 +6,15 @@ assertEq = function(v1, v2, strMsg)
 		assert(false);
 	}
 }
+assertNotEq = function(v1, v2, strMsg)
+{
+	if (v1==v2)
+	{
+		print('Assertion failed: '+v1+ ' == '+v2);
+		assert(false);
+	}
+}
+
 
 assert = function(bExp)
 {
