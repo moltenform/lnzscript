@@ -6,7 +6,7 @@ g_seenMethods = {}
 g_lastSeenMethod = '';
 function methods_list_init()
 {
-	if (!File.exists('methods_list.txt')) throw('methods_list.txt does not exist. Please run create_methods_list.py');
+	if (!File.exists('methods_list.txt')) {print('methods_list.txt does not exist.'); throw(false);}
 	var strMethods = File.readFile('methods_list.txt');
 	if (!strMethods) throw('Could not read methods list.');
 	strMethods = strMethods.replace(/\r\n/g,'\n');
