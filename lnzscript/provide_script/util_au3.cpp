@@ -89,26 +89,22 @@ namespace launchorz_functions
 		}
 	}
 	
-	// todo. maybe the preFormatted isn't even necessary - user could just throw everything into strCommand which isn't escaped? bad idea?
-	
 	// kind of weird to have reference parameters having default arguments, but this apparently implicitly creates a QString of length 0, which can be tested with str==0.
-	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng, bool preFormatted, const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
+	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
 	{
 		if (util_nircmd_directory=="") return ctx->throwError("The file nircmd.exe could not be found. Place it in a location that can be found by LnzScript in order to use this function.");
 		QString strExecutable;
-		if (program == G_Nircmd) strExecutable = util_nircmd_directory + " " + strCommand;
-		else if (program == G_WinCommonDialog) strExecutable = util_wincommondlg_directory + " " + strCommand;
+		if (program == G_Nircmd) strExecutable = util_nircmd_directory + " ";
+		else if (program == G_WinCommonDialog) strExecutable = util_wincommondlg_directory + " ";
 		else return ctx->throwError("Internal error. Bad external command.");
 		
-		if (!preFormatted) //otherwise, everything is thrown into strCommand, which is not checked.
-		{
-			if (arg1!=0) strExecutable += " \""+arg1.replace("\"","\\\""); //replace " with \"
-			if (arg2!=0) strExecutable += " \""+arg2.replace("\"","\\\"");
-			if (arg3!=0) strExecutable += " \""+arg3.replace("\"","\\\"");
-			if (arg4!=0) strExecutable += " \""+arg4.replace("\"","\\\"");
-			if (arg5!=0) strExecutable += " \""+arg5.replace("\"","\\\"");
-			if (arg6!=0) strExecutable += " \""+arg6.replace("\"","\\\"");
-		}
+		strExecutable += strCommand; // note unescaped! So, if everything is preformatted you can put it here - but make sure no unescaped quotes
+		if (arg1!=0) strExecutable += " \""+util_external_escape(arg1)+"\""; //replace " with \", to escape quotes
+		if (arg2!=0) strExecutable += " \""+util_external_escape(arg2)+"\"";
+		if (arg3!=0) strExecutable += " \""+util_external_escape(arg3)+"\"";
+		if (arg4!=0) strExecutable += " \""+util_external_escape(arg4)+"\"";
+		if (arg5!=0) strExecutable += " \""+util_external_escape(arg5)+"\"";
+		if (arg6!=0) strExecutable += " \""+util_external_escape(arg6)+"\"";
 		
 		// now do a "run and wait" (synchronous)
 		long nStatus = AU3_RunWait(QStrToCStr(strExecutable), "",1); //default working directory, flag of 1
@@ -121,8 +117,6 @@ namespace launchorz_functions
 			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
 		}
 	}
-	
-
 	
 	
 /*

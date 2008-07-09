@@ -38,11 +38,16 @@ namespace launchorz_functions
 	
 	#define G_Nircmd 1
 	#define G_WinCommonDialog 2
-	#define R_Nircmd(...) (util_externalCmd(G_Nircmd,ctx,eng,false,__VA_ARGS__))
-	#define R_WinCommonDialog(...) (util_externalCmd(G_WinCommonDialog,ctx,eng,false,__VA_ARGS__))
+	#define R_Nircmd(...) (util_externalCmd(G_Nircmd,ctx,eng,__VA_ARGS__))
+	#define R_WinCommonDialog(...) (util_externalCmd(G_WinCommonDialog,ctx,eng,__VA_ARGS__))
+	
+	// Use these to manually provide string. Be sure to escape quotes in input with util_external_escape
+	#define R_NircmdPreformatted(s_pref) (util_externalCmd(G_Nircmd,ctx,eng,s_pref))
+	#define R_WinCommonDialogPreformatted(s_pref) (util_externalCmd(G_WinCommonDialog,ctx,eng,s_pref))
+	#define util_external_escape(s) (s.replace("\"","\\\""))
 	
 	extern QString util_nircmd_directory, util_wincommondlg_directory; // implemented in util_au3.cpp. Declared extern to avoid "multiple definition of"
 	void util_nircmd_init();
-	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng, bool preFormatted, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);
+	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);
 }
 
