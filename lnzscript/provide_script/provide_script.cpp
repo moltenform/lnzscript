@@ -83,6 +83,7 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	try
 	{
 		QFile file(strFilename);
+		if (!file.exists()) return ctx->throwError("Could not include file - file does not exist.");
 		file.open(QIODevice::ReadOnly);
 		contents = file.readAll();
 		file.close();
@@ -91,8 +92,16 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	{
 		return ctx->throwError("Could not include file.");
 	}
-	if (contents.isEmpty()) return eng->nullValue();// file was empty
-	eng->evaluate(contents); //if this throws an exception, let the JavaScript take care of it, not us.
+	eng->evaluate(contents); //if this throws an exception, print it in a way that can be understood.
+	if (eng->hasUncaughtException())
+	{
+		int lineno = engine.uncaughtExceptionLineNumber();
+		QString msg = ret.toString();
+		QString readableError = msg.sprintf("%s, at %d", qPrintable(msg), lineno);
+		g_LnzScriptPrintCallback( &readableError); // print readable error
+		
+		// do not reset the exception, so that the script aborts.
+	}
 	
 	return eng->nullValue();
 }
@@ -100,13 +109,4 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 
 
 
-/*
-QString ProvideScript::RunProcessStdout(QString command)
-{
-	QProcess proc;
-	proc.start(command);
-	proc.waitForFinished()
-}
-
-*/
 
