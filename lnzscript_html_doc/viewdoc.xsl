@@ -51,7 +51,7 @@ odivOutput.innerHTML = strOutput;
 		<div>
 		<xsl:attribute name="id">div_<xsl:value-of select="../@name" />_<xsl:value-of select="@name" /></xsl:attribute> 
 		
-		<xsl:if test="@name != $firstNamespace"><xsl:attribute name="style">display:none</xsl:attribute></xsl:if>
+		<!--<xsl:if test="@name != $firstNamespace"><xsl:attribute name="style">display:none</xsl:attribute></xsl:if>-->
 		<b><xsl:value-of select="@name"/></b><br/>
 		
 		
