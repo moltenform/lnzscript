@@ -20,7 +20,7 @@ const char * documentation =
 "\n"
 "Types:\n"
 "yesno\treturns 2 if yes, 1 if no.\n"
-"okcancel\treturns 2 if OK, 0 if cancel.\n"
+"okcancel\treturns 2 if ok, 0 if cancel.\n"
 "yesnocancel\treturns 2 if yes, 1 if no, 0 if cancel\n"
 "info\n"
 "error\n"
