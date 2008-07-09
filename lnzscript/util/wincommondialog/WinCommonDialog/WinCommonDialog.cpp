@@ -20,8 +20,8 @@ const char * documentation =
 "\n"
 "Types:\n"
 "yesno\treturns 2 if yes, 1 if no.\n"
-"okcancel\treturns 2 if OK, 1 if cancel.\n"
-"yesnocancel\treturns 3 if yes, 2 if no, 1 if cancel\n"
+"okcancel\treturns 2 if OK, 0 if cancel.\n"
+"yesnocancel\treturns 2 if yes, 1 if no, 0 if cancel\n"
 "info\n"
 "error\n"
 "warning\n"
@@ -39,24 +39,24 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (strcmp(type,"yesno")==0)
 	{
-		result = MessageBox(NULL, text, title,  MB_YESNO);
+		result = MessageBox(NULL, text, title,  MB_YESNO | MB_ICONQUESTION);
 		if (result==IDYES) return 2;
 		else if (result==IDNO) return 1;
 		else return ErrorResult;
 	}
 	else if (strcmp(type,"okcancel")==0)
 	{
-		result = MessageBox(NULL, text, title,  MB_OKCANCEL);
+		result = MessageBox(NULL, text, title,  MB_OKCANCEL | MB_ICONQUESTION);
 		if (result==IDOK) return 2;
-		else if (result==IDCANCEL) return 1;
+		else if (result==IDCANCEL) return 0;
 		else return ErrorResult;
 	}
 	else if (strcmp(type,"yesnocancel")==0)
 	{
-		result = MessageBox(NULL, text, title,  MB_YESNOCANCEL);
-		if (result==IDYES) return 3;
-		else if (result==IDNO) return 2;
-		else if (result==IDCANCEL) return 1;
+		result = MessageBox(NULL, text, title,  MB_YESNOCANCEL | MB_ICONQUESTION);
+		if (result==IDYES) return 2;
+		else if (result==IDNO) return 1;
+		else if (result==IDCANCEL) return 0;
 		else return ErrorResult;
 	}
 	else if (strcmp(type,"info")==0)
