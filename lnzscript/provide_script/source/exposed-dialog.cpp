@@ -19,14 +19,61 @@
 ///Returns:
 ///Doc:Display simple message box on the screen.
 ///Implementation:c++_nircmd
+///Example:Dialog.alert("Information","Hello, world");
 {
 	CHECK_ARGS
 	
-	//QString strNircmdCommand = "info \""+ strTitle + "\" \""+strText+"\"";
-	//return util_wincommondlg_runCmd(ctx, eng, strNircmdCommand);
-	
-	// Previous used nircmd:
-	// QString strNircmdCommand = "infobox \""+ strText + "\" \""+strTitle+"\"";
-	// return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_WinCommonDialog("info", strTitle, strText);
+	// Previously used nircmd:
+	// return R_Nircmd("infobox", strText, strTitle);
 }
 
+///Function:Dialog.warning
+///Arguments:string strTitle, string strText
+///Returns:
+///Doc:Display simple message box on the screen, warning icon.
+///Implementation:c++_nircmd
+{
+	CHECK_ARGS
+	return R_WinCommonDialog("warning", strTitle, strText);
+}
+///Function:Dialog.error
+///Arguments:string strTitle, string strText
+///Returns:
+///Doc:Display simple message box on the screen, error icon.
+///Implementation:c++_nircmd
+{
+	CHECK_ARGS
+	return R_WinCommonDialog("error", strTitle, strText);
+}
+///Function:Dialog.askYesNo
+///Arguments:string strTitle, string strText
+///Returns:Dialog.YES or Dialog.NO
+///Doc:Display simple message box on the screen, with options for yes and no.
+///Implementation:c++_nircmd
+///Example:var res = Dialog.askYesNo("Status","Continue?"); if (res==Dialog.YES) doSomething(); else doSomethingElse();
+{
+	CHECK_ARGS
+	return R_WinCommonDialog("yesno", strTitle, strText);
+}
+///Function:Dialog.askYesNoCancel
+///Arguments:string strTitle, string strText
+///Returns:Dialog.YES, Dialog.NO, Dialog.CANCEL
+///Doc:Display simple message box on the screen, with options for yes, no, cancel.
+///Implementation:c++_nircmd
+///Example:var res = Dialog.askYesNoCancel("Warning","Replace existing file?"); if (res==Dialog.YES) doSomething(); else if (res==Dialog.NO) doSomethingElse(); else doCancel();
+{
+	CHECK_ARGS
+	return R_WinCommonDialog("yesnocancel", strTitle, strText);
+}
+
+///Function:Dialog.askOkCancel
+///Arguments:string strTitle, string strText
+///Returns:Dialog.OK or Dialog.CANCEL
+///Doc:Display simple message box on the screen, with options for ok and cancel.
+///Implementation:c++_nircmd
+///Example:var res = Dialog.askOkCancel("Status","Continue?"); if (res==Dialog.OK) doSomething(); else doSomethingElse();
+{
+	CHECK_ARGS
+	return R_WinCommonDialog("okcancel", strTitle, strText);
+}
