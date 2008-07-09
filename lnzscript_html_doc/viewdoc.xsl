@@ -4,16 +4,52 @@
 <html>
 <head><title>Launchorz Reference Documentation</title>
 <script language="JavaScript"><![CDATA[
+function $(s) {return document.getElementById(s); }
+
+function getElementsByClass(node,searchClass,tag) {
+// to be better, would use a regexp ("\b"+searchClass+"\b")
+  var classElements = new Array();
+  var els = node.getElementsByTagName(tag);
+  var elsLen = els.length;
+  for (i = 0, j = 0; i < elsLen; i++) {
+    if ( els[i].className.indexOf(searchClass)!= -1 ) {
+      classElements[j] = els[i];
+      j++;
+    }
+  }
+return classElements;
+}
+function setVisibleAll(bShow) { 
+var aObjNs = getElementsByClass($('divOutput'),'classNamespace','div' );
+for (var i=0; i<aObjNs.length;i++)
+	aObjNs[i].style.display = bShow ? '' : 'none';
+if (bShow) g_prevShown='(All)';
+}
+
+g_prevShown = null;
+function showDiv(strId)
+{
+if (g_prevShown=='(All)') setVisibleAll(false);
+else if (g_prevShown) $(g_prevShown).style.display = 'none';
+
+oDiv = $(strId);
+oDiv.style.display = ''; //show it
+g_prevShown = strId;
+}
 
 function changeOutput()
 {
 // change the output by adding line breaks.
-odivOutput = document.getElementById('divOutput');
+var odivOutput = $('divOutput');
 var strOutput = odivOutput.innerHTML;
 strOutput = strOutput.replace(/\[\[br\]\]/g,'<br/>');
 odivOutput.innerHTML = strOutput;
 
-//document.getElementById('txtTest').value = strOutput;
+// Show the first one
+var aObjNs = getElementsByClass($('divOutput'),'classNamespace','div' );
+showDiv( aObjNs[0].id );
+
+//$('txtTest').value = strOutput;
 }
 
 ]]></script>
@@ -30,13 +66,18 @@ odivOutput.innerHTML = strOutput;
 <a name="anchor_top"></a>
 <div id="divTopLinks" class="nottoowide">
 <xsl:for-each select="launchorzdoc/section">
-	<br/><xsl:value-of select="@name"/><br/>
+	<br/><xsl:value-of select="@name"/><br/><!-- Section name-->
 
 	<table border="1"><tr>
 	<xsl:for-each select="namespace">
-		<td><xsl:value-of select="@name"/></td>
+		<td>
+		<a>
+		<xsl:attribute name="href">javascript:showDiv('div_<xsl:value-of select="../@name"/>_<xsl:value-of select="@name"/>');</xsl:attribute>
+		<xsl:value-of select="@name"/>
+		</a></td><!-- Namespace name-->
 		
 	</xsl:for-each>
+	<td><a href="javascript:setVisibleAll(true);">(All)</a></td>
 	</tr></table>
 </xsl:for-each>
 </div>
@@ -48,10 +89,9 @@ odivOutput.innerHTML = strOutput;
 <xsl:for-each select="launchorzdoc/section">
 	<xsl:for-each select="namespace">
 		<!-- create the named div-->
-		<div>
+		<div class="classNamespace" style="display:none"> <!-- it will be shown later, with JavaScript-->
 		<xsl:attribute name="id">div_<xsl:value-of select="../@name" />_<xsl:value-of select="@name" /></xsl:attribute> 
 		
-		<!--<xsl:if test="@name != $firstNamespace"><xsl:attribute name="style">display:none</xsl:attribute></xsl:if>-->
 		<b><xsl:value-of select="@name"/></b><br/>
 		
 		
@@ -76,8 +116,7 @@ odivOutput.innerHTML = strOutput;
 <br/>
 <a href="#anchor_top">Top</a>
 
-
-<textarea id="txtTest"></textarea> <!--print transformed html here for debugging-->
+<!--<textarea id="txtTest"></textarea> --><!--print transformed html here for debugging-->
 </body>
 </html>
 </xsl:template>
