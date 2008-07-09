@@ -70,7 +70,7 @@ namespace launchorz_functions
 	
 	
 	
-	QString util_nircmd_directory;
+	QString util_nircmd_directory, util_wincommondlg_directory;
 	void util_nircmd_init()
 	{
 		if (QFileInfo("nircmd.exe").exists())
@@ -78,20 +78,52 @@ namespace launchorz_functions
 			// get current absolute path, and remember it.
 			util_nircmd_directory = QFileInfo(".").absoluteFilePath().replace("/","\\");
 			if (!util_nircmd_directory.endsWith("\\")) util_nircmd_directory+="\\";
+			util_wincommondlg_directory = (util_nircmd_directory+"");
 			util_nircmd_directory += "nircmd.exe";
+			util_wincommondlg_directory += "WinCommonDialog.exe";
 		}
 		else 
-			util_nircmd_directory = ""; // it does not exist., we'll through an error if we need it
+		{
+			util_nircmd_directory = ""; // it does not exist., we'll throw an error if we need it
+			util_wincommondlg_directory = ""; 
+		}
 	}
-	QScriptValue util_nircmd_runCmd(QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand)
+	
+	// todo. maybe the preFormatted isn't even necessary - user could just throw everything into strCommand which isn't escaped? bad idea?
+	
+	// kind of weird to have reference parameters having default arguments, but this apparently implicitly creates a QString of length 0, which can be tested with str==0.
+	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng, bool preFormatted, const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
 	{
 		if (util_nircmd_directory=="") return ctx->throwError("The file nircmd.exe could not be found. Place it in a location that can be found by LnzScript in order to use this function.");
-		QString strExecutable = util_nircmd_directory + " " + strCommand;
+		QString strExecutable;
+		if (program == G_Nircmd) strExecutable = util_nircmd_directory + " " + strCommand;
+		else if (program == G_WinCommonDialog) strExecutable = util_wincommondlg_directory + " " + strCommand;
+		else return ctx->throwError("Internal error. Bad external command.");
+		
+		if (!preFormatted) //otherwise, everything is thrown into strCommand, which is not checked.
+		{
+			if (arg1!=0) strExecutable += " \""+arg1.replace("\"","\\\""); //replace " with \"
+			if (arg2!=0) strExecutable += " \""+arg2.replace("\"","\\\"");
+			if (arg3!=0) strExecutable += " \""+arg3.replace("\"","\\\"");
+			if (arg4!=0) strExecutable += " \""+arg4.replace("\"","\\\"");
+			if (arg5!=0) strExecutable += " \""+arg5.replace("\"","\\\"");
+			if (arg6!=0) strExecutable += " \""+arg6.replace("\"","\\\"");
+		}
+		
 		// now do a "run and wait" (synchronous)
 		long nStatus = AU3_RunWait(QStrToCStr(strExecutable), "",1); //default working directory, flag of 1
-		// "NirCmd now returns a non-zero value on error."
-		return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false);
+		if (program == G_Nircmd)
+		{
+			return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false); // "NirCmd now returns a non-zero value on error."
+		}
+		else if (program == G_WinCommonDialog)
+		{
+			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
+		}
 	}
+	
+
+	
 	
 /*
 	There are 5 different ways to pass in a way to specify a window.
