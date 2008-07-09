@@ -33,7 +33,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	return util_nircmd_runCmd(ctx, eng, QString("clipboard clear"));
+	return R_Nircmd("clipboard", "clear");
 }
 
 ///Function:Clipboard.saveImage
@@ -43,8 +43,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "clipboard saveimage \""+strImageFilename+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_Nircmd("clipboard", "saveimage", strImageFilename);
 }
 
 

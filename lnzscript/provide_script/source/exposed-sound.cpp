@@ -6,12 +6,12 @@
 {
 	CHECK_ARGS
 	if (nFrequency==-1)
-		return util_nircmd_runCmd(ctx, eng, QString("stdbeep"));
+		return R_Nircmd("stdbeep");
 	else
 	{
 		QString strNircmdCommand;
 		strNircmdCommand.sprintf("beep %d %d", nFrequency, nDurationMilliseconds);
-		return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+		return R_NircmdPreformatted(strNircmdCommand);
 	}
 }
 
@@ -26,9 +26,8 @@
 		return ctx->throwError("Volume must be given as a percentage from 0 to 100.");
 	int nSoundLevel = (int) ((nPercentageVolume / 100.0) * 65535.0);
 	
-	QString strNircmdCommand;
-	strNircmdCommand.sprintf("setsysvolume %d \"%s\"", nSoundLevel, QStrToCStrPointer(strComponent));
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	QString strLevel; strLevel.sprintf("%d", nSoundLevel);
+	return R_Nircmd("setsysvolume", strLevel, strComponent);
 }
 
 ///Function:Sound.changeVolume
@@ -43,9 +42,8 @@
 		return ctx->throwError("Units are in 1/100ths of maximum volume; must be in range -100 to 100");
 	int nSoundLevel = (int) ((nVolumeUnits / 100.0) * 65535.0);
 	
-	QString strNircmdCommand;
-	strNircmdCommand.sprintf("changesysvolume %d \"%s\"", nSoundLevel, QStrToCStrPointer(strComponent));
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	QString strLevel; strLevel.sprintf("%d", nSoundLevel);
+	return R_Nircmd("changesysvolume", strLevel, strComponent);
 }
 
 // consider: if called with no arguments, toggles setting? Would require special arg handling.
@@ -56,8 +54,8 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	int nParameter = (bMuted) ? 1 : 0;
-	QString strNircmdCommand;
-	strNircmdCommand.sprintf("mutesysvolume %d \"%s\"", nParameter, QStrToCStrPointer(strComponent));
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	if (bMuted)
+		return R_Nircmd("mutesysvolume", "1", strComponent);
+	else
+		return R_Nircmd("mutesysvolume", "0", strComponent);
 }

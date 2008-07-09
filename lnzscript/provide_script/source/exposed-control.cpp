@@ -7,8 +7,7 @@
 ///Example: Control.dialogSetText('explorer.exe','run',12298,'notepad'); /*type in notepad in run dialog*/ Control.dialogClickButton('explorer.exe','run','ok');//click ok
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "dlg \""+strExecutableName + "\" \""+strWindowTitle+"\" click \""+strButtonNameOrId+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return util_externalCmd(G_Nircmd,ctx, eng, "dlg", strExecutableName, strWindowTitle, "click", strButtonNameOrId);
 }
 // todo: shouldn't take a string here, should take id as int.
 ///Function:Control.dialogSetText
@@ -19,8 +18,7 @@
 ///Example: Control.dialogSetText('explorer.exe','run',12298,'notepad.exe'); /*type in notepad in run dialog*/ Control.dialogClickButton('explorer.exe','run','ok');//click ok
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "dlg \""+strExecutableName + "\" \""+strWindowTitle+"\" settext "+strFieldId+" \""+strText+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return util_externalCmd(G_Nircmd,ctx, eng, "dlg", strExecutableName, strWindowTitle, "settext", strFieldId, strText);
 }
 
 

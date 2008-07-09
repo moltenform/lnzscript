@@ -6,8 +6,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "regedit \""+strKeyname+"\" \""+strValuename+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_Nircmd("regedit", strKeyname, strValuename);
 }
 
 ///Function:Registry.deleteKey

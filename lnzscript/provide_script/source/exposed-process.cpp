@@ -190,8 +190,7 @@
 {
 	CHECK_ARGS
 	// AU3_Send("#l", 0); // Send Windows - L, which by default locks computer. This works, but doesn't seem as robust.
-	QString strNircmdCommand = "lockws";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_Nircmd("lockws");
 }
 
 ///Function:Process.systemMonitorOff
@@ -201,8 +200,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = (bMonitorState) ? "monitor on" : "monitor off";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_Nircmd("monitor", (bMonitorState) ? "on" : "off");
 }
 
 ///Function:Process.systemScreensaver
@@ -212,7 +210,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	return util_nircmd_runCmd(ctx, eng, QString("screensaver"));
+	return R_Nircmd("screensaver");
 }
 
 ///Function:Process.systemStandby
@@ -222,8 +220,8 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = (bForce) ? "standby force" : "standby";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	if (bForce) return R_Nircmd("standby","force");
+	else return R_Nircmd("standby");
 }
 ///Function:Process.systemHibernate
 ///Arguments:bool bForce=false
@@ -232,8 +230,8 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = (bForce) ? "hibernate force" : "hibernate";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	if (bForce) return R_Nircmd("hibernate","force");
+	else return R_Nircmd("hibernate");
 }
 
 ///Function:Process.systemRefresh
@@ -243,7 +241,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	return util_nircmd_runCmd(ctx, eng, QString("sysrefresh")); //also "environment" - for refreshing the environment variables, "policy" - for policy settings, "intl" for locale settings. 
+	return R_Nircmd("sysrefresh"); //also "environment" - for refreshing the environment variables, "policy" - for policy settings, "intl" for locale settings.
 }
 ///Function:Process.systemRefreshExplorer
 ///Arguments:
@@ -252,7 +250,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	return util_nircmd_runCmd(ctx, eng, QString("shellrefresh")); //also "environment" - for refreshing the environment variables, "policy" - for policy settings, "intl" for locale settings. 
+	return R_Nircmd("shellrefresh");
 }
 
 ///Function:Process.memoryDump
@@ -263,10 +261,11 @@
 {
 	CHECK_ARGS
 	QString strNircmdCommand;
-	strNircmdCommand.sprintf("memdump \"%s\" \"%s\" \"%d\" \"%d\" \"%d\"", QStrToCStrPointer(strExecutableName), QStrToCStrPointer(strOutputFilename), nBytesPerLine, nBytesToRead, nStartAddress);
+	// Note that we escape quotes in the input (important)
+	strNircmdCommand.sprintf("memdump \"%s\" \"%s\" \"%d\" \"%d\" \"%d\"", QStrToCStrPointer(util_external_escape(strExecutableName)), QStrToCStrPointer(util_external_escape(strOutputFilename)), nBytesPerLine, nBytesToRead, nStartAddress);
 	if (!bIncludeHex) strNircmdCommand+= " nohex";
 	if (!bIncludeAscii) strNircmdCommand+= " noascii";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_NircmdPreformatted(strNircmdCommand);
 }
 
 ///Function:Process.setServiceStartup
@@ -278,8 +277,8 @@
 	CHECK_ARGS
 	if (!(strStartupType == "auto" || strStartupType == "manual" || strStartupType == "disabled" || strStartupType == "boot" || strStartupType == "system"))
 		return ctx->throwError("Process.setServiceStartup() Invalid parameter, choose one of \"auto\",\"manual\", \"disabled\", \"boot\" \"system\"");
-	QString strNircmdCommand = "service " + strStartupType + " \"" + strServiceName + "\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+
+	return R_Nircmd("service", strStartupType, strServiceName);
 }
 ///Function:Process.setServiceStatus
 ///Arguments:string strServiceName, string strAction
@@ -291,6 +290,6 @@
 	CHECK_ARGS
 	if (!(strAction == "start" || strAction == "stop" || strAction == "restart" || strAction == "pause" || strAction == "continue"))
 		return ctx->throwError("Process.setServiceStatus() Invalid action, choose one of \"start\",\"stop\", \"restart\", \"pause\", \"continue\".");
-	QString strNircmdCommand = "service " + strAction + " \"" + strServiceName + "\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	
+	return R_Nircmd("service", strAction, strServiceName);
 }

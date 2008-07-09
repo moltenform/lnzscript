@@ -461,8 +461,10 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = ((strDrive == "") ? "emptybin" : "emptybin " + strDrive); // if without a parameter, empties all recycle bins
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	if (strDrive == "")
+		return R_Nircmd("emptybin"); // if without a parameter, empties all recycle bins
+	else
+		return R_Nircmd("emptybin", strDrive);
 }
 
 ///Function:File.copyDialog
@@ -473,10 +475,11 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "shellcopy \""+strPatternFilenames + "\" \""+strDestination+"\"";
-	if (bAnswerYesToQuestions) strNircmdCommand+=" yestoall";
-	if (bDontShowErrors) strNircmdCommand+=" noerrorui";
-	if (bSilent) strNircmdCommand+=" silent";
-	if (bDontCopySecurityAttributes) strNircmdCommand+=" nosecattr";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	const char* args[4]; int nargs=0;
+
+	if (bAnswerYesToQuestions) args[nargs++] ="yestoall";
+	if (bDontShowErrors) args[nargs++] +="noerrorui";
+	if (bSilent) args[nargs++] ="silent";
+	if (bDontCopySecurityAttributes) args[nargs++] ="nosecattr";
+	return R_Nircmd("shellcopy", strPatternFilenames, strDestination, args[0], args[1], args[2], args[3]);
 }

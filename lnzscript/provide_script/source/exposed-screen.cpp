@@ -46,10 +46,9 @@
 	CHECK_ARGS
 	QString strNircmdCommand;
 	if (bFullScreen)
-		strNircmdCommand = "savescreenshot \""+strImageFilename+"\"";
+		return R_Nircmd("savescreenshot", strImageFilename);
 	else
-		strNircmdCommand = "savescreenshotwin \""+strImageFilename+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+		return R_Nircmd("savescreenshotwin", strImageFilename);
 }
 
 ///Function:Screen.convertImage
@@ -59,8 +58,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "convertimage \""+strImageFilename+"\" \""+strNewImageName+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_Nircmd("convertimage",strImageFilename,strNewImageName );
 }
 ///Function:Screen.convertImages
 ///Arguments:string strImagePattern, string strOutputPattern
@@ -70,8 +68,7 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "convertimages \""+strImagePattern+"\" \""+strOutputPattern+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	return R_Nircmd("convertimages",strImagePattern,strOutputPattern );
 }
 
 ///Function:Screen.setDisplayMode
@@ -84,6 +81,7 @@
 	CHECK_ARGS
 	QString strNircmdCommand;
 	strNircmdCommand.sprintf("setdisplay %d %d %d", nWidth, nHeight, nColorBits);
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	// We do not need to escape quotes in this particular case.
+	return R_NircmdPreformatted(strNircmdCommand);
 }
 

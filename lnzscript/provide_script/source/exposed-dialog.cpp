@@ -11,7 +11,9 @@
 	return eng->nullValue();
 }
 
-// for now these are done with Nircmd, but in the future should use Qt.
+// The reason why I don't use Qt for these is that it would create a dependency on QtGui.dll, which is pretty heavy.
+// So, I wrote WinCommonDialog, which wraps Windows MessageBox.
+
 ///Function:Dialog.alert
 ///Arguments:string strTitle, string strText
 ///Returns:
@@ -19,6 +21,12 @@
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	QString strNircmdCommand = "infobox \""+strTitle + "\" \""+strText+"\"";
-	return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
+	
+	//QString strNircmdCommand = "info \""+ strTitle + "\" \""+strText+"\"";
+	//return util_wincommondlg_runCmd(ctx, eng, strNircmdCommand);
+	
+	// Previous used nircmd:
+	// QString strNircmdCommand = "infobox \""+ strText + "\" \""+strTitle+"\"";
+	// return util_nircmd_runCmd(ctx, eng, strNircmdCommand);
 }
+
