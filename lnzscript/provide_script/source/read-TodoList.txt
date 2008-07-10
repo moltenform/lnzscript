@@ -2,9 +2,15 @@ Todo
 =============
 Write general documentation for process, window, control.
 Note to use [[br]] in documentation for line break.
-Don't use sprintf for adding strings - it needlessly uses .toLatin1(). QStrToCStrPointer is a hack. Fix this by using string concat or .arg().
+Don't use sprintf for adding strings - it needlessly uses .toLatin1(). QStrToCStrPointer is a hack in this case. Fix this by using string concat or .arg().
 right now there are tons of literal strings like "copyDialog: argument 2 is not a bool". should be replaced with something like FMTSTRINGERROR(2, STR_BOOL) or FMTSTRINGERROR(impl_copydialog_string, 2, STR_BOOL)
 
+when running a file get command line arguments?
+have an inno setup installer that registers jsz type?
+document the __name__ variable and test that it works
+
+execute Python? I suppose it could look in the registry for a Python installation.
+Allow scripts to interface with Python - that'd be sweet. 
 
 Au3 Follow-up
 ============
@@ -44,23 +50,25 @@ Mouse
 File
 ------
 	Get special folder paths !!!! !! !
-	Get environment vars?
+	Get environment vars? QEnvironment?
 	-optional feature File.dirWalk - to make recursing through directories easier
 	-optional feature File.dirListFilesPattern - list all entries matching *.txt and so on.
 
 Dialog
 --------
-	use qt for alert, msgbox, input, file dialogs, choice dialog, maybe even color dialog, etc.
+	Do NOT use qt for alert, msgbox, input, file dialogs, choice dialog, maybe even color dialog, etc.
+	I changed my mind - Using qt for this introduces dependency on QtGui.dll which we don't really want.
 
 Screen
 -------
+	-why not add these? it'd be easy
 	AU3_PixelChecksum
 	AU3_PixelSearch
 	
 	
 Window
 ------
-	nircmd win
+	consider adding nircmd win 
 
 (Add from xls for opening control panels, using rundll32, and so on.)
 (Look online for cool Au3 /autohotkey scripts and add features from them).
