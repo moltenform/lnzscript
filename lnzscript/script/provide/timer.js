@@ -8,7 +8,7 @@ Time.createTimer = function()
 {
 	return new _Timer();
 }
-function _Timer() //intended to be constructed with new.
+_Timer = function() //intended to be constructed with new.
 {
 	this.dt = new Date();
 }
