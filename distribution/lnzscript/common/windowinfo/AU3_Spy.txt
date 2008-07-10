@@ -1,0 +1,4 @@
+This is a tool distributed with the AutoHotKey project.
+
+For an even better Window Info tool, see the "AutoIt Window Info" program that 
+is distributed with the freeware program AutoIt.
