@@ -26,7 +26,7 @@ public:
 	
 private:
 	QScriptEngine engine;
-
+	bool bStandardScriptsIncluded;
 };
 
 QScriptValue g_ProvideScript_PrintFunction(QScriptContext *ctx, QScriptEngine *eng);

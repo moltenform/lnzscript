@@ -22,6 +22,8 @@ ProvideScript::ProvideScript()
 	// add the include function to the engine
 	QScriptValue fnScriptInclude = engine.newFunction(g_ProvideScript_IncludeFunction);
 	engine.globalObject().setProperty("include", fnScriptInclude);
+	
+	bStandardScriptsIncluded = false;
 }
 
 
@@ -81,6 +83,14 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 
 	// note there is nothing to stop a file from including itself. That would be bad; let's not do that.
 	QString strFilename = ctx->argument(0).toString();
+	
+	if (strFilename == "<std>")
+	{
+		if (bStandardScriptsIncluded) return eng->nullValue(); //they've already been included.
+		strFilename = get_base_directory() + "std.js";
+		bStandardScriptsIncluded=true;
+	}
+	
 	QString contents;
 	try
 	{

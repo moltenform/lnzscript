@@ -70,6 +70,7 @@ namespace launchorz_functions
 		return ar;
 	}
 	
+	// Returns base directory (one containing the exe), with following backslash.
 	QString get_base_directory()
 	{
 		// use windows api to get my path.
@@ -79,20 +80,18 @@ namespace launchorz_functions
 		wcstombs(buffer, tbuffer, 512);
 		QString str(buffer);
 		QFileInfo info(str); 
-		return info.absolutePath(); //get the dir from the path
+		QString strResult = info.absolutePath(); //get the dir from the path
+		return (strResult.endsWith("\\")) ? strResult : strResult + "\\";
 	}
 	
 	QString util_nircmd_directory, util_wincommondlg_directory;
 	void util_nircmd_init()
 	{
 		QString strBaseDir = get_base_directory();
-		QDir::setCurrent(strBaseDir);
-		if (! QFileInfo("nircmd.exe").exists()) { puts("Cannot find nircmd.exe."); abort(); }
-		if (! QFileInfo("WinCommonDialog.exe").exists()) { puts("Cannot find WinCommonDialog.exe."); abort(); }
-		
-		if (!strBaseDir.endsWith("\\")) strBaseDir+="\\";
 		util_nircmd_directory = strBaseDir + "nircmd.exe";
 		util_wincommondlg_directory = strBaseDir + "WinCommonDialog.exe";
+		if (! QFileInfo(util_nircmd_directory).exists()) { puts("Cannot find nircmd.exe."); abort(); }
+		if (! QFileInfo(util_wincommondlg_directory).exists()) { puts("Cannot find WinCommonDialog.exe."); abort(); }
 	}
 	
 	// kind of weird to have reference parameters having default arguments, but this apparently implicitly creates a QString of length 0, which can be tested with str==0.
