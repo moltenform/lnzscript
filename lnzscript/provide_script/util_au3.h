@@ -44,7 +44,7 @@ namespace launchorz_functions
 	// Use these to manually provide string. Be sure to escape quotes in input with util_external_escape
 	#define R_NircmdPreformatted(s_pref) (util_externalCmd(G_Nircmd,ctx,eng,s_pref))
 	#define R_WinCommonDialogPreformatted(s_pref) (util_externalCmd(G_WinCommonDialog,ctx,eng,s_pref))
-	#define util_external_escape(s) (s.replace("\"","\\\""))
+	#define util_external_escape(s) (QString(s).replace("\"","\\\"",Qt::CaseInsensitive))
 	
 	extern QString util_nircmd_directory, util_wincommondlg_directory; // implemented in util_au3.cpp. Declared extern to avoid "multiple definition of"
 	void util_nircmd_init();

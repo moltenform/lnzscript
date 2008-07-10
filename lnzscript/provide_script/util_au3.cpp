@@ -2,6 +2,7 @@
 #include "autoit/AutoIt3.h"
 #include "util_au3.h"
 
+
 namespace launchorz_functions
 {
 	void util_au3init()
@@ -42,7 +43,8 @@ namespace launchorz_functions
 	
 	
 	
-	
+
+
 	// previous to calling this, use.setFilter to set a filter.
 	QScriptValue util_ListDirectoryEntries(QScriptContext *ctx, QScriptEngine *eng, QDir objDir, QString strSortBy)
 	{
@@ -68,25 +70,29 @@ namespace launchorz_functions
 		return ar;
 	}
 	
-	
+	QString get_base_directory()
+	{
+		// use windows api to get my path.
+		TCHAR tbuffer[512];
+		GetModuleFileName(NULL, tbuffer, 512);
+		char buffer[512];
+		wcstombs(buffer, tbuffer, 512);
+		QString str(buffer);
+		QFileInfo info(str); 
+		return info.absolutePath(); //get the dir from the path
+	}
 	
 	QString util_nircmd_directory, util_wincommondlg_directory;
 	void util_nircmd_init()
 	{
-		if (QFileInfo("nircmd.exe").exists())
-		{
-			// get current absolute path, and remember it.
-			util_nircmd_directory = QFileInfo(".").absoluteFilePath().replace("/","\\");
-			if (!util_nircmd_directory.endsWith("\\")) util_nircmd_directory+="\\";
-			util_wincommondlg_directory = (util_nircmd_directory+"");
-			util_nircmd_directory += "nircmd.exe";
-			util_wincommondlg_directory += "WinCommonDialog.exe";
-		}
-		else 
-		{
-			util_nircmd_directory = ""; // it does not exist., we'll throw an error if we need it
-			util_wincommondlg_directory = ""; 
-		}
+		QString strBaseDir = get_base_directory();
+		QDir::setCurrent(strBaseDir);
+		if (! QFileInfo("nircmd.exe").exists()) { puts("Cannot find nircmd.exe."); abort(); }
+		if (! QFileInfo("WinCommonDialog.exe").exists()) { puts("Cannot find WinCommonDialog.exe."); abort(); }
+		
+		if (!strBaseDir.endsWith("\\")) strBaseDir+="\\";
+		util_nircmd_directory = strBaseDir + "nircmd.exe";
+		util_wincommondlg_directory = strBaseDir + "WinCommonDialog.exe";
 	}
 	
 	// kind of weird to have reference parameters having default arguments, but this apparently implicitly creates a QString of length 0, which can be tested with str==0.
@@ -114,8 +120,9 @@ namespace launchorz_functions
 		}
 		else if (program == G_WinCommonDialog)
 		{
-			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
+			return QScriptValue(eng, (int) nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
 		}
+		else return ctx->throwError("Internal error. Bad external command.");
 	}
 	
 	
