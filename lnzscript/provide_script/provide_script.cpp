@@ -92,10 +92,10 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	{
 		return ctx->throwError("Could not include file.");
 	}
-	eng->evaluate(contents); //if this throws an exception, print it in a way that can be understood.
+	QScriptValue ret = eng->evaluate(contents); //if this throws an exception, print it in a way that can be understood.
 	if (eng->hasUncaughtException())
 	{
-		int lineno = engine.uncaughtExceptionLineNumber();
+		int lineno = eng->uncaughtExceptionLineNumber();
 		QString msg = ret.toString();
 		QString readableError = msg.sprintf("%s, at %d", qPrintable(msg), lineno);
 		g_LnzScriptPrintCallback( &readableError); // print readable error
