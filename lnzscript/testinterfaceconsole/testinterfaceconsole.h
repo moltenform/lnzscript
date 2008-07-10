@@ -11,6 +11,7 @@ public:
 	TestInterfaceConsole();
 	void beginInteractiveSession();
 	void evaluateAndPrintResults(const char * strInput);
+	bool getConfirmationToRunScript();
 
 private:
 	ProvideScript provideScript; 

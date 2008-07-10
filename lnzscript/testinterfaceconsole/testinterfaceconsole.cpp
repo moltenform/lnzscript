@@ -43,3 +43,8 @@ void g_LnzScriptPrintCallback(QString * str)
 	std::cout << "\n" << s;
 }
 
+bool TestInterfaceConsole::getConfirmationToRunScript()
+{
+	QScriptValue res = provideScript.EvalString("Dialog.askYesNo('Confirmation','Are you sure you want to run this script?') == Dialog.YES");
+	return res.toBoolean();
+}
