@@ -5,6 +5,9 @@ IF NOT EXIST Makefile GOTO notqmade
 :: Run python scripts to generate c++
 c:\python25\python .\provide_script\source\script_createcpp.py .\provide_script\source
 
+:: Run python scripts to generate JavaScript lib
+c:\python25\python .\provide_script\source\script_create_std_js.py .\provide_script\source .\release
+
 :: run make
 make
 
