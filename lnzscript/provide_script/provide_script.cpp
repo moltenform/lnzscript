@@ -1,4 +1,3 @@
-
 #include <QtScript>
 #include "provide_script.h"
 #include "print_function.h"
@@ -41,7 +40,8 @@ StringResult ProvideScript::EvalScript(QString filename)
 
 StringResult ProvideScript::EvalString(QString contents)
 {
-	QScriptValue ret = engine.evaluate(contents);
+	// Set "main" flag signalling that this file was not included
+	QScriptValue ret = engine.evaluate("var __name__ = 'main';" + contents);
 	if (engine.hasUncaughtException())
 	{
 		int lineno = engine.uncaughtExceptionLineNumber();
@@ -73,11 +73,13 @@ QScriptValue g_ProvideScript_PrintFunction(QScriptContext *ctx, QScriptEngine *e
 	return eng->nullValue();
 }
 
+
 QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine *eng)
 {
 	if (ctx->argumentCount()!=1) return ctx->throwError("include takes one argument(s).");
 	if (!ctx->argument(0).isString()) return ctx->throwError(QScriptContext::TypeError,"include: argument 0 is not a string");
-	
+
+	// note there is nothing to stop a file from including itself. That would be bad; let's not do that.
 	QString strFilename = ctx->argument(0).toString();
 	QString contents;
 	try
@@ -92,7 +94,8 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	{
 		return ctx->throwError("Could not include file.");
 	}
-	QScriptValue ret = eng->evaluate(contents); //if this throws an exception, print it in a way that can be understood.
+	// Set flag signalling that this WAS included. Because it is declared var, it should be private.
+	QScriptValue ret = eng->evaluate("var __name__ = 'included';" + contents); //if this throws an exception, print it in a way that can be understood.
 	if (eng->hasUncaughtException())
 	{
 		int lineno = eng->uncaughtExceptionLineNumber();
