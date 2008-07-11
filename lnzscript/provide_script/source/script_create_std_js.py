@@ -10,6 +10,7 @@ outpath = os.path.abspath(sys.argv[2])
 #start output file
 os.chdir(outpath)
 fout = open('std.js','w')
+fout.write('#This is a generated file. When LnzScript is built, changes to it will be lost.\n\n')
 
 # Set the working directory to the first parameter passed to me
 os.chdir(mypath)
@@ -24,6 +25,7 @@ for file in allfiles:
 	if file.endswith('.js'):
 		f=open(file,'r')
 		fout.write(f.read())
+		fout.write('\n')
 		f.close()
 		nWritten += 1
 
