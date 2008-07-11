@@ -5,7 +5,14 @@
 
 TestInterfaceConsole::TestInterfaceConsole()
 {
-	// create provide script object, and so on.
+	// ProvideScript object is created implicitly.
+}
+void TestInterfaceConsole::addArgv(int argc, char *argv[])
+{
+	// ProvideScript object is created implicitly.
+
+	// add command line arguments
+	provideScript.addArgv(argc, argv);
 }
 
 void TestInterfaceConsole::beginInteractiveSession()

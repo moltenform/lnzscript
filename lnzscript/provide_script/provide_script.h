@@ -21,7 +21,8 @@ public:
 	ProvideScript();
 	StringResult EvalScript(QString filename);
 	StringResult EvalString(QString code);
-
+	
+	void addArgv(int argc, char *argv[]);
 
 	
 private:

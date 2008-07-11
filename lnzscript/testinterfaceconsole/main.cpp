@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	{
 		console.evaluateAndPrintResults( argv[2] );
 	}
-	else if (argc == 3 && (strcmp(argv[1], "/f")==0||strcmp(argv[1], "/fconfirm")==0))
+	else if (argc >= 3 && (strcmp(argv[1], "/f")==0||strcmp(argv[1], "/fconfirm")==0))
 	{
 		if (strcmp(argv[1], "/fconfirm")==0)
 		{
@@ -26,10 +26,10 @@ int main(int argc, char *argv[])
 		QString contents;
 		try
 		{
-		QFile file(argv[2]);
-		file.open(QIODevice::ReadOnly);
-		contents = file.readAll();
-		file.close();
+			QFile file(argv[2]);
+			file.open(QIODevice::ReadOnly);
+			contents = file.readAll();
+			file.close();
 		} catch (...) { std::cerr << "Error."; return 0; }
 		
 		if (contents.isEmpty()) return 0; // string was empty
@@ -38,6 +38,9 @@ int main(int argc, char *argv[])
 		// (we've already recorded the previous directory before)
 		QFileInfo fileInfo(argv[2]);
 		QDir::setCurrent(fileInfo.absolutePath());
+		
+		// add argv
+		console.addArgv(argc, argv);
 		
 		console.evaluateAndPrintResults( contents.toLatin1() );
 	}

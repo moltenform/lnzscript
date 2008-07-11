@@ -66,7 +66,17 @@ StringResult ProvideScript::EvalString(QString contents)
 }
 
 
-
+void ProvideScript::addArgv(int argc, char *argv[])
+{
+	// arg0 is lnzscript, arg1 is /f
+	if (argc <= 2) return;
+	int offset = 2; // how many arguments to ignore
+	
+	QScriptValue ar = engine.newArray(argc - offset);
+	for (int i=offset; i<argc; i++)
+		ar.setProperty(i-offset, QScriptValue(&engine, argv[i]));
+	engine.globalObject().setProperty("argv", ar);
+}
 
 QScriptValue g_ProvideScript_PrintFunction(QScriptContext *ctx, QScriptEngine *eng)
 {
@@ -77,7 +87,6 @@ QScriptValue g_ProvideScript_PrintFunction(QScriptContext *ctx, QScriptEngine *e
 	g_LnzScriptPrintCallback( &str );
 	return eng->nullValue();
 }
-
 
 QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine *eng)
 {
@@ -124,7 +133,34 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	return eng->nullValue();
 }
 
+/*
+typedef atleast_t int;
+//atLeast: 0 is wrong number, 1 is too many, -1 is not enough
+QScriptValue g_ProvideScript_ThrowException_WrongArgs(QScriptContext *ctx, char* functionName, int nExpected, atleast_t nAtLeast)
+{
+	QString strExceptionMessage;
+	if (nAtLeast==0)
+		strExceptionMessage.sprintf("Function %s takes exactly %d arguments.",functionName,nExpected);
+	else if (nAtLeast==-1)
+		strExceptionMessage.sprintf("Function %s takes at least %d arguments.",functionName,nExpected);
+	else if (nAtLeast==1)
+		strExceptionMessage.sprintf("Function %s takes at most %d arguments.",functionName,nExpected);
+	return ctx->throwError(strExceptionMessage);
+}
 
+typedef paramtype_t int;
+#define g_ProvideScript_ThrowException_WrongTypeBoolean 1
+#define g_ProvideScript_ThrowException_WrongTypeInt 2
+QScriptValue g_ProvideScript_ThrowException_WrongType(QScriptContext *ctx, char* functionName, int nArgument, paramtype_t nTypeExpected)
+{
+	static char typestable[] {
+		"", "Boolean", "Integer", "String"
+	};
+	QString strExceptionMessage;
+	assert nTypeExpected < 6 && nTypeExpected >=0
+	strExceptionMessage.sprintf("Function %s: argument %d is not a %s.",functionName,typestable[nExpected]);
+	
+	return ctx->throwError(strExceptionMessage);
+}
 
-
-
+*/
