@@ -1,0 +1,8 @@
+
+The idea is to have a "standard library" of JavaScript algorithms and utility code. 
+
+As of now, this library is not included by default, but can be included regardless of working directory with the expression:
+include('<std>')
+
+Before a build, a Python script create_std_js.py will consolidate these scripts into the file std.js
+
