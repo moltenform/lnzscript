@@ -20,7 +20,7 @@ Example of what Launchorz can do:
 		Keyboard.send('hello!')
 		Dialog.askYesNo('Question','Did you expect this to happen?');
 
-Now run ``lnzscript test.js``, and watch what happens!
+Now run ``lnzscript /f test.js``, and watch what happens!
 
 Why Launchorz?
 ==============================
