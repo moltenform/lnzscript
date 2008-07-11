@@ -11,16 +11,21 @@ Using the "Qt command prompt" will include the right things in the path, recomme
 Run "qmake testinterfaceconsole.pro" or "qmake testinterfaceform.pro" depending
 on whether you are building the form, or the console interface.
 
+From here on, build.bat should do the rest. Otherwise here are the steps:
+
 3)
 Run c:\python25\python .\provide_script\source\script_createcpp.py .\provide_script\source
 (Change path to python if necessary).
 This important step generates the .cpp files to be used later.
 
-4)
+4) Run c:\python25\python .\provide_script\source\script_create_std_js.py .\provide_script\source .\release
+Generates .js file
+
+5)
 Run "make"
 
 
-5) If there were not errors, the "release" directory should contain a binary. Note that the binary must be able to find
+6) If there were not errors, the "release" directory should contain a binary. Note that the binary must be able to find
 qt Dlls (found in /trunk/distribution/lnzscript/common/QtDlls_extract_here.rar, or in one of the distributions)
 as well as the autoit Dll.
 
