@@ -1,5 +1,3 @@
-File.cd('C:\\c#\\launchorz\\Subversion\\lnzscript\\script\\test\\')
-
 
 // Note the syntax for functions:
 // function my_private_fn(a,b) { } // will be private
@@ -11,7 +9,8 @@ include('methods_list.js');
 print('Beginning main tests\n\n');
 File.cd('temp'); // to make temporary files and so on
 
-include('..\\namespace_clipboard.js');
+// uncomment the tests you wish to run.
+//include('..\\namespace_clipboard.js');
 //include('..\\namespace_file.js');
 
 
