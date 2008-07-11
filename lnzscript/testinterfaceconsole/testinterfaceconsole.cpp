@@ -45,6 +45,9 @@ void g_LnzScriptPrintCallback(QString * str)
 
 bool TestInterfaceConsole::getConfirmationToRunScript()
 {
-	QScriptValue res = provideScript.EvalString("Dialog.askYesNo('Confirmation','Are you sure you want to run this script?') == Dialog.YES");
-	return res.toBoolean();
+	// this is gross. we shouldn't have to do this.
+	StringResult res = provideScript.EvalString("(Dialog.askYesNo('Confirmation','Are you sure you want to run this script?') == Dialog.YES) ? 1:0");
+	int nResult = res.str.toInt();
+	return (nResult) ? true : false;
 }
+
