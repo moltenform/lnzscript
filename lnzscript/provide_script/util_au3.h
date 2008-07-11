@@ -47,6 +47,7 @@ namespace launchorz_functions
 	#define util_external_escape(s) (QString(s).replace("\"","\\\"",Qt::CaseInsensitive))
 	
 	extern QString util_nircmd_directory, util_wincommondlg_directory; // implemented in util_au3.cpp. Declared extern to avoid "multiple definition of"
+	QString get_base_directory();
 	void util_nircmd_init();
 	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);
 }

@@ -23,7 +23,8 @@ ProvideScript::ProvideScript()
 	QScriptValue fnScriptInclude = engine.newFunction(g_ProvideScript_IncludeFunction);
 	engine.globalObject().setProperty("include", fnScriptInclude);
 	
-	bStandardScriptsIncluded = false;
+	// add flag saying that we have not yet included standard JavaScript libraries
+	engine.globalObject().setProperty("__includedstd__", QScriptValue(&engine,false));
 }
 
 
@@ -40,6 +41,8 @@ StringResult ProvideScript::EvalScript(QString filename)
 	return EvalString(contents);
 }
 
+// there should be something like this that returns a QScriptValue. This would be better.
+// the problem is that there have to be two return values: What was the result? and Was there an exception?
 StringResult ProvideScript::EvalString(QString contents)
 {
 	// Set "main" flag signalling that this file was not included
@@ -86,9 +89,11 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	
 	if (strFilename == "<std>")
 	{
-		if (bStandardScriptsIncluded) return eng->nullValue(); //they've already been included.
-		strFilename = get_base_directory() + "std.js";
-		bStandardScriptsIncluded=true;
+		// check if they have already been included:
+		if (eng->globalObject().property("__includedstd__", QScriptValue::ResolveLocal).toBoolean()) return eng->nullValue();
+		
+		strFilename = launchorz_functions::get_base_directory() + "std.js";
+		eng->globalObject().setProperty("__includedstd__", QScriptValue(eng,true));
 	}
 	
 	QString contents;
