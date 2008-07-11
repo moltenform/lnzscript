@@ -12,6 +12,8 @@ document the __name__ variable and test that it works
 execute Python? I suppose it could look in the registry for a Python installation.
 Allow scripts to interface with Python - that'd be sweet. 
 
+database of contributed scripts
+
 Au3 Follow-up
 ============
 Test relative coords, MouseCoordMode, PixelCoordMode
@@ -28,10 +30,10 @@ Planned Features
 
 Internet
 ------
+	OpenUrl - either a dll call, or "start" which uses shellExecute
 	Ftp class or something.
 	http://doc.trolltech.com/4.3-snapshot/qftp.html
 	UrlDownload. There's a getUrl in AutoIt3, a hacky solution would be to call it ...
-	OpenUrl - either a dll call, or "start" which uses shellExecute
 	getFavorites - look at Launchy source?
 	organizeIEFavorites - a dll call that opens the organizeFavorites box.
 
