@@ -43,6 +43,7 @@ function changeOutput()
 var odivOutput = $('divOutput');
 var strOutput = odivOutput.innerHTML;
 strOutput = strOutput.replace(/\[\[br\]\]/g,'<br/>');
+strOutput = strOutput.replace(/AU3_INTDEFAULT/g,'(default)');
 odivOutput.innerHTML = strOutput;
 
 // Show the first one
@@ -56,6 +57,14 @@ showDiv( aObjNs[0].id );
 <style type="text/css"><![CDATA[
 .mleft {margin-left: 20px}
 .nottoowide {width: 80%}
+body {
+  font: 100% sans-serif;
+  background: #ffffff;
+  color: black;
+  margin: 2em;
+  padding: 0em 2em;
+}
+
 ]]></style>
 </head>
 <body onload="changeOutput();">
