@@ -1,4 +1,5 @@
-launchorz 
+launchorz
+http://jamon.ben.googlepages.com/lnz_01_intro.html
 http://code.google.com/p/launchorz/
 Powerful JavaScript libraries for Win32 automation
 by Ben Fisher
@@ -6,7 +7,7 @@ by Ben Fisher
 
 Write short JavaScript scripts to do nearly anything on a Windows machine: 
 open programs, simulate keystrokes, simulate mouse movements and clicks, and work with files. 
-Somewhat similar to WSH but with a better api. Current implementation uses a combination of Qt toolkit, an AutoIt dll, and Nircmd.
+Current implementation uses a combination of Qt toolkit, an AutoIt dll, and Nircmd.
 
 test.js: 
 Process.open('notepad.exe')
@@ -17,6 +18,7 @@ from a command line:
 lnzscript test.js
 
 =================
+Documentation at http://jamon.ben.googlepages.com/lnz_01_intro.html
 Check out the source at
 http://launchorz.googlecode.com/svn/trunk
 Contribute patches if you come up with something interesting.
