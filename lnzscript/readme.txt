@@ -15,7 +15,7 @@ Time.sleep(500);
 Keyboard.send('hello!')
 
 from a command line: 
-lnzscript test.js
+lnzscript /f test.js
 
 =================
 Documentation at http://jamon.ben.googlepages.com/lnz_01_intro.html
