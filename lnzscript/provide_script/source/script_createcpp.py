@@ -76,9 +76,10 @@ class ImplementationOutputFile():
 			fout.write(strTemplate)
 			fout.close()
 
-	def _alreadyExists(self, srtFilename, strWholeFile):
+	def _alreadyExists(self, strFilename, strWholeFile):
 		#if the exact same file already exists, don't write it. The main advantage is that the file isn't "touched" and gcc won't rebuild it.
-		strWholeExistingFile = script_create.readfile(srtFilename)
+		if not os.path.exists(strFilename): return False
+		strWholeExistingFile = script_create.readfile(strFilename)
 		return strWholeFile==strWholeExistingFile
 
 
