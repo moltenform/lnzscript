@@ -2,6 +2,7 @@ Todo
 =============
 Write general documentation for process, window, control.
 Note to use [[br]] in documentation for line break.
+For development, it should be clear wht the working directory should be for Python scripts
 Don't use sprintf for adding strings - it needlessly uses .toLatin1(). QStrToCStrPointer is a hack in this case. Fix this by using string concat or .arg().
 right now there are tons of literal strings like "copyDialog: argument 2 is not a bool". should be replaced with something like FMTSTRINGERROR(2, STR_BOOL) or FMTSTRINGERROR(impl_copydialog_string, 2, STR_BOOL)
 
