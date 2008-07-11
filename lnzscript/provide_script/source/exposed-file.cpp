@@ -10,7 +10,8 @@
 	if (strDirectory!="") // change the current directory
 	{
 		bool bResult = QDir::setCurrent(strDirectory);
-		return (bResult) ? QScriptValue(eng, true) : QScriptValue(eng, false);
+		if (!bResult) return ctx->throwError("File.cd(): directory may not exist.");
+		else return QScriptValue(eng, true);
 	}
 	else // return the current directory
 	{
