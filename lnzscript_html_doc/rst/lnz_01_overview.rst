@@ -12,12 +12,12 @@ There are currently two distributions: "command line" and "form". The command-li
 If you choose the command-line interface:
 
 - Unzip the .zip file to a folder, possibly in Program Files.
-- Open cmd.exe (the command prompt) and cd into the directory.
 - Run lnzscript.exe.
 - You should see a LnzScript prompt. Type print('hello') and see if it works.
 - Open notepad or a code editor and create a file called 'test.js', containing print('hello')
 - Save this file into the directory.
-- From cmd.exe, inside the directory, run lnzscript.exe /f test.js
+- Open cmd.exe (the command prompt) and cd into the directory.
+- From cmd.exe, inside the directory, type lnzscript.exe /f test.js
 - From now on, you can use both of these ways (interactive or script-based) to run LnzScript code.
 
 If you choose the form interface:
@@ -38,7 +38,7 @@ Dialogs
 ::
 
 	var res = Dialog.askYesNo('Question','Are you ready?');
-	if (res==Dialog.OK) print("That's good.");
+	if (res==Dialog.YES) print("That's good.");
 
 Mouse
 ::
@@ -78,7 +78,8 @@ Controls - this type of thing is useful
 Misc. self-explanatory stuff
 ::
 
-	Screen.saveScreenshot('c:/shot.png', false)
 	Sound.mute()
 	Window.minimizeAll()
+	Screen.saveScreenshot('c:/shot.png', false)
 	Process.systemShutdown()
+	
