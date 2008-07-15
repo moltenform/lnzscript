@@ -1,6 +1,13 @@
 #ifndef __AUTOIT3_H
 #define __AUTOIT3_H
 
+#ifdef _WIN32_WINNT
+#undef _WIN32_WINNT
+#endif
+#ifdef _WIN32_IE
+#undef _WIN32_IE
+#endif
+
 #include "Windows.h"
 
 ///////////////////////////////////////////////////////////////////////////////
