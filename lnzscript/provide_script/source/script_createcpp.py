@@ -19,7 +19,7 @@ def main():
 	
 	
 	# generate c++ headers and code
-	objConnections = ConnectionToScriptOutputFile()
+	objConnections = ConnectionToScriptOutputFile('../functions_expose')
 	objCppAu3 = ImplementationOutputFile('../functions_au3')
 	objCppQt = ImplementationOutputFile('../functions_qt')
 	objCppNircmd = ImplementationOutputFile('../functions_nircmd')
@@ -39,10 +39,14 @@ def main():
 	
 	objCppQt.writeFile()
 	objCppNircmd.writeFile()
-	objCppAu3.writeFile( {'%%%INSERT_PROPERTY_CREATION_HERE%%%' : objConnections.render() })
+	objCppAu3.writeFile()
+	objConnections.writeFile()
 	
-
-
+def alreadyExists(strFilename, strWholeFile):
+	#if the exact same file already exists, don't write it. The main advantage is that the file isn't "touched" and gcc won't rebuild it.
+	if not os.path.exists(strFilename): return False
+	strWholeExistingFile = script_create.readfile(strFilename)
+	return strWholeFile==strWholeExistingFile
 
 class ImplementationOutputFile():
 	outHeaders =None
@@ -64,40 +68,43 @@ class ImplementationOutputFile():
 		if dictCustomReplacements:
 			for key in dictCustomReplacements: strTemplate=strTemplate.replace(key, dictCustomReplacements[key])
 		strTemplate = strTemplate.replace('%%%INSERT_FUNCTIONS_HERE%%%', self.outCode.getvalue())
-		if not self._alreadyExists(self.strFilename+'.cpp', strTemplate):
+		if not alreadyExists(self.strFilename+'.cpp', strTemplate):
 			fout = open(self.strFilename+'.cpp', 'w')
 			fout.write(strTemplate)
 			fout.close()
 		
 		strTemplate = script_create.readfile(self.strFilename+'.h.template')
 		strTemplate = strTemplate.replace('%%%INSERT_HEADERS_HERE%%%', self.outHeaders.getvalue())
-		if not self._alreadyExists(self.strFilename+'.h', strTemplate):
+		if not alreadyExists(self.strFilename+'.h', strTemplate):
 			fout = open(self.strFilename+'.h', 'w')
 			fout.write(strTemplate)
 			fout.close()
-
-	def _alreadyExists(self, strFilename, strWholeFile):
-		#if the exact same file already exists, don't write it. The main advantage is that the file isn't "touched" and gcc won't rebuild it.
-		if not os.path.exists(strFilename): return False
-		strWholeExistingFile = script_create.readfile(strFilename)
-		return strWholeFile==strWholeExistingFile
 
 
 class ConnectionToScriptOutputFile():
 	nameSpacesSeen = None
 	outConnection = None
-	def __init__(self):
+	strFilename = None
+	def __init__(self, strFilename):
 		self.outConnection = StringIO.StringIO()
 		self.nameSpacesSeen = {}
+		self.strFilename = strFilename
 	def addMethod(self, objMethod):
 		self.nameSpacesSeen[objMethod.namespace] = 1
 		print >>self.outConnection, 'obj%s.setProperty("%s", eng->newFunction(%s));' %(objMethod.namespace, objMethod.functionname, objMethod.getImplName())
-	def render(self):
+	def writeFile(self):
 		strOut = ''
 		strOut += '\n\t' + self._renderNamespaceCode()
 		strOut += '\n\t' + self.outConnection.getvalue()
 		strOut += '\n\t' + script_create.readfile('object_properties.cpp') #flags like Window.MAXIMIZE
-		return strOut
+		
+		strTemplate = script_create.readfile(self.strFilename+'.cpp.template')
+		strTemplate = strTemplate.replace('%%%INSERT_PROPERTY_CREATION_HERE%%%', strOut)
+		if not alreadyExists(self.strFilename+'.cpp', strTemplate):
+			fout = open(self.strFilename+'.cpp', 'w')
+			fout.write(strTemplate)
+			fout.close()
+		
 		
 	def _renderNamespaceCode(self):
 		sConnections = ''
