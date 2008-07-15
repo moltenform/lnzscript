@@ -1,5 +1,8 @@
 #define WIN32_LEAN_AND_MEAN 1
+#define _WIN32_WINNT    0x0500
+#define _WIN32_IE        0x0500
 #include "Windows.h"
+//#include "shlobj.h"
 
 #ifndef RGB
 #define GetRValue(c) ((BYTE)(c))
@@ -8,6 +11,11 @@
 #define RGB(r,g,b) ((COLORREF)((BYTE)(r)|((BYTE)(g) << 8)|((BYTE)(b) << 16)))
 #endif
 
+#define LARGEBUFSIZE 16384
+#define BUFSIZE 1024
+#define SMALLBUFSIZE 64
+
+#include "Shlobj.h"
 #include <QtScript>
 namespace launchorz_functions
 {
@@ -32,9 +40,10 @@ namespace launchorz_functions
 	QString util_Au3WindowGetTextParamFromObj(QScriptValue& val);
 	QString util_Au3WindowParseAndSetMode(QScriptValue& val);
 	
-	// define this one from functions_au3.cpp
-	void AddGlobalObjects(QScriptEngine *eng);
-	
+	#define util_runExternalCommand(s) (util_runExternalCommandWithEngine(eng,s))
+	QScriptValue util_runExternalCommandWithEngine(QScriptEngine *eng, QString strCmd);
+	QString get_winapi_special_folder_path(QString strName);
+	QString get_winapi_windows_version();
 	
 	#define G_Nircmd 1
 	#define G_WinCommonDialog 2
@@ -46,7 +55,7 @@ namespace launchorz_functions
 	#define R_WinCommonDialogPreformatted(s_pref) (util_externalCmd(G_WinCommonDialog,ctx,eng,s_pref))
 	#define util_external_escape(s) (QString(s).replace("\"","\\\"",Qt::CaseInsensitive))
 	
-	extern QString util_nircmd_directory, util_wincommondlg_directory; // implemented in util_au3.cpp. Declared extern to avoid "multiple definition of"
+	extern QString util_nircmd_directory, util_wincommondlg_directory; // implemented in provide_common.cpp. Declared extern to avoid "multiple definition of"
 	QString get_base_directory();
 	void util_nircmd_init();
 	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);

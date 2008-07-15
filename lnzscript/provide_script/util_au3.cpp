@@ -1,6 +1,9 @@
+#include "provide_common.h"
+
 #include <QtScript>
 #include "autoit/AutoIt3.h"
-#include "util_au3.h"
+
+
 
 
 namespace launchorz_functions
@@ -40,10 +43,21 @@ namespace launchorz_functions
 		return ar;
 	}
 	
+	QScriptValue util_runExternalCommandWithEngine(QScriptEngine *eng, QString strCmd)
+	{
+		// consider using Au3 for this... not sure what is best.
+		/*
+		// this version is synchronous, probably not what people want.
+		QProcess objProcess;
+		objProcess.start(strCmd);
+		objProcess.waitForFinished();*/
+		
+		// Note, asynchronous
+		long nRes = AU3_Run(QStrToCStr(strCmd), "",1);
+		return QScriptValue(eng, (AU3_error()==0) ? true : false);
+	}
 	
 	
-	
-
 
 	// previous to calling this, use.setFilter to set a filter.
 	QScriptValue util_ListDirectoryEntries(QScriptContext *ctx, QScriptEngine *eng, QDir objDir, QString strSortBy)
@@ -220,4 +234,45 @@ namespace launchorz_functions
 		else return NULL;
 	}
 	
+	QString get_winapi_windows_version()
+	{
+		OSVERSIONINFO osvi; ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		GetVersionEx(&osvi);
+		
+		QString ret; ret.sprintf("%d.%d", (int) osvi.dwMajorVersion , (int)osvi.dwMinorVersion);
+		return ret;
+	}
+	
+	// Returns special folder path.  Returns "" if not a special folder name.
+	QString get_winapi_special_folder_path(QString strName)
+	{
+		int cslid;
+		if (strName=="Application Data") cslid = CSIDL_APPDATA;
+		else if (strName=="Application Data All Users") cslid = CSIDL_COMMON_APPDATA;
+		else if (strName=="Cookies") cslid = CSIDL_COOKIES;
+		else if (strName=="Desktop") cslid = CSIDL_DESKTOPDIRECTORY; //note DesktopDirectory not Desktop
+		else if (strName=="Favorites") cslid = CSIDL_FAVORITES;
+		else if (strName=="Application Data Local Settings") cslid = CSIDL_LOCAL_APPDATA;
+		else if (strName=="My Documents") cslid = CSIDL_PERSONAL;
+		//else if (strName=="My Music") cslid = CSIDL_MYMUSIC;
+		else if (strName=="My Pictures") cslid = CSIDL_MYPICTURES;
+		//else if (strName=="My Video") cslid = CSIDL_MYVIDEO;
+		else if (strName=="Program Files") cslid = CSIDL_PROGRAM_FILES;
+		else if (strName=="Program Files Common") cslid = CSIDL_PROGRAM_FILES_COMMON;
+		else if (strName=="Recent Documents") cslid = CSIDL_RECENT;
+		else if (strName=="Start Menu") cslid = CSIDL_STARTMENU;
+		else if (strName=="Startup Items") cslid = CSIDL_STARTUP;
+		else if (strName=="System") cslid = CSIDL_SYSTEM;
+		else if (strName=="Windows") cslid = CSIDL_WINDOWS;
+		else return "";
+		
+		// use windows api to get path.
+		TCHAR tbuffer[512];
+		SHGetSpecialFolderPath(NULL, tbuffer, cslid, false);
+		char buffer[512];
+		wcstombs(buffer, tbuffer, 512);
+		
+		return QString(buffer);
+	}
 }
