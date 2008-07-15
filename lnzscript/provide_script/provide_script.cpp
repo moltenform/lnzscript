@@ -1,7 +1,9 @@
 #include <QtScript>
 #include "provide_script.h"
 #include "print_function.h"
-#include "util_au3.h"
+#include "provide_common.h"
+
+#include "functions_expose.h"
 
 // The way things are now, you can create multiple ProvideScript objects, but they will share a single "print" function.
 
@@ -134,9 +136,9 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 }
 
 /*
-typedef atleast_t int;
+
 //atLeast: 0 is wrong number, 1 is too many, -1 is not enough
-QScriptValue g_ProvideScript_ThrowException_WrongArgs(QScriptContext *ctx, char* functionName, int nExpected, atleast_t nAtLeast)
+QScriptValue g_ProvideScript_ThrowException_WrongArgs(QScriptContext *ctx, char* functionName, int nExpected, int nAtLeast)
 {
 	QString strExceptionMessage;
 	if (nAtLeast==0)
