@@ -13,6 +13,8 @@
 		return eng->nullValue();
 }
 
+// but QProcess can run a program with arguments, and Process.open can't.
+
 ///Function:Process.openFile
 ///Arguments:string strFileOrUrlOrProgram, string strWorkingDirectory=""
 ///Returns:

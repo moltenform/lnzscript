@@ -85,3 +85,20 @@
 	return R_NircmdPreformatted(strNircmdCommand);
 }
 
+
+///Function:Screen.searchPixelColor
+///Arguments:int r, int g, int b, int left, int top, int right, int bottom, bool bRelativeCoords=false,int nStep=0, int allowedDifference=0
+///Returns:bool bStatus
+///Doc:Search for color on screen. Returns coordinate at which color was found, or false. nStep - number of coordinates to walk with each step, make it larger for speed and less precision. allowedDifference - 0-255, are similar colors accepted? By default, 0, must be exact match. If given a value of 255, accepts different colors.
+{
+	CHECK_ARGS
+	util_SetAU3PixelRelativeCoords(bRelativeCoords);
+	POINT pos;
+	AU3_PixelSearch(left,  top,  right,  bottom,RGB(r,g,b), allowedDifference, nStep, &pos);
+	if (AU3_error()!=0) return QScriptValue(eng, false);
+	QScriptValue ar = eng->newArray(2);
+	ar.setProperty(0, QScriptValue(eng, (int) pos.x));
+	ar.setProperty(1, QScriptValue(eng, (int) pos.y));
+	return ar;
+}
+

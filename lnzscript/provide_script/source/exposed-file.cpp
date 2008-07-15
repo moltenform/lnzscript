@@ -241,6 +241,61 @@
 	return QScriptValue(eng, QDir::tempPath()); 
 }
 
+///Function:File.getPathSpecial
+///Arguments:string strSpecialFolderName
+///Returns:string strPath
+///Doc:Get the path of a special folder, such as "My Documents". See also openExplorerWindowSpecial. Supported arguments:[[br]]Application Data[[br]]Application Data All Users[[br]]Cookies[[br]]Desktop[[br]]Favorites[[br]]Application Data Local Settings[[br]]My Documents[[br]]My Pictures[[br]]Program Files[[br]]Program Files Common[[br]]Recent Documents[[br]]Start Menu[[br]]Startup Items[[br]]System[[br]]Windows[[br]]
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	QString ret = get_winapi_special_folder_path(strSpecialFolderName);
+	if (ret=="") return ctx->throwError("File.getPathSpecial(). Unrecognized folder name. See documentation.");
+	
+	return QScriptValue(eng, ret); 
+}
+
+///Function:File.openExplorerWindowSpecial
+///Arguments:string strSpecialFolderName
+///Returns:
+///Doc:Open a special folder in the explorer. See also getPathSpecial. Supported arguments: all of those in File.getPathSpecial and also: [[br]]Control Panel[[br]]Fonts[[br]]Printers[[br]]My Computer[[br]]My Documents[[br]]My Network Places[[br]]Network Computers[[br]]Network Connections[[br]]Printers and Faxes[[br]]Recycle Bin[[br]]Scheduled Tasks
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	if (strSpecialFolderName=="Control Panel" || strSpecialFolderName=="Fonts" || strSpecialFolderName=="Printers")
+	{
+		QString cmd;
+		if (strSpecialFolderName=="Control Panel") cmd = "Control_RunDLL";
+		else if (strSpecialFolderName=="Fonts") cmd = "SHHelpShortcuts_RunDLL FontsFolder";
+		else if (strSpecialFolderName=="Printers") cmd = "SHHelpShortcuts_RunDLL FontsFolder";
+		else return ctx->throwError("File.openExplorerWindowSpecial(). Internal error.");
+		return util_runExternalCommand("rundll32.exe shell32.dll,"+cmd);
+	}
+	else
+	{
+		QString clsId;
+		if (strSpecialFolderName=="My Computer") clsId="::{20d04fe0-3aea-1069-a2d8-08002b30309d}";
+		else if (strSpecialFolderName=="My Documents") clsId="::{450d8fba-ad25-11d0-98a8-0800361b1103}";
+		else if (strSpecialFolderName=="My Network Places") clsId="::{208d2c60-3aea-1069-a2d7-08002b30309d}";
+		else if (strSpecialFolderName=="Network Computers") clsId="::{1f4de370-d627-11d1-ba4f-00a0c91eedba}";
+		else if (strSpecialFolderName=="Network Connections") clsId="::{7007acc7-3202-11d1-aad2-00805fc1270e}";
+		else if (strSpecialFolderName=="Printers and Faxes") clsId="::{2227a280-3aea-1069-a2de-08002b30309d}";
+		else if (strSpecialFolderName=="Recycle Bin") clsId="::{645ff040-5081-101b-9f08-00aa002f954e}";
+		else if (strSpecialFolderName=="Scheduled Tasks") clsId="::{d6277990-4c6a-11cf-8d87-00aa0060f5bf}";
+		else 
+		{
+			// try using getPathSpecial. This will just open a normal directory in the typical manner.
+			QString ret = get_winapi_special_folder_path(strSpecialFolderName);
+			if (ret=="") 
+				return ctx->throwError("File.openExplorerWindowSpecial(). Unrecognized folder name. See documentation.");
+			else
+				return util_runExternalCommand("cmd.exe /c start \"" + ret + "\""); //the cmd.exe should spawn off what we opened.
+		}
+		return util_runExternalCommand("cmd.exe /c start " + clsId); //the cmd.exe should spawn off what we opened.
+	}
+}
+
+
+
 ///Function:File.getShortcutTarget
 ///Arguments:string strFilename
 ///Returns:string strTarget
@@ -334,6 +389,16 @@
 		return QScriptValue(eng, true);
 	else
 		return QScriptValue(eng, false);
+}
+
+
+///Function:File.driveMapDialog
+///Arguments:
+///Returns:
+///Doc:Opens standard "Map Network Drive" dialog.
+{
+	CHECK_ARGS
+	return util_runExternalCommand("RunDll32.exe shell32.dll,SHHelpShortcuts_RunDLL Connect");
 }
 
 
