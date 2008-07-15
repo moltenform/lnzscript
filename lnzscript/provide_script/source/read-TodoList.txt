@@ -33,12 +33,13 @@ Planned Features
 
 Internet
 ------
-	OpenUrl - either a dll call, or "start" which uses shellExecute
-	Ftp class or something.
+	
+	
+	Ftp class or something. libcurl?
 	http://doc.trolltech.com/4.3-snapshot/qftp.html
 	UrlDownload. There's a getUrl in AutoIt3, a hacky solution would be to call it ...
 	getFavorites - look at Launchy source?
-	organizeIEFavorites - a dll call that opens the organizeFavorites box.
+	
 
 Process
 ------
@@ -54,7 +55,6 @@ Mouse
 
 File
 ------
-	Get special folder paths !!!! !! !
 	Get environment vars? QEnvironment?
 	-optional feature File.dirWalk - to make recursing through directories easier
 	-optional feature File.dirListFilesPattern - list all entries matching *.txt and so on.
@@ -68,12 +68,10 @@ Screen
 -------
 	-why not add these? it'd be easy
 	AU3_PixelChecksum
-	AU3_PixelSearch
 	
 	
 Window
 ------
 	consider adding nircmd win 
 
-(Add from xls for opening control panels, using rundll32, and so on.)
 (Look online for cool Au3 /autohotkey scripts and add features from them).
