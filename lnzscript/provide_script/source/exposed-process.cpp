@@ -3,6 +3,7 @@
 ///Arguments:string strExecutable, string strWorkingDirectory="", int nFlag=1
 ///Returns:int nPID
 ///Doc:Opens external program. After running the requested program the script continues (this is asynchronous). To pause execution of the script until the spawned program has finished use Process.runAndWait. Optionally pass a flag such as Window.HIDE, Window.SHOW, Window.MINIMIZE, Window.MAXIMIZE, or Window.RESTORE. Returns the PID of process or null upon failure.
+///Implementation:c++_au3
 {
 	// Seems analogous to QProcess::start 
 	CHECK_ARGS
@@ -13,7 +14,6 @@
 		return eng->nullValue();
 }
 
-// but QProcess can run a program with arguments, and Process.open can't.
 
 ///Function:Process.openFile
 ///Arguments:string strFileOrUrlOrProgram, string strWorkingDirectory=""
@@ -35,6 +35,7 @@
 ///Arguments:string strExecutable, string strWorkingDirectory="", int nFlag=1
 ///Returns:int nExitCode
 ///Doc:Opens external program. The script pauses until the program has closed. Optionally pass a flag such as Window.HIDE, Window.MINIMIZE, or Window.MAXIMIZE. Returns the exit code, or null upon failure.
+///Implementation:c++_au3
 {
 	// Seems analogous to QProcess::execute 
 	CHECK_ARGS
@@ -88,6 +89,7 @@
 ///Arguments:string strExecutableName
 ///Returns:
 ///Doc:Close a process. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". If multiple processes have the same name, the one with the highest PID is terminated--regardless of how recently the process was spawned. PID is the unique number which identifies a Process. A PID is returned by the ProcessExists or Run commands.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	AU3_ProcessClose(QStrToCStr(strExecutableName));
@@ -98,6 +100,7 @@
 ///Arguments:int nPID
 ///Returns:
 ///Doc:Close a process. PID is the unique number which identifies a Process. A PID is returned by the ProcessExists or Run commands.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	// Kind of undocumented, but here goes...
@@ -111,6 +114,7 @@
 ///Arguments:string strExecutableName
 ///Returns:int nPID
 ///Doc:Checks to see if a process is running. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". Returns the PID of the process, or 0 if process does not exist.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long res = AU3_ProcessExists(QStrToCStr(strExecutableName));
@@ -121,6 +125,7 @@
 ///Arguments:string strExecutableName, int nPriorityLevel
 ///Returns:bool bSuccess
 ///Doc:Changes the priority of a process. 0=Idle/Low, 4=High, 5=Realtime (use with caution). Levels 1 and 3 not supported on Win95/98/ME.  Returns false upon failure. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". 
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_ProcessSetPriority(QStrToCStr(strExecutableName),nPriorityLevel);
@@ -131,6 +136,7 @@
 ///Arguments:string strExecutableName, int nTimeout=0
 ///Returns:bool bSuccess
 ///Doc:Wait until process is open. Optional parameter nTimeout specifies how long to wait (default is to wait indefinitely). Returns false if timed out. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". 
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_ProcessWait(QStrToCStr(strExecutableName), nTimeout);
@@ -141,6 +147,7 @@
 ///Arguments:string strExecutableName, int nTimeout=0
 ///Returns:bool bSuccess
 ///Doc:Wait until process is closed. Optional parameter nTimeout specifies how long to wait (default is to wait indefinitely). Returns false if timed out. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". 
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_ProcessWaitClose(QStrToCStr(strExecutableName), nTimeout);
@@ -153,6 +160,7 @@
 ///Arguments:bool bForce=false
 ///Returns:bool bSuccess
 ///Doc:Shuts down system. Optionally specify true to "force" shutdown, which may result in unsaved data being lost. Returns false upon failure.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nFlag = bForce ? 1+4 : 1;
@@ -166,6 +174,7 @@
 ///Arguments:bool bForce=false
 ///Returns:bool bSuccess
 ///Doc:Log off current user. Optionally specify true to "force" logoff, which may result in unsaved data being lost. Returns false upon failure.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nFlag = bForce ? 0+4 : 0;
@@ -177,6 +186,7 @@
 ///Arguments:bool bForce=false
 ///Returns:bool bSuccess
 ///Doc:Restart computer. Optionally specify true to "force" restart, which may result in unsaved data being lost. Returns false upon failure.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nFlag = bForce ? 0+4 : 0;
