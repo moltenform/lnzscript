@@ -36,7 +36,7 @@ class ExposedFunction():
 	example = ''
 	args = ''
 	returns = ''
-	implementation = 'c++_au3' #default implementation
+	implementation = None # 'c++_au3' #default implementation
 	def getImplName(self): 
 		return 'impl_' + self.namespace.lower() + '_' + self.functionname.lower()
 	
@@ -91,6 +91,8 @@ class ExposedFunction():
 		return '\n'.join(astrResult)
 		
 	def checkValidity(self):
+		if self.implementation==None:
+			raise Exception, 'no implementation found for function %s.'%self.functionname
 		if self.args != '' and not self.implementation.startswith('Javascript'):
 			#First check all args are used
 			allcode = ' '.join(self.codeArray)
@@ -195,6 +197,7 @@ testin = '''
 ///Function:Process.setCredentials
 ///Arguments:string strUser, string strDomain, string strPassword
 ///Doc: Allows subsequent Process functions to run as a different user
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	
@@ -207,6 +210,7 @@ testin = '''
 ///Arguments:bool bForce=false
 ///Returns:bool bSuccess
 ///Doc:Windows logoff, pass a value of true to be more forceful. Returns true if successful and false otherwise.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	res = AU3_Shutdown(bForce);
@@ -216,6 +220,7 @@ testin = '''
 ///Arguments:string processName, int timeout=0
 ///Returns:bool bTimedout
 ///Doc:Windows logoff, pass a value of true to be more forceful. Returns true if successful and false otherwise.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	res = AU3_ProcessWaitClose(processName, timeout);
@@ -225,6 +230,7 @@ testin = '''
 ///Arguments:
 ///Returns:int nTemp
 ///Doc:No return val
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	res = AU3_DoSomething(strTmp, nTemp);
