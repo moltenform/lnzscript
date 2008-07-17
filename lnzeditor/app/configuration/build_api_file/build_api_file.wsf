@@ -31,8 +31,8 @@ function main()
 
 		var output = xmldom.transformNode(xsltdom);
 		writeTextFile('..\\lnzscript.api',output);
-		WScript.Echo(xsltdom.xml.substring(0, 1000));
-		WScript.Echo(output.substring(0, 1000));
+		
+		
 	}
 	catch(err)
 	{
