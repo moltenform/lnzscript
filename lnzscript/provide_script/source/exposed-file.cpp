@@ -245,7 +245,7 @@
 ///Arguments:string strSpecialFolderName
 ///Returns:string strPath
 ///Doc:Get the path of a special folder, such as "My Documents". See also openExplorerWindowSpecial. Supported arguments:[[br]]Application Data[[br]]Application Data All Users[[br]]Cookies[[br]]Desktop[[br]]Favorites[[br]]Application Data Local Settings[[br]]My Documents[[br]]My Pictures[[br]]Program Files[[br]]Program Files Common[[br]]Recent Documents[[br]]Start Menu[[br]]Startup Items[[br]]System[[br]]Windows[[br]]
-///Implementation:c++_qt
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	QString ret = get_winapi_special_folder_path(strSpecialFolderName);
@@ -258,7 +258,7 @@
 ///Arguments:string strSpecialFolderName
 ///Returns:
 ///Doc:Open a special folder in the explorer. See also getPathSpecial. Supported arguments: all of those in File.getPathSpecial and also: [[br]]Control Panel[[br]]Fonts[[br]]Printers[[br]]My Computer[[br]]My Documents[[br]]My Network Places[[br]]Network Computers[[br]]Network Connections[[br]]Printers and Faxes[[br]]Recycle Bin[[br]]Scheduled Tasks
-///Implementation:c++_qt
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	if (strSpecialFolderName=="Control Panel" || strSpecialFolderName=="Fonts" || strSpecialFolderName=="Printers")
@@ -361,34 +361,28 @@
 ///Arguments:string strFilename
 ///Returns:
 ///Doc:Opens new explorer window, and highlights file.
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	if (! QFileInfo(strFilename).exists()) return ctx->throwError("File.showInExplorer(). File does not exist.");
 	
-	QString strExecutable; strExecutable = "explorer /e,/select,\"" + strFilename + "\"";
-	AU3_Run(QStrToCStr(strExecutable), "",1); //returns nProcessId
-	if (AU3_error()!=1)
-		return QScriptValue(eng, true);
-	else
-		return QScriptValue(eng, false);
+	QString strExecutable; strExecutable = "explorer /e,/select,\"" + util_external_escape(strFilename) + "\"";
+	return util_runExternalCommand(strExecutable);
 }
 
 ///Function:File.openExplorerWindow
 ///Arguments:string strDirectory, bool bTreeView=false
 ///Returns:
 ///Doc:Opens new explorer window.
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	if (! QDir(strDirectory).exists()) return ctx->throwError("File.openExplorerWindow(). Directory does not exist.");
 	
 	QString strExecutable; 
 	strExecutable = (! bTreeView) ? "explorer \"" : "explorer /e,\"";
-	strExecutable += strDirectory + "\"";
-	AU3_Run(QStrToCStr(strExecutable), "",1); //returns nProcessId
-	if (AU3_error()!=1)
-		return QScriptValue(eng, true);
-	else
-		return QScriptValue(eng, false);
+	strExecutable += util_external_escape(strDirectory) + "\"";
+	return util_runExternalCommand(strExecutable);
 }
 
 
@@ -396,6 +390,7 @@
 ///Arguments:
 ///Returns:
 ///Doc:Opens standard "Map Network Drive" dialog.
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	return util_runExternalCommand("RunDll32.exe shell32.dll,SHHelpShortcuts_RunDLL Connect");
@@ -409,6 +404,7 @@
 ///Returns:bool bSuccess
 ///Doc:Maps a network drive. strDevice is the device to map, for example "O:" or "LPT1:", or "" which makes a connection that is not mapped to a specific drive, or "*" to select an unused drive letter. strRemoteShare, in form "\\server\share". strUser, in form "username" or "domain\username"
 ///Example: File.driveMapAdd("K:","\\\\myserver\\folder")
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[SMALLBUFSIZE];
@@ -423,6 +419,7 @@
 ///Arguments:string strDevice, string strRemoteShare, bool bShowAuthenticationDialog=false, string strUser="", string strPassword=""
 ///Returns:bool bSuccess
 ///Doc:Maps a network drive. strDevice is the device to map, for example "O:" or "LPT1:", or "" which makes a connection that is not mapped to a specific drive, or "*" to select an unused drive letter. strRemoteShare, in form "\\server\share". strUser, in form "username" or "domain\username"
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[SMALLBUFSIZE];
@@ -437,6 +434,7 @@
 ///Arguments:string strDrive
 ///Returns:bool bSuccess
 ///Doc:Disconnects network drive. Provide drive letter "X:" or, if necessary, connection name "\\server\share".
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_DriveMapDel(QStrToCStr(strDrive));
@@ -448,6 +446,7 @@
 ///Returns:string strInformation
 ///Doc:Retreives the details of a mapped drive. Returns details of the mapping, e.g. \\server\share. Returns number -1 upon failure.
 ///Example:print(File.driveMapInformation('X:'));
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[BUFSIZE];
@@ -463,6 +462,7 @@
 ///Arguments:string strFilename, string strSection, string strKey
 ///Returns:string strValue
 ///Doc:Reads a value from a standard format .ini file. If the key is not found, returns the number -1. Reads 1024 bytes maximum.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	#define NOTFOUNDFLAG "~~~Lnz_iniRead_notfound~~~"
@@ -479,6 +479,7 @@
 ///Arguments:string strFilename, string strSection, string strKey
 ///Returns:bool bSuccess
 ///Doc:Deletes a value from a standard format .ini file. Returns false if section/key is not found or if INI file is read-only.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_IniDelete(QStrToCStr(strFilename), QStrToCStr(strSection),QStrToCStr(strKey));
@@ -489,6 +490,7 @@
 ///Arguments:string strFilename, string strSection
 ///Returns:bool bSuccess
 ///Doc:Deletes a section from a standard format .ini file. Returns false if section is not found or if INI file is read-only.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_IniDelete(QStrToCStr(strFilename), QStrToCStr(strSection),"");
@@ -499,6 +501,7 @@
 ///Arguments:string strFilename, string strSection, string strKey, string strValue
 ///Returns:bool bSuccess
 ///Doc:Writes a value to a standard format .ini file. If file does not exist, it is created. Keys and/or sections are added to the end and are not sorted in any way. Returns false if file is read-only.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_IniWrite(QStrToCStr(strFilename), QStrToCStr(strSection),QStrToCStr(strKey),QStrToCStr(strValue));
@@ -510,6 +513,7 @@
 ///Returns:bool bSuccess
 ///Doc:Opens or closes the CD Tray. Provide the string 'open' or 'closed'. Works as expected with virtual cd drives.
 ///Example: File.tray('D:', 'open'); File.tray('D:', 'closed');
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	if (!(strOpenOrClosed=="open" || strOpenOrClosed=="closed")) return ctx->throwError("File.tray(), must be one of 'open' or 'closed'");
