@@ -2,6 +2,7 @@
 ///Arguments:
 ///Returns:bool bIsAdmin
 ///Doc:Returns true if the current user has administrator privileges.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long nRes = AU3_IsAdmin();
@@ -12,6 +13,7 @@
 ///Arguments:
 ///Returns:
 ///Doc:Disables mouse and keyboard input from the user. The script can, however, still simulate most mouse and keyboard events. Note that this has different effects based on operating system. Pressing Ctrl+Alt+Del will re-enable input.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	AU3_BlockInput(1);
@@ -22,6 +24,7 @@
 ///Arguments:
 ///Returns:
 ///Doc:Enables mouse and keyboard input from the user after call to System.disableInput.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	AU3_BlockInput(0);
@@ -32,7 +35,7 @@
 ///Arguments:
 ///Returns:string strVersion
 ///Doc:Returns a string representing the windows version. '5.0'-Windows2000, '5.1'-WindowsXP,'6.0 Vista','5.2 Win server 2003' and so on. See msdn for more information.
-///Implementation:c++_qt
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	return QScriptValue(eng, get_winapi_windows_version());
@@ -42,6 +45,7 @@
 ///Arguments:string strEnvironmentVariable
 ///Returns: string strValue
 ///Doc:Get environment variable, or false upon error.
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	char * ptr;
@@ -54,7 +58,7 @@
 ///Arguments:string strScreensaver
 ///Returns:
 ///Doc:Installs a screensaver. Tested on Windows XP.
-///Implementation:c++_qt
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	return util_runExternalCommand( "rundll32.exe desk.cpl,InstallScreenSaver %l \""+strScreensaver+"\"" );
@@ -64,7 +68,7 @@
 ///Arguments:
 ///Returns:
 ///Doc: Opens "safely remove hardware" dialog.
-///Implementation:c++_qt
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	return util_runExternalCommand( "RunDll32.exe shell32.dll,Control_RunDLL hotplug.dll");
@@ -74,7 +78,7 @@
 ///Arguments:string strOption
 ///Returns:
 ///Doc: Opens a control panel. (To open the panel itself use File.openExplorerWindowSpecial). Options include: 
-///Implementation:c++_qt
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	QString cmd;
@@ -121,7 +125,7 @@
 ///Arguments:string strOption
 ///Returns:
 ///Doc:Opens a system utility. Options include: [[br]]Disk Cleanup[[br]]Disk Management[[br]]Services[[br]]Computer Management[[br]]Administrative Tools[[br]]Event Viewer[[br]]
-///Implementation:c++_qt
+///Implementation:c++_winext
 {
 	CHECK_ARGS
 	QString cmd;
@@ -140,4 +144,13 @@
 	return util_runExternalCommand( cmd );
 }
 
+//Function:System._hash
+//Doc:(Exposed in String, by JavaScript).  Use Windows API to hash string. Intended for Ascii and not Unicode strings. Returns string in hexadecimal. (256 bytes = 512 characters)
 
+// http://weseetips.com/2008/06/27/how-to-generate-the-hash-key-of-given-data/
+// why I haven't done it - requires shapi lib, and there isn't a direct need for this.
+// 
+// Get file icon: http://weseetips.com/2008/06/03/how-to-get-the-icon-of-a-file/#comments
+// Get program from extension: http://weseetips.com/2008/05/30/how-to-find-the-application-associated-with-particular-file-extension/
+// 
+// return string like 'a4b23a7c3d36b2452a2'
