@@ -41,7 +41,6 @@ void TestInterfaceConsole::evaluateAndPrintResults(const char * c_strInput)
 	if (strOut.errnumber != -1)
 		g_LnzScriptPrintCallback( &(strOut.str));
 	
-	//std::cout << "Processing, and the results are !" << c_strInput;
 }
 
 void g_LnzScriptPrintCallback(QString * str)
@@ -53,7 +52,7 @@ void g_LnzScriptPrintCallback(QString * str)
 bool TestInterfaceConsole::getConfirmationToRunScript()
 {
 	// this is gross. we shouldn't have to do this.
-	StringResult res = provideScript.EvalString("(Dialog.askYesNo('Confirmation','Are you sure you want to run this script?') == Dialog.YES) ? 1:0");
+	StringResult res = provideScript.EvalString("(confirm('Are you sure you want to run this script?')) ? 1:0");
 	int nResult = res.str.toInt();
 	return (nResult) ? true : false;
 }
