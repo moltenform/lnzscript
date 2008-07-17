@@ -1,10 +1,12 @@
 Todo
 =============
 Write general documentation for process, window, control.
+Don't let people pass in too many arguments to functions
+move generated files to "gen" directory
 Note to use [[br]] in documentation for line break.
 For development, it should be clear what the working directory should be for Python scripts
 Don't use sprintf for adding strings - it needlessly uses .toLatin1(). QStrToCStrPointer is a hack in this case. Fix this by using string concat or .arg().
-right now there are tons of literal strings like "copyDialog: argument 2 is not a bool". should be replaced with something like FMTSTRINGERROR(2, STR_BOOL) or FMTSTRINGERROR(impl_copydialog_string, 2, STR_BOOL)
+
 xsl file contains hack for removing "AU3_DEFAULT_VALUE"
 document javascript std library, including Time.createTimer
 
@@ -14,8 +16,34 @@ document the __name__ variable and test that it works
 
 execute Python? I suppose it could look in the registry for a Python installation.
 Allow scripts to interface with Python - that'd be sweet. 
-
+	new plan for Python - use Py2Exe to specifically expose some Python (html, zip)
+	playsound - use windows api
+	document argv?
+	
 database of contributed scripts
+
+right now there are tons of literal strings like "copyDialog: argument 2 is not a bool". should be replaced with something like FMTSTRINGERROR(2, STR_BOOL) or FMTSTRINGERROR(impl_copydialog_string, 2, STR_BOOL)
+	QString strThis;
+	QString strF;
+	checkArgs(ctx, "sendcommandListView", 3, strInt, &str, strBool, &strBool, strString, &strString);
+	
+	checkOptArgs(ctx, 3, 5, str
+	
+For Release 0.2
+===========
+unit tests...
+gen directory for generated scripts
+http download
+
+For Release 0.3
+==============
+"ask" input dialog, "choice" input dialog
+CallDll, depending on how hard it is to implement
+unify between NirCmd / Au3 window and dialog commands
+
+for later
+===========
+ftp
 
 Au3 Follow-up
 ============
@@ -34,7 +62,7 @@ Planned Features
 Internet
 ------
 	
-	
+	Use Python. Mostly because I already know it.QtNetwork4.dll is 1.215 Mb
 	Ftp class or something. libcurl?
 	http://doc.trolltech.com/4.3-snapshot/qftp.html
 	UrlDownload. There's a getUrl in AutoIt3, a hacky solution would be to call it ...
@@ -63,10 +91,11 @@ Dialog
 --------
 	Do NOT use qt for alert, msgbox, input, file dialogs, choice dialog, maybe even color dialog, etc.
 	I changed my mind - Using qt for this introduces dependency on QtGui.dll which we don't really want.
+	Use WinApi for simple dialogs, and SmartWin or Ultimate++ for the rest
 
 Screen
 -------
-	-why not add these? it'd be easy
+	-why not add this?
 	AU3_PixelChecksum
 	
 	
