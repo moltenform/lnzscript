@@ -1,0 +1,43 @@
+<job>
+   <script language="javascript">
+// Use Msxml to programmatically generate the file.
+// Interesting.
+
+//-Ben Fisher, 2008.
+
+// http://msdn.microsoft.com/en-us/library/ms762796(VS.85).aspx
+// http://209.85.215.104/search?q=cache:Wfj_f4OxsNcJ:msdn.microsoft.com/en-us/library/ms757858(VS.85).aspx+wsh+xslt&hl=en&ct=clnk&cd=7&gl=us
+  
+// If msxml 6 isn't available, it should be ok to use an older version. 
+   
+
+
+
+
+var xmldom, xsltdom;
+try {
+var xmldom = new ActiveXObject("MSXML2.DOMDocument.6.0");
+var xsltdom = new ActiveXObject("MSXML2.DOMDocument.6.0");
+
+   
+   xmldom.validateOnParse = true;
+   xmldom.async = false;
+   // xmldom.loadXML('<object><name>apple</name><color>Red</color></object>');
+   xmldom.load('src.xml');
+
+   
+   xsltdom.validateOnParse = true;
+   xsltdom.async = false;
+   xsltdom.load('transform.xml');
+
+   output = xmldom.transformNode(xsltdom);
+   WScript.Echo(output);
+}
+catch(err) {
+   WScript.Echo(err.description);
+}
+
+
+   
+   </script>
+</job>
