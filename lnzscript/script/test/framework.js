@@ -17,6 +17,18 @@ assertNotEq = function(v1, v2, strMsg)
 	}
 }
 
+assertFails = function(fn, strMsg)
+{
+	var bException = false;
+	try { fn(); 	}
+	catch(e) {bException = true;}
+	if (!bException)
+	{ 
+		print('Assertion failed. Should have raised an exception. '+fn.toString());
+		print('Last test was: '+g_lastSeenMethod );
+		abort('');
+	}
+}
 
 assert = function(bExp)
 {

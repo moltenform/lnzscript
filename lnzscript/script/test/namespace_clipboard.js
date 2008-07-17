@@ -1,4 +1,4 @@
-
+print('Running tests for namespace Clipboard.')
 
 registerTest('Clipboard.getText');
 print('Current contents of the clipboard are: '+Clipboard.getText());
@@ -24,4 +24,4 @@ Process.close('calc.exe');
 Process.openFile('calc_screenshot_clipboard.png');
 Dialog.alert('Test','You should see a screenshot of a calculator.');
 
-methods_list_summary_namespace('Clipboard');
+methods_list_summary_namespace('Clipboard');	

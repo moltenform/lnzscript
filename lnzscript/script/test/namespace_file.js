@@ -1,8 +1,11 @@
+print('Running tests for namespace File.')
 
 // test File.cd and File.getPathTemp
 registerTest('File.cd');
 var strPreviousPath = File.cd();
 assert(strPreviousPath);
+
+
 
 registerTest('File.getPathTemp');
 var strTempPath = File.getPathTemp();
