@@ -14,6 +14,7 @@
 ///Returns:int nResult
 ///Doc:Deletes a key from the registry. Returns 1 upon success, 0 if key doesn't exist, -1 if error deleting key. Deleting from the registry is potentially dangerous--please exercise caution! A registry key must start with "HKEY_LOCAL_MACHINE" ("HKLM") or "HKEY_USERS" ("HKU") or "HKEY_CURRENT_USER" ("HKCU") or "HKEY_CLASSES_ROOT" ("HKCR") or "HKEY_CURRENT_CONFIG" ("HKCC").
 ///Example: Registry.deleteKey("HKEY_LOCAL_MACHINE\\SOFTWARE\\MyKey")
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long res = AU3_RegDeleteKey(QStrToCStr(strKeyname));
@@ -30,6 +31,7 @@
 ///Returns:int nResult
 ///Doc:Deletes a value from the registry. Returns 1 upon success, 0 if key doesn't exist, -1 if error deleting key. To access the (Default) value use "" (a blank string) for the valuename. Deleting from the registry is potentially dangerous--please exercise caution! A registry key must start with "HKEY_LOCAL_MACHINE" ("HKLM") or "HKEY_USERS" ("HKU") or "HKEY_CURRENT_USER" ("HKCU") or "HKEY_CLASSES_ROOT" ("HKCR") or "HKEY_CURRENT_CONFIG" ("HKCC").
 ///Example: Registry.deleteKey("HKEY_LOCAL_MACHINE\\SOFTWARE", "TestValue")
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	long res = AU3_RegDeleteVal(QStrToCStr(strKeyname), QStrToCStr(strValuename));
@@ -43,6 +45,7 @@
 ///Returns:string strValue
 ///Doc:Read value from the registry. Returns string value upon success, and boolean false on failure. To access the (Default) value use "" (a blank string) for the valuename.  Supports registry keys of type REG_BINARY (returns hex string), REG_SZ, REG_MULTI_SZ (returns \\n delimited string), REG_EXPAND_SZ, and REG_DWORD. Cannot return more than 1024 bytes. A registry key must start with "HKEY_LOCAL_MACHINE" ("HKLM") or "HKEY_USERS" ("HKU") or "HKEY_CURRENT_USER" ("HKCU") or "HKEY_CLASSES_ROOT" ("HKCR") or "HKEY_CURRENT_CONFIG" ("HKCC").
 ///Example: var strProgFiles = Registry.readVal("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion", "ProgramFilesDir")
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[BUFSIZE];
@@ -58,6 +61,7 @@
 ///Returns:bool bSuccess
 ///Doc:Write value to registry. Returns false on failure. To access the (Default) value use "" (a blank string) for the valuename.  Supports registry keys of type REG_BINARY (use hex string such as "01A9FF77"), REG_SZ, REG_MULTI_SZ (provide \\n delimited string - with no blank entries), REG_EXPAND_SZ, and REG_DWORD. A registry key must start with "HKEY_LOCAL_MACHINE" ("HKLM") or "HKEY_USERS" ("HKU") or "HKEY_CURRENT_USER" ("HKCU") or "HKEY_CLASSES_ROOT" ("HKCR") or "HKEY_CURRENT_CONFIG" ("HKCC").
 ///Example: Registry.writeVal(""HKEY_LOCAL_MACHINE\\SOFTWARE", "TestKey", "Hello this is a test"); Registry.writeVal(""HKEY_LOCAL_MACHINE\\SOFTWARE", "TestKeyArray", "Hello\\n this\\n is\\n a\\n test", "REG_MULTI_SZ"); 
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	
@@ -69,6 +73,7 @@
 ///Arguments:string strKeyname
 ///Returns:array astrSubkeys
 ///Doc:Reads the names of subkeys of the given key. Returns an array of strings, or null if the key cannot be found.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[BUFSIZE];
@@ -98,6 +103,7 @@
 ///Arguments:string strKeyname
 ///Returns:array astrValueNames
 ///Doc:Reads the names of values under the given key. Returns an array of strings, or null if the key cannot be found.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[BUFSIZE];

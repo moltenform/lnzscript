@@ -4,6 +4,7 @@
 ///Arguments:
 ///Returns:string strText
 ///Doc:Gets text from the clipboard. Returns false if clipboard is empty.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[BUFSIZE];
@@ -19,6 +20,7 @@
 ///Arguments:string strText
 ///Returns:
 ///Doc:Sets text of clipboard.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	AU3_ClipPut(QStrToCStr(strText));

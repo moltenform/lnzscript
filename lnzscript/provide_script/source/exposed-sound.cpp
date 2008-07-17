@@ -15,6 +15,19 @@
 	}
 }
 
+///Function:Sound.playSound
+///Arguments:string strSoundFile="Default"
+///Returns:
+///Doc:Play a wave file or standard Windows sound. Pass in the filepath of a WAV file, or one of the following:[[br]]"Asterisk"[[br]]"Default"[[br]]"Exclamation"[[br]]"Question"[[br]]
+///Example: Sound.playSound('c:/this/mysound.wav'); Sound.playSound('Welcome')
+///Implementation:c++_winext
+{
+	CHECK_ARGS
+	// this was moved to another program, which worked out great. Less messing with headers / libraries / unicode-ascii
+	// note this needs 2nd version of WinCommonDialog.exe
+	return R_WinCommonDialog("sound", strSoundFile);
+}
+
 ///Function:Sound.setVolume
 ///Arguments:int nPercentageVolume, string strComponent="master"
 ///Returns:bool bStatus

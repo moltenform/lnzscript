@@ -4,6 +4,7 @@
 ///Returns:
 ///Doc:Sends simulated keystrokes to the active window. The string can include <Alt>, <Control> or <Cntrl>, <Shift>, and <Win> as well as many others: {SPACE}, {ENTER}, {BACKSPACE}, {DELETE}, {UP}, {DOWN}, {LEFT}, {RIGHT}, {HOME}, {END}, {ESCAPE}, {INSERT}, {PGUP}, {PGDN}, {F1}-{F12}, {TAB}, {PRINTSCREEN}, {LWIN}, {RWIN}, {NUMLOCK on}, {CAPSLOCK off}, {SCROLLLOCK toggle}, {BREAK}, {PAUSE}, {NUMPAD0}, {NUMPADMULT}, {NUMPADADD}, {NUMPADSUB}, {NUMPADDIV}, {NUMPADDOT}, {NUMPADENTER}, {APPSKEY}, {LALT}, {RALT}, {LCTRL}, {RCTRL}, {LSHIFT}, {RSHIFT}, {SLEEP}, {ALTDOWN}, {SHIFTDOWN}, {CTRLDOWN}, {LWINDOWN}, {RWINDOWN}, {ASC nnnn}, {BROWSER_BACK}, {BROWSER_FORWARD}, {BROWSER_REFRESH}, {BROWSER_STOP}, {BROWSER_SEARCH}, {BROWSER_FAVORITES}, {BROWSER_HOME}, {VOLUME_MUTE}, {VOLUME_DOWN}, {VOLUME_UP}. Send {{} or {}} to send literal brace characters.
 ///Example:Process.open('notepad.exe'); Keyboard.send('hello'); Keyboard.send('<Control>s'); Keyboard.send('{UP}{DOWN}{TAB}{ENTER}'); Keyboard.send('<Control><Shift>f');
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	strKeySequence = util_AU3KeyboardCommandsReplacement(strKeySequence);
@@ -16,6 +17,7 @@
 ///Returns:
 ///Doc:Sends simulated keystrokes to the active window. 
 ///Example:Keyboard.sendRaw('<html>');
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	AU3_Send(QStrToCStr(strKeySequence), 1); //send raw.
@@ -26,6 +28,7 @@
 ///Arguments:int nAsciiCode
 ///Returns:
 ///Doc:Sends ascii value to active window.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	QString strKeySequence;
@@ -38,6 +41,7 @@
 ///Arguments:int nUnicode
 ///Returns:
 ///Doc:Sends unicode value to active window.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	QString strKeySequence;
@@ -50,6 +54,7 @@
 ///Arguments:int keyDelay
 ///Returns:
 ///Doc:Alters the the length of the brief pause in between sent keystrokes. Time in milliseconds to pause (default=5). Sometimes a value of 0 does not work; use 1 instead.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	AU3_AutoItSetOption("SendKeyDelay", keyDelay);
@@ -60,6 +65,7 @@
 ///Arguments:int keyDownDuration
 ///Returns:
 ///Doc:Alters the length of time a key is held down before released during a keystroke. For applications that take a while to register keypresses (and many games) you may need to raise this value from the default. Time in milliseconds to pause (default=1).
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	AU3_AutoItSetOption("SendKeyDownDelay", keyDownDuration);
