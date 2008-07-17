@@ -36,6 +36,8 @@ It's pretty fun to be able to type ``Mouse.move(1,1)`` and watch the cursor move
 
 However, the problem with using the mouse is that it recquires coordinates, and this can always be somewhat fragile. What if the window is in a different place from what you expected? It is better to use Keyboard or direct Control where possible.
 
+Note that Keyboard.send('<Shift>{F10}') can be used to approximate right-clicking on something that has focus.
+
 Keyboard
 ================
 
