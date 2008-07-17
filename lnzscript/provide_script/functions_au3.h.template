@@ -2,12 +2,7 @@
 #include <QtScript>
 namespace launchorz_functions
 {
-	void AddGlobalObjects(QScriptEngine *eng);
-	
-	QScriptValue superadd(QScriptContext *ctx, QScriptEngine *eng);
-	QScriptValue getarray(QScriptContext *ctx, QScriptEngine *eng);
-	
-	
+		
 	%%%INSERT_HEADERS_HERE%%%
 }
 
