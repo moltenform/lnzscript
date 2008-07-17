@@ -3,7 +3,7 @@ f=open('..\lnzscript.api','r')
 txt = f.read()
 f.close()
 
-txt = txt.replace('[[[linebr]]]','\n').replace('[[br]]',' , ')
+txt = txt.replace('[[[linebr]]]','\n').replace('[[space]]',' ').replace('[[br]]',' , ')
 
 #trim lines that are hopelessly long
 MAXLINE = 310

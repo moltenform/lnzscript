@@ -5,7 +5,7 @@
 
 <xsl:for-each select="launchorzdoc/section">
 	<xsl:for-each select="namespace">
-		<xsl:for-each select="function">[[[linebr]]]<xsl:if test="../@name != '(Global)'"><xsl:value-of select="../@name"/>.</xsl:if><xsl:value-of select="@name"/> ( <xsl:value-of select="@args"/> ) <xsl:if test="@returns != ''">, returns <xsl:value-of select="@returns"/></xsl:if> <xsl:value-of select="doc"/></xsl:for-each>
+		<xsl:for-each select="function">[[[linebr]]]<xsl:if test="../@name != '(Global)'"><xsl:value-of select="../@name"/>.</xsl:if><xsl:value-of select="@name"/> ( <xsl:value-of select="@args"/> ) <xsl:if test="@returns != ''"> => <xsl:value-of select="@returns"/></xsl:if>[[space]]  <xsl:value-of select="doc"/> </xsl:for-each>
 	 </xsl:for-each>
 </xsl:for-each>
 </xsl:template> 
