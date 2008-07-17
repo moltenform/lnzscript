@@ -3,6 +3,7 @@
 ///Arguments:int x, int y, bool bRelativeCoords=false
 ///Returns:[int r, int g, int b]
 ///Doc:Finds color of screen at coordinates. Returns array of r,g,b values (from 0 to 255), or null upon failure.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	util_SetAU3PixelRelativeCoords(bRelativeCoords);
@@ -21,6 +22,7 @@
 ///Arguments:bool bFullScreen=false
 ///Returns:
 ///Doc:Copy screenshot to the clipboard. Defaults to screenshot of the active window, specify true to take screenshot of full screen.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	if (bFullScreen) AU3_Send("{PRINTSCREEN}",0);
@@ -90,6 +92,7 @@
 ///Arguments:int r, int g, int b, int left, int top, int right, int bottom, bool bRelativeCoords=false,int nStep=0, int allowedDifference=0
 ///Returns:bool bStatus
 ///Doc:Search for color on screen. Returns coordinate at which color was found, or false. nStep - number of coordinates to walk with each step, make it larger for speed and less precision. allowedDifference - 0-255, are similar colors accepted? By default, 0, must be exact match. If given a value of 255, accepts different colors.
+///Implementation:c++_au3
 {
 	CHECK_ARGS
 	util_SetAU3PixelRelativeCoords(bRelativeCoords);
