@@ -25,6 +25,9 @@ ProvideScript::ProvideScript()
 	QScriptValue fnScriptInclude = engine.newFunction(g_ProvideScript_IncludeFunction);
 	engine.globalObject().setProperty("include", fnScriptInclude);
 	
+	// add the alert function and confirm function.
+	engine.evaluate("alert = function(s){return Dialog.alert('LnzScript',s);}\n confirm = function(s){return Dialog.askYesNo('LnzScript',s)==Dialog.YES;}");
+	
 	// add flag saying that we have not yet included standard JavaScript libraries
 	engine.globalObject().setProperty("__includedstd__", QScriptValue(&engine,false));
 }
