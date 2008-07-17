@@ -11,18 +11,17 @@ import script_create
 
 
 def main():
-	#check if I even need to generate this.
-	#newestSource = 0, os.stat, st_mtime 
 	
 	#parse files
 	aMethods = script_create.processAllSource()
 	
-	
+	os.chdir('..')
 	# generate c++ headers and code
-	objConnections = ConnectionToScriptOutputFile('../functions_expose')
-	objCppAu3 = ImplementationOutputFile('../functions_au3')
-	objCppQt = ImplementationOutputFile('../functions_qt')
-	objCppNircmd = ImplementationOutputFile('../functions_nircmd')
+	objConnections = ConnectionToScriptOutputFile('functions_expose')
+	objCppAu3 = ImplementationOutputFile('functions_au3')
+	objCppQt = ImplementationOutputFile('functions_qt')
+	objCppNircmd = ImplementationOutputFile('functions_nircmd')
+	objCppWinext = ImplementationOutputFile('functions_winext')
 	for method in aMethods:
 		if method.implementation == 'c++_au3':
 			objCppAu3.addHeader(method.renderHeader())
@@ -36,10 +35,15 @@ def main():
 			objCppNircmd.addHeader(method.renderHeader())
 			objCppNircmd.addCode( method.renderCode())
 			objConnections.addMethod(method)
+		elif method.implementation == 'c++_winext':
+			objCppWinext.addHeader(method.renderHeader())
+			objCppWinext.addCode( method.renderCode())
+			objConnections.addMethod(method)
 	
 	objCppQt.writeFile()
 	objCppNircmd.writeFile()
 	objCppAu3.writeFile()
+	objCppWinext.writeFile()
 	objConnections.writeFile()
 	
 def alreadyExists(strFilename, strWholeFile):
@@ -68,18 +72,18 @@ class ImplementationOutputFile():
 		if dictCustomReplacements:
 			for key in dictCustomReplacements: strTemplate=strTemplate.replace(key, dictCustomReplacements[key])
 		strTemplate = strTemplate.replace('%%%INSERT_FUNCTIONS_HERE%%%', self.outCode.getvalue())
-		if not alreadyExists(self.strFilename+'.cpp', strTemplate):
-			fout = open(self.strFilename+'.cpp', 'w')
+		if not alreadyExists('./gen/' + self.strFilename+'.cpp', strTemplate):
+			fout = open('./gen/' + self.strFilename+'.cpp', 'w')
 			fout.write(strTemplate)
 			fout.close()
 		
 		strTemplate = script_create.readfile(self.strFilename+'.h.template')
 		strTemplate = strTemplate.replace('%%%INSERT_HEADERS_HERE%%%', self.outHeaders.getvalue())
-		if not alreadyExists(self.strFilename+'.h', strTemplate):
-			fout = open(self.strFilename+'.h', 'w')
+		if not alreadyExists('./gen/' + self.strFilename+'.h', strTemplate):
+			fout = open('./gen/' + self.strFilename+'.h', 'w')
 			fout.write(strTemplate)
 			fout.close()
-
+			
 
 class ConnectionToScriptOutputFile():
 	nameSpacesSeen = None
@@ -96,12 +100,12 @@ class ConnectionToScriptOutputFile():
 		strOut = ''
 		strOut += '\n\t' + self._renderNamespaceCode()
 		strOut += '\n\t' + self.outConnection.getvalue()
-		strOut += '\n\t' + script_create.readfile('object_properties.cpp') #flags like Window.MAXIMIZE
+		strOut += '\n\t' + script_create.readfile('./source/object_properties.cpp') #flags like Window.MAXIMIZE
 		
 		strTemplate = script_create.readfile(self.strFilename+'.cpp.template')
 		strTemplate = strTemplate.replace('%%%INSERT_PROPERTY_CREATION_HERE%%%', strOut)
-		if not alreadyExists(self.strFilename+'.cpp', strTemplate):
-			fout = open(self.strFilename+'.cpp', 'w')
+		if not alreadyExists('./gen/' + self.strFilename+'.cpp', strTemplate):
+			fout = open('./gen/' + self.strFilename+'.cpp', 'w')
 			fout.write(strTemplate)
 			fout.close()
 		
