@@ -11,33 +11,45 @@
 // If msxml 6 isn't available, it should be ok to use an older version. 
    
 
+function main()
+{
+	var xmldom, xsltdom;
+	try
+	{
+		xmldom = new ActiveXObject("MSXML2.DOMDocument.6.0");
+		xsltdom = new ActiveXObject("MSXML2.DOMDocument.6.0");
 
 
+		xmldom.validateOnParse = true;
+		xmldom.async = false;
+		// xmldom.loadXML('<object><name>apple</name><color>Red</color></object>');
+		xmldom.load('documentation.xml');
 
-var xmldom, xsltdom;
-try {
-var xmldom = new ActiveXObject("MSXML2.DOMDocument.6.0");
-var xsltdom = new ActiveXObject("MSXML2.DOMDocument.6.0");
+		xsltdom.validateOnParse = true;
+		xsltdom.async = false;
+		xsltdom.load('transform.xml');
 
-   
-   xmldom.validateOnParse = true;
-   xmldom.async = false;
-   // xmldom.loadXML('<object><name>apple</name><color>Red</color></object>');
-   xmldom.load('src.xml');
-
-   
-   xsltdom.validateOnParse = true;
-   xsltdom.async = false;
-   xsltdom.load('transform.xml');
-
-   output = xmldom.transformNode(xsltdom);
-   WScript.Echo(output);
+		var output = xmldom.transformNode(xsltdom);
+		writeTextFile('..\\lnzscript.api',output);
+		WScript.Echo(xsltdom.xml.substring(0, 1000));
+		WScript.Echo(output.substring(0, 1000));
+	}
+	catch(err)
+	{
+		WScript.Echo(err.description);
+	}
 }
-catch(err) {
-   WScript.Echo(err.description);
+
+function writeTextFile(strPath, strContents)
+{
+	var fso = new ActiveXObject("Scripting.FileSystemObject");
+	var fout = fso.CreateTextFile(strPath);
+	fout.Write(strContents);
+	fout.Close();
 }
 
 
-   
+
+main();   
    </script>
 </job>

@@ -1,9 +1,20 @@
 <?xml version="1.0"?>  
 <xsl:stylesheet version="1.0"  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"> 
- <xsl:output method="text"/> 
- <xsl:template match="/object"> 
-    <xsl:value-of select="color"/> 
-    <xsl:text> </xsl:text> 
-    <xsl:value-of select="name"/> 
- </xsl:template> 
+<xsl:output method="text"/> 
+<xsl:template match="/">
+
+<xsl:for-each select="launchorzdoc/section">
+	<xsl:for-each select="namespace">
+		<xsl:for-each select="function">
+			<xsl:if test="../@name != '(Global)'"><xsl:value-of select="../@name"/>.</xsl:if>
+			<xsl:value-of select="@name"/>
+			
+			( <xsl:value-of select="@args"/> )
+			<xsl:if test="@returns != ''">, returns <xsl:value-of select="@returns"/></xsl:if>
+			<xsl:value-of select="doc"/>
+			hello
+		</xsl:for-each>
+	 </xsl:for-each>
+</xsl:for-each>
+</xsl:template> 
 </xsl:stylesheet>
