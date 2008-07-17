@@ -46,14 +46,13 @@ namespace launchorz_functions
 	QScriptValue util_runExternalCommandWithEngine(QScriptEngine *eng, QString strCmd)
 	{
 		// consider using Au3 for this... not sure what is best.
-		/*
-		// this version is synchronous, probably not what people want.
+		/* // this version is synchronous, probably not what people want.
 		QProcess objProcess;
 		objProcess.start(strCmd);
 		objProcess.waitForFinished();*/
 		
 		// Note, asynchronous
-		long nRes = AU3_Run(QStrToCStr(strCmd), "",1);
+		AU3_Run(QStrToCStr(strCmd), "",1); //returns pid, but not important
 		return QScriptValue(eng, (AU3_error()==0) ? true : false);
 	}
 	
