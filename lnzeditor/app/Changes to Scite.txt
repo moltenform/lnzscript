@@ -1,0 +1,30 @@
+
+Changes made to Scite
+===============
+Menubar
+	Removed buffers menu
+
+	Edit menu
+		Removed "Match & Brace"
+		Removed "Select to Brace"
+		Added "Cut Line"
+		Added IDM_LINECUT
+	
+	Search menu
+		Added "Find selection"
+	
+	Removed buffers menu, and things trying to modify it
+	
+	Tried to add Ctrl+; for properties, not done yet.
+	
+	Added those other new menus
+
+Other
+	Change properties to look in "./properties"
+	
+	SciteBase.cxx - changed about dialog
+	
+	Adding "run without save" feature
+		Creates a temporary file and runs it.
+		Presumably handy for one-time scripts
+	
