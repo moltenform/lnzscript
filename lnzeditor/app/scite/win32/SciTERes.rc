@@ -125,6 +125,19 @@ BEGIN
 	MENUITEM "&Parameters\tShift+F8",			IDM_TOGGLEPARAMETERS
 END
 
+//start ben modification
+POPUP "&Run"
+BEGIN
+	MENUITEM "&Run Script\tF5",					IDM_GO
+	MENUITEM "&Stop Script\tCtrl+.",					IDM_STOPEXECUTE
+	MENUITEM SEPARATOR
+	MENUITEM "Set &Arguments",				IDM_TOGGLEPARAMETERS
+	MENUITEM SEPARATOR
+	MENUITEM "Print File&name",					IDM_GO
+	MENUITEM "Show in &Explorer",				IDM_GO
+END
+//end ben modification
+
 POPUP "&Tools"
 BEGIN
 	MENUITEM "&Compile\tCtrl+F7",		IDM_COMPILE
@@ -161,7 +174,7 @@ BEGIN
 	MENUITEM "Open Local &Options File",		IDM_OPENLOCALPROPERTIES
 	MENUITEM "Open &Directory Options File",		IDM_OPENDIRECTORYPROPERTIES
 	MENUITEM "Open &User Options File",		IDM_OPENUSERPROPERTIES
-	MENUITEM "Open &Global Options File",		IDM_OPENGLOBALPROPERTIES
+	MENUITEM "Open &Global Options File\tCtrl+;",		IDM_OPENGLOBALPROPERTIES
 	MENUITEM "Open A&bbreviations File",		IDM_OPENABBREVPROPERTIES
 	MENUITEM "Open Lua Startup Scr&ipt", 		IDM_OPENLUAEXTERNALFILE
 	MENUITEM SEPARATOR
@@ -172,6 +185,8 @@ BEGIN
 	MENUITEM "", IDM_LANGUAGE
 END
 
+/*
+Ben - removed Buffers menu
 POPUP "&Buffers"
 BEGIN
 	MENUITEM "&Previous\tShift+F6",			IDM_PREVFILE
@@ -179,6 +194,7 @@ BEGIN
 	MENUITEM "&Close All",				IDM_CLOSEALL
 	MENUITEM "&Save All",				IDM_SAVEALL
 END
+*/
 
 POPUP "&Help"
 BEGIN
@@ -564,6 +580,11 @@ BEGIN
 	VK_BACK, IDM_UNDO,  VIRTKEY, ALT
 	VK_BACK, IDM_REDO,  VIRTKEY, ALT, SHIFT
 	VK_CANCEL, IDM_STOPEXECUTE,  VIRTKEY, CONTROL
+	//bencustom
+	// add Control-. as another way to cancel a script
+	".", IDM_STOPEXECUTE,  VIRTKEY, CONTROL
+	//";", IDM_OPENGLOBALPROPERTIES,  VIRTKEY, CONTROL
+
 
 	// Workaround for the most common case where SciTE undo and
 	// redo buttons don't enable/disable when you expect.
