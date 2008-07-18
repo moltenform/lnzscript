@@ -16,6 +16,10 @@
 #define IDM_IMPORT			1300
 #define IDM_LANGUAGE			1400
 
+// Ben's custom
+#define IDM_LINECUT			290
+// end custom
+
 // File
 #define IDM_NEW			101
 #define IDM_OPEN			102

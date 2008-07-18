@@ -3524,6 +3524,9 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 	case IDM_DUPLICATE:
 		SendPane(source, SCI_SELECTIONDUPLICATE);
 		break;
+	case IDM_LINECUT:
+		SendPane(source, SCI_LINECUT);
+		break;
 	case IDM_PASTEANDDOWN: {
 			int pos = SendFocused(SCI_GETCURRENTPOS);
 			SendFocused(SCI_PASTE);
