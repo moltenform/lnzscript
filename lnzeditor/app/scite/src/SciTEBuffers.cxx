@@ -346,7 +346,8 @@ void SciTEBase::InitialiseBuffers() {
 		SendEditor(SCI_ADDREFDOCUMENT, 0, buffers.buffers[0].doc); // We own this reference
 		if (buffers.size == 1) {
 			// Single buffer mode, delete the Buffers main menu entry
-			DestroyMenuItem(menuBuffers, 0);
+			// DestroyMenuItem(menuBuffers, 0);
+			//Ben: there is no menuBuffers anymore
 			// Destroy command "View Tab Bar" in the menu "View"
 			DestroyMenuItem(menuView, IDM_VIEWTABBAR);
 			// Make previous change visible.
@@ -623,6 +624,7 @@ void SciTEBase::New() {
 	FilePath curDirectory(filePath.Directory());
 	filePath.Set(curDirectory, "");
 	SetFileName(filePath);
+
 	CurrentBuffer()->isDirty = false;
 	jobQueue.isBuilding = false;
 	jobQueue.isBuilt = false;
@@ -829,18 +831,21 @@ void SciTEBase::EndStackedTabbing() {
 	buffers.CommitStackSelection();
 }
 
+
+//Ben:there is no buffers menu anymore
+// but we still need this method. it updates tabs.
 void SciTEBase::BuffersMenu() {
 	UpdateBuffersCurrent();
-	DestroyMenuItem(menuBuffers, IDM_BUFFERSEP);
+	//DestroyMenuItem(menuBuffers, IDM_BUFFERSEP);
 	RemoveAllTabs();
 
 	int pos;
-	for (pos = 0; pos < bufferMax; pos++) {
-		DestroyMenuItem(menuBuffers, IDM_BUFFER + pos);
-	}
+	//for (pos = 0; pos < bufferMax; pos++) {
+	//	DestroyMenuItem(menuBuffers, IDM_BUFFER + pos);
+	//}
 	if (buffers.size > 1) {
 		int menuStart = 5;
-		SetMenuItem(menuBuffers, menuStart, IDM_BUFFERSEP, "");
+		// SetMenuItem(menuBuffers, menuStart, IDM_BUFFERSEP, "");
 		for (pos = 0; pos < buffers.length; pos++) {
 			int itemID = bufferCmdID + pos;
 			char entry[MAX_PATH*2 + 20];
@@ -888,10 +893,11 @@ void SciTEBase::BuffersMenu() {
 				strcat(titleTab, " *");
 			}
 
-			SetMenuItem(menuBuffers, menuStart + pos + 1, itemID, entry);
+			// SetMenuItem(menuBuffers, menuStart + pos + 1, itemID, entry);
 			TabInsert(pos, titleTab);
 		}
 	}
+	//*/
 	CheckMenus();
 #if PLAT_WIN
 

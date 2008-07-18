@@ -33,7 +33,7 @@ extern const char menuAccessIndicator[];
  */
 enum {
     menuFile = 0, menuEdit = 1, menuSearch = 2, menuView = 3,
-    menuTools = 4, menuOptions = 5, menuLanguage = 6, menuBuffers = 7,
+    menuTools = 4, menuOptions = 5, menuLanguage = 6, /*menuBuffers = 7, */
     menuHelp = 8
 };
 
@@ -741,6 +741,8 @@ protected:
 	void SaveTitledBuffers();
 	virtual void CopyAsRTF() {};
 	void SetLineNumberWidth();
+	bool GetATempFileNameClear();
+	bool GetATempFileName(TCHAR* szTempName);
 	void MenuCommand(int cmdID, int source = 0);
 	void FoldChanged(int line, int levelNow, int levelPrev);
 	void FoldChanged(int position);
