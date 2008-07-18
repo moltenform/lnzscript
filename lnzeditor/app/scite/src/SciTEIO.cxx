@@ -63,10 +63,10 @@
 const char propUserFileName[] = ".SciTEUser.properties";
 #else
 // Windows or VMS
-const char propUserFileName[] = "SciTEUser.properties";
+const char propUserFileName[] = "properties\\SciTEUser.properties";
 #endif
-const char propGlobalFileName[] = "SciTEGlobal.properties";
-const char propAbbrevFileName[] = "abbrev.properties";
+const char propGlobalFileName[] = "properties\\SciTEGlobal.properties";
+const char propAbbrevFileName[] = "properties\\abbrev.properties";
 
 #define PROPERTIES_EXTENSION	".properties"
 
