@@ -3354,6 +3354,59 @@ void SciTEBase::SetLineNumberWidth() {
 	}
 }
 
+
+bool SciTEBase::GetATempFileName(TCHAR* szTempName)
+{
+#if PLAT_WIN
+	const DWORD BUFSIZE = 512;
+	TCHAR lpPathBuffer[BUFSIZE]; 
+	//TCHAR* l = lpPathBuffer;
+	if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; // l = "."; default to current directory if the other one failed.
+	if (! GetTempFileName(lpPathBuffer, TEXT("lnz_"), 0, szTempName))
+		return false;
+	// hard code the extension on:
+	int nL = strlen(szTempName);
+	szTempName[nL++] = '.';
+	szTempName[nL++] = 'p';
+	szTempName[nL++] = 'y';
+	szTempName[nL++] = '\0';
+	return true;
+#else
+	return false;
+#endif
+}
+
+bool SciTEBase::GetATempFileNameClear()
+{
+	const DWORD BUFSIZE = 512;
+	TCHAR lpPathBuffer[BUFSIZE]; 
+	if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; 
+	int nL = strlen(lpPathBuffer);
+	lpPathBuffer[nL++] = '\\';
+	lpPathBuffer[nL++] = 'l';
+	lpPathBuffer[nL++] = 'n';
+	lpPathBuffer[nL++] = 'z';
+	lpPathBuffer[nL++] = '*';
+	lpPathBuffer[nL++] = '\0';
+	
+	// now delete all lnz* files in here.
+	WIN32_FIND_DATA myFileData;
+	HANDLE hSearch;
+
+	hSearch = FindFirstFile(lpPathBuffer, &myFileData);
+	
+	while (hSearch != INVALID_HANDLE_VALUE)
+	{
+		// DeleteFile(myFileData.cFileName);
+		SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "found: ");
+		SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, myFileData.cFileName);
+		
+		// test for more files
+		if (FindNextFile(hSearch, &myFileData) == 0) break; // stop when none left
+	}
+	return true;
+}
+
 void SciTEBase::MenuCommand(int cmdID, int source) {
 	switch (cmdID) {
 	case IDM_NEW:
@@ -3849,23 +3902,87 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		break;
 
 	case IDM_GO: {
-			if (SaveIfUnsureForBuilt() != IDCANCEL) {
+
+			SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "hello \n");
+			SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, FileNameExt().AsInternal() );
+		
+			bool bUntitled = CurrentBuffer()->IsUntitled();
+					// or ilePath.IsUntitled()
+			// see if the name is Untitled
+			if (bUntitled)
+			{
+				
+				TCHAR szTempName[512];
+				bool bCouldCreateTemp = GetATempFileName(szTempName);
+				if (!bCouldCreateTemp) {SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "Error: Could not create temp. file"); return;}
+				FilePath fpTempName(szTempName);
+				SaveBuffer(fpTempName); // cool, we saved a buffer someplace. Next step is to run this thing?
+				
+				SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "\nlooks like im here\n" );
+				SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, szTempName);
+				
+				
+				// remember old values
+				SString oldFilePath=props.Get("FilePath"); SString oldFileDir=props.Get("FilePath"); SString oldFileName=props.Get("FileName");  SString oldFileExt=props.Get("FileExt");  SString oldFileNameExt=props.Get("FileNameExt"); 
+				// trick the computer into momentarily thinking it is somewhere else
+				props.Set("FilePath", fpTempName.AsFileSystem());
+				props.Set("FileDir", fpTempName.Directory().AsFileSystem());
+				props.Set("FileName", fpTempName.BaseName().AsFileSystem());
+				props.Set("FileExt", fpTempName.Extension().AsFileSystem());
+				//props.Set("FileNameExt", fpTempName.Name().AsFileSystem());
+				props.Set("FileNameExt", fpTempName.AsFileSystem()); // give it the entire path
+				
+				// Now run it as JavaScript
+				
 				SelectionIntoProperties();
 				long flags = 0;
 
 				if (!jobQueue.isBuilt) {
-					SString buildcmd = props.GetNewExpand("command.go.needs.", FileNameExt().AsInternal());
-					AddCommand(buildcmd, "",
-					        SubsystemType("command.go.needs.subsystem."));
+					SString buildcmd = props.GetNewExpand("command.go.needs.", fpTempName.AsInternal());
+					AddCommand(buildcmd, "", SubsystemType("command.go.needs.subsystem."));
 					if (buildcmd.length() > 0) {
 						jobQueue.isBuilding = true;
 						flags |= jobForceQueue;
 					}
 				}
-				AddCommand(props.GetWild("command.go.", FileNameExt().AsInternal()), "",
-				        SubsystemType("command.go.subsystem."), "", flags);
+				AddCommand(props.GetWild("command.go.", fpTempName.AsInternal()), "", SubsystemType("command.go.subsystem."), "", flags);
 				if (jobQueue.commandCurrent > 0)
 					Execute();
+				
+				
+				
+				// Restore the property settings.
+				props.Set("FilePath", oldFilePath.c_str()); props.Set("FileDir", oldFileDir.c_str());	props.Set("FileName", oldFileName.c_str());props.Set("FileExt", oldFileExt.c_str()); props.Set("FileNameExt", oldFileNameExt.c_str());
+				
+				
+				GetATempFileNameClear();
+				//This won't work - in the same thread...
+				//pause a bit
+				//::Sleep(900);
+				
+				// Now delete it
+				//fpTempName.Remove();
+			}
+			else
+			{
+				if (SaveIfUnsureForBuilt() != IDCANCEL) {
+					SelectionIntoProperties();
+					long flags = 0;
+
+					if (!jobQueue.isBuilt) {
+						SString buildcmd = props.GetNewExpand("command.go.needs.", FileNameExt().AsInternal());
+						AddCommand(buildcmd, "",
+							SubsystemType("command.go.needs.subsystem."));
+						if (buildcmd.length() > 0) {
+							jobQueue.isBuilding = true;
+							flags |= jobForceQueue;
+						}
+					}
+					AddCommand(props.GetWild("command.go.", FileNameExt().AsInternal()), "",
+						SubsystemType("command.go.subsystem."), "", flags);
+					if (jobQueue.commandCurrent > 0)
+						Execute();
+				}
 			}
 		}
 		break;
@@ -4414,8 +4531,13 @@ void SciTEBase::CheckMenus() {
 	        props.GetWild("command.compile.", FileNameExt().AsInternal()).size() != 0);
 	EnableAMenuItem(IDM_BUILD, !jobQueue.IsExecuting() &&
 	        props.GetWild("command.build.", FileNameExt().AsInternal()).size() != 0);
-	EnableAMenuItem(IDM_GO, !jobQueue.IsExecuting() &&
-	        props.GetWild("command.go.", FileNameExt().AsInternal()).size() != 0);
+	//EnableAMenuItem(IDM_GO, !jobQueue.IsExecuting() &&
+	//        props.GetWild("command.go.", FileNameExt().AsInternal()).size() != 0);
+	
+	bool bEnableGo = (!jobQueue.IsExecuting() && (CurrentBuffer()->IsUntitled() || props.GetWild("command.go.", FileNameExt().AsInternal()).size() != 0));
+	EnableAMenuItem(IDM_GO,bEnableGo);
+	//buffers.buffers[0].IsUntitled()
+	
 	EnableAMenuItem(IDM_OPENDIRECTORYPROPERTIES, props.GetInt("properties.directory.enable") != 0);
 	for (int toolItem = 0; toolItem < toolMax; toolItem++)
 		EnableAMenuItem(IDM_TOOLS + toolItem, !jobQueue.IsExecuting());
