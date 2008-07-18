@@ -571,7 +571,18 @@ void SciTEBase::SetAboutMessage(WindowID wsci, const char *appTitle) {
 		Platform::SendScintilla(wsci, SCI_STYLESETSIZE, STYLE_DEFAULT, fontSize);
 		Platform::SendScintilla(wsci, SCI_STYLESETBACK, STYLE_DEFAULT, ColourDesired(0xff, 0xff, 0xff).AsLong());
 		Platform::SendScintilla(wsci, SCI_STYLECLEARALL, 0, 0);
-
+//begin custom
+		SetAboutStyle(wsci, 0, ColourDesired(0xff, 0xff, 0xff));
+		Platform::SendScintilla(wsci, SCI_STYLESETSIZE, 0, fontSize);
+		Platform::SendScintilla(wsci, SCI_STYLESETBACK, 0, ColourDesired(0x80, 0, 0).AsLong());
+		AddStyledText(wsci, "LnzScript Editor", 0);
+		AddStyledText(wsci, "\n", 0);
+	
+		SetAboutStyle(wsci, 1, ColourDesired(0, 0, 0));
+		int trsSty0 = 5; // define the stylenumber to assign font for version.
+		AddStyledText(wsci, "    Ben Fisher 2008\n", trsSty0);
+		AddStyledText(wsci, "    A modified build of:\n", trsSty0);
+//end custom
 		SetAboutStyle(wsci, 0, ColourDesired(0xff, 0xff, 0xff));
 		Platform::SendScintilla(wsci, SCI_STYLESETSIZE, 0, fontSize);
 		Platform::SendScintilla(wsci, SCI_STYLESETBACK, 0, ColourDesired(0, 0, 0x80).AsLong());
