@@ -130,8 +130,9 @@ void SciTEWin::Notify(SCNotification *notification) {
 			AddToPopUp("Save As", IDM_SAVEAS, true);
 			AddToPopUp("");
 
+			
 			bool bAddSeparator = false;
-			for (int item = 0; item < toolMax; item++) {
+			/*for (int item = 0; item < toolMax; item++) {
 				int itemID = IDM_TOOLS + item;
 				SString prefix = "command.name.";
 				prefix += SString(item);
@@ -144,7 +145,7 @@ void SciTEWin::Notify(SCNotification *notification) {
 					AddToPopUp(sMenuItem.c_str(), itemID, true);
 					bAddSeparator = true;
 				}
-			}
+			}*/
 
 			if (bAddSeparator)
 				AddToPopUp("");
