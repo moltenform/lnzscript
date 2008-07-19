@@ -3358,12 +3358,14 @@ void SciTEBase::SetLineNumberWidth() {
 bool SciTEBase::GetATempFileName(TCHAR* szTempName)
 {
 #if PLAT_WIN
+	// Creating and using a temporary file:
+	// http://msdn.microsoft.com/en-us/library/aa363875(VS.85).aspx
+	// http://64.233.183.104/search?q=cache:jC2wYHi709oJ:delphi.about.com/od/windowsshellapi/l/aa101303a.htm+winapi+get+temporary+file+name&hl=en&ct=clnk&cd=18&gl=us
+	
 	const DWORD BUFSIZE = 512;
 	TCHAR lpPathBuffer[BUFSIZE]; 
-	//TCHAR* l = lpPathBuffer;
-	// Windows GetTempPath
-	// if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; // l = "."; default to current directory if the other one failed.
 	
+	// Use a "tmp" directory instead of the system temp directory.
 	FilePath tmpdir(GetSciteDefaultHome());
 	strcpy(lpPathBuffer, tmpdir.AsInternal());
 	
@@ -3388,36 +3390,26 @@ bool SciTEBase::GetATempFileName(TCHAR* szTempName)
 
 bool SciTEBase::GetATempFileNameClear()
 {
-	// Instead, use a Lnzscript to clear the temp files. A lot easier.
-	/*
-	const DWORD BUFSIZE = 512;
+	// http://windows-programming.suite101.com/article.cfm/searching_opening_files_in_win32
+	// Instead of this, we use a Lnzscript to clear the temp files. A lot easier.
+	/* const DWORD BUFSIZE = 512;
 	TCHAR lpPathBuffer[BUFSIZE]; 
 	if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; 
-	int nL = strlen(lpPathBuffer);
-	lpPathBuffer[nL++] = '\\';
-	lpPathBuffer[nL++] = 'l';
-	lpPathBuffer[nL++] = 'n';
-	lpPathBuffer[nL++] = 'z';
-	lpPathBuffer[nL++] = '*';
-	lpPathBuffer[nL++] = '\0';
+	int nL = strlen(lpPathBuffer); lpPathBuffer[nL++] = '\\'; lpPathBuffer[nL++] = 'l'; lpPathBuffer[nL++] = 'n'; lpPathBuffer[nL++] = 'z';	lpPathBuffer[nL++] = '*'; lpPathBuffer[nL++] = '\0';
 	
 	// now delete all lnz* files in here.
 	WIN32_FIND_DATA myFileData;
 	HANDLE hSearch;
 
 	hSearch = FindFirstFile(lpPathBuffer, &myFileData);
-	
 	while (hSearch != INVALID_HANDLE_VALUE)
 	{
-		// DeleteFile(myFileData.cFileName);
-		SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "found: ");
+		// DeleteFile(myFileData.cFileName); This appears to be a relative name...
 		SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, myFileData.cFileName);
 		
 		// test for more files
 		if (FindNextFile(hSearch, &myFileData) == 0) break; // stop when none left
-	}
-	return true;
-	*/
+	} */
 	return false;
 }
 
