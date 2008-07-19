@@ -24,7 +24,10 @@ Other
 	
 	SciteBase.cxx - changed about dialog
 	
+	Changed icon. 
+	
 	Adding "run without save" feature
 		Creates a temporary file and runs it.
 		Presumably handy for one-time scripts
+	
 	
