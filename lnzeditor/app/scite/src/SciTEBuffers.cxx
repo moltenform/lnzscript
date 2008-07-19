@@ -660,7 +660,10 @@ void SciTEBase::Close(bool updateUI, bool loadingSession, bool makingRoomForNew)
 	if (extender) {
 		extender->OnClose(filePath.AsFileSystem());
 	}
-
+	
+	////////////////////////////
+	//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "closing buffer \n");
+	
 	if (buffers.size == 1) {
 		// With no buffer list, Close means close from MRU
 		closingLast = !(recentFileStack[0].IsSet());
@@ -702,6 +705,10 @@ void SciTEBase::Close(bool updateUI, bool loadingSession, bool makingRoomForNew)
 		}
 	}
 
+	// clean up temp files lnz*.tmp in the tmp directory.
+	// TODO: move this to app close, not buffer close
+	MenuCommand(IDM_CLEANUPTEMP);
+	
 	if (updateUI) {
 		BuffersMenu();
 		UpdateStatusBar(true);
