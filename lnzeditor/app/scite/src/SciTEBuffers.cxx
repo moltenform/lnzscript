@@ -349,7 +349,8 @@ void SciTEBase::InitialiseBuffers() {
 			// DestroyMenuItem(menuBuffers, 0);
 			//Ben: there is no menuBuffers anymore
 			// Destroy command "View Tab Bar" in the menu "View"
-			DestroyMenuItem(menuView, IDM_VIEWTABBAR);
+			// there is no menu View
+			// DestroyMenuItem(menuView, IDM_VIEWTABBAR);
 			// Make previous change visible.
 			RedrawMenu();
 		}
@@ -844,10 +845,10 @@ void SciTEBase::BuffersMenu() {
 	//	DestroyMenuItem(menuBuffers, IDM_BUFFER + pos);
 	//}
 	if (buffers.size > 1) {
-		int menuStart = 5;
+		//int menuStart = 5;
 		// SetMenuItem(menuBuffers, menuStart, IDM_BUFFERSEP, "");
 		for (pos = 0; pos < buffers.length; pos++) {
-			int itemID = bufferCmdID + pos;
+			//int itemID = bufferCmdID + pos;
 			char entry[MAX_PATH*2 + 20];
 			entry[0] = '\0';
 			char titleTab[MAX_PATH*2 + 20];
@@ -1096,6 +1097,9 @@ void SciTEBase::SetMenuItemLocalised(int menuNumber, int position, int itemID,
 void SciTEBase::SetToolsMenu() {
 	//command.name.0.*.py=Edit in PythonWin
 	//command.0.*.py="c:\program files\python\pythonwin\pythonwin" /edit c:\coloreditor.py
+	
+	// This can still be used, just 
+	
 	RemoveToolsMenu();
 	int menuPos = TOOLS_START;
 	for (int item = 0; item < toolMax; item++) {
@@ -1119,12 +1123,16 @@ void SciTEBase::SetToolsMenu() {
 		}
 	}
 
+	
+	menuPos++;
+	
+	/*
 	DestroyMenuItem(menuTools, IDM_MACRO_SEP);
 	DestroyMenuItem(menuTools, IDM_MACROLIST);
 	DestroyMenuItem(menuTools, IDM_MACROPLAY);
 	DestroyMenuItem(menuTools, IDM_MACRORECORD);
 	DestroyMenuItem(menuTools, IDM_MACROSTOPRECORD);
-	menuPos++;
+	
 	if (macrosEnabled) {
 		SetMenuItem(menuTools, menuPos++, IDM_MACRO_SEP, "");
 		SetMenuItemLocalised(menuTools, menuPos++, IDM_MACROLIST,
@@ -1135,7 +1143,7 @@ void SciTEBase::SetToolsMenu() {
 		        "&Record Macro", "Ctrl+F9");
 		SetMenuItemLocalised(menuTools, menuPos++, IDM_MACROSTOPRECORD,
 		        "S&top Recording Macro", "Ctrl+Shift+F9");
-	}
+	}*/
 }
 
 JobSubsystem SciTEBase::SubsystemType(char c) {

@@ -65,6 +65,10 @@ const char menuAccessIndicator[] = "&";
 #include "IFaceTable.h"
 
 void SciTEBase::SetImportMenu() {
+	// For Import read "properties"
+	// comment this out to not draw Properties
+	
+	// Important things: IMPORT_START (position within menu)and menuOptions(number of menu)
 	for (int i = 0; i < importMax; i++) {
 		DestroyMenuItem(menuOptions, importCmdID + i);
 	}
@@ -91,9 +95,13 @@ void SciTEBase::ImportMenu(int pos) {
 }
 
 void SciTEBase::SetLanguageMenu() {
+// Be careful adding languages. In fact, we can only accept 2, because of the IMPORT_START setting for importing properties
+
 	for (int i = 0; i < 100; i++) {
-		DestroyMenuItem(menuLanguage, languageCmdID + i);
+		DestroyMenuItem(menuOptions, languageCmdID + i);
 	}
+	// NOTE HARD CODE LANGUAGE ITEMS TO 2!
+	int itemsMade = 0;
 	for (int item = 0; item < languageItems; item++) {
 		int itemID = languageCmdID + item;
 		SString entry = localiser.Text(languageMenu[item].menuItem.c_str());
@@ -106,9 +114,14 @@ void SciTEBase::SetLanguageMenu() {
 			entry += languageMenu[item].menuKey;
 		}
 		if (entry[0] != '#') {
-			SetMenuItem(menuLanguage, item, itemID, entry.c_str());
+			SetMenuItem(menuOptions, itemsMade/*item*/, itemID, entry.c_str());
+			itemsMade ++;
 		}
+		if (itemsMade==2) break; // HARD CODE LANGUAGE ITEMS TO 2!
 	}
+	// The reason we count with itemsMade is that commented out entries are still in the list.
+	// So, languageItems could be 45, but half of these could be commented out ones that shouldn't be shown
+
 }
 
 const char propLocalFileName[] = "SciTE.properties";
