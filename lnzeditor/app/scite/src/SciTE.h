@@ -18,6 +18,9 @@
 
 // Ben's custom
 #define IDM_LINECUT			290
+#define IDM_TOOLS_PRINTFILENAME	 360
+#define IDM_TOOLS_SHOWINEXPLORER	 361
+#define IDM_CLEANUPTEMP	 370
 // end custom
 
 // File
@@ -48,8 +51,10 @@
 #define IDM_ENCODING_UCOOKIE	154
 
 #define MRU_START	16
-#define IMPORT_START 20
-#define TOOLS_START 3
+#define IMPORT_START 2
+//note that, for IMPORT_START to work, we limit number of items in language menu to 2.
+//there is probably a better way to do this.
+#define TOOLS_START 8
 
 // Edit
 #define IDM_UNDO			201
@@ -185,7 +190,10 @@
 #define IDM_MOVETABLEFT			509
 
 // Help
-#define IDM_HELP			901
+//#define IDM_HELP			901
+#define IDM_HELP_ONLINEDOC	910
+#define IDM_HELP_DOCBROWSER	911
+#define IDM_HELP_EDITORDOC	912
 #define IDM_ABOUT			902
 #define IDM_HELP_SCITE		903
 
