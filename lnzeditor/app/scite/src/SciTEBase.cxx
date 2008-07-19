@@ -4091,10 +4091,32 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		StopRecordMacro();
 		break;
 
-	case IDM_HELP: {
+	case IDM_CLEANUPTEMP: {
+		RunCommandFromProperties( "command.lnzcleanup", "command.lnzcleanup.subsystem");
+		}
+		break;
+	
+	case IDM_TOOLS_PRINTFILENAME: {
+		RunCommandFromProperties( "command.lnzprintname", "command.lnzprintname.subsystem");
+		}
+		break;
+	case IDM_TOOLS_SHOWINEXPLORER: {
+		RunCommandFromProperties( "command.lnzshow_explorer", "command.lnzshow_explorer.subsystem");
+		}
+		break;
+	
+	case IDM_HELP_ONLINEDOC: {
+		RunCommandFromProperties( "command.scite.helponline", "command.scite.helponline.subsystem");
+		}
+		break;
+	case IDM_HELP_EDITORDOC: {
+		RunCommandFromProperties( "command.scite.helpeditor", "command.scite.helponline.helpeditor");
+		}
+		break;			
+	case IDM_HELP_DOCBROWSER: {
 			SelectionIntoProperties();
-			AddCommand(props.GetWild("command.help.", FileNameExt().AsInternal()), "",
-			        SubsystemType("command.help.subsystem."));
+			AddCommand(props.GetWild("command.helpbrowser.", FileNameExt().AsInternal()), "",
+			        SubsystemType("command.helpbrowser.subsystem."));
 			if (jobQueue.commandCurrent > 0) {
 				jobQueue.isBuilding = true;
 				Execute();
@@ -4103,13 +4125,7 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		break;
 
 	case IDM_HELP_SCITE: {
-			SelectionIntoProperties();
-			AddCommand(props.Get("command.scite.help"), "",
-			        SubsystemType(props.Get("command.scite.help.subsystem")[0]));
-			if (jobQueue.commandCurrent > 0) {
-				jobQueue.isBuilding = true;
-				Execute();
-			}
+		RunCommandFromProperties( "command.scite.help", "command.scite.help.subsystem");
 		}
 		break;
 
@@ -4130,6 +4146,17 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 			SetOverrideLanguage(cmdID - IDM_LANGUAGE);
 		}
 		break;
+	}
+}
+
+void SciTEBase::RunCommandFromProperties(const char* propName, const char* propSubsystemName)
+{
+	SelectionIntoProperties();
+	AddCommand(props.Get(propName), "",
+		SubsystemType(props.Get(propSubsystemName)[0]));
+	if (jobQueue.commandCurrent > 0) {
+		jobQueue.isBuilding = true;
+		Execute();
 	}
 }
 
