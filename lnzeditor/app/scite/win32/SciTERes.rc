@@ -58,6 +58,7 @@ BEGIN
 	MENUITEM "&Redo\tCtrl+Y",  				IDM_REDO
 	MENUITEM SEPARATOR
 	MENUITEM "Cu&t\tCtrl+X",				IDM_CUT
+	MENUITEM "Cut Line\tCtrl+L",	IDM_LINECUT
 	MENUITEM "&Copy\tCtrl+C",				IDM_COPY
 	MENUITEM "&Paste\tCtrl+V",				IDM_PASTE
 	MENUITEM "Duplicat&e\tCtrl+D",				IDM_DUPLICATE
@@ -69,7 +70,7 @@ BEGIN
 //	MENUITEM "Select t&o Brace\tCtrl+Shift+E",	IDM_SELECTTOBRACE
 	
 	// IDM_LINECUT is a custom IDM that sends SCI_LINECUT. The shortcut is already defined.
-	MENUITEM "Cut Line\tCtrl+L",	IDM_LINECUT
+	
 	MENUITEM "S&how Calltip\tCtrl+Shift+Space",	IDM_SHOWCALLTIP
 	MENUITEM "Complete S&ymbol\tCtrl+I",		IDM_COMPLETE
 	MENUITEM "Complete &Word\tCtrl+Enter",		IDM_COMPLETEWORD
@@ -105,61 +106,24 @@ BEGIN
 	MENUITEM "&Clear All Bookmarks",			IDM_BOOKMARK_CLEARALL
 END
 
-POPUP "&View"
-BEGIN
-	MENUITEM "Toggle &current fold",		IDM_EXPAND
-	MENUITEM "Toggle &all folds",		IDM_TOGGLE_FOLDALL
-	MENUITEM SEPARATOR
-	MENUITEM "Full Scree&n\tF11",		IDM_FULLSCREEN
-	MENUITEM "&Tool Bar",          			IDM_VIEWTOOLBAR
-	MENUITEM "Tab &Bar",          			IDM_VIEWTABBAR
-	MENUITEM "&Status Bar",          		IDM_VIEWSTATUSBAR
-	MENUITEM SEPARATOR
-	MENUITEM "&Whitespace\tCtrl+Shift+8", 	IDM_VIEWSPACE
-	MENUITEM "&End of Line\tCtrl+Shift+9",	IDM_VIEWEOL
-	MENUITEM "&Indentation Guides", 		IDM_VIEWGUIDES
-	MENUITEM "&Line Numbers",          		IDM_LINENUMBERMARGIN
-	MENUITEM "&Margin",          			IDM_SELMARGIN
-	MENUITEM "&Fold Margin",			IDM_FOLDMARGIN
-	MENUITEM "&Output\tF8",				IDM_TOGGLEOUTPUT
-	MENUITEM "&Parameters\tShift+F8",			IDM_TOGGLEPARAMETERS
-END
-
-//start ben modification
 POPUP "&Run"
 BEGIN
 	MENUITEM "&Run Script\tF5",					IDM_GO
 	MENUITEM "&Stop Script\tCtrl+.",					IDM_STOPEXECUTE
 	MENUITEM SEPARATOR
-	MENUITEM "Set &Arguments",				IDM_TOGGLEPARAMETERS
+	MENUITEM "Set &Arguments\tF8",				IDM_TOGGLEPARAMETERS
 	MENUITEM SEPARATOR
-	MENUITEM "Print File&name",					IDM_GO
-	MENUITEM "Show in &Explorer",				IDM_GO
+	MENUITEM "Print File&name",					IDM_TOOLS_PRINTFILENAME
+	MENUITEM "Show in &Explorer",				IDM_TOOLS_SHOWINEXPLORER
 END
-//end ben modification
 
 POPUP "&Tools"
 BEGIN
-	MENUITEM "&Compile\tCtrl+F7",		IDM_COMPILE
-	MENUITEM "&Build\tF7",				IDM_BUILD
-	MENUITEM "&Go\tF5",					IDM_GO
-	MENUITEM "&Stop Executing\tCtrl+Break",IDM_STOPEXECUTE
+	MENUITEM "&Documentation Viewer\t", 		IDM_HELP_DOCBROWSER
 	MENUITEM SEPARATOR
-	MENUITEM "&Next Message\tF4",		IDM_NEXTMSG
-	MENUITEM "&Previous Message\tShift+F4",IDM_PREVMSG
-	MENUITEM "Clear &Output\tShift+F5",	IDM_CLEAROUTPUT
-	MENUITEM "&Switch Pane\tCtrl+F6",	IDM_SWITCHPANE
-END
-
-POPUP "&Options"
-BEGIN
-	MENUITEM "&Always On Top",			IDM_ONTOP
-	MENUITEM "Open Files &Here",		IDM_OPENFILESHERE
-	MENUITEM "Vertical &Split",			IDM_SPLITVERTICAL
-	MENUITEM "&Wrap",			IDM_WRAP
-	MENUITEM "Wrap Out&put",			IDM_WRAPOUTPUT
-	MENUITEM "&Read-Only",				IDM_READONLY
-	MENUITEM SEPARATOR
+	MENUITEM "A&bbreviations File",		IDM_OPENABBREVPROPERTIES
+	MENUITEM "Inden&tation Settings\tCtrl+Shift+I",	IDM_TABSIZE
+	MENUITEM "Full Scree&n\tF11",		IDM_FULLSCREEN
 	POPUP "&Line End Characters"
 	BEGIN
 		MENUITEM "CR &+ LF",	IDM_EOL_CRLF
@@ -167,23 +131,91 @@ BEGIN
 		MENUITEM "&LF",		IDM_EOL_LF
 	END
 	MENUITEM "&Convert Line End Characters",	IDM_EOL_CONVERT
+	
+	
 	MENUITEM SEPARATOR
-	MENUITEM "Change Inden&tation Settings...\tCtrl+Shift+I",	IDM_TABSIZE
-	MENUITEM "Use &Monospaced Font\tCtrl+F11",	IDM_MONOFONT
+	// now the ones from the properties. Probably Window Spy, Window Info, etc.
+	
+	//~ MENUITEM "&Compile\tCtrl+F7",		IDM_COMPILE
+	//~ MENUITEM "&Build\tF7",				IDM_BUILD
+	//~ MENUITEM "&Go\tF5",					IDM_GO
+	//~ MENUITEM "&Stop Executing\tCtrl+Break",IDM_STOPEXECUTE
+	//~ MENUITEM SEPARATOR
+	//~ MENUITEM "&Next Message\tF4",		IDM_NEXTMSG
+	//~ MENUITEM "&Previous Message\tShift+F4",IDM_PREVMSG
+	//~ MENUITEM "Clear &Output\tShift+F5",	IDM_CLEAROUTPUT
+	//~ MENUITEM "&Switch Pane\tCtrl+F6",	IDM_SWITCHPANE
+END
+
+POPUP "&Options"
+BEGIN
+	//lnzScript
+	//Python
+	MENUITEM SEPARATOR
+	MENUITEM "&Global Options\tCtrl+;",		IDM_OPENGLOBALPROPERTIES
+	//lnzscript Options
+	//python Options
+	MENUITEM SEPARATOR
+	MENUITEM "&Wrap",			IDM_WRAP
+	MENUITEM "&Monospaced Font\tCtrl+F11",	IDM_MONOFONT
+	MENUITEM "&Status Bar",          		IDM_VIEWSTATUSBAR
+	MENUITEM SEPARATOR
+	// MENUITEM "&Whitespace\tCtrl+Shift+8", 	IDM_VIEWSPACE
+	MENUITEM "&View End of Lines\tCtrl+Shift+9",	IDM_VIEWEOL
+	MENUITEM "&Always On Top",			IDM_ONTOP
+END
+
+
+
+
+/*
+POPUP "&View"
+BEGIN
+	MENUITEM "Toggle &current fold",		IDM_EXPAND
+	MENUITEM "Toggle &all folds",		IDM_TOGGLE_FOLDALL
+	MENUITEM SEPARATOR
+	
+	MENUITEM "&Tool Bar",          			IDM_VIEWTOOLBAR
+	MENUITEM "Tab &Bar",          			IDM_VIEWTABBAR
+	MENUITEM SEPARATOR
+	//MENUITEM "&Indentation Guides", 		IDM_VIEWGUIDES
+	MENUITEM "&Line Numbers",          		IDM_LINENUMBERMARGIN
+	MENUITEM "&Margin",          			IDM_SELMARGIN
+	MENUITEM "&Fold Margin",			IDM_FOLDMARGIN
+	MENUITEM "&Output\tF8",				IDM_TOGGLEOUTPUT
+	MENUITEM "&Parameters\tShift+F8",			IDM_TOGGLEPARAMETERS
+END
+*/
+
+/*
+POPUP "&Options"
+BEGIN
+	
+	MENUITEM "Open Files &Here",		IDM_OPENFILESHERE
+	MENUITEM "Vertical &Split",			IDM_SPLITVERTICAL
+	
+	MENUITEM "Wrap Out&put",			IDM_WRAPOUTPUT
+	MENUITEM "&Read-Only",				IDM_READONLY
+	MENUITEM SEPARATOR
+	
+	MENUITEM SEPARATOR
+	
 	MENUITEM SEPARATOR
 	MENUITEM "Open Local &Options File",		IDM_OPENLOCALPROPERTIES
 	MENUITEM "Open &Directory Options File",		IDM_OPENDIRECTORYPROPERTIES
 	MENUITEM "Open &User Options File",		IDM_OPENUSERPROPERTIES
-	MENUITEM "Open &Global Options File\tCtrl+;",		IDM_OPENGLOBALPROPERTIES
-	MENUITEM "Open A&bbreviations File",		IDM_OPENABBREVPROPERTIES
+		
 	MENUITEM "Open Lua Startup Scr&ipt", 		IDM_OPENLUAEXTERNALFILE
 	MENUITEM SEPARATOR
 END // used: abcghlmoprstux
+*/
 
+/*
 POPUP "&Language"
 BEGIN
 	MENUITEM "", IDM_LANGUAGE
 END
+*/
 
 /*
 Ben - removed Buffers menu
@@ -198,11 +230,11 @@ END
 
 POPUP "&Help"
 BEGIN
-	MENUITEM "&Help\tF1", 				IDM_HELP
-#ifdef STATIC_BUILD
-	MENUITEM "&Sc1 Help",			IDM_HELP_SCITE
-	MENUITEM "&About Sc1",				IDM_ABOUT
-#else
+	MENUITEM "&Documentation Viewer\tF1", 		IDM_HELP_DOCBROWSER
+	MENUITEM "Documentation &Online\t", 		IDM_HELP_ONLINEDOC
+	MENUITEM "About This Editor\t", 		IDM_HELP_EDITORDOC
+	
+	MENUITEM SEPARATOR
 	MENUITEM "&SciTE Help",			IDM_HELP_SCITE
 	MENUITEM "&About Lnz SciTE",			IDM_ABOUT
 
@@ -535,7 +567,7 @@ BEGIN
 
 	"I", IDM_TABSIZE,   VIRTKEY, CONTROL, SHIFT
 
-	VK_F1, IDM_HELP, VIRTKEY
+	VK_F1, IDM_HELP_DOCBROWSER, VIRTKEY
 
 	VK_F2, IDM_BOOKMARK_NEXT, VIRTKEY
 	VK_F2, IDM_BOOKMARK_PREV, VIRTKEY, SHIFT
@@ -563,8 +595,8 @@ BEGIN
 	VK_F7, IDM_COMPILE,  VIRTKEY, CONTROL
 	VK_F7, IDM_BUILD,  VIRTKEY
 
-	VK_F8, IDM_TOGGLEOUTPUT, VIRTKEY
-	VK_F8, IDM_TOGGLEPARAMETERS, VIRTKEY, SHIFT
+	//VK_F8, IDM_TOGGLEOUTPUT, VIRTKEY
+	VK_F8, IDM_TOGGLEPARAMETERS, VIRTKEY
 
 	VK_F9, IDM_MACROLIST, VIRTKEY, SHIFT
 	VK_F9, IDM_MACROPLAY, VIRTKEY
@@ -580,9 +612,9 @@ BEGIN
 	VK_BACK, IDM_UNDO,  VIRTKEY, ALT
 	VK_BACK, IDM_REDO,  VIRTKEY, ALT, SHIFT
 	VK_CANCEL, IDM_STOPEXECUTE,  VIRTKEY, CONTROL
-	//bencustom
+	
 	// add Control-. as another way to cancel a script
-	".", IDM_STOPEXECUTE,  VIRTKEY, CONTROL
+	//".", IDM_STOPEXECUTE,  VIRTKEY, CONTROL
 	//";", IDM_OPENGLOBALPROPERTIES,  VIRTKEY, CONTROL
 
 
