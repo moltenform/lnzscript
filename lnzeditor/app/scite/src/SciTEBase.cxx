@@ -3361,15 +3361,25 @@ bool SciTEBase::GetATempFileName(TCHAR* szTempName)
 	const DWORD BUFSIZE = 512;
 	TCHAR lpPathBuffer[BUFSIZE]; 
 	//TCHAR* l = lpPathBuffer;
-	if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; // l = "."; default to current directory if the other one failed.
-	if (! GetTempFileName(lpPathBuffer, TEXT("lnz_"), 0, szTempName))
+	// Windows GetTempPath
+	// if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; // l = "."; default to current directory if the other one failed.
+	
+	FilePath tmpdir(GetSciteDefaultHome());
+	strcpy(lpPathBuffer, tmpdir.AsInternal());
+	
+	int np = strlen(lpPathBuffer);
+	lpPathBuffer[np++] = '\\';lpPathBuffer[np++] = 't';lpPathBuffer[np++] = 'm';lpPathBuffer[np++] = 'p';lpPathBuffer[np++] = '\0';
+	
+	//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "path is :");
+	//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, lpPathBuffer);
+	//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "\n\n");
+	
+	if (! GetTempFileName(lpPathBuffer, TEXT("lnz"), 0, szTempName))
 		return false;
 	// hard code the extension on:
 	int nL = strlen(szTempName);
-	szTempName[nL++] = '.';
-	szTempName[nL++] = 'p';
-	szTempName[nL++] = 'y';
-	szTempName[nL++] = '\0';
+	//szTempName[nL++] = '.'; szTempName[nL++] = 'p'; szTempName[nL++] = 'y'; szTempName[nL++] = '\0';
+	szTempName[nL++] = '.'; szTempName[nL++] = 'j'; szTempName[nL++] = 's'; szTempName[nL++] = '\0';
 	return true;
 #else
 	return false;
@@ -3378,6 +3388,8 @@ bool SciTEBase::GetATempFileName(TCHAR* szTempName)
 
 bool SciTEBase::GetATempFileNameClear()
 {
+	// Instead, use a Lnzscript to clear the temp files. A lot easier.
+	/*
 	const DWORD BUFSIZE = 512;
 	TCHAR lpPathBuffer[BUFSIZE]; 
 	if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; 
@@ -3405,6 +3417,8 @@ bool SciTEBase::GetATempFileNameClear()
 		if (FindNextFile(hSearch, &myFileData) == 0) break; // stop when none left
 	}
 	return true;
+	*/
+	return false;
 }
 
 void SciTEBase::MenuCommand(int cmdID, int source) {
@@ -3903,24 +3917,21 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 
 	case IDM_GO: {
 
-			SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "hello \n");
-			SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, FileNameExt().AsInternal() );
+			//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, FileNameExt().AsInternal() );
 		
-			bool bUntitled = CurrentBuffer()->IsUntitled();
-					// or ilePath.IsUntitled()
-			// see if the name is Untitled
+			bool bUntitled = CurrentBuffer()->IsUntitled();  // possibly also filePath.IsUntitled()
+			
 			if (bUntitled)
 			{
 				
 				TCHAR szTempName[512];
 				bool bCouldCreateTemp = GetATempFileName(szTempName);
 				if (!bCouldCreateTemp) {SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "Error: Could not create temp. file"); return;}
+						
 				FilePath fpTempName(szTempName);
 				SaveBuffer(fpTempName); // cool, we saved a buffer someplace. Next step is to run this thing?
 				
-				SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "\nlooks like im here\n" );
-				SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, szTempName);
-				
+				//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, szTempName);
 				
 				// remember old values
 				SString oldFilePath=props.Get("FilePath"); SString oldFileDir=props.Get("FilePath"); SString oldFileName=props.Get("FileName");  SString oldFileExt=props.Get("FileExt");  SString oldFileNameExt=props.Get("FileNameExt"); 
@@ -3932,7 +3943,7 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 				//props.Set("FileNameExt", fpTempName.Name().AsFileSystem());
 				props.Set("FileNameExt", fpTempName.AsFileSystem()); // give it the entire path
 				
-				// Now run it as JavaScript
+				// Now run it as JavaScript /?
 				
 				SelectionIntoProperties();
 				long flags = 0;
@@ -3954,9 +3965,9 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 				// Restore the property settings.
 				props.Set("FilePath", oldFilePath.c_str()); props.Set("FileDir", oldFileDir.c_str());	props.Set("FileName", oldFileName.c_str());props.Set("FileExt", oldFileExt.c_str()); props.Set("FileNameExt", oldFileNameExt.c_str());
 				
-				
-				GetATempFileNameClear();
+								
 				//This won't work - in the same thread...
+				// we'll have to clean up files later...
 				//pause a bit
 				//::Sleep(900);
 				
