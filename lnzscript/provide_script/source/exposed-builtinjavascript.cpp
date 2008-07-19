@@ -49,7 +49,7 @@
 ///Function:Array.concat
 ///Arguments:array ar2
 ///Returns:array arCombined
-///Doc:Returns an array consisting of the elements of the original array followed bt elements of the second arraty. (Combines two arrays).
+///Doc:Returns an array consisting of the elements of the original array followed by elements of the second arraty. (Combines two arrays).
 ///Implementation:Javascript
 {}
 ///Function:Array.pop
