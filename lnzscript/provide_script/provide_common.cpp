@@ -274,4 +274,13 @@ namespace launchorz_functions
 		
 		return QString(buffer);
 	}
+
+	/*QScriptValue g_ProvideScript_ThrowException_WrongType(QScriptContext *ctx, char* functionName, int nArgument, const char * strType)
+	{
+		QString strExceptionMessage;
+		strExceptionMessage.sprintf("Function %s: argument %d is not a %s.",functionName,nArgument,strType);
+		
+		return ctx->throwError(strExceptionMessage);
+	}*/
+	
 }
