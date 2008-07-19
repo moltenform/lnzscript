@@ -24,9 +24,9 @@
 #endif
 
 #ifdef STATIC_BUILD
-const char appName[] = "Sc1";
+const char appName[] = "Lnz Sc1";
 #else
-const char appName[] = "SciTE";
+const char appName[] = "Lnz SciTE";
 #endif
 
 long SciTEKeys::ParseKeyCode(const char *mnemonic) {
@@ -1376,7 +1376,7 @@ bool SciTEWin::IsStdinBlocked() {
 }
 
 void SciTEWin::MinimizeToTray() {
-	char n[64] = "SciTE";
+	char n[64] = "Lnz SciTE";
 	NOTIFYICONDATA nid;
 	memset(&nid, 0, sizeof(nid));
 	nid.cbSize = sizeof(nid);

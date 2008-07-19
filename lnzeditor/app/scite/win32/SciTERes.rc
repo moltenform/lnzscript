@@ -204,14 +204,14 @@ BEGIN
 	MENUITEM "&About Sc1",				IDM_ABOUT
 #else
 	MENUITEM "&SciTE Help",			IDM_HELP_SCITE
-	MENUITEM "&About SciTE",			IDM_ABOUT
-#endif
+	MENUITEM "&About Lnz SciTE",			IDM_ABOUT
+
 END
 
 END
 
 ABOUT DIALOGEX 26, 41, 350, 242
-CAPTION "About SciTE"
+CAPTION "About Lnz SciTE"
 STYLE DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 FONT 8, "MS Shell Dlg"
 BEGIN
@@ -622,13 +622,13 @@ BEGIN
 	BEGIN
 		BLOCK "040904b0"
 		BEGIN
-			VALUE	"CompanyName",	"Neil Hodgson neilh@scintilla.org\0"
-			VALUE	"FileDescription",	"SciTE - a Scintilla based Text Editor\0"
+			VALUE	"CompanyName",	"Ben Fisher, SciTE by Neil Hodgson neilh@scintilla.org\0"
+			VALUE	"FileDescription",	"Lnz SciTE - Launchorz Editor\0"
 			VALUE	"FileVersion",	"1.76\0"
 			VALUE	"InternalName",	"SciTE\0"
 			VALUE	"LegalCopyright",	"Copyright 1998-2008 by Neil Hodgson\0"
 			VALUE	"OriginalFilename",	"SciTE.EXE\0"
-			VALUE	"ProductName",	"SciTE\0"
+			VALUE	"ProductName",	"Launchorz Editor, SciTE for lnzscript\0"
 			VALUE	"ProductVersion",	"1.76\0"
 		END
 	END

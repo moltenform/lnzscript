@@ -1730,7 +1730,7 @@ BOOL SciTEWin::AboutMessage(HWND hDlg, UINT message, WPARAM wParam) {
 	case WM_INITDIALOG:
 		LocaliseDialog(hDlg);
 		SetAboutMessage(::GetDlgItem(hDlg, IDABOUTSCINTILLA),
-		                staticBuild ? "Sc1  " : "SciTE");
+		                staticBuild ? "Lnz Sc1  " : "Lnz SciTE");
 		return TRUE;
 
 	case WM_CLOSE:
