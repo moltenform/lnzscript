@@ -58,7 +58,7 @@ BEGIN
 	MENUITEM "&Redo\tCtrl+Y",  				IDM_REDO
 	MENUITEM SEPARATOR
 	MENUITEM "Cu&t\tCtrl+X",				IDM_CUT
-	MENUITEM "Cut Line\tCtrl+L",	IDM_LINECUT
+	MENUITEM "Cut Line\tCtrl+Shift+X",			IDM_LINECUT
 	MENUITEM "&Copy\tCtrl+C",				IDM_COPY
 	MENUITEM "&Paste\tCtrl+V",				IDM_PASTE
 	MENUITEM "Duplicat&e\tCtrl+D",				IDM_DUPLICATE
@@ -617,6 +617,9 @@ BEGIN
 	//".", IDM_STOPEXECUTE,  VIRTKEY, CONTROL
 	//";", IDM_OPENGLOBALPROPERTIES,  VIRTKEY, CONTROL
 	"R", IDM_WRAP, VIRTKEY, CONTROL, ALT
+	"L", IDM_LINEDELETE, VIRTKEY, CONTROL
+	"L", IDM_LINECUT, VIRTKEY, CONTROL, SHIFT
+	"X", IDM_LINECUT, VIRTKEY, CONTROL, SHIFT
 
 	// Workaround for the most common case where SciTE undo and
 	// redo buttons don't enable/disable when you expect.

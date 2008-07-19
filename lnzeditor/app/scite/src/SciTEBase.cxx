@@ -3595,6 +3595,9 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 	case IDM_DUPLICATE:
 		SendPane(source, SCI_SELECTIONDUPLICATE);
 		break;
+	case IDM_LINEDELETE:
+		SendPane(source, SCI_LINEDELETE);
+		break;
 	case IDM_LINECUT:
 		SendPane(source, SCI_LINECUT);
 		break;
