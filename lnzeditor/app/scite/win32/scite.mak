@@ -17,7 +17,7 @@
 DIR_BIN=..\bin
 
 PROG=$(DIR_BIN)\SciTE.exe
-PROGSTATIC=$(DIR_BIN)\Sc1.exe
+#PROGSTATIC=$(DIR_BIN)\Sc1.exe
 DLLS=$(DIR_BIN)\Scintilla.dll $(DIR_BIN)\SciLexer.dll
 
 !IFNDEF VENDOR
@@ -286,7 +286,9 @@ CXXFLAGS=$(CXXFLAGS) $(INCLUDEDIRS)
 CCFLAGS=$(CCFLAGS) $(INCLUDEDIRS)
 
 
-ALL: $(PROG) $(PROGSTATIC) $(DLLS) $(PROPS)
+#ALL: $(PROG) $(PROGSTATIC) $(DLLS) $(PROPS)
+#don't copy the props. Don't build static.
+ALL: $(PROG) $(DLLS)
 
 clean:
 	del /q $(DIR_BIN)\*.exe *.o *.obj $(DIR_BIN)\*.dll *.res *.map $(DIR_BIN)\*.exp $(DIR_BIN)\*.lib $(DIR_BIN)\*.pdb
@@ -441,24 +443,24 @@ $(DIR_BIN)\yaml.properties:	..\src\yaml.properties
 SciTERes.res: SciTERes.rc ..\src\SciTE.h ..\..\scintilla\win32\PlatformRes.h
 	$(RC) $(INCLUDEDIRS) -fo$@ SciTERes.rc
 
-Sc1Res.res: SciTERes.rc ..\src\SciTE.h ..\..\scintilla\win32\PlatformRes.h
-	$(RC) $(INCLUDEDIRS) -dSTATIC_BUILD -fo$@ SciTERes.rc
+#Sc1Res.res: SciTERes.rc ..\src\SciTE.h ..\..\scintilla\win32\PlatformRes.h
+#	$(RC) $(INCLUDEDIRS) -dSTATIC_BUILD -fo$@ SciTERes.rc
 
 !IF "$(VENDOR)"=="MICROSOFT"
 
 $(PROG): $(OBJS) SciTERes.res
 	$(LD) $(LDFLAGS) -OUT:$@ $** $(LIBS)
 
-$(PROGSTATIC): $(OBJSSTATIC) $(LEXOBJS) Sc1Res.res
-	$(LD) $(LDFLAGS) -OUT:$@ $** $(LIBS)
+#$(PROGSTATIC): $(OBJSSTATIC) $(LEXOBJS) Sc1Res.res
+#	$(LD) $(LDFLAGS) -OUT:$@ $** $(LIBS)
 
 !ELSE
 
 $(PROG): $(OBJS) SciTERes.res
 	$(LD) $(LDFLAGS) -Tpe -aa c0w32 $(OBJS), $@, ,$(LIBS), , SciTERes.res
 
-$(PROGSTATIC): $(OBJSSTATIC) $(LEXOBJS) Sc1Res.res
-	$(LD) $(LDFLAGS) -Tpe -aa c0w32 $(OBJSSTATIC) $(LEXOBJS), $@, ,$(LIBS), , Sc1Res.res
+#$(PROGSTATIC): $(OBJSSTATIC) $(LEXOBJS) Sc1Res.res
+#	$(LD) $(LDFLAGS) -Tpe -aa c0w32 $(OBJSSTATIC) $(LEXOBJS), $@, ,$(LIBS), , Sc1Res.res
 
 !ENDIF
 
