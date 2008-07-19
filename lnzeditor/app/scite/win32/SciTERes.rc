@@ -95,7 +95,7 @@ BEGIN
 	MENUITEM "Find Previou&s\tShift+F3",		IDM_FINDNEXTBACK
 	MENUITEM "F&ind in Files...\tCtrl+Shift+F",	IDM_FINDINFILES
 	MENUITEM "R&eplace...\tCtrl+H",			IDM_REPLACE
-	MENUITEM "Incrementa&l Search...\tCtrl+Alt+I",	IDM_INCSEARCH
+	MENUITEM "Incrementa&l Search...\tCtrl+Alt+F",	IDM_INCSEARCH
 	MENUITEM SEPARATOR
 	MENUITEM "Find Selection\tCtrl+F3",		IDM_FINDNEXTSEL
 	MENUITEM SEPARATOR
@@ -156,7 +156,7 @@ BEGIN
 	//lnzscript Options
 	//python Options
 	MENUITEM SEPARATOR
-	MENUITEM "&Wrap",			IDM_WRAP
+	MENUITEM "&Wrap\tCtrl+Alt+R",			IDM_WRAP
 	MENUITEM "&Monospaced Font\tCtrl+F11",	IDM_MONOFONT
 	MENUITEM "&Status Bar",          		IDM_VIEWSTATUSBAR
 	MENUITEM SEPARATOR
@@ -616,7 +616,7 @@ BEGIN
 	// add Control-. as another way to cancel a script
 	//".", IDM_STOPEXECUTE,  VIRTKEY, CONTROL
 	//";", IDM_OPENGLOBALPROPERTIES,  VIRTKEY, CONTROL
-
+	"R", IDM_WRAP, VIRTKEY, CONTROL, ALT
 
 	// Workaround for the most common case where SciTE undo and
 	// redo buttons don't enable/disable when you expect.
@@ -626,7 +626,7 @@ BEGIN
 	"X", IDM_CUT,  VIRTKEY, CONTROL
 	"C", IDM_COPY,  VIRTKEY, CONTROL
 
-	"I", IDM_INCSEARCH,          VIRTKEY, CONTROL, ALT
+	"F", IDM_INCSEARCH,          VIRTKEY, CONTROL, ALT
 END
 
 IDR_CLOSEFILE BITMAP "closefile.bmp"
