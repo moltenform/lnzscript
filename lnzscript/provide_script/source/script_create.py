@@ -21,6 +21,7 @@ class ExposedFunctionArg():
 		method = 'is' + qtconversioncheck[self.type] # .isString() .isNumber(), etc
 		if self.isWindowArg(): return ''
 		else: return 'if (!ctx->argument(%d).%s)'%(self.n,method) +' return ctx->throwError(QScriptContext::TypeError,"%s: argument %d is not a %s");'%(strFnName,self.n,self.type)
+		#else: return 'if (!ctx->argument(%d).%s)'%(self.n,method) +' return g_ProvideScript_ThrowException_WrongType(;'%(strFnName,self.n,self.type)
 	def renderAssignVar(self, strFnName):
 		method = 'to' + qtconversion[self.type] # .tosString() .toNumber(), etc
 		if self.isWindowArg(): return 'QScriptValue sv_val_window=(ctx->argument(%d)); QString window = util_Au3WindowParseAndSetMode(sv_val_window), strText = util_Au3WindowGetTextParamFromObj(sv_val_window);'%self.n
