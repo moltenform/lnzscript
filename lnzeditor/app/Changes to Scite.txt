@@ -2,8 +2,8 @@
 Changes made to Scite
 ===============
 Menubar
-	Removed buffers menu
-
+	Changed menu structure
+	
 	Edit menu
 		Removed "Match & Brace"
 		Removed "Select to Brace"
@@ -12,22 +12,63 @@ Menubar
 	
 	Search menu
 		Added "Find selection"
-	
-	Removed buffers menu, and things trying to modify it
-	
-	Tried to add Ctrl+; for properties, not done yet.
-	
-	Added those other new menus
 
+	
+	Tools menu
+		Added Show in Explorer
+			command.lnzshow_explorer
+			command.lnzshow_explorer.subsystem
+		Added Show filename
+			command.lnzprintname
+			command.lnzprintname.subsystem =
+	
+	Help menu
+		Added Doc Browser
+			command.helpbrowser.py = 
+			command.helpbrowser.subsystem.py =
+		Added online docs
+			command.scite.helponline
+			command.scite.helponline.subsystem
+		Added editor doc
+			command.scite.helpeditor
+			command.scite.helpeditor.subsystem
+			
+	Options menu
+		Currently, languages shown are limited to 2.
+		This is so that the .properties appear in the right location
+	
+	Removed buffers menu
+	
 Other
-	Change properties to look in "./properties"
-	
-	SciteBase.cxx - changed about dialog
-	
-	Changed icon. 
-	
+
 	Adding "run without save" feature
 		Creates a temporary file and runs it.
 		Presumably handy for one-time scripts
+		For cleaning temp files,
+			command.lnzcleanup
+			command.lnzcleanup.subsystem
+
+	Change properties to look in "./properties"
+	
+	
+
+Cosmetic
+
+	Changed icon. 
+	
+	SciteBase.cxx - changed about dialog
+	
+	Change app name to Lnz Scite
+	
+	changed resource name (right-click properties)
+
+
+Planned
+=============
+	Clean temp files on app close, not on buffer close
+	Add languages to menu more gracefully.
+	
+	Ctrl+; and Ctrl+. shortcuts in app, not user.shortcuts
+	
 	
 	
