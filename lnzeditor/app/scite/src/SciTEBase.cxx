@@ -586,7 +586,8 @@ void SciTEBase::SetAboutMessage(WindowID wsci, const char *appTitle) {
 		SetAboutStyle(wsci, 0, ColourDesired(0xff, 0xff, 0xff));
 		Platform::SendScintilla(wsci, SCI_STYLESETSIZE, 0, fontSize);
 		Platform::SendScintilla(wsci, SCI_STYLESETBACK, 0, ColourDesired(0, 0, 0x80).AsLong());
-		AddStyledText(wsci, appTitle, 0);
+		//AddStyledText(wsci, appTitle, 0); // we changed appTitle to be Lnz Scite
+		AddStyledText(wsci, "SciTE", 0);
 		AddStyledText(wsci, "\n", 0);
 		SetAboutStyle(wsci, 1, ColourDesired(0, 0, 0));
 		int trsSty = 5; // define the stylenumber to assign font for translators.
