@@ -51,36 +51,42 @@
 ///Returns:array arCombined
 ///Doc:Returns an array consisting of the elements of the original array followed by elements of the second arraty. (Combines two arrays).
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Array.pop
 ///Arguments:
 ///Returns:value
 ///Doc:The last element of the array is removed from the array and returned.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Array.push
 ///Arguments:value
 ///Returns:int nLength
 ///Doc:A new element is appended onto the end of the array. The new length of the array is returned.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Array.shift
 ///Arguments:
 ///Returns:value
 ///Doc:The first element of the array is removed from the array and returned.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Array.unshift
 ///Arguments:value
 ///Returns:
 ///Doc:The value is prepended to the array, increasing the length by 1 and preserving the existing elements of the array.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Array.join
 ///Arguments:string seperator
 ///Returns:string strJoined
 ///Doc:Combines an array of strings into one long string, delimited by seperator.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Array.slice
 ///Arguments:int nStart, int nEnd
@@ -88,18 +94,21 @@
 ///Doc:Returns a new array that has elements from the slice of array.
 ///Implementation:Javascript
 ///Example: var a =[1,2,3,4,5]; b = a.slice(0,3); //1 2 3
+///InstanceMethod:true
 {}
 ///Function:Array.reverse
 ///Arguments:
 ///Returns:array arReversed
 ///Doc:Reverses order of items in array.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Array.sort
 ///Arguments:function fnCompare=null
 ///Returns:array arSorted
 ///Doc:Sorts elements of array. You can provide a custom comparison function. The comparison function should take 2 arguments, x,y, and return -1 if x<y, 0 if x==y, or 1 if x>y.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 //================{}
 ///Function:String.fromCharCode
@@ -115,12 +124,14 @@
 ///Doc:Returns string containing character at position pos (where 0 refers to the first character).
 ///Example: var s = "hello"; var h = s.charAt(0);
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.charCodeAt
 ///Arguments:int nIndex
 ///Returns:int nUnicode
 ///Doc:Returns unicode or ascii value of character at position pos (where 0 refers to the first character).
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.indexOf
 ///Arguments:string strSearch, int nPosition=0
@@ -128,12 +139,14 @@
 ///Doc:Searches for strSearch inside the string, and returns the index at which it is found. If the string is not found, -1 is returned. Provide a position to specify an index to start searching at.
 ///Example: var s = "what is the difference"; if (s.indexOf('the')!=-1) print('the sentence contained "the"');
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.lastIndexOf
 ///Arguments:string strSearch, int nPosition=nLength
 ///Returns:int nIndex
 ///Doc:Searches for strSearch backwards (from right to left) inside the string, and returns the index at which it is found. If the string is not found, -1 is returned. Provide a position to specify an index to start searching at.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.split
 ///Arguments:string strSeperator
@@ -141,6 +154,7 @@
 ///Doc:Splits input string into an array of substrings. Call .split('') to split into characters. A RegExp object can also be passed.
 ///Example: var s = "what is the difference"; var arWords = s.split(' '); //splits into array of words
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.substring
 ///Arguments:int nStart, int nEnd=nLength
@@ -148,18 +162,21 @@
 ///Doc:Return substring of the input. If an end index is not provided, returns the string from the nth position to the end of the string.
 ///Example: var s = "abcdefg"; var sSlice = s.substring(0,3); //abc
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.toLowerCase
 ///Arguments:
 ///Returns:string strLower
 ///Doc:Convert string to lower case.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.toUpperCase
 ///Arguments:
 ///Returns:string strUpper
 ///Doc:Convert string to upper case.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.match
 ///Arguments:RegExp re
@@ -167,30 +184,35 @@
 ///Doc: Matches regular expression. Returns string matched if successful. If no match, returns null.
 ///Implementation:Javascript
 ///Example:var re=/(a)(b)/; print(s.replace(re, '$2$1')); //replaces ab with ba in the string.
+///InstanceMethod:true
 {}
 ///Function:String.replace 
 ///Arguments:RegExp re, string strReplaceValue/function fnReplace
 ///Returns:string strResult
 ///Doc: Use regular expression to replace in string. If regular expression is global, such as /a/g, then replaces all instances. Replacement string can contain $0, referring to matched string, or $1, referring to first match group and so on. Replacement function, if given, will be passed string, and is expected to return a string.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.search
 ///Arguments:RegExp re
 ///Returns:int nIndex
 ///Doc: Searches for regular expression in string. If found, returns position in string, otherwise returns -1.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.slice
 ///Arguments:int nStart, int nEnd
 ///Returns:string strSlice
 ///Doc: Return substring from nStart to nEnd. If start is negative, it is treated as (sourceLength+start) where sourceLength is the length of the string. If end is negative, it is treated as (sourceLength+end) where sourceLength is the length of the string.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:String.replace
 ///Arguments:string strFind, string strReplaceValue
 ///Returns:string strResult
 ///Doc: Replace one instance of strFind with strReplaceValue. Note that if a regular expression is passed, behavior is different.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 //================
 
@@ -199,6 +221,7 @@
 ///Returns:string strNumber
 ///Doc: Convert number to string, in the given base.
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Number.toFixed
 ///Arguments:int nDigits
@@ -206,18 +229,21 @@
 ///Doc: Convert number to string, with given number of decimal digits.
 ///Implementation:Javascript
 ///Example: var n = 1.55555; print(n.toFixed(2));
+///InstanceMethod:true
 {}
 ///Function:Number.toExponential
 ///Arguments:
 ///Returns:string strNumber
 ///Doc: Return number in exponential form (scientific notation).
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Number.toPrecision
 ///Arguments:int nDigits
 ///Returns:string strNumber
 ///Doc: Return number with precision (uses rounding and scientific notation as necessary).
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 
 //================
@@ -356,6 +382,7 @@
 ///Doc:Returns representation of date as a string. 
 ///Example: var date = Date.parse('Janurary 7 1980'); var s = date.toString();
 ///Implementation:Javascript
+///InstanceMethod:true
 {}
 ///Function:Date.getTime
 ///Arguments:
@@ -407,6 +434,7 @@
 ///Doc:Performs regex match on string, and returns an array of results. The first element of the array is the found string, and the remaining are captured subgroups.
 ///Implementation:Javascript
 ///Example:var re=/(\d+),(\d+)/; var a = re.exec('12-2456'); //item 1 is 12, item 2 is 2456
+///InstanceMethod:true
 {}
 
 

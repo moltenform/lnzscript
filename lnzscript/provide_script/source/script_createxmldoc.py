@@ -88,10 +88,10 @@ def createDoc():
 	fout = open(r'documentation.xml','w')
 	fout.write('<?xml version="1.0" encoding="UTF-8"?>')
 	fout.write('<?xml-stylesheet type="text/xsl" href="viewdoc.xsl"?>')
-	fout.write('<launchorzdoc version="0.1">')
+	fout.write('<launchorzdoc version="0.2">')
 	
 	i = 0
-	#actually, don't sort the keys - put "launchors" before "language"
+	#actually, don't sort the keys, so that "launchors" is before "language"
 	for key in sections.keys():
 		section = sections[key]
 		fout.write('<section name="%s">'%xmlescape(section.name))
@@ -103,7 +103,9 @@ def createDoc():
 				i+=1
 				if function.functionname.startswith('_'): continue #this is an undocumented function; don't include it.
 				
-				fout.write('<function name="%s" args="%s" returns="%s" impl="%s">'%(xmlescape(function.functionname),xmlescape(function.args),xmlescape(function.returns),xmlescape(function.implementation)))
+				if function.instanceMethod==True: sInstanceParam = ' instance="true" '
+				else: sInstanceParam = ''
+				fout.write('<function name="%s" args="%s" returns="%s" impl="%s"%s>'%(xmlescape(function.functionname),xmlescape(function.args),xmlescape(function.returns),xmlescape(function.implementation),sInstanceParam))
 				if function.doc: fout.write('<doc>%s</doc>'%xmlescape(function.doc))
 				if function.example: fout.write('<example>%s</example>'%xmlescape(function.example))
 				fout.write('</function>')

@@ -38,6 +38,7 @@ class ExposedFunction():
 	args = ''
 	returns = ''
 	implementation = None # 'c++_au3' #default implementation
+	instanceMethod = False
 	def getImplName(self): 
 		return 'impl_' + self.namespace.lower() + '_' + self.functionname.lower()
 	
@@ -165,12 +166,16 @@ def parse(s, AllExposed = None):
 				currentFn.args = data #don't parse yet
 			elif param=='Doc':
 				currentFn.doc = data #don't parse yet
-			elif param=='Example': #is this defined in C++, or C++Qt, or JavaScript?
+			elif param=='Example':
 				currentFn.example = data
 			elif param=='Returns':
 				currentFn.returns = data #don't parse yet
-			elif param=='Implementation': #is this defined in C++, or C++Qt, or JavaScript?
+			elif param=='Implementation':
 				currentFn.implementation = data
+			elif param=='InstanceMethod':
+				if data=='true': currentFn.instanceMethod=True
+				elif data=='false': currentFn.instanceMethod=False
+				else: raise Exception, 'Function %s, instanceMethod parameter should be true or false, not %s' %(currentFn.functionname, data)
 			else:
 				raise 'Param not recognized: '+param
 			

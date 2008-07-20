@@ -108,7 +108,8 @@ body {
 			<xsl:if test="../@name != '(Global)'"><xsl:value-of select="../@name"/>.</xsl:if>
 			<xsl:value-of select="@name"/>
 			<blockquote>
-			<i>Syntax : </i> <xsl:if test="../@name != '(Global)'"><xsl:value-of select="../@name"/>.</xsl:if><xsl:value-of select="@name"/>
+			<!-- If an instance method, a.foo(). If a global method, foo(). If a static method, Class.foo() -->
+			<i>Syntax : </i> <xsl:choose><xsl:when test="@instance='true'">a.</xsl:when><xsl:when test="../@name != '(Global)'"><xsl:value-of select="../@name"/>.</xsl:when></xsl:choose><xsl:value-of select="@name"/>
 			( <xsl:value-of select="@args"/> )<br/>
 			<xsl:if test="@returns != ''"><i>Returns : </i> <xsl:value-of select="@returns"/><br/></xsl:if>
 			<br/>
