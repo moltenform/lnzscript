@@ -10,10 +10,17 @@ Bugs
 Important changes
 	designate properties files starting with _ not to appear in menu
 	
+Doc viewer
+	mytool.exe $(HWND)
+	which runs Scitetool.exe insert 15325 "the text"
+	python documentation?
+
+Color picker feature
+	Use lnzscript to put it together
 
 Do on Monday
 ------------------
-After compiling, check that these changes are correct:
+After compiling, check that these (already done) changes are correct:
 	About dialog says "lnz scite in wrong place"
 	Document user.shortcuts additions
 	change things so that Ctrl+L deletes line, Ctrl+Shift+X and Ctrl+Shift+L cuts line
@@ -36,10 +43,12 @@ Documentation
 	
 	Document '<std.js>' features
 	Document for(23 feature
+	Document argv in scripts, __included in scripts
 	
 C++
 	Add @'c:\test' feature
 
+Make sure to test everything in a directory with spaces in the path
 
 
 After 0.2 release
@@ -47,7 +56,11 @@ After 0.2 release
 Bugs
 	command.lnzcleanup is called on buffer close, not app close
 	in the "Options" menu, only 2 languages are included regardless of settings. not elegant
+	scite_msg.exe
+		Why does one need to add \0? \040 for spaces? Seems like something might be wrong
 	
+Cosmetic
+	In options menu, say "Python options" not "open python.properties"
 
 Features
 	add a way to detect the Python directory
@@ -60,9 +73,23 @@ Features
 		should be able to just write command.go.*.py=pythonw -u "$(FileNameExt)" $(args)
 		which should add quoting of arguments, and just as many arguments as needed
 
+	Add smartwin features
+		http://smartwinlib.org/doc/class_in_dialog.html
+		Dialog.input
+		Dialog.choice http://smartwinlib.org/doc/class_choice_string.html
+		Dialog.openFile
+		Dialog.saveFile
+		
+Cleanup
+	make g_nircmd_directory string a static member, not a global variable
+	add "licenses" directory in output
 
 Long term
 -------------
+End goal: a launchy that doesn't have to index at all
+
 Document IDM changes/additions, provide them to Lua with the .iface file
 
-Ctrl+; and Ctrl+. are set by user.shortcuts, instead of in the C++ code. Maybe slightly less good.
+Cleanup
+	Ctrl+; and Ctrl+. are set by user.shortcuts, instead of in the C++ code. Maybe slightly less good.
+
