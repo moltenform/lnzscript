@@ -58,6 +58,7 @@ Bugs
 	in the "Options" menu, only 2 languages are included regardless of settings. not elegant
 	scite_msg.exe
 		Why does one need to add \0? \040 for spaces? Seems like something might be wrong
+	for include(), 
 	
 Cosmetic
 	In options menu, say "Python options" not "open python.properties"
@@ -83,6 +84,10 @@ Features
 Cleanup
 	make g_nircmd_directory string a static member, not a global variable
 	add "licenses" directory in output
+	
+Installer
+	Optionally (but on by default) associates .js files with the editor.
+	I considered the extension .jsz, but using .js means that files will be highlighted in other editors
 
 Long term
 -------------
