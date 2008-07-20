@@ -1,0 +1,68 @@
+LnzEditor Plans
+=================
+
+High Priority
+------------------
+Bugs
+	abbrev.properties in wrong place. probably constant. "..\abbrev" -> "abbrev"
+	Options directory still incorrect?
+
+Important changes
+	designate properties files starting with _ not to appear in menu
+	
+
+Do on Monday
+------------------
+After compiling, check that these changes are correct:
+	About dialog says "lnz scite in wrong place"
+	Document user.shortcuts additions
+	change things so that Ctrl+L deletes line, Ctrl+Shift+X and Ctrl+Shift+L cuts line
+	add Ctrl+E , Ctrl+Shift+E for show name in explorer and so on
+
+
+Before 0.2 release
+---------------
+Documentation
+	
+	Configuration
+		command.scite.helponline
+		see _lnzscite.properties for what to define
+	
+	About this editor
+	Write use cases
+		-quick one-off scripts
+		project dependencies in visual studio
+		open websites in different tabs
+	
+	Document '<std.js>' features
+	Document for(23 feature
+	
+C++
+	Add @'c:\test' feature
+
+
+
+After 0.2 release
+---------------
+Bugs
+	command.lnzcleanup is called on buffer close, not app close
+	in the "Options" menu, only 2 languages are included regardless of settings. not elegant
+	
+
+Features
+	add a way to detect the Python directory
+		this could be done with an lnzscript .js file
+		findpython.js searches for c:\python30\python.exe, c:\python21\Python.exe, until match
+		then writes a text file like _pythondir.properties
+		note that "import nonexistantfile" doesn't show an error
+		
+	passing arguments to a run command
+		should be able to just write command.go.*.py=pythonw -u "$(FileNameExt)" $(args)
+		which should add quoting of arguments, and just as many arguments as needed
+
+
+Long term
+-------------
+Document IDM changes/additions, provide them to Lua with the .iface file
+
+Ctrl+; and Ctrl+. are set by user.shortcuts, instead of in the C++ code. Maybe slightly less good.
