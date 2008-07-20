@@ -1,6 +1,5 @@
 
 
-
 if (argv.length > 1)
 	print(argv[1]);
 
