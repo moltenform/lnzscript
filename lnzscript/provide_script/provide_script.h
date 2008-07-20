@@ -26,6 +26,7 @@ public:
 
 	
 private:
+	// QString processLiteralStrings(const QString& strInput)
 	QScriptEngine engine;
 };
 

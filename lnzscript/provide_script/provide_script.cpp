@@ -48,8 +48,9 @@ StringResult ProvideScript::EvalScript(QString filename)
 
 // there should be something like this that returns a QScriptValue. This would be better.
 // the problem is that there have to be two return values: What was the result? and Was there an exception?
-StringResult ProvideScript::EvalString(QString contents)
+StringResult ProvideScript::EvalString(QString contentsRaw)
 {
+	QString contents = contentsRaw; //processLiteralStrings(contentsRaw);
 	// Set "main" flag signalling that this file was not included
 	QScriptValue ret = engine.evaluate("var __name__ = 'main';" + contents);
 	if (engine.hasUncaughtException())
@@ -110,19 +111,20 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 		eng->globalObject().setProperty("__includedstd__", QScriptValue(eng,true));
 	}
 	
-	QString contents;
+	QString contentsRaw;
 	try
 	{
 		QFile file(strFilename);
 		if (!file.exists()) return ctx->throwError("Could not include file - file does not exist.");
 		file.open(QIODevice::ReadOnly);
-		contents = file.readAll();
+		contentsRaw = file.readAll();
 		file.close();
 	}
 	catch (...)
 	{
 		return ctx->throwError("Could not include file.");
 	}
+	QString contents = contentsRaw; //processLiteralStrings(contentsRaw);
 	// Set flag signalling that this WAS included. Because it is declared var, it should be private.
 	QScriptValue ret = eng->evaluate("var __name__ = 'included';" + contents); //if this throws an exception, print it in a way that can be understood.
 	if (eng->hasUncaughtException())
@@ -137,6 +139,70 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	
 	return eng->nullValue();
 }
+
+/*
+UNTESTED
+// Transforms @'c:\directory' into 'c:\\directory
+// Pass in the string as const so that [ ] is faster.
+QString ProvideScript::processLiteralStrings(const QString& strInput)
+{
+	if (strInput.find('@',0,true)==-1)
+		return strInput; //no @ in the string, so don't do anything
+	
+	QString strParsed;
+	strParsed.reserve( strInput.length() + 5); //allocate as much as the input + 5
+	int len = 0;
+	
+	int level = 0; // quote level
+	enum states {NO_QUOTE, SINGLE_QUOTE, DOUBLE_QUOTE, SINGLE_TRANSFORM};
+	#define SQUOTE '\''
+	#define DQUOTE '"'
+	#define BSLASH '\\'
+	int state = NO_QUOTE;
+	for (int i=0;i<strInput.length()-1; i++ )
+	{
+		if (strInput[i]=='@' && strInput[i+1]==SQUOTE && state==NO_QUOTE)
+		{
+			state = SINGLE_TRANSFORM;
+			strParsed[len++] = SQUOTE;
+			i ++; // skip over the next char!
+		}
+		else if (strInput[i]==SQUOTE)
+		{
+			if (state==NOQUOTE) state = SINGLE_QUOTE;
+			else if (state==SINGLE_QUOTE) state = NO_QUOTE;
+			else if (state==DOUBLE_QUOTE) state = DOUBLE_QUOTE; // no op
+			else if (state==SINGLE_TRANSFORM) state = NO_QUOTE; // end the transform
+			
+			strParsed[len++] = SQUOTE; //regardless, write it over
+		}
+		else if (strInput[i]==DQUOTE)
+		{
+			if (state==NOQUOTE) state = DOUBLE_QUOTE;
+			else if (state==SINGLE_QUOTE) state = SINGLE_QUOTE; // no op
+			else if (state==DOUBLE_QUOTE) state = NO_QUOTE; // end quote
+			else if (state==SINGLE_TRANSFORM) state = SINGLE_TRANSFORM; // no op
+			
+			strParsed[len++] = DQUOTE; //regardless, write it over
+		}
+		else if (strInput[i] == BSLASH && state == SINGLE_TRANSFORM)
+		{
+			// add two backslashes!
+			strParsed[len++] = BSLASH;
+			strParsed[len++] = BSLASH;
+		}
+		else
+		{
+			strParsed[len++] = strInput[i];
+		}
+	}
+	strParsed[len++] = strInput[i]; //we don't transform the last one, anyways.
+	return strParsed;
+}
+
+
+*/
+
 
 /*
 
