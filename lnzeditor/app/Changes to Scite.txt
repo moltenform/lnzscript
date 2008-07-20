@@ -47,7 +47,9 @@ Other
 		For cleaning temp files,
 			command.lnzcleanup
 			command.lnzcleanup.subsystem
-
+	
+	Right-clicking on tab doesn't show tools in menu.
+	
 	Change properties to look in "./properties"
 	
 	
