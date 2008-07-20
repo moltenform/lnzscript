@@ -144,6 +144,8 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 UNTESTED
 // Transforms @'c:\directory' into 'c:\\directory
 // Pass in the string as const so that [ ] is faster.
+// Major problem- what about quotes in comments? More complicated than initially thought.
+// Do we have to strip all comments before parsing this?
 QString ProvideScript::processLiteralStrings(const QString& strInput)
 {
 	if (strInput.find('@',0,true)==-1)
@@ -154,46 +156,66 @@ QString ProvideScript::processLiteralStrings(const QString& strInput)
 	int len = 0;
 	
 	int level = 0; // quote level
-	enum states {NO_QUOTE, SINGLE_QUOTE, DOUBLE_QUOTE, SINGLE_TRANSFORM};
+	enum states {NO_QUOTE, SINGLE_QUOTE, DOUBLE_QUOTE, SINGLE_TRANSFORM, LINE_COMMENT, MULTI_COMMENT};
 	#define SQUOTE '\''
 	#define DQUOTE '"'
 	#define BSLASH '\\'
 	int state = NO_QUOTE;
 	for (int i=0;i<strInput.length()-1; i++ )
 	{
-		if (strInput[i]=='@' && strInput[i+1]==SQUOTE && state==NO_QUOTE)
+		if (state==LINE_COMMENT || state==MULTI_COMMENT)
 		{
-			state = SINGLE_TRANSFORM;
-			strParsed[len++] = SQUOTE;
-			i ++; // skip over the next char!
-		}
-		else if (strInput[i]==SQUOTE)
-		{
-			if (state==NOQUOTE) state = SINGLE_QUOTE;
-			else if (state==SINGLE_QUOTE) state = NO_QUOTE;
-			else if (state==DOUBLE_QUOTE) state = DOUBLE_QUOTE; // no op
-			else if (state==SINGLE_TRANSFORM) state = NO_QUOTE; // end the transform
+			if (strInput[i]=='\n' && state==LINE_COMMENT) state = NO_QUOTE;
+			else if (strInput[i]=='*' && strInput[i+1]=='/' && state==MULTI_COMMENT) state = NO_QUOTE;
 			
-			strParsed[len++] = SQUOTE; //regardless, write it over
-		}
-		else if (strInput[i]==DQUOTE)
-		{
-			if (state==NOQUOTE) state = DOUBLE_QUOTE;
-			else if (state==SINGLE_QUOTE) state = SINGLE_QUOTE; // no op
-			else if (state==DOUBLE_QUOTE) state = NO_QUOTE; // end quote
-			else if (state==SINGLE_TRANSFORM) state = SINGLE_TRANSFORM; // no op
-			
-			strParsed[len++] = DQUOTE; //regardless, write it over
-		}
-		else if (strInput[i] == BSLASH && state == SINGLE_TRANSFORM)
-		{
-			// add two backslashes!
-			strParsed[len++] = BSLASH;
-			strParsed[len++] = BSLASH;
+			strParsed[len++] = strInput[i];
 		}
 		else
 		{
-			strParsed[len++] = strInput[i];
+			if (strInput[i]=='@' && strInput[i+1]==SQUOTE && state==NO_QUOTE)
+			{
+				state = SINGLE_TRANSFORM;
+				strParsed[len++] = SQUOTE;
+				i ++; // skip over the next char!
+			}
+			else if (strInput[i] == BSLASH && state == SINGLE_TRANSFORM)
+			{
+				// add two backslashes!
+				strParsed[len++] = BSLASH;
+				strParsed[len++] = BSLASH;
+			}
+			else if (strInput[i]==SQUOTE)
+			{
+				if (state==NOQUOTE) state = SINGLE_QUOTE;
+				else if (state==SINGLE_QUOTE) state = NO_QUOTE;
+				else if (state==DOUBLE_QUOTE) state = DOUBLE_QUOTE; // no op
+				else if (state==SINGLE_TRANSFORM) state = NO_QUOTE; // end the transform
+				
+				strParsed[len++] = SQUOTE; //regardless, write it over
+			}
+			else if (strInput[i]==DQUOTE)
+			{
+				if (state==NOQUOTE) state = DOUBLE_QUOTE;
+				else if (state==SINGLE_QUOTE) state = SINGLE_QUOTE; // no op
+				else if (state==DOUBLE_QUOTE) state = NO_QUOTE; // end quote
+				else if (state==SINGLE_TRANSFORM) state = SINGLE_TRANSFORM; // no op
+				
+				strParsed[len++] = DQUOTE; //regardless, write it over
+			}
+			else if (strInput[i] == '/' && strInput[i+1] == '/' && state == NO_QUOTE)
+			{
+				state = LINE_COMMENT;
+				strParsed[len++] = strInput[i];
+			}
+			else if (strInput[i] == '/' && strInput[i+1] == '*' && state == NO_QUOTE)
+			{
+				state = MULTI_COMMENT;
+				strParsed[len++] = strInput[i];
+			}
+			else
+			{
+				strParsed[len++] = strInput[i];
+			}
 		}
 	}
 	strParsed[len++] = strInput[i]; //we don't transform the last one, anyways.
