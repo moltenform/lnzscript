@@ -113,7 +113,7 @@ namespace launchorz_functions
 		if (util_nircmd_directory=="") return ctx->throwError("The file nircmd.exe could not be found. Place it in a location that can be found by LnzScript in order to use this function.");
 		QString strExecutable;
 		if (program == G_Nircmd) strExecutable = util_nircmd_directory + " ";
-		else if (program == G_WinCommonDialog) strExecutable = util_wincommondlg_directory + " ";
+		else if (program == G_WinCommonDialog || program == G_WinCommonDialogColorStdout) strExecutable = util_wincommondlg_directory + " ";
 		else return ctx->throwError("Internal error. Bad external command.");
 		
 		strExecutable += strCommand; // note unescaped! So, if everything is preformatted you can put it here - but make sure no unescaped quotes
@@ -125,16 +125,42 @@ namespace launchorz_functions
 		if (arg6!=0) strExecutable += " \""+util_external_escape(arg6)+"\"";
 		
 		// now do a "run and wait" (synchronous)
-		long nStatus = AU3_RunWait(QStrToCStr(strExecutable), "",1); //default working directory, flag of 1
-		if (program == G_Nircmd)
+		if (program == G_WinCommonDialog || program==G_Nircmd)
 		{
-			return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false); // "NirCmd now returns a non-zero value on error."
+			long nStatus = AU3_RunWait(QStrToCStr(strExecutable), "",1); //default working directory, flag of 1
+			if (program == G_Nircmd)
+			{
+				return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false); // "NirCmd now returns a non-zero value on error."
+			}
+			else if (program == G_WinCommonDialog)
+			{
+				return QScriptValue(eng, (int) nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
+			}
+			else return ctx->throwError("Internal error. Bad external command.");
 		}
-		else if (program == G_WinCommonDialog)
+		else
 		{
-			return QScriptValue(eng, (int) nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
+			// do a "run and read" to capture std out.
+			QProcess objProcess;
+			objProcess.start(strExecutable); // we don't check .error(), hopefully this worked...
+			
+			bool bTimeout = objProcess.waitForFinished(1000 * 60 * 3); // wait for 3 minutes
+			if (!bTimeout) return QScriptValue(eng, false);
+			QString strOutput( objProcess.readAllStandardOutput());
+			if (strOutput == "<cancel>") return QScriptValue(eng, false);
+			if (program == G_WinCommonDialogColorStdout)
+			{
+				// translate into rgb values.
+				long color; bool ok;
+				color = strOutput.toLong(&ok, 10); if (!ok) return ctx->throwError("Internal error. Dialog color; couldn't read output as long.");
+				QScriptValue ar = eng->newArray(3);
+				ar.setProperty(0, QScriptValue(eng, GetRValue(color)));
+				ar.setProperty(1, QScriptValue(eng, GetGValue(color)));
+				ar.setProperty(2, QScriptValue(eng, GetBValue(color)));
+				return ar;
+			}
+			return QScriptValue(eng, strOutput);
 		}
-		else return ctx->throwError("Internal error. Bad external command.");
 	}
 	
 	

@@ -46,6 +46,7 @@ namespace launchorz_functions
 	
 	#define G_Nircmd 1
 	#define G_WinCommonDialog 2
+	#define G_WinCommonDialogColorStdout 3
 	#define R_Nircmd(...) (util_externalCmd(G_Nircmd,ctx,eng,__VA_ARGS__))
 	#define R_WinCommonDialog(...) (util_externalCmd(G_WinCommonDialog,ctx,eng,__VA_ARGS__))
 	

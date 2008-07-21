@@ -1,4 +1,5 @@
 
+
 ///Function:Dialog.toolTip
 ///Arguments:string strText, int x=AU3_INTDEFAULT, int y=AU3_INTDEFAULT
 ///Returns:
@@ -24,7 +25,7 @@
 {
 	CHECK_ARGS
 	
-	return R_WinCommonDialog("info", strTitle, strText);
+	return R_WinCommonDialog("simple", "info", strTitle, strText);
 	// Previously used nircmd: return R_Nircmd("infobox", strText, strTitle);
 }
 
@@ -35,7 +36,7 @@
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
-	return R_WinCommonDialog("warning", strTitle, strText);
+	return R_WinCommonDialog("simple", "warning", strTitle, strText);
 }
 ///Function:Dialog.error
 ///Arguments:string strTitle, string strText
@@ -44,7 +45,7 @@
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
-	return R_WinCommonDialog("error", strTitle, strText);
+	return R_WinCommonDialog("simple", "error", strTitle, strText);
 }
 ///Function:Dialog.askYesNo
 ///Arguments:string strTitle, string strText
@@ -54,7 +55,7 @@
 ///Example:var res = Dialog.askYesNo("Status","Continue?"); if (res==Dialog.YES) doSomething(); else doSomethingElse();
 {
 	CHECK_ARGS
-	return R_WinCommonDialog("yesno", strTitle, strText);
+	return R_WinCommonDialog("simple", "yesno", strTitle, strText);
 }
 ///Function:Dialog.askYesNoCancel
 ///Arguments:string strTitle, string strText
@@ -64,7 +65,7 @@
 ///Example:var res = Dialog.askYesNoCancel("Warning","Replace existing file?"); if (res==Dialog.YES) doSomething(); else if (res==Dialog.NO) doSomethingElse(); else doCancel();
 {
 	CHECK_ARGS
-	return R_WinCommonDialog("yesnocancel", strTitle, strText);
+	return R_WinCommonDialog("simple", "yesnocancel", strTitle, strText);
 }
 
 ///Function:Dialog.askOkCancel
@@ -75,5 +76,17 @@
 ///Example:var res = Dialog.askOkCancel("Status","Continue?"); if (res==Dialog.OK) doSomething(); else doSomethingElse();
 {
 	CHECK_ARGS
-	return R_WinCommonDialog("okcancel", strTitle, strText);
+	return R_WinCommonDialog("simple", "okcancel", strTitle, strText);
 }
+
+///Function:Dialog.askColor
+///Arguments:
+///Returns:array rgb
+///Doc:Opens Windows color picker. Returns results as r,g,b values from 0-255. Returns false if canceled or timeout.
+///Implementation:c++_winext
+{
+	CHECK_ARGS
+	return util_externalCmd(G_WinCommonDialogColorStdout, ctx, eng, "color");
+}
+
+
