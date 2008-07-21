@@ -49,7 +49,7 @@
 ///Function:Process.runAndRead
 ///Arguments:string strExecutable, string strWorkingDirectory="", int nTimeoutMilliseconds=30000
 ///Returns:string strOutput
-///Doc:Opens external program and reads its output from stdout. The script pauses until the program has closed. Throws exception if program cannot be found. 
+///Doc:Opens external program and reads its output from stdout. The script pauses until the program has closed. Throws exception if program cannot be found, and if process times out. 
 ///Implementation:c++_qt
 {
 	// to run shell, use Process.runAndRead('cmd.exe /c dir')
@@ -62,7 +62,8 @@
 	if (nError ==0) return ctx->throwError("Process.runAndRead(): process failed to start. Either the invoked program is missing, or you may have insufficient permissions.");
 	// error of 5 seems to mean ok. Other values at http://doc.trolltech.com/4.4/qprocess.html#ProcessError-enum
 	
-	objProcess.waitForFinished(nTimeoutMilliseconds);
+	bool bTimeout = objProcess.waitForFinished(nTimeoutMilliseconds);
+	if (!bTimeout) return ctx->throwError("Process.runAndRead(): process timed out.");
 	QString strOutput( objProcess.readAllStandardOutput());
 	return QScriptValue(eng, strOutput);
 }
