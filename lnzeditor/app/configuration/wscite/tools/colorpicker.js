@@ -10,6 +10,6 @@ function toHex(n)
 var res = Dialog.askColor();
 if (res)
 {
-	print('R: '+res[0] + 'G: '+res[1] + 'B: '+res[2]);
+	print('R: '+res[0] + ' G: '+res[1] + ' B: '+res[2]);
 	print('#'+toHex(res[0]) + toHex(res[1]) + toHex(res[2]));
 }
