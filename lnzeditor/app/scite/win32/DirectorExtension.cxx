@@ -274,6 +274,9 @@ void DirectorExtension::HandleStringMessage(const char *message) {
 	// be set to zero before time.
 	StringList wlMessage(true);
 	wlMessage.Set(message);
+	
+	//  host->Trace("Received a message :\n");
+		
 	for (int i = 0; i < wlMessage.len; i++) {
 		// Message format is [:return address:]command:argument
 		char *cmd = wlMessage[i];
