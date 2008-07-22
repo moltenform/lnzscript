@@ -714,6 +714,12 @@ int SciTEBase::SaveIfUnsureAll(bool forceQuestion) {
 	if (props.GetInt("buffers") && props.GetInt("save.session"))
 		SaveSession("");
 
+	// clean up temp files lnz*.tmp in the tmp directory.
+	// This occurs on close, instead of ~SciteBase
+	// assumes that script will finish in 2 seconds. Otherwise, nothing bad should happen, it will just leave a few files.
+	MenuCommand(IDM_CLEANUPTEMP);
+	::Sleep(2000);
+	
 	// Definitely going to exit now, so delete all documents
 	// Set editor back to initial document
 	SendEditor(SCI_SETDOCPOINTER, 0, buffers.buffers[0].doc);

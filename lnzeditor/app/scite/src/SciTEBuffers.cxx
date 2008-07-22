@@ -704,10 +704,6 @@ void SciTEBase::Close(bool updateUI, bool loadingSession, bool makingRoomForNew)
 			DisplayAround(bufferNext);
 		}
 	}
-
-	// clean up temp files lnz*.tmp in the tmp directory.
-	// TODO: move this to app close, not buffer close
-	MenuCommand(IDM_CLEANUPTEMP);
 	
 	if (updateUI) {
 		BuffersMenu();
