@@ -1,21 +1,28 @@
-// Scite_msg.cpp : Defines the entry point for the console application.
+// Scite_msg.cpp
+// LnzEditor for Launchorz, by Ben Fisher 2008
+// Contains code from "scite_other" by Steve Donovan, 2004
 
-// Not using precompiled headers
-// Note, intentionally not compiling as Unicode.
+// Not using precompiled headers.
+// Not compiling as Unicode.
 
 #include <iostream>
 #include <tchar.h>
-#include "Scite_msg.h"
+
+#include "Windows.h"
+#include "SciteInteract.h"
 
 const char* documentation = 
 "Scite_msg.exe {hwnd} {command}\n"
 "Sends command to Scite.\n"
+"Hwnd should be the hwnd of the Director interface (not Scite itself) in decimal.\n"
+"Hwnd can alternatively be 'find', to send to an open SciTE instance.\n"
+"Backslashes and special chars in command must be escaped.\n"
 "\n"
-"Example:Scite_msg.exe 15342 \"insert:hello\\040world\\0\"\n"
-"Send hwnd as decimal number.\n"
+"Scite_msg.exe find \"insert:hello world\"\n"
+"or, from Scite, command.x=scite_msg.exe $(WindowID) \"insert:hello world\"\n"
 "Commands include:\n"
-"askfilename:\n"
-"askproperty:\n"
+//"askfilename:\n" We don't have a way to receive the response.
+//"askproperty:\n"
 "close:\n"
 "currentmacro:\n"
 "cwd:\n"
@@ -44,27 +51,7 @@ const char* documentation =
 "focus:";
 // See SciTEBase::PerformOne in SciTEBase.cxx
 
-/*
-This doesn't really work too well yet.
-When sending text, it must end with the literal "\0",
-in other words, typing 
->Scite_msg.exe 1245722 "insert:hello_no_spaces\0"
->Scite_msg.exe 1245722 "insert:hello\040world\0"
-Otherwise, gibberish is also inserted.
 
-Also, apparently anything with spaces cannot be sent. For some reason it thinks these
-are different commands and gets messed up.
-
-But I guess it is ok for now.
-
-Steps to send:
-replace \ with \\
-replace newline with \n
-replace space with \040
-replace bell with \a, b with \b, return with \r, v with \v
-end with \0
-
-*/
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -75,46 +62,50 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	const char* strHwnd = argv[1];
 	const char* strAction = argv[2];
-	
-	char *arg = strchr(strAction, ':');
-	if (! arg)
+
+	char *containsColon = strchr(strAction, ':');
+	if (! containsColon)
 	{
-		puts("Invalid command. Should be in form close: or insert:hello");
+		fputs("Invalid command. Should be in form close: or insert:hello", stderr);
 		return 1;
 	}
 
-	// NOTE: not 64-bit safe. Is there a 64bit atoi?
-	long nHwnd = atol(strHwnd);
-	if (nHwnd==0 || nHwnd==LONG_MAX || nHwnd==LONG_MIN)
+	if (strcmp(strHwnd, "find")==0)
 	{
-		puts("Invalid hwnd. Should be in decimal");
-		return 1;
+		HWND results[30];
+		results[0] = 0;
+		EnumWindows(EnumWindowsProc,(LPARAM) results);
+		int nResults = size_of_array(results);
+
+		if (nResults == 0)
+		{
+			fputs("Could not find an open instance of SciTE", stderr);
+			return 1;
+		}
+		else 
+		{
+			//Pick the first instance of Scite found.
+			//Assumes backslashes have been added by the input
+			
+			SendToHandle(results[0], strAction);
+		}
 	}
-	HWND hwnd = (HWND) nHwnd;
+	else
+	{
+		// NOTE: not 64-bit safe. Is there a 64bit atoi?
+		long nHwnd = atol(strHwnd);
+		if (nHwnd==0 || nHwnd==LONG_MAX || nHwnd==LONG_MIN)
+		{
+			fputs("Invalid hwnd. Should be in decimal", stderr);
+			return 1;
+		}
+		HWND hwnd = (HWND) nHwnd;
 
-	char * strFormattedAction = new char[strlen(strAction)+5];
-	strFormattedAction[0] = '-';
-	strcpy(strFormattedAction + 1, strAction);
-	strFormattedAction[1+strlen(strAction)] = '\0';
-	strFormattedAction[1+strlen(strAction)+1] = '\0';
-
-
-puts(strFormattedAction);
-
-	SendToHandle(hwnd, strFormattedAction);
-	delete [] strFormattedAction;
+		SendToHandle(hwnd, strAction);
+	}
 
 	return 0;
 }
 
-void SendToHandle(HWND hwnd, const char *Message)
-{
-	COPYDATASTRUCT cds;
-	if (strlen(Message)>INT_MAX) return;
-	int size = (int) strlen(Message);
-	cds.dwData = 0;	
-	cds.lpData = (void *)Message;
-	cds.cbData = size;
-	SendMessage(hwnd, WM_COPYDATA,(WPARAM)NULL,(LPARAM)&cds);
-}
+
 
