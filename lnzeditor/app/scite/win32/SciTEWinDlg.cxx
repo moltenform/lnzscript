@@ -223,9 +223,10 @@ bool SciTEWin::OpenDialog(FilePath directory, const char *filter) {
 	ofn.nFilterIndex = filterDefault;
 	SString translatedTitle = localiser.Text("Open File");
 	ofn.lpstrTitle = translatedTitle.c_str();
-	if (props.GetInt("open.dialog.in.file.directory")) {
-		ofn.lpstrInitialDir = directory.AsFileSystem();
-	}
+	//~ if (props.GetInt("open.dialog.in.file.directory")) {
+	// We should use what was passed in to us, because of the new pathInitialOpenDialogDirectory system.
+	ofn.lpstrInitialDir = directory.AsFileSystem();
+	//~ }
 	ofn.Flags = OFN_HIDEREADONLY;
 
 	if (buffers.size > 1) {
@@ -241,6 +242,7 @@ bool SciTEWin::OpenDialog(FilePath directory, const char *filter) {
 		// if single selection then have path+file
 		if (strlen(openName) > static_cast<size_t>(ofn.nFileOffset)) {
 			Open(openName);
+			pathInitialOpenDialogDirectory = FilePath(openName).Directory();
 		} else {
 			FilePath directory(openName);
 			char *p = openName + strlen(openName) + 1;
@@ -250,6 +252,7 @@ bool SciTEWin::OpenDialog(FilePath directory, const char *filter) {
 				// goto next char pos after \0
 				p += strlen(p) + 1;
 			}
+			pathInitialOpenDialogDirectory = directory;
 		}
 	}
 	return succeeded;

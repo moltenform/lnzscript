@@ -518,6 +518,7 @@ protected:
 	PropSetFile propsAbbrev;
 
 	FilePath pathAbbreviations;
+	FilePath pathInitialOpenDialogDirectory;
 
 	Localization localiser;
 

@@ -115,6 +115,7 @@ BEGIN
 	MENUITEM SEPARATOR
 	MENUITEM "Print File&name\tCtrl+Shift+E",		IDM_TOOLS_PRINTFILENAME
 	MENUITEM "Show in &Explorer\tCtrl+E",			IDM_TOOLS_SHOWINEXPLORER
+	MENUITEM "Set Cwd to Location \tCtrl+Shift+D",			IDM_SETCWD_CURRENT
 END
 
 POPUP "&Tools"
@@ -622,6 +623,7 @@ BEGIN
 	"X", IDM_LINECUT, VIRTKEY, CONTROL, SHIFT
 	"E", IDM_TOOLS_PRINTFILENAME, VIRTKEY, CONTROL, SHIFT
 	"E", IDM_TOOLS_SHOWINEXPLORER, VIRTKEY, CONTROL
+	"D", IDM_SETCWD_CURRENT, VIRTKEY, CONTROL, SHIFT
 
 	// Workaround for the most common case where SciTE undo and
 	// redo buttons don't enable/disable when you expect.

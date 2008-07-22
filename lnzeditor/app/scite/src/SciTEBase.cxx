@@ -423,9 +423,11 @@ SciTEBase::SciTEBase(Extension *ext) : apis(true), extender(ext) {
 
 	needReadProperties = false;
 	allowAlpha = true;
+	
+	pathInitialOpenDialogDirectory = FilePath("."); //GetSciteDefaultHome();
 }
 
-SciTEBase::~SciTEBase() {
+SciTEBase::~SciTEBase() {	
 	if (extender)
 		extender->Finalise();
 	delete []languageMenu;
@@ -3434,7 +3436,9 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		// when doing the opening. Must be done there as user
 		// may decide to open multiple files so do not know yet
 		// how much room needed.
-		OpenDialog(filePath.Directory(), props.GetExpanded("open.filter").c_str());
+		//~ OpenDialog(filePath.Directory(), props.GetExpanded("open.filter").c_str());
+		OpenDialog(pathInitialOpenDialogDirectory, props.GetExpanded("open.filter").c_str());
+		// The pathInitialOpenDialogDirectory is like a current directory for the file dialog
 		WindowSetFocus(wEditor);
 		break;
 	case IDM_OPENSELECTED:
@@ -4083,6 +4087,12 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		StopRecordMacro();
 		break;
 
+	case IDM_SETCWD_CURRENT: {
+		if (!CurrentBuffer()->IsUntitled()) {
+			pathInitialOpenDialogDirectory = filePath.Directory().AsInternal();
+		}
+		}
+		break;
 	case IDM_CLEANUPTEMP: {
 		RunCommandFromProperties( "command.lnzcleanup", "command.lnzcleanup.subsystem");
 		}
