@@ -9,6 +9,7 @@ Menubar
 		Removed "Select to Brace"
 		Added "Cut Line"
 		Added IDM_LINECUT
+		Ctrl+L deletes line, Ctrl+Shift+X and Ctrl+Shift+L cuts line
 	
 	Search menu
 		Added "Find selection"
@@ -52,6 +53,8 @@ Other
 	
 	Change properties to look in "./properties"
 	
+	File must exist before opening
+	Concept of pathInitialOpenDialogDirectory to be used, current directory. (actually a good idea)
 	
 
 Cosmetic
