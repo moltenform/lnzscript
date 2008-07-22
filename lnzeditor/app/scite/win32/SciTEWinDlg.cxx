@@ -232,6 +232,7 @@ bool SciTEWin::OpenDialog(FilePath directory, const char *filter) {
 		ofn.Flags |=
 		    OFN_EXPLORER |
 		    OFN_PATHMUSTEXIST |
+		    OFN_FILEMUSTEXIST |
 		    OFN_ALLOWMULTISELECT;
 	}
 	if (::GetOpenFileName(&ofn)) {
