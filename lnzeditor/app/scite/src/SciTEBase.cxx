@@ -3938,9 +3938,7 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 				props.Set("FileExt", fpTempName.Extension().AsFileSystem());
 				//props.Set("FileNameExt", fpTempName.Name().AsFileSystem());
 				props.Set("FileNameExt", fpTempName.AsFileSystem()); // give it the entire path
-				
-				// Now run it as JavaScript /?
-				
+						
 				SelectionIntoProperties();
 				long flags = 0;
 
@@ -3955,8 +3953,6 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 				AddCommand(props.GetWild("command.go.", fpTempName.AsInternal()), "", SubsystemType("command.go.subsystem."), "", flags);
 				if (jobQueue.commandCurrent > 0)
 					Execute();
-				
-				
 				
 				// Restore the property settings.
 				props.Set("FilePath", oldFilePath.c_str()); props.Set("FileDir", oldFileDir.c_str());	props.Set("FileName", oldFileName.c_str());props.Set("FileExt", oldFileExt.c_str()); props.Set("FileNameExt", oldFileNameExt.c_str());
@@ -4091,7 +4087,6 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		RunCommandFromProperties( "command.lnzcleanup", "command.lnzcleanup.subsystem");
 		}
 		break;
-	
 	case IDM_TOOLS_PRINTFILENAME: {
 		RunCommandFromProperties( "command.lnzprintname", "command.lnzprintname.subsystem");
 		}
