@@ -26,6 +26,9 @@ After compiling, check that these (already done) changes are correct:
 	change things so that Ctrl+L deletes line, Ctrl+Shift+X and Ctrl+Shift+L cuts line
 	add Ctrl+E , Ctrl+Shift+E for show name in explorer and so on
 
+Check
+	check that the Dialog. functions work, and Dialog.color
+
 
 Before 0.2 release
 ---------------
@@ -34,6 +37,8 @@ Documentation
 	Configuration
 		command.scite.helponline
 		see _lnzscite.properties for what to define
+		E:\bentrans\Cool\Scite_msg\Scite_msg\Release\Scite_msg.exe "$(WindowID)" insert:t
+		
 	
 	About this editor
 	Write use cases
@@ -58,10 +63,14 @@ Bugs
 	in the "Options" menu, only 2 languages are included regardless of settings. not elegant
 	scite_msg.exe
 		Why does one need to add \0? \040 for spaces? Seems like something might be wrong
-	for include(), 
+	for include(), prevent something from including itself.
+	
+	File.dirListFiles() doesn't include hidden files
 	
 Cosmetic
 	In options menu, say "Python options" not "open python.properties"
+	
+	When closing tabs, shows output of cleanup command. Not too good.
 
 Features
 	add a way to detect the Python directory
@@ -80,7 +89,10 @@ Features
 		Dialog.choice http://smartwinlib.org/doc/class_choice_string.html
 		Dialog.openFile
 		Dialog.saveFile
-		
+
+	set "current directory" (for opening files) to that of the current document?
+	add confirm-file-exists to whereever scite has open dialog
+
 Cleanup
 	make g_nircmd_directory string a static member, not a global variable
 	add "licenses" directory in output
