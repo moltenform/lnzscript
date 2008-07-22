@@ -23,6 +23,7 @@ int dialog_color(int argc, _TCHAR* argv[])
 	//http://msdn.microsoft.com/en-us/library/ms646829(VS.85).aspx
 
 	COLORREF acrCustClr[16]; // array of custom colors 
+	ZeroMemory(acrCustClr, sizeof(acrCustClr));
 	DWORD rgbCurrent = 0;        // initial color selection (black)
 	CHOOSECOLOR cc;
 
