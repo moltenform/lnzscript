@@ -76,10 +76,20 @@ void SciTEBase::SetImportMenu() {
 		for (int stackPos = 0; stackPos < importMax; stackPos++) {
 			int itemID = importCmdID + stackPos;
 			if (importFiles[stackPos].IsSet()) {
-				SString entry = localiser.Text("Open");
-				entry += " ";
-				entry += importFiles[stackPos].Name().AsInternal();
-				SetMenuItem(menuOptions, IMPORT_START + stackPos, itemID, entry.c_str());
+
+				if (importFiles[stackPos].Name().AsInternal()[0] != '_')
+				{
+					SString thename(importFiles[stackPos].Name().AsInternal());
+					thename.substitute(".properties", "");
+					SString entry = thename;
+					entry += " ";
+					entry += "Options";
+					SetMenuItem(menuOptions, IMPORT_START + stackPos, itemID, entry.c_str());
+					
+					// note that, because we skip over propsnames that start with "_", the commands may not be consecutive.
+					// i.e. IMPORT_START + 0, IMPORT_START + 1, IMPORT_START + 3, IMPORT_START + 5.
+					// This should still work, though.
+				}
 			}
 		}
 	}
