@@ -17,7 +17,7 @@ const char* documentationColor =
 
 int dialog_color(int argc, _TCHAR* argv[])
 {
-	if (argc > 1 && wcscmp(argv[1],_T("/?"))==0) { puts(documentationColor); return ErrorResult; }
+	if (argc > 1 && stringequal(argv[1],_T("/?"))) { puts(documentationColor); return ErrorResult; }
 
 
 	//http://msdn.microsoft.com/en-us/library/ms646829(VS.85).aspx
@@ -39,7 +39,8 @@ int dialog_color(int argc, _TCHAR* argv[])
 		rgbCurrent = cc.rgbResult;
 		printf("%ld", rgbCurrent);
 		
-		/*int r = (int) GetRValue(rgbCurrent); printf("%d,%d,%d", r,g,b);*/ //This is human-readable but harder to parse
+		/*int r = (int) GetRValue(rgbCurrent); printf("%d,%d,%d", r,g,b);*/ 
+		//This is human-readable but harder to parse
 	}
 	else fputs("<cancel>", stdout);
 	return 0;

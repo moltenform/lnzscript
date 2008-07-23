@@ -16,7 +16,7 @@ const char* documentationSound =
 
 int dialog_sound(int argc, _TCHAR* argv[])
 {
-	if (argc <= 1 || wcscmp(argv[1],_T("/?"))==0) { puts(documentationSound); return ErrorResult; }
+	if (argc <= 1 || stringequal(argv[1],_T("/?"))) { puts(documentationSound); return ErrorResult; }
 	
 	_TCHAR* soundname = get_argument(1, argc, argv);
 	
@@ -26,10 +26,10 @@ int dialog_sound(int argc, _TCHAR* argv[])
 	LPCTSTR pszSound = NULL;
 	DWORD flags = 0; // note, SND_ASYNC does not work
 	BOOL res;
-	if (wcscmp(soundname,_T("Asterisk"))==0) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMASTERISK;
-	else if (wcscmp(soundname,_T("Default"))==0) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMDEFAULT;
-	else if (wcscmp(soundname,_T("Exclamation"))==0) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION;
-	else if (wcscmp(soundname,_T("Question"))==0) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMQUESTION;
+	if (stringequal(soundname,_T("Asterisk"))) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMASTERISK;
+	else if (stringequal(soundname,_T("Default"))) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMDEFAULT;
+	else if (stringequal(soundname,_T("Exclamation"))) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMEXCLAMATION;
+	else if (stringequal(soundname,_T("Question"))) pszSound=(LPCTSTR)SND_ALIAS_SYSTEMQUESTION;
 
 	
 	if (pszSound!=NULL)
