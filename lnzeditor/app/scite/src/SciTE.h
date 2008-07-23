@@ -53,7 +53,8 @@
 #define IDM_ENCODING_UCOOKIE	154
 
 #define MRU_START	16
-#define IMPORT_START 2
+//#define IMPORT_START 2
+#define IMPORT_START 1
 //note that, for IMPORT_START to work, we limit number of items in language menu to 2.
 //there is probably a better way to do this.
 #define TOOLS_START 8
