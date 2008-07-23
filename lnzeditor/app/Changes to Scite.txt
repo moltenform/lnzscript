@@ -37,6 +37,8 @@ Menubar
 	Options menu
 		Currently, languages shown are limited to 2.
 		This is so that the .properties appear in the right location
+		
+		If a properties file begins with_, it won't appear in the menu!
 	
 	Removed buffers menu
 	
