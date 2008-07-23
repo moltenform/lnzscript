@@ -41,3 +41,5 @@ function artest()
 	print(a.max());
 	print(a.min());
 }
+
+// add isArray, isFunction, and so on from Douglas Crockford
