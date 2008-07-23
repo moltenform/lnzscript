@@ -43,7 +43,6 @@ function changeOutput()
 var odivOutput = $('divOutput');
 var strOutput = odivOutput.innerHTML;
 strOutput = strOutput.replace(/\[\[br\]\]/g,'<br/>');
-strOutput = strOutput.replace(/AU3_INTDEFAULT/g,'(default)');
 odivOutput.innerHTML = strOutput;
 
 // Show the first one

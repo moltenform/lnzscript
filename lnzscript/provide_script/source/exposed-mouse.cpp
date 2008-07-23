@@ -1,6 +1,6 @@
 
 ///Function:Mouse.click
-///Arguments:int x=AU3_INTDEFAULT, int y=AU3_INTDEFAULT, bool bRelativeCoords=false, string strButton="left", int nSpeed=-1
+///Arguments:int x=INTDEFAULT, int y=INTDEFAULT, bool bRelativeCoords=false, string strButton="left", int nSpeed=-1
 ///Returns:
 ///Doc:Moves cursor to x, y and sends simulated mouse click. If x and y are not specified sends mouseclick at current mouse position. If you specify bRelativeCoords to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
 ///Implementation:c++_au3
@@ -12,7 +12,7 @@
 }
 
 ///Function:Mouse.doubleClick
-///Arguments:int x=AU3_INTDEFAULT, int y=AU3_INTDEFAULT, bool bRelativeCoords=false, string strButton="left", int nSpeed=-1
+///Arguments:int x=INTDEFAULT, int y=INTDEFAULT, bool bRelativeCoords=false, string strButton="left", int nSpeed=-1
 ///Returns:
 ///Doc:Moves cursor to x, y and sends simulated mouse double-click. If x and y are not specified sends clicks at current mouse position. If you specify bRelativeCoords to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
 ///Implementation:c++_au3

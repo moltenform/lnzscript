@@ -23,7 +23,7 @@
 
 
 ///Function:Control.click
-///Arguments:string window, string strControl, string strButton="left", int nClicks=1, int x=AU3_INTDEFAULT, int y=AU3_INTDEFAULT
+///Arguments:string window, string strControl, string strButton="left", int nClicks=1, int x=INTDEFAULT, int y=INTDEFAULT
 ///Returns:bool bSuccess
 ///Doc:Send simulated mouse click to control. Optionally specify button, number of clicks, or position of click (defaulting to center). Specify a control in one of three ways: ClassName (e.g. "Button", or "Button3" for the third Button control), Text (e.g. "OK" or "&Next" for a button with the text Next, with underlined N), or Control ID (e.g. 350, can be found with tools like Window Info Tool / spy). 
 ///Implementation:c++_au3
