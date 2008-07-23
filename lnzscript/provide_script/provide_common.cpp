@@ -3,9 +3,6 @@
 #include <QtScript>
 #include "autoit/AutoIt3.h"
 
-
-
-
 namespace launchorz_functions
 {
 	void util_au3init()
@@ -308,16 +305,27 @@ namespace launchorz_functions
 		return QString(buffer);
 	}
 
-	/*QScriptValue g_ProvideScript_ThrowException_WrongType(QScriptContext *ctx, char* functionName, int nArgument, const char * strType)
+	
+	
+	QScriptValue g_ExceptionWrongNumberArgs(QScriptContext *ctx, char* functionName, int nArguments)
 	{
-		QString strExceptionMessage;
-		strExceptionMessage.sprintf("Function %s: argument %d is not a %s.",functionName,nArgument,strType);
-		
-		return ctx->throwError(strExceptionMessage);
-	}*/
+		QString s; s.sprintf("%s takes exactly %d argument(s)", functionName, nArgument);
+		return ctx->throwError(s);
+	}
+	QScriptValue g_ExceptionNotEnoughArgs(QScriptContext *ctx, char* functionName, int nArguments)
+	{
+		QString s; s.sprintf("%s takes at least %d argument(s)", functionName, nArguments);
+		return ctx->throwError(s);
+	}
+	QScriptValue g_ExceptionTooManyArgs(QScriptContext *ctx, char* functionName, int nArguments)
+	{
+		QString s; s.sprintf("%s takes at most %d argument(s)", functionName, nArguments);
+		return ctx->throwError(s);
+	}
 	
-	
-	//LNZTYPE_bool = "bool";
-	//LNZTYPE_int = "int";
-	//LNZTYPE_string = "string";
+	QScriptValue g_ExceptionWrongTypeArg(QScriptContext *ctx, char* functionName, int nArgument, char* expectedType)
+	{
+		QString s; s.sprintf("%s, wrong type for argument %d. Expected a %s.", functionName, nArgument, expectedType);
+		return ctx->throwError(QScriptContext::TypeError, s);
+	}
 }

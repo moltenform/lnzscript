@@ -63,7 +63,12 @@ namespace launchorz_functions
 	QString get_base_directory();
 	void util_nircmd_init();
 	QScriptValue util_externalCmd(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);
-	
+
+	QScriptValue g_ExceptionWrongNumberArgs(QScriptContext *ctx, char* functionName, int nArgument);
+	QScriptValue g_ExceptionNotEnoughArgs(QScriptContext *ctx, char* functionName, int nArguments);
+	QScriptValue g_ExceptionTooManyArgs(QScriptContext *ctx, char* functionName, int nArguments);
+	QScriptValue g_ExceptionWrongTypeArg(QScriptContext *ctx, char* functionName, int nArgument, char* expectedType);
+
 	extern const char* LNZTYPE_bool;
 	extern const char* LNZTYPE_int;
 	extern const char* LNZTYPE_string;
