@@ -108,13 +108,13 @@ namespace launchorz_functions
 	}
 	
 	// kind of weird to have reference parameters having default arguments, but this apparently implicitly creates a QString of length 0, which can be tested with str==0.
-	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
+	QScriptValue util_externalCmd(unsigned int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
 	{
 		if (util_nircmd_directory=="") return ctx->throwError("The file nircmd.exe could not be found. Place it in a location that can be found by LnzScript in order to use this function.");
 		QString strExecutable;
-		if (program == G_Nircmd) strExecutable = util_nircmd_directory + " ";
-		else if (program == G_WinCommonDialog || program == G_WinCommonDialogColorStdout) strExecutable = util_wincommondlg_directory + " ";
-		else return ctx->throwError("Internal error. Bad external command.");
+		if ((program & G_Nircmd)) strExecutable = util_nircmd_directory + " ";
+		else if ((program & G_WinCommonDialog)) strExecutable = util_wincommondlg_directory + " ";
+		else return ctx->throwError("Internal error. Bad external command.1");
 		
 		strExecutable += strCommand; // note unescaped! So, if everything is preformatted you can put it here - but make sure no unescaped quotes
 		if (arg1!=0) strExecutable += " \""+util_external_escape(arg1)+"\""; //replace " with \", to escape quotes
@@ -125,20 +125,20 @@ namespace launchorz_functions
 		if (arg6!=0) strExecutable += " \""+util_external_escape(arg6)+"\"";
 		
 		// now do a "run and wait" (synchronous)
-		if (program == G_WinCommonDialog || program==G_Nircmd)
+		if ((program & G_Stdout)!=0) // meaning if it is not reading from stdout
 		{
 			long nStatus = AU3_RunWait(QStrToCStr(strExecutable), "",1); //default working directory, flag of 1
-			if (program == G_Nircmd)
+			if ((program & G_Nircmd))
 			{
 				return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false); // "NirCmd now returns a non-zero value on error."
 			}
-			else if (program == G_WinCommonDialog)
+			else if ((program & G_WinCommonDialog))
 			{
 				return QScriptValue(eng, (int) nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
 			}
-			else return ctx->throwError("Internal error. Bad external command.");
+			else return ctx->throwError("Internal error. Bad external command.2");
 		}
-		else
+		else //read from stdout
 		{
 			// do a "run and read" to capture std out.
 			QProcess objProcess;
@@ -147,8 +147,9 @@ namespace launchorz_functions
 			bool bTimeout = objProcess.waitForFinished(1000 * 60 * 3); // wait for 3 minutes
 			if (!bTimeout) return QScriptValue(eng, false);
 			QString strOutput( objProcess.readAllStandardOutput());
+			strOutput = strOutput.replace("\r\n","\n").trimmed();
 			if (strOutput == "<cancel>") return QScriptValue(eng, false);
-			if (program == G_WinCommonDialogColorStdout)
+			if ((program & G_ColorDialog)) // if it is a color dialog
 			{
 				// translate into rgb values.
 				long color; bool ok;
@@ -158,6 +159,11 @@ namespace launchorz_functions
 				ar.setProperty(1, QScriptValue(eng, GetGValue(color)));
 				ar.setProperty(2, QScriptValue(eng, GetBValue(color)));
 				return ar;
+			}
+			else if ((program & G_FileMultDialog)) // if it is a mult file dialog
+			{
+				QStringList list = strOutput.split("\n", QString::KeepEmptyParts); //keeps "empty parts"
+				return util_QListToScriptArray(eng, list);
 			}
 			return QScriptValue(eng, strOutput);
 		}
@@ -194,6 +200,7 @@ namespace launchorz_functions
 		return QString("");
 	}
 	
+	// why does this return null?
 	QString util_Au3WindowParseAndSetMode(QScriptValue& val)
 	{
 		if (val.isString())
@@ -309,4 +316,8 @@ namespace launchorz_functions
 		return ctx->throwError(strExceptionMessage);
 	}*/
 	
+	
+	//LNZTYPE_bool = "bool";
+	//LNZTYPE_int = "int";
+	//LNZTYPE_string = "string";
 }

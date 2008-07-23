@@ -44,9 +44,13 @@ namespace launchorz_functions
 	QString get_winapi_special_folder_path(QString strName);
 	QString get_winapi_windows_version();
 	
-	#define G_Nircmd 1
-	#define G_WinCommonDialog 2
-	#define G_WinCommonDialogColorStdout 3
+
+	#define G_Nircmd 0x1U
+	#define G_WinCommonDialog 0x2U
+	#define G_Stdout 0x4U
+	#define G_ColorDialog 0x8U
+	#define G_FileMultDialog 0x10U
+	
 	#define R_Nircmd(...) (util_externalCmd(G_Nircmd,ctx,eng,__VA_ARGS__))
 	#define R_WinCommonDialog(...) (util_externalCmd(G_WinCommonDialog,ctx,eng,__VA_ARGS__))
 	
@@ -58,10 +62,10 @@ namespace launchorz_functions
 	extern QString util_nircmd_directory, util_wincommondlg_directory; // implemented in provide_common.cpp. Declared extern to avoid "multiple definition of"
 	QString get_base_directory();
 	void util_nircmd_init();
-	QScriptValue util_externalCmd(int program, QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);
+	QScriptValue util_externalCmd(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);
 	
-	//extern const char* LNZTYPE_bool = "bool";
-	//extern const char* LNZTYPE_int = "int";
-	//extern const char* LNZTYPE_string = "string";
+	extern const char* LNZTYPE_bool;
+	extern const char* LNZTYPE_int;
+	extern const char* LNZTYPE_string;
 }
 

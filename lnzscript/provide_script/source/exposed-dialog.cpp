@@ -1,7 +1,7 @@
 
 
 ///Function:Dialog.toolTip
-///Arguments:string strText, int x=AU3_INTDEFAULT, int y=AU3_INTDEFAULT
+///Arguments:string strText, int x=INTDEFAULT, int y=INTDEFAULT
 ///Returns:
 ///Doc:Creates a tooltip anywhere on the screen. If the x and y coordinates are omitted, the tip is placed near the mouse cursor. If the coords would cause the tooltip to run off screen, it is repositioned to visible. Tooltip appears until it is cleared, until script terminates, or sometimes until it is clicked upon. You may use a linefeed character to create multi-line tooltips.
 ///Example: Dialog.toolTip("That's cool"); Time.sleep(500); Dialog.toolTip("");
@@ -86,7 +86,30 @@
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
-	return util_externalCmd(G_WinCommonDialogColorStdout, ctx, eng, "color");
+	return util_externalCmd(G_WinCommonDialog | G_Stdout | G_ColorDialog, ctx, eng, "color");
 }
 
+///Function:Dialog.openFile
+///Arguments:string strFiletype="*", bool bMultiple=false, string strStartDirectory="."
+///Returns:string strFile or array arFiles
+///Doc:Opens standard Open File dialog. Provide type in format such as 'bmp', NOT '*.bmp'. If not multiple, returns string of filepath or false on cancel or timeout. If multiple, returns an array of strings: if the user chooses one file, ar[0] is the entire filepath and file name. if the user chooses > one file, ar[0] is the directory, and ar[1] to the rest are only the file names.
+///Implementation:c++_winext
+{
+	CHECK_ARGS
+	if (strFiletype.contains("*.", Qt::CaseSensitive)) return ctx->throwError("Dialog.openFile(): Provide type in format 'bmp', NOT '*.bmp'.");
+	if (!bMultiple)
+		return util_externalCmd(G_WinCommonDialog | G_Stdout, ctx, eng, "file","open",strFiletype, strStartDirectory);
+	else
+		return util_externalCmd(G_WinCommonDialog | G_Stdout | G_FileMultDialog, ctx, eng, "file","openmult",strFiletype, strStartDirectory);
+}
 
+///Function:Dialog.saveFile
+///Arguments:string strFiletype="*", string strStartDirectory="."
+///Returns:string strFile
+///Doc:Opens standard Save File dialog. Provide type in format such as 'bmp', NOT '*.bmp'. Returns string of filepath or false on cancel or timeout.
+///Implementation:c++_winext
+{
+	CHECK_ARGS
+	if (strFiletype.contains("*.", Qt::CaseSensitive)) return ctx->throwError("Dialog.saveFile(): Provide type in format 'bmp', NOT '*.bmp'.");
+	return util_externalCmd(G_WinCommonDialog | G_Stdout, ctx, eng, "file","save",strFiletype, strStartDirectory);
+}
