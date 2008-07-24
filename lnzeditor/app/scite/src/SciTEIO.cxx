@@ -66,7 +66,7 @@ const char propUserFileName[] = ".SciTEUser.properties";
 const char propUserFileName[] = "properties\\SciTEUser.properties";
 #endif
 const char propGlobalFileName[] = "properties\\SciTEGlobal.properties";
-const char propAbbrevFileName[] = "properties\\abbrev.properties";
+const char propAbbrevFileName[] = "abbrev.properties"; //this will go in user directory,
 
 #define PROPERTIES_EXTENSION	".properties"
 
