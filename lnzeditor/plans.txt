@@ -10,6 +10,13 @@ Test cases
 
 Bugs
 	abbrev.properties in wrong place. probably constant. "..\abbrev" -> "abbrev"
+	-done
+	
+	System.openUtility broken
+	minor bug in File.ini* for return values, returns true even if false
+
+Tools
+	Add au3_window_info and so on to the Tools menu
 
 
 Documentation!
@@ -24,6 +31,7 @@ Documentation!
 	
 	Document '<std.js>' features
 	Document argv in scripts, __included in scripts
+	Document scripts start in their own directory
 
 
 (Make sure to test everything in a directory with spaces in the path)
@@ -57,12 +65,16 @@ Features
 		http://smartwinlib.org/doc/class_in_dialog.html
 		Dialog.input
 		Dialog.choice http://smartwinlib.org/doc/class_choice_string.html
+		
+	For System.openControlPanel and related,
+		make options non-case sensitive.
 	
 
 Installer
 	Optionally (but on by default) associates .js files with the editor.
 	I considered the extension .jsz, but using .js means that files will be highlighted in other editors
 
+Run tests on Vista
 
 For 0.4? release
 ---------------------
@@ -70,15 +82,20 @@ Bugs
 
 	in the Options menu, only 2 languages are included regardless of settings. not elegant
 	
+Documentation - consistent usage of "folder" or "directory"
+consistent usage of return values - false or null or -1?
 
 Cleanup
 	make g_nircmd_directory string a static member, not a global variable
 	add "licenses" directory in output
-	
+
+
 
 
 Long term
 -------------
+Run command. A file can, in the first line, provide a run command, such as "//# Runcommand:`run main.py`" which will be seen by Scite. 
+
 End goal: a launchy that doesn't have to index at all
 
 Document IDM changes/additions, provide them to Lua with the .iface file
