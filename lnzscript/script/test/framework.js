@@ -32,15 +32,27 @@ assertFails = function(fn, strMsg)
 
 assert = function(bExp)
 {
-	print('Last test was: '+g_lastSeenMethod );
-	print('Assertion failed.');
-	abort('');
+	if (!bExp)
+	{
+		print('Last test was: '+g_lastSeenMethod );
+		print('Assertion failed.');
+		abort('');
+	}
 }
 
 abort = function(s)
 {
 	if (s) print(s);
 	throw(false);
+}
+
+testOpenWindow = function (fnPerform, strArgument, strExpectedWindowResult)
+{
+	if (Window.exists(strExpectedWindowResult)) Window.close(strExpectedWindowResult);
+	
+	fnPerform(strArgument); Time.sleep(800); Time.sleep(800);
+	if (!Window.exists(strExpectedWindowResult)) {print('Window "'+strExpectedWindowResult+'" not found'); assert(false);}
+	Window.close(strExpectedWindowResult);
 }
 
 print('Included: framework.js');

@@ -22,6 +22,7 @@ Clipboard.saveImage('calc_screenshot_clipboard.bmp')
 Process.close('calc.exe');
 
 Process.openFile('calc_screenshot_clipboard.png');
-Dialog.alert('Test','You should see a screenshot of a calculator.');
+if(!confirm('You should see a screenshot of a calculator.')) assert(false);
+
 
 methods_list_summary_namespace('Clipboard');	

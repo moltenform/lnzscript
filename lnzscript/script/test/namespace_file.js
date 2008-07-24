@@ -4,7 +4,7 @@ print('Running tests for namespace File.')
 registerTest('File.cd');
 var strPreviousPath = File.cd();
 assert(strPreviousPath);
-
+assertFails(function(){ File.cd('Nonexistingfileordirectory'); });
 
 
 registerTest('File.getPathTemp');
@@ -31,5 +31,11 @@ assert(strTempPath && File.isDirectory(strTempPath));
 
 // now do basic file tests
 
+/*
+
+if (Window.exists('Control Panel')) Window.close('Control Panel');
+File.openExplorerWindowSpecial('Control Panel'); Time.sleep(400);
+assert(Window.exists('Control Panel'))
+Window.close('Control Panel');*/
 
 methods_list_summary_namespace('File');
