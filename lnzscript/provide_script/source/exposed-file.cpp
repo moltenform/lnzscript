@@ -61,7 +61,7 @@
 ///Function:File.exists
 ///Arguments:string strFile
 ///Returns:bool bExists
-///Doc:Test if the file exists.
+///Doc:Test if the file or directory exists.
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
@@ -266,7 +266,7 @@
 		QString cmd;
 		if (strSpecialFolderName=="Control Panel") cmd = "Control_RunDLL";
 		else if (strSpecialFolderName=="Fonts") cmd = "SHHelpShortcuts_RunDLL FontsFolder";
-		else if (strSpecialFolderName=="Printers") cmd = "SHHelpShortcuts_RunDLL FontsFolder";
+		else if (strSpecialFolderName=="Printers") cmd = "SHHelpShortcuts_RunDLL PrintersFolder";
 		else return ctx->throwError("File.openExplorerWindowSpecial(). Internal error.");
 		return util_runExternalCommand("rundll32.exe shell32.dll,"+cmd);
 	}
@@ -511,7 +511,7 @@
 ///Function:File.tray
 ///Arguments:string strDriveLetter, string strOpenOrClosed
 ///Returns:bool bSuccess
-///Doc:Opens or closes the CD Tray. Provide the string 'open' or 'closed'. Works as expected with virtual cd drives.
+///Doc:Opens or closes the CD Tray. Provide the string 'open' or 'closed'. Drive letter in format 'D:' or 'd:'. Works as expected with virtual cd drives.
 ///Example: File.tray('D:', 'open'); File.tray('D:', 'closed');
 ///Implementation:c++_au3
 {

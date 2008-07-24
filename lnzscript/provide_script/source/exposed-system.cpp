@@ -77,7 +77,7 @@
 ///Function:System.openControlPanel
 ///Arguments:string strOption
 ///Returns:
-///Doc: Opens a control panel. (To open the panel itself use File.openExplorerWindowSpecial). Options include: 
+///Doc: Opens a control panel. (To open the panel itself use File.openExplorerWindowSpecial). Options include: Keyboard[[br]]Mouse[[br]]Joystick[[br]]Multimedia[[br]]Internet Options[[br]]Add/Remove[[br]]Regional[[br]]Time[[br]]System[[br]]Display[[br]]Accessibility[[br]]Network[[br]]Power[[br]]Accounts[[br]]Security Center[[br]]Firewall[[br]]Wireless[[br]]Taskbar[[br]]Folder Options[[br]]Device Manager[[br]]Updates
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
@@ -117,7 +117,8 @@
 		else 
 			return ctx->throwError("System.openControlPanel, unknown windows version");
 	}
-
+	else return ctx->throwError("System.openControlPanel, unknown utilty. See doc.");
+	
 	return util_runExternalCommand( "rundll32.exe shell32.dll,Control_RunDLL "+cmd );
 }
 
@@ -141,7 +142,10 @@
 		else if (winver[0]=='6') cmd = "wercon";
 		else return ctx->throwError("System.openUtility, unknown windows version");
 	}
-	return util_runExternalCommand( cmd );
+	else return ctx->throwError("System.openUtility, unknown utilty. See doc.");
+	// return util_runExternalCommand( cmd ); these can't be run this way, probably because they aren't exe.
+	QString realcmd = "cmd.exe /c start \"" + cmd + "\"";
+	return util_runExternalCommand( realcmd );
 }
 
 //Function:System._hash
