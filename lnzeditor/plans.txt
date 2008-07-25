@@ -49,6 +49,12 @@ C++
 	include(), prevent something from including itself.
 	
 Features
+
+	format output of on error, so that if you click output pane it will take you to error
+	
+	context help-lua or something looks at the words you are at, and opens the doc browser to that word
+
+
 	Python features: zip, url (and eventually ftp)
 
 	add a way to detect the Python directory
