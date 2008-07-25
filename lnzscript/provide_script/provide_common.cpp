@@ -5,6 +5,10 @@
 
 namespace launchorz_functions
 {
+	const char* LNZTYPE_bool = "bool";
+	const char* LNZTYPE_int = "int";
+	const char* LNZTYPE_string = "string";
+	
 	void util_au3init()
 	{
 		AU3_Init();
@@ -307,23 +311,23 @@ namespace launchorz_functions
 
 	
 	
-	QScriptValue g_ExceptionWrongNumberArgs(QScriptContext *ctx, char* functionName, int nArguments)
+	QScriptValue g_ExceptionWrongNumberArgs(QScriptContext *ctx, const char* functionName, int nArguments)
 	{
-		QString s; s.sprintf("%s takes exactly %d argument(s)", functionName, nArgument);
+		QString s; s.sprintf("%s takes exactly %d argument(s)", functionName, nArguments);
 		return ctx->throwError(s);
 	}
-	QScriptValue g_ExceptionNotEnoughArgs(QScriptContext *ctx, char* functionName, int nArguments)
+	QScriptValue g_ExceptionNotEnoughArgs(QScriptContext *ctx, const char* functionName, int nArguments)
 	{
 		QString s; s.sprintf("%s takes at least %d argument(s)", functionName, nArguments);
 		return ctx->throwError(s);
 	}
-	QScriptValue g_ExceptionTooManyArgs(QScriptContext *ctx, char* functionName, int nArguments)
+	QScriptValue g_ExceptionTooManyArgs(QScriptContext *ctx, const char* functionName, int nArguments)
 	{
 		QString s; s.sprintf("%s takes at most %d argument(s)", functionName, nArguments);
 		return ctx->throwError(s);
 	}
 	
-	QScriptValue g_ExceptionWrongTypeArg(QScriptContext *ctx, char* functionName, int nArgument, char* expectedType)
+	QScriptValue g_ExceptionWrongTypeArg(QScriptContext *ctx, const char* functionName, int nArgument, const char* expectedType)
 	{
 		QString s; s.sprintf("%s, wrong type for argument %d. Expected a %s.", functionName, nArgument, expectedType);
 		return ctx->throwError(QScriptContext::TypeError, s);
