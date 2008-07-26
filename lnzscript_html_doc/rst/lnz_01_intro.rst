@@ -41,7 +41,7 @@ Current Implementation
 ====================================
 Versions of Windows prior to XP are not officially supported.
 
-The details here may change, and are not necessarily important to users, but I am crediting what makes this project possible. LnzScript functions are currently provided by a combination of the Qt Toolkit by Trolltech, nircmd by nirsoft, the AutoItX dll, and the Windows api. The language is interpreted by Qt's QtScript module, an implementation of Ecma-262. 
+The details here may change, and are not necessarily important to users, but I am crediting what makes this project possible. LnzScript functions are currently provided by a combination of the AutoItX dll, Qt Toolkit by Trolltech, nircmd by nirsoft, and the Windows api. The language is interpreted by Qt's QtScript module, an implementation of Ecma-262. 
 
 
 
