@@ -32,10 +32,12 @@ function main()
 		var output = xmldom.transformNode(xsltdom);
 		writeTextFile('..\\lnzscript.api',output);
 		
-		
+
 	}
 	catch(err)
 	{
+		WScript.Echo("error");
+		WScript.Echo(err);
 		WScript.Echo(err.description);
 	}
 }
