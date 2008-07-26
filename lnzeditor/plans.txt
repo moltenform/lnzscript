@@ -9,14 +9,12 @@ Test cases
 	cover the api with tests
 
 Bugs
-	abbrev.properties in wrong place. probably constant. "..\abbrev" -> "abbrev"
-	-done
-	
+
 	System.openUtility broken
 	minor bug in File.ini* for return values, returns true even if false
 
 Tools
-	Add au3_window_info and so on to the Tools menu
+	--------Add au3_window_info and so on to the Tools menu
 
 
 Documentation!
@@ -25,11 +23,18 @@ Documentation!
 		project dependencies in visual studio
 		open websites in different tabs
 	
+	Create an "issues.txt" file
+		"because this is still an alpha release, known issues:
+		delay when closing editor and so on"
+		-done: added to readme.txt
+	
 	"About this editor"
-		Document for(23 feature
+		for(23 feature
+		-done(ish)
 	
 	
 	Document '<std.js>' features
+		-done in xml, now just in rst
 	Document argv in scripts, __included in scripts
 	Document scripts start in their own directory
 
@@ -47,6 +52,8 @@ C++
 	Add @'c:\test' feature
 	
 	include(), prevent something from including itself.
+	
+	actually add Internet.openUrl method. Right now it's just a hack, in std.js. And even worse, it's in timer.js.
 	
 Features
 
