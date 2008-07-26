@@ -1,5 +1,5 @@
-launchorz
-http://jamon.ben.googlepages.com/lnz_01_intro.html
+launchorz 0.2
+http://jamon.ben.googlepages.com/lnz_02_intro.html
 http://code.google.com/p/launchorz/
 Powerful JavaScript libraries for Win32 automation
 by Ben Fisher
@@ -17,13 +17,21 @@ Keyboard.send('hello!')
 from a command line: 
 lnzscript /f test.js
 
+or, use the editor Lnz Scite (lnzscite.exe) which has integrated Launchorz support.
+
 =================
-Documentation at http://jamon.ben.googlepages.com/lnz_01_intro.html
+Documentation at http://jamon.ben.googlepages.com/lnz_02_intro.html
 Check out the source at
 http://launchorz.googlecode.com/svn/trunk
 Contribute patches if you come up with something interesting.
 Or, add an issue at http://code.google.com/p/launchorz/issues/list
-The file TodoList.txt contains planned features and developments.
+
+
+Known Issues, as of version 0.2
+- System.openUtility mostly does not work. Fixed in svn.
+- File.iniDelete and related work, but sometimes return true even upon failure.
+- There is a noticeable pause when closing Lnz Scite editor.
+- File.dirListFiles() does not include hidden files.
 
 =================
 This program is free software; you can redistribute it and/or
