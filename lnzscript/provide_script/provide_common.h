@@ -24,11 +24,10 @@ namespace launchorz_functions
 	
 	void util_au3init();
 	
-	#define QStrToCStr(s) (s).toLatin1()
+	#define QStrToCStr(s) ((s).toLatin1())
 	//or toAscii() ?
-	
-	#define QStrToCStrPointer(s) ((const char *)(s).toLatin1())
-	// hack for sprintf
+	#define IntToQStr(n) (QString("%1").arg(n))
+	// note that QString(34) probably gives "34", but QString(0) gives "" and not "0"
 	
 	void util_SetAU3PixelRelativeCoords(bool bRelative);
 	void util_SetAU3MouseRelativeCoords(bool bRelative);
@@ -45,24 +44,24 @@ namespace launchorz_functions
 	QString get_winapi_windows_version();
 	
 
-	#define G_Nircmd 0x1U
-	#define G_WinCommonDialog 0x2U
-	#define G_Stdout 0x4U
-	#define G_ColorDialog 0x8U
-	#define G_FileMultDialog 0x10U
+	#define G_Nircmd 1
+	#define G_WinCommonDialog 2
 	
-	#define R_Nircmd(...) (util_externalCmd(G_Nircmd,ctx,eng,__VA_ARGS__))
-	#define R_WinCommonDialog(...) (util_externalCmd(G_WinCommonDialog,ctx,eng,__VA_ARGS__))
+	#define R_Nircmd(...) (util_externalCmdDefault(G_Nircmd,ctx,eng,__VA_ARGS__))
+	#define R_WinCommonDialog(...) (util_externalCmdDefault(G_WinCommonDialog,ctx,eng,__VA_ARGS__))
 	
-	// Use these to manually provide string. Be sure to escape quotes in input with util_external_escape
-	#define R_NircmdPreformatted(s_pref) (util_externalCmd(G_Nircmd,ctx,eng,s_pref))
-	#define R_WinCommonDialogPreformatted(s_pref) (util_externalCmd(G_WinCommonDialog,ctx,eng,s_pref))
+	//util_runExternalCommand still uses old method of util_external_escape, and Au3_run. Probably should move to QProcess sometime.
+	// Better to use QProcess QStringList args than this.
 	#define util_external_escape(s) (QString(s).replace("\"","\\\"",Qt::CaseInsensitive))
 	
-	extern QString util_nircmd_directory, util_wincommondlg_directory; // implemented in provide_common.cpp. Declared extern to avoid "multiple definition of"
+	
+	extern QString util_nircmd_location, util_wincommondlg_location; // implemented in provide_common.cpp. Declared extern to avoid "multiple definition of"
 	QString get_base_directory();
 	void util_nircmd_init();
-	QScriptValue util_externalCmd(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QString& strCommand, const QString& arg1 =0, const QString& arg2=0, const QString& arg3=0, const QString& arg4=0,const QString& arg5=0,const QString& arg6=0);
+	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1=0, const QString& arg2=0, const QString& arg3 =0, const QString& arg4 =0, const QString& arg5 =0, const QString& arg6 =0);
+	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QStringList& astrArgs);
+	QString util_externalCmdStdout(unsigned int program, const QStringList& astrArgs);
+
 
 	QScriptValue g_ExceptionWrongNumberArgs(QScriptContext *ctx, const char* functionName, int nArgument);
 	QScriptValue g_ExceptionNotEnoughArgs(QScriptContext *ctx, const char* functionName, int nArguments);

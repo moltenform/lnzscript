@@ -275,10 +275,14 @@
 	CHECK_ARGS
 	QString strNircmdCommand;
 	// Note that we escape quotes in the input (important)
-	strNircmdCommand.sprintf("memdump \"%s\" \"%s\" \"%d\" \"%d\" \"%d\"", QStrToCStrPointer(util_external_escape(strExecutableName)), QStrToCStrPointer(util_external_escape(strOutputFilename)), nBytesPerLine, nBytesToRead, nStartAddress);
-	if (!bIncludeHex) strNircmdCommand+= " nohex";
-	if (!bIncludeAscii) strNircmdCommand+= " noascii";
-	return R_NircmdPreformatted(strNircmdCommand);
+	QStringList args;
+	args << "memdump" << strExecutableName << strOutputFilename;
+	args << IntToQStr(nBytesPerLine) <<  IntToQStr(nBytesToRead) << IntToQStr(nStartAddress);
+	
+	if (!bIncludeHex) args << "nohex";
+	if (!bIncludeAscii) args << "noascii";
+	
+	return util_externalCmdDefault(G_Nircmd, ctx, eng, args);
 }
 
 ///Function:Process.setServiceStartup

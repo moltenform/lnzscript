@@ -8,11 +8,7 @@
 	if (nFrequency==-1)
 		return R_Nircmd("stdbeep");
 	else
-	{
-		QString strNircmdCommand;
-		strNircmdCommand.sprintf("beep %d %d", nFrequency, nDurationMilliseconds);
-		return R_NircmdPreformatted(strNircmdCommand);
-	}
+		return R_Nircmd("beep", IntToQStr(nFrequency),IntToQStr(nDurationMilliseconds));
 }
 
 ///Function:Sound.playSound

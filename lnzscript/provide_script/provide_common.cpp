@@ -98,77 +98,80 @@ namespace launchorz_functions
 		return (strResult.endsWith("\\")) ? strResult : strResult + "\\";
 	}
 	
-	QString util_nircmd_directory, util_wincommondlg_directory;
+	QString util_nircmd_location, util_wincommondlg_location;
 	void util_nircmd_init()
 	{
 		QString strBaseDir = get_base_directory();
-		util_nircmd_directory = strBaseDir + "nircmd.exe";
-		util_wincommondlg_directory = strBaseDir + "WinCommonDialog.exe";
-		if (! QFileInfo(util_nircmd_directory).exists()) { puts("Cannot find nircmd.exe."); abort(); }
-		if (! QFileInfo(util_wincommondlg_directory).exists()) { puts("Cannot find WinCommonDialog.exe."); abort(); }
+		util_nircmd_location = strBaseDir + "nircmd.exe";
+		util_wincommondlg_location = strBaseDir + "WinCommonDialog.exe";
+		if (! QFileInfo(util_nircmd_location).exists()) { puts("Cannot find nircmd.exe. Place it in same directory as lnzscript.exe."); abort(); }
+		if (! QFileInfo(util_wincommondlg_location).exists()) { puts("Cannot find WinCommonDialog.exe. Place it in same directory as lnzscript.exe."); abort(); }
 	}
 	
-	// kind of weird to have reference parameters having default arguments, but this apparently implicitly creates a QString of length 0, which can be tested with str==0.
-	QScriptValue util_externalCmd(unsigned int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
+	// These are "private" functions, only to be called by this file.
+	static int util_run_getstatus(const QString& strExec, const QStringList& astrArgs)
 	{
-		if (util_nircmd_directory=="") return ctx->throwError("The file nircmd.exe could not be found. Place it in a location that can be found by LnzScript in order to use this function.");
+		QProcess objProcess;
+		objProcess.start(strExec, astrArgs);
+		bool bTimeout = objProcess.waitForFinished(1000 * 60 * 30); // wait for 30 minutes
+		if (!bTimeout) return -1; // do not expect this to happen very often.
+		return (objProcess.exitCode());
+	}
+	static QString util_run_getstdout(const QString& strExec, const QStringList& astrArgs)
+	{
+		QProcess objProcess;
+		objProcess.start(strExec, astrArgs);
+		bool bTimeout = objProcess.waitForFinished(1000 * 60 * 30); // wait for 30 minutes
+		if (!bTimeout) return ""; // do not expect this to happen very often.
+		QString strOutput( objProcess.readAllStandardOutput());
+		return strOutput.replace("\r\n","\n").trimmed();
+	}
+	
+	// "Default", i.e. doesn't capture stdout, returns appropriate status code
+	// arguments that aren't provided are 0 (which implicitly becomes "")
+	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
+	{
+		// Qt takes care of quoting arguments and escaping " with \" in the arguments 
+		QStringList args;
+		if (arg1!=0) args.append(arg1);
+		if (arg2!=0) args.append(arg2);
+		if (arg3!=0) args.append(arg3);
+		if (arg4!=0) args.append(arg4);
+		if (arg5!=0) args.append(arg5);
+		if (arg6!=0) args.append(arg6);
+		return util_externalCmdDefault(program, ctx, eng, args);
+	}
+	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QStringList& astrArgs)
+	{
 		QString strExecutable;
-		if ((program & G_Nircmd)) strExecutable = util_nircmd_directory + " ";
-		else if ((program & G_WinCommonDialog)) strExecutable = util_wincommondlg_directory + " ";
+		if ((program == G_Nircmd)) strExecutable = util_nircmd_location;
+		else if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
 		else return ctx->throwError("Internal error. Bad external command.1");
 		
-		strExecutable += strCommand; // note unescaped! So, if everything is preformatted you can put it here - but make sure no unescaped quotes
-		if (arg1!=0) strExecutable += " \""+util_external_escape(arg1)+"\""; //replace " with \", to escape quotes
-		if (arg2!=0) strExecutable += " \""+util_external_escape(arg2)+"\"";
-		if (arg3!=0) strExecutable += " \""+util_external_escape(arg3)+"\"";
-		if (arg4!=0) strExecutable += " \""+util_external_escape(arg4)+"\"";
-		if (arg5!=0) strExecutable += " \""+util_external_escape(arg5)+"\"";
-		if (arg6!=0) strExecutable += " \""+util_external_escape(arg6)+"\"";
+		int nStatus = util_run_getstatus(strExecutable, astrArgs);
+		if ((program == G_Nircmd))
+			return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false); // "NirCmd returns a non-zero value on error."
 		
-		// now do a "run and wait" (synchronous)
-		if ((program & G_Stdout)!=0) // meaning if it is not reading from stdout
-		{
-			long nStatus = AU3_RunWait(QStrToCStr(strExecutable), "",1); //default working directory, flag of 1
-			if ((program & G_Nircmd))
-			{
-				return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false); // "NirCmd now returns a non-zero value on error."
-			}
-			else if ((program & G_WinCommonDialog))
-			{
-				return QScriptValue(eng, (int) nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code. Nice.
-			}
-			else return ctx->throwError("Internal error. Bad external command.2");
-		}
-		else //read from stdout
-		{
-			// do a "run and read" to capture std out.
-			QProcess objProcess;
-			objProcess.start(strExecutable); // we don't check .error(), hopefully this worked...
-			
-			bool bTimeout = objProcess.waitForFinished(1000 * 60 * 3); // wait for 3 minutes
-			if (!bTimeout) return QScriptValue(eng, false);
-			QString strOutput( objProcess.readAllStandardOutput());
-			strOutput = strOutput.replace("\r\n","\n").trimmed();
-			if (strOutput == "<cancel>") return QScriptValue(eng, false);
-			if ((program & G_ColorDialog)) // if it is a color dialog
-			{
-				// translate into rgb values.
-				long color; bool ok;
-				color = strOutput.toLong(&ok, 10); if (!ok) return ctx->throwError("Internal error. Dialog color; couldn't read output as long.");
-				QScriptValue ar = eng->newArray(3);
-				ar.setProperty(0, QScriptValue(eng, GetRValue(color)));
-				ar.setProperty(1, QScriptValue(eng, GetGValue(color)));
-				ar.setProperty(2, QScriptValue(eng, GetBValue(color)));
-				return ar;
-			}
-			else if ((program & G_FileMultDialog)) // if it is a mult file dialog
-			{
-				QStringList list = strOutput.split("\n", QString::KeepEmptyParts); //keeps "empty parts"
-				return util_QListToScriptArray(eng, list);
-			}
-			return QScriptValue(eng, strOutput);
-		}
+		else if ((program == G_WinCommonDialog))
+			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code.
+		
+		else return ctx->throwError("Internal error. Bad external command.2");
 	}
+	
+	// "Custom", i.e. captures stdout and returns a string. If this returns "", this should be an exceptional case (User clicked cancel, or error occurred)
+	QString util_externalCmdStdout(unsigned int program, const QStringList& astrArgs)
+	{
+		QString strExecutable;
+		if ((program == G_Nircmd)) strExecutable = util_nircmd_location;
+		else if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
+		else return ""; //ctx->throwError("Internal error. Bad external command.1");
+		
+		QString strOutput = util_run_getstdout(strExecutable, astrArgs);
+		if (strOutput == "<cancel>") return ""; //one consequence is that we can't return a special value for cancel.
+		else return strOutput;
+	}
+	
+
 	
 	
 /*

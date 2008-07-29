@@ -29,7 +29,6 @@
 	else
 	{
 		//apparently has to be sent a slower way. than //AU3_Send("!{PRINTSCREEN}",0);
-		
 		AU3_Send("{ALTDOWN}",0);
 		AU3_Sleep(100);
 		AU3_Send("{PRINTSCREEN}",0);
@@ -82,9 +81,7 @@
 {
 	CHECK_ARGS
 	QString strNircmdCommand;
-	strNircmdCommand.sprintf("setdisplay %d %d %d", nWidth, nHeight, nColorBits);
-	// We do not need to escape quotes in this particular case.
-	return R_NircmdPreformatted(strNircmdCommand);
+	return R_Nircmd("setdisplay", IntToQStr(nWidth),IntToQStr(nHeight), IntToQStr(nColorBits) );
 }
 
 

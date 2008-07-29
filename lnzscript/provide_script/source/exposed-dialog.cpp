@@ -86,7 +86,21 @@
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
-	return util_externalCmd(G_WinCommonDialog | G_Stdout | G_ColorDialog, ctx, eng, "color");
+	
+	QStringList args; args << "color";
+	QString strOutput = util_externalCmdStdout(G_WinCommonDialog,ctx,eng, args);
+	if (!strOutput.size()) return QScriptValue(eng, false);
+	
+	bool ok;
+	long color = strOutput.toLong(&ok); 
+	if (!ok) return ctx->throwError("Internal error. Dialog color; couldn't read output as long.");
+	
+	// translate to RGB using Windows api macros GetRValue
+	QScriptValue ar = eng->newArray(3);
+	ar.setProperty(0, QScriptValue(eng, GetRValue(color)));
+	ar.setProperty(1, QScriptValue(eng, GetGValue(color)));
+	ar.setProperty(2, QScriptValue(eng, GetBValue(color)));
+	return ar;
 }
 
 ///Function:Dialog.openFile
@@ -97,10 +111,19 @@
 {
 	CHECK_ARGS
 	if (strFiletype.contains("*.", Qt::CaseSensitive)) return ctx->throwError("Dialog.openFile(): Provide type in format 'bmp', NOT '*.bmp'.");
-	if (!bMultiple)
-		return util_externalCmd(G_WinCommonDialog | G_Stdout, ctx, eng, "file","open",strFiletype, strStartDirectory);
+	
+	QStringList args; 
+	args << "file" << (bMultiple ? "openmult" : "open") << strFiletype << strStartDirectory;
+	QString strOutput = util_externalCmdStdout(G_WinCommonDialog, args);
+	if (!strOutput.size()) return QScriptValue(eng, false);
+	
+	if (bMultiple)
+	{
+		QStringList list = strOutput.split("\n", QString::KeepEmptyParts);
+		return util_QListToScriptArray(eng, list);
+	}
 	else
-		return util_externalCmd(G_WinCommonDialog | G_Stdout | G_FileMultDialog, ctx, eng, "file","openmult",strFiletype, strStartDirectory);
+		return QScriptValue(eng, strOutput);
 }
 
 ///Function:Dialog.saveFile
@@ -111,5 +134,10 @@
 {
 	CHECK_ARGS
 	if (strFiletype.contains("*.", Qt::CaseSensitive)) return ctx->throwError("Dialog.saveFile(): Provide type in format 'bmp', NOT '*.bmp'.");
-	return util_externalCmd(G_WinCommonDialog | G_Stdout, ctx, eng, "file","save",strFiletype, strStartDirectory);
+	
+	QStringList args; 
+	args << "file" << "save" << strFiletype <<  strStartDirectory;
+	QString strOutput = util_externalCmdStdout(G_WinCommonDialog, args);
+	if (!strOutput.size()) return QScriptValue(eng, false);
+	return QScriptValue(eng, strOutput);
 }
