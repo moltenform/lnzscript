@@ -4111,7 +4111,7 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		}
 		break;
 	case IDM_HELP_EDITORDOC: {
-		RunCommandFromProperties( "command.scite.helpeditor", "command.scite.helponline.helpeditor");
+		RunCommandFromProperties( "command.scite.helpeditor", "command.scite.helpeditor.subsystem");
 		}
 		break;			
 	case IDM_HELP_DOCBROWSER: {
