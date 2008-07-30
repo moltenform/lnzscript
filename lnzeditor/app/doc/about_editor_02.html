@@ -89,6 +89,7 @@
     <li>Ctrl+Q comments out the current line. Note that it enters the characters //~, and not //, which distinguishes between disabled code and actual comments. Pressing Ctrl+Q again uncomments.</li>
     <li>Ctrl+H is used to replace. Replace in Selection is useful. Regular expressions are available, and matched groups can be referenced with \1 and so on.</li>
     <li>Ctrl+Shift+F opens a Find in Files dialog. </li>
+    <li>F8 allows you to specify command-line arguments to send to the script. Lnzscript files can use the "argv" variable to refer to them.</li>
     <li>Configuration files offer many options, and the user.shortcuts setting in Global Options can set custom keyboard shortcuts.</li>
     </ul>
     
@@ -108,7 +109,17 @@
     On installation, Lnz Scite assumes the Python directory is c:\python25, but this may not be the case. Try creating a simple Python script, (print 'hello') and press F5. If the output pane says the program cannot be found, you should open "python Options" from the Options menu. In this file, change the value of "pythondirectory" as appropriate (to whatever Python directory exists, such as c:\python23) and save changes.
     
     </p>
+    <!--
+    <h3>Lua Scripts</h3>
+    <p>
+	One can set up custom Lua scripts. See the "js Options" to look at "For loop expand". Subsystem 3 means to run as a Lua script. 
+	"dofile" is a command which will run a .lua file somewhere.
+	
+	Note difference- SciteDefaultHome is where scite.exe is, not where global properties are.
     
+    </p>
+    
+    -->
     
     
     </body>
