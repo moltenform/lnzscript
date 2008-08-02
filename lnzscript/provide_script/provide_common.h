@@ -58,7 +58,7 @@ namespace launchorz_functions
 	extern QString util_nircmd_location, util_wincommondlg_location; // implemented in provide_common.cpp. Declared extern to avoid "multiple definition of"
 	QString get_base_directory();
 	void util_nircmd_init();
-	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1=0, const QString& arg2=0, const QString& arg3 =0, const QString& arg4 =0, const QString& arg5 =0, const QString& arg6 =0);
+	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QString& arg1=0, const QString& arg2=0, const QString& arg3 =0, const QString& arg4 =0, const QString& arg5 =0, const QString& arg6 =0, const QString& arg7 =0);
 	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QStringList& astrArgs);
 	QString util_externalCmdStdout(unsigned int program, const QStringList& astrArgs);
 

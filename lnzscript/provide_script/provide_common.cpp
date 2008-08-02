@@ -113,6 +113,7 @@ namespace launchorz_functions
 	{
 		QProcess objProcess;
 		objProcess.start(strExec, astrArgs);
+		//puts(strExec.toLatin1()); for (int i = 0; i < astrArgs.size(); ++i) puts(astrArgs.at(i).toLatin1());
 		bool bTimeout = objProcess.waitForFinished(1000 * 60 * 30); // wait for 30 minutes
 		if (!bTimeout) return -1; // do not expect this to happen very often.
 		return (objProcess.exitCode());
@@ -121,6 +122,7 @@ namespace launchorz_functions
 	{
 		QProcess objProcess;
 		objProcess.start(strExec, astrArgs);
+		//puts(strExec.toLatin1()); for (int i = 0; i < astrArgs.size(); ++i) puts(astrArgs.at(i).toLatin1());
 		bool bTimeout = objProcess.waitForFinished(1000 * 60 * 30); // wait for 30 minutes
 		if (!bTimeout) return ""; // do not expect this to happen very often.
 		QString strOutput( objProcess.readAllStandardOutput());
@@ -129,7 +131,7 @@ namespace launchorz_functions
 	
 	// "Default", i.e. doesn't capture stdout, returns appropriate status code
 	// arguments that aren't provided are 0 (which implicitly becomes "")
-	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng,  const QString& strCommand, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6)
+	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QString& arg1 /* =0*/, const QString& arg2, const QString& arg3, const QString& arg4, const QString& arg5, const QString& arg6, const QString& arg7)
 	{
 		// Qt takes care of quoting arguments and escaping " with \" in the arguments 
 		QStringList args;
@@ -139,6 +141,7 @@ namespace launchorz_functions
 		if (arg4!=0) args.append(arg4);
 		if (arg5!=0) args.append(arg5);
 		if (arg6!=0) args.append(arg6);
+		if (arg7!=0) args.append(arg7);
 		return util_externalCmdDefault(program, ctx, eng, args);
 	}
 	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QStringList& astrArgs)
