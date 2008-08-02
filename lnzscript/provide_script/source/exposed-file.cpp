@@ -319,7 +319,10 @@
 ///Example:File.createShortcut('shortcut.lnk','c:\\program files\\my program\\program.exe');
 {
 	CHECK_ARGS
-	if (! QFileInfo(strTarget).exists()) return ctx->throwError("File.createShortcut(). Target does not exist.");
+	//if (! QFileInfo(strTarget).exists()) return ctx->throwError("File.createShortcut(). Target does not exist.");
+	// it could be a non-file like program /f something.txt
+	// this works for a simple file/program but NOT for something with arguments.
+	// we might have to rewrite using win api.
 	bool bResult = QFile::link(strTarget, strFilename);
 	return bResult ? QScriptValue(eng, true): QScriptValue(eng, false); 
 }

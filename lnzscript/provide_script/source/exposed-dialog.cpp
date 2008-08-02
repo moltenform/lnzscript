@@ -88,7 +88,7 @@
 	CHECK_ARGS
 	
 	QStringList args; args << "color";
-	QString strOutput = util_externalCmdStdout(G_WinCommonDialog,ctx,eng, args);
+	QString strOutput = util_externalCmdStdout(G_WinCommonDialog, args);
 	if (!strOutput.size()) return QScriptValue(eng, false);
 	
 	bool ok;
