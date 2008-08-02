@@ -5,13 +5,6 @@ LnzEditor Plans
 Before 0.2 release
 ----------------
 
-Test cases
-	cover the api with tests
-
-Bugs
-
-	System.openUtility broken
-	minor bug in File.ini* for return values, returns true even if false
 
 Tools
 	--------Add au3_window_info and so on to the Tools menu
@@ -23,19 +16,7 @@ Documentation!
 		project dependencies in visual studio
 		open websites in different tabs
 	
-	Create an "issues.txt" file
-		"because this is still an alpha release, known issues:
-		delay when closing editor and so on"
-		-done: added to readme.txt
 	
-	"About this editor"
-		for(23 feature
-		-done(ish)
-	
-	
-	Document '<std.js>' features
-		-done in xml, now just in rst
-	Document argv in scripts, __included in scripts
 	Document scripts start in their own directory
 
 
@@ -45,6 +26,13 @@ Documentation!
 
 For 0.3 release
 -------------------
+
+Bugs (pushed to 0.3)
+	System.openUtility broken
+	minor bug in File.ini* for return values, returns true even if false
+Test cases
+	cover the api with tests
+	
 Bugs
 	File.dirListFiles() doesn't include hidden files
 
