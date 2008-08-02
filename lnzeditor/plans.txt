@@ -9,6 +9,7 @@ Before 0.2 release
 Tools
 	--------Add au3_window_info and so on to the Tools menu
 
+rename scite.exe to lnzeditor.exe when distributing
 
 Documentation!
 	Write use cases
@@ -35,6 +36,10 @@ Test cases
 	
 Bugs
 	File.dirListFiles() doesn't include hidden files
+	in for line expand-deletes preceding comments?
+	
+	File.createShortcut only works for simple shortcuts. Will have to use winapi
+	http://64.233.167.104/search?q=cache:5RhesI33NygJ:www.codeproject.com/KB/winsdk/makelink.aspx+windows+api+create+shortcut&hl=en&ct=clnk&cd=1&gl=us
 
 C++
 	Add @'c:\test' feature
@@ -45,12 +50,16 @@ C++
 	
 Features
 
+	Instead of putting many temp files in a tmp directory, just have one temp file. Then no pause on app close.
+
 	format output of on error, so that if you click output pane it will take you to error
 	
 	context help-lua or something looks at the words you are at, and opens the doc browser to that word
 
 
 	Python features: zip, url (and eventually ftp)
+
+	prototype for arrays, .shuffle()
 
 	add a way to detect the Python directory
 		this could be done with an lnzscript .js file

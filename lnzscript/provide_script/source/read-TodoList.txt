@@ -1,16 +1,9 @@
 Todo
 =============
-Write general documentation for process, window, control.
-Don't let people pass in too many arguments to functions
-move generated files to "gen" directory
-Note to use [[br]] in documentation for line break.
+
 For development, it should be clear what the working directory should be for Python scripts
-Don't use sprintf for adding strings - it needlessly uses .toLatin1(). QStrToCStrPointer is a hack in this case. Fix this by using string concat or .arg().
 
-document javascript std library, including Time.createTimer
-
-have an inno setup installer that registers jsz type?
-document the __name__ variable and test that it works
+have an inno setup installer. registers js or jsz type?
 
 execute Python? I suppose it could look in the registry for a Python installation.
 Allow scripts to interface with Python - that'd be sweet. 
@@ -19,22 +12,12 @@ Allow scripts to interface with Python - that'd be sweet.
 	document argv?
 	
 database of contributed scripts
-
-right now there are tons of literal strings like "copyDialog: argument 2 is not a bool". should be replaced with something like FMTSTRINGERROR(2, STR_BOOL) or FMTSTRINGERROR(impl_copydialog_string, 2, STR_BOOL)
-	QString strThis;
-	QString strF;
-	checkArgs(ctx, "sendcommandListView", 3, strInt, &str, strBool, &strBool, strString, &strString);
-	
-	checkOptArgs(ctx, 3, 5, str
-	
-For Release 0.2
-===========
-unit tests...
-gen directory for generated scripts
-http download
+printerr to send to stderr?
 
 For Release 0.3
 ==============
+unit tests...
+http download
 "ask" input dialog, "choice" input dialog
 CallDll, depending on how hard it is to implement
 unify between NirCmd / Au3 window and dialog commands
@@ -60,11 +43,21 @@ Planned Features
 Internet
 ------
 	
-	Use Python. Mostly because I already know it.QtNetwork4.dll is 1.215 Mb
-	Ftp class or something. libcurl?
-	http://doc.trolltech.com/4.3-snapshot/qftp.html
-	UrlDownload. There's a getUrl in AutoIt3, a hacky solution would be to call it ...
-	getFavorites - look at Launchy source?
+	Internet.downloadURL
+		Options:
+		Python + py2exe
+			(Around 1Mb)
+			Current choice, because I already know it
+			Also, I get zip file support nearly for free
+		QtNetwork4.dll
+			(1.215Mb)
+			Less flexible, don't know it
+		Libcurl or something?
+		Of course, the least pretty solution is to distribute w/ au3 and call it
+	
+	
+	Internet.getFavorites
+		look at Launchy source? ff3?
 	
 
 Process
@@ -81,7 +74,9 @@ Mouse
 
 File
 ------
-	
+	directory - copy (with subdirs, files) move (with subdirs, files)\
+	getDirectorySize
+	getDriveType (cdrom, removable)
 	-optional feature File.dirWalk - to make recursing through directories easier
 	-optional feature File.dirListFilesPattern - list all entries matching *.txt and so on.
 
@@ -93,12 +88,16 @@ Dialog
 
 Screen
 -------
-	-why not add this?
-	AU3_PixelChecksum
+	-why not add this? AU3_PixelChecksum - because I wouldn't really use it.
 	
 	
 Window
 ------
-	consider adding nircmd win 
+	consider adding nircmd win function
 
+System
+--------
+	setEnvironmentvar
+
+(Look through au3 / ahk docs and add good features)
 (Look online for cool Au3 /autohotkey scripts and add features from them).
