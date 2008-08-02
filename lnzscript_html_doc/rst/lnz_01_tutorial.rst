@@ -2,14 +2,12 @@
 Tutorial
 =================
 
-This section of the documentation contains more-detailed information about certain functions. I would recommend having the Reference open as well while reading this.
+This section of the documentation contains more-detailed information about certain functions. I would recommend having the Reference open as well while reading this. Some video tutorials can be seen on the blog halfhourhacks.com.
 
-Script Basics
+Scripts
 =================
 
-Typically, one will write a script and save it in a .js or .jsz file. Then, ``lnzscript /f name_of_file.jsz`` will run the script. A good code editor, such as Scite, is recommended, but Notepad can work also. (although in the near future Launchorz will come with its own script editor). The built in print() function can be used to print information, and should be used for troubleshooting.
-
-One of the cool things about LnzScript is that you can include other code. Use the include() function to include another script file. See Scripts - Advanced  for more information.
+This is a full-fledged programming language, and functions and objects can be created. The built in print() function can be used to print a value, sometimes useful for troubleshooting. The include() function will run the contents of another script file. See Scripts - Advanced for more information.
 
 Time
 =================
@@ -36,7 +34,7 @@ It's pretty fun to be able to type ``Mouse.move(1,1)`` and watch the cursor move
 
 However, the problem with using the mouse is that it recquires coordinates, and this can always be somewhat fragile. What if the window is in a different place from what you expected? It is better to use Keyboard or direct Control where possible.
 
-Note that Keyboard.send('<Shift>{F10}') can be used to approximate right-clicking on something that has focus.
+Note that Keyboard.send('<Shift>{F10}') can be used to simulate right-clicking on something that has focus.
 
 Keyboard
 ================
@@ -84,14 +82,15 @@ These can be used to interact with the user while running a script. ``Dialog.ale
 Scripts - Advanced
 ===================================================
 
-One of the cool things about LnzScript is that you can include other code. Use the include() function to include another script file. Name collisions are avoided as much as possible by the concept of "private" scope. To declare a variable private to a script file, use "var". To declare a function private, declare it with ``function foo(x,y) { return x+y }``. To expose a function as public, use the syntax ``foo = function(x,y) { return x+y }`` Similar to Python, one can use the special value __name__ to find out if the currently running script is "main" (i.e. was the one specified by lnzscript /f name_of_file.jsz). In this way, a module can contain test code that is not run when it is included.
+There are two special variables. The variable called ``argv`` is an array containing command-line parameters. The variable ``__name__`` contains either  "included" if the current script was included or "main" otherwise.
+
+LnzScript code can include another file with the include() function. It is recommended to avoid name collisions by following these suggestions: To declare a variable private to a script file, use "var". To declare a function private, declare it with ``function foo(x,y) { return x+y }``. To expose a function as public, use the syntax ``foo = function(x,y) { return x+y }`` In this way functions from one file will not be accidently overwritten. Similar to Python, one can use the special variable called ``__name__`` to find out if the currently running script is "main" (i.e. was the one specified by lnzscript /f name_of_file.js). In this way, a module can contain test code that is not run when it is included.
 
 You can associate the extension .jsz with lnzscript.exe, so that you can double-click a script to run it. (In the future an installer may do this automatically). It is recommended to associate with lnzscript.exe /fconfirm "%1", because using /fconfirm with ask for confirmation before running the script.
 
 Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object oriented JavaScript.
 
-In a script that has non-trivial code, a standard JavaScript library is provided. 
-The library is not included by default, and the special expression ``include('<std>')`` is used to import it. Currently, this library provides .endsWith, printarr(a) for printing arrays, prototype methods such as startsWith or endsWith for strings, and prototype methods such as max() and min() for arrays. These can be seen in the file std.js.
+In a script that has non-trivial code, a standard JavaScript library is provided. The library is not included by default, and the special expression ``include('<std>')`` is used to import it. Currently, this library provides  printarr(a) for printing arrays, prototype methods such as .startsWith() / .endsWith() for strings, and prototype methods such as .max() and .min() for arrays. These are documented online, under String and Array. These can be seen in the file std.js.
 
 
 

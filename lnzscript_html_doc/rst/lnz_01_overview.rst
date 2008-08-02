@@ -5,29 +5,18 @@ Overview
 Getting Started
 ============================
 
-Download from `Google Code <http://code.google.com/p/launchorz/downloads/list>`_.
+Download the latest version from `Google Code <http://code.google.com/p/launchorz/downloads/list>`_.
 
-There are currently two distributions: "command line" and "form". The command-line is recommended, but if you have never used a command-line interface (cmd.exe), the "form" interface is provided. There is not yet an installer, and so the .zip file must be uncompressed to a folder of your choice.
+- Unzip the .zip file to someplace on your computer, possibly in Program Files.
+- Open the ``editor`` folder and run lnzeditor.exe. This is a code editor specifically for the Launchorz project.
+- Begin typing a script, such as ``Mouse.move(1,1); alert('hello');``. 
+- Choose run script from the Run menu (or press F5) to run.
 
-If you choose the command-line interface:
+A few things to note:
 
-- Unzip the .zip file to a folder, possibly in Program Files.
-- Run lnzscript.exe.
-- You should see a LnzScript prompt. Type print('hello') and see if it works.
-- Open notepad or a code editor and create a file called 'test.js', containing print('hello')
-- Save this file into the directory.
-- Open cmd.exe (the command prompt) and cd into the directory.
-- From cmd.exe, inside the directory, type lnzscript.exe /f test.js
-- From now on, you can use both of these ways (interactive or script-based) to run LnzScript code.
-
-If you choose the form interface:
-
-- Unzip the .zip file to a folder, possibly in Program Files.
-- Run lnzscriptform.exe and you should see a window with two text boxes.
-- Type "print('hello')" into the upper box and click Go. 
-- The lower box should respond with the text hello.
-- You can run scripts by typing text into the top box, and running it by pressing Go.
-
+- The output pane to the right contains the results of the script. The output of the ``print`` function will go here.
+- Notice the autocomplete and tooltip documentation (which can be disabled in Options->js options).
+- A currently-running script can sometimes be stopped with Ctrl+. or Run->Stop Script.
 
 The Basics
 ==============================
@@ -82,4 +71,16 @@ Misc. self-explanatory stuff
 	Window.minimizeAll()
 	Screen.saveScreenshot('c:/shot.png', false)
 	Process.systemShutdown()
+
+Demo
+::
 	
+	// It's an actual programming language
+	function moveCursor(x, y) { Mouse.move(x,y, true, 1); }
+	for (var i=0; i<500; i++) 
+		moveCursor(i*2, Math.sin((i/50.0)*6)*300);
+
+From the Command Line
+=============================
+
+LnzScript can also be run from the command line using the program "lnzscript.exe". Running lnzscript.exe /f "name of script.js" will execute a script. Also, running lnzscript.exe without arguments will start an interactive mode where commands can be typed one at a time.

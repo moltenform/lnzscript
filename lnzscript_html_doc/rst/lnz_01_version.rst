@@ -11,6 +11,7 @@ Additions in 0.2
 - LnzScite code editor
 - Several new functions added
 - Dialogs such as file, color. Special directories.
+- More use of AutoItX dll
 
 Additions in 0.1b
 - Scripts can use __name__ to see if they were included or run directly.
@@ -62,7 +63,7 @@ The Launchorz project is under the GPL v2 license.
 	TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE 
 	OR PERFORMANCE OF THIS SOFTWARE. 
 
-Also refer to the nircmd and autoIt3 licenses, which come are in the /licenses folder.
+Also refer to the nircmd and autoItx licenses, which come are in the /licenses folder.
 
 Future plans
 ----------------------------------------------------
