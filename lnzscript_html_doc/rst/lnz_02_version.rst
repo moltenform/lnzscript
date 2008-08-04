@@ -8,12 +8,14 @@ Current Release
 The current release is 0.2.
 
 Additions in 0.2
+
 - LnzScite code editor
 - Several new functions added
 - Dialogs such as file, color. Special directories.
 - More use of AutoItX dll
 
 Additions in 0.1b
+
 - Scripts can use __name__ to see if they were included or run directly.
 - Addition of standard JavaScript library
 - lnzscript.exe flag /fconfirm to ask for confirmation before running script
@@ -67,11 +69,9 @@ Also refer to the nircmd and autoItx licenses, which come are in the /licenses f
 
 Future plans
 ----------------------------------------------------
-- The Launchor
 - Installer
-- Urls and Zip file support is under development
-- Ftp Library? Database of scripts?
-- 64 bit version
+- A Launchor
+- Urls and Zip file support (under development)
 
 
 About this documentation

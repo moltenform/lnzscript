@@ -2,7 +2,7 @@
 Contribute
 =================
 
-Launchorz is an open source project licensed under the GPL. (That means that if you have a good idea, post it as an enhancement on the project page, optionally including a diff). It is a new project, and help is appreciated. To become a member of the project, e-mail me (Ben) or leave a comment on my `blog <http://halfhourhacks.blogspot.com>`_.
+Launchorz is an open source project licensed under the GPL. If you have a good idea, post it as an enhancement on the project page, optionally with a diff. If you notice a bug, please file a report. It is a new project, and help is appreciated. To become a member of the project, e-mail (Ben) or leave a comment on the `blog <http://halfhourhacks.blogspot.com>`_.
 
 Try it!
 -----------------
@@ -11,11 +11,7 @@ You can help by simply using the software. If you notice that something does not
 
 Writing test cases
 ---------------------------------------
-If you decide to join development, this is a great way to help the project and to play with things. Unit tests reside in /lnzscript/script/test/, but there are currently only a few written. A small test framework keeps track of which methods have no tests, and the eventual goal is to have tests for the entire api.
-
-Writing documentation
---------------------------------------------
-At this point in time, some details are not set in stone, and so I am holding off on a full-fledged documentation effort. I still feel that documentation is important.
+If you decide to join development, this is a great way to help the project and to play with things. Unit tests reside in /lnzscript/script/test/. A small test framework keeps track of which methods have no tests; the eventual goal being to have tests for the entire api.
 
 Technical details
 ======================

@@ -2,17 +2,17 @@
 Tutorial
 =================
 
-This section of the documentation contains more-detailed information about certain functions. I would recommend having the Reference open as well while reading this. Some video tutorials can be seen on the blog halfhourhacks.com.
+This section of the documentation contains more-detailed information about certain functions. (The Reference contains a complete list of what is available). Some screencasts can be found on the "examples" page `here <lnz_02_examples.html>`_ .
 
 Scripts
 =================
 
-This is a full-fledged programming language, and functions and objects can be created. The built in print() function can be used to print a value, sometimes useful for troubleshooting. The include() function will run the contents of another script file. See Scripts - Advanced for more information.
+This is a full-fledged programming language, with loops, functions, and objects. The built in print() function can be used to print a value, sometimes useful for troubleshooting. The include() function will run the contents of another script file. See Scripts - Advanced for more information.
 
 Time
 =================
 
-Time.sleep() is used very frequently in scripts. It is used to pause the script, usually to wait for something to happen. For example, you cannot open a program and instantaneously interact with it - you must give the program time to load! Time.sleep(500) waits for half of a second and is a reasonable value.
+Time.sleep() is used very frequently in scripts. It is used to pause the script, usually to wait for something to happen. You cannot open a program and instantaneously interact with it - you must give the program time to load! Time.sleep(500) waits for half of a second and is typically a reasonable value.
 
 Process
 ================
@@ -47,17 +47,15 @@ One can often use {TAB} to walk through the options in a dialog and {ENTER}. <Al
 Window
 ==============
 
-There are ways to interact with a window. Note in the reference that many of these functions take a first parameter "string window". This is misleading - when the parameter is called "string window" other types than a string are accepted. 
+There are ways to interact with a window. In the reference, many of these functions take a first parameter "string window". Here is what is meant by this. You just opened Calculator, maybe with Process.open('calc.exe'). Here are the possible ways to refer to the window:
 
-For example, let's say you just opened a Notepad window. Here are the possible ways to refer to a window:
+- ``''``				Use the currently active window (when given empty string '')
+- ``'Calc'``			Match a window whose title starts with "Calc"
+- ``'"Calculator"'``		Match a window whose title is exactly "Calculator"
+- ``'%ulator%'``			Match any window with title containing "ulator" 
+- ``{'title':'Calculator', 'class':'SciCalc', 'instance':2}`` 	Match the 2nd instance of an open Calculator with the title "Calculator"
 
-- ``'Untitled'``			Match title starting with Untitled
-- ``''``				Empty string - currently active window
-- ``'"Untitled - Notepad"'``		Match exact string
-- ``'%Untitled%'``			Match windows with part of string
-- ``{'title':'Untitled - Notepad', 'class':'Notepad', 'instance':1}`` 	Pass an object. Specifies more things.
-
-Note that in the last example an object (a bit like a Perl hash / Python dictionary) was passed.
+Note that in the last example an object (like a Perl hash or Python dictionary) was passed, not a string.
 
 Controls
 ================
@@ -71,7 +69,7 @@ Control methods generally take "string window" as a parameter - see above sectio
 File
 ===============
 
-There are many functions in this namespace, but they should be self-explanatory. Note that File.readFile() and File.writeFile() are not intended for binary data. They will work well for text files, though.
+There are many functions in this namespace, but they should be self-explanatory. Note that File.readFile() and File.writeFile() are not intended for binary data, and the file cannot be larger than available RAM memory.
 
 Dialog
 ====================================
@@ -86,11 +84,11 @@ There are two special variables. The variable called ``argv`` is an array contai
 
 LnzScript code can include another file with the include() function. It is recommended to avoid name collisions by following these suggestions: To declare a variable private to a script file, use "var". To declare a function private, declare it with ``function foo(x,y) { return x+y }``. To expose a function as public, use the syntax ``foo = function(x,y) { return x+y }`` In this way functions from one file will not be accidently overwritten. Similar to Python, one can use the special variable called ``__name__`` to find out if the currently running script is "main" (i.e. was the one specified by lnzscript /f name_of_file.js). In this way, a module can contain test code that is not run when it is included.
 
-You can associate the extension .jsz with lnzscript.exe, so that you can double-click a script to run it. (In the future an installer may do this automatically). It is recommended to associate with lnzscript.exe /fconfirm "%1", because using /fconfirm with ask for confirmation before running the script.
+You can associate the extension .js with lnzscript.exe, so that you can double-click a script to run it. It is recommended to associate with lnzscript.exe /fconfirm "%1". /fconfirm with ask for confirmation before running the script.
 
 Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object oriented JavaScript.
 
-In a script that has non-trivial code, a standard JavaScript library is provided. The library is not included by default, and the special expression ``include('<std>')`` is used to import it. Currently, this library provides  printarr(a) for printing arrays, prototype methods such as .startsWith() / .endsWith() for strings, and prototype methods such as .max() and .min() for arrays. These are documented online, under String and Array. These can be seen in the file std.js.
+In a script that has non-trivial code, a standard JavaScript library is provided. The library is not included by default, and the special expression ``include('<std>')`` is used to import it. Currently, this library provides  printarr(a) for printing arrays, prototype methods such as .startsWith() / .endsWith() for strings, and prototype methods such as .max() and .min() for arrays. These are documented in the reference under String and Array.
 
 
 
