@@ -70,9 +70,9 @@ Also refer to the nircmd and autoItx licenses, which come are in the /licenses f
 Future plans
 ----------------------------------------------------
 - Installer
-- A Launchor
+- Launchor
 - Urls and Zip file support (under development)
-
+- Pre-Windows XP support is not planned
 
 About this documentation
 ===============================

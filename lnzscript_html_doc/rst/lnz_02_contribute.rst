@@ -2,7 +2,7 @@
 Contribute
 =================
 
-Launchorz is an open source project licensed under the GPL. If you have a good idea, post it as an enhancement on the project page, optionally with a diff. If you notice a bug, please file a report. It is a new project, and help is appreciated. To become a member of the project, e-mail (Ben) or leave a comment on the `blog <http://halfhourhacks.blogspot.com>`_.
+Launchorz is an open source project licensed under the GPL. If you have a good idea, post it as an enhancement on the project page, optionally with a diff. If you notice a bug, please file a report. It is a new project, and help is appreciated. To become a member of the project, send e-mail or leave a comment on this `blog <http://halfhourhacks.blogspot.com>`_.
 
 Try it!
 -----------------

@@ -22,7 +22,7 @@ Example of what Launchorz can do:
 		
 	and choose Go from the Run menu. 
 	
-	(Alternatively, from the command line, you can run a script by typing``lnzscript.exe /f myscript.js``.)
+	(Alternatively, from the command line, you can run a script by typing ``lnzscript.exe /f myscript.js`` .)
 
 LnzScript's dedicated code editor, with tooltips and autocomplete, makes it easy to write and run scripts.
 
