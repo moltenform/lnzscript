@@ -36,16 +36,19 @@ The project relies on QtScript. QtScript is a new class in the Qt toolkit that p
 
 The functions are implemented with a mixture of the Windows api, Qt, AutoItX, and Nirsoft's Nircmd. At a future date, code from the AutoHotKey project may be incorporated. 
 
-Structure
+Internal Structure
 -----------------------
 
-The structure of the code is somewhat unique, but is convenient. The implementations are in /lnzscript/provide_script/source, but note that the .cpp files are not compiled directly. The .cpp files here contain significant metadata in the comments (any line beginning with /// should be considered a directive), and are processed by a Python script to create the real .cpp file. This is done for several reasons:
+If you downloaded the Launchorz source, this explanation may help.
+
+The implementations of functions are in /lnzscript/provide_script/source, but note that the .cpp files are not compiled directly. The .cpp files here contain significant metadata in the comments (any line beginning with /// is considered a directive), and are processed by a Python script to create the real .cpp file. This is done for several reasons:
 
 - Inline documentation
-- Argument checking. QtScript function calls are not "type-checked", but by providing metadata about the types expected, the Python script will automatically generate checks that the incoming arguments are valid.
-- Flexibility. To change the way in which something is done, one just changes the Python script or the .cpp.template file instead of countless C++ functions.
+- Argument checking. QtScript function calls are not type-checked, but by providing metadata about the types expected, the Python script will automatically generate checks that the incoming arguments are valid.
+- Flexibility. To change the way in which something is done, one just changes the .cpp.template file or the Python script instead of all of the C++ functions.
+- Documentation generation. A Python script creates a .xml file from the source.
 
 In more detail, every "exposed-\*.cpp" file in source is processed, and cpp code is generated. This code is placed into one of the .cpp.template files to create the final .cpp output.
 
-On a much smaller scale, a similar step occurs for JavaScript. The JavaScript libraries are in /lnzscript/script/provide , and a Python script at build time consolidates them to a single std.js file in the output directory.
+On a smaller scale, a similar step occurs for the JavaScript library. The JavaScript files are in /lnzscript/script/provide , and a Python script at build time consolidates them to a single std.js file in the output directory.
 

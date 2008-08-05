@@ -49,13 +49,11 @@ Keyboard
 Files
 ::
 
-	// note that you can use / in paths. If you use \, it must be escaped.
-	// these are equivalent:
+	// note that if \ is used in a filepath, it must be escaped.
 	var s = File.readFile('c:\\dir\\myfile.txt')
-	var s = File.readFile('c:/dir/myfile.txt')
 	var arFiles = File.dirListFiles('c:\\dir', 'name'); //array of files in the folder sorted by name
 
-Controls - this type of thing is useful
+Controls - this type of thing is useful 
 ::
 
 	Process.open('calc.exe'); Time.sleep(500);
@@ -78,7 +76,7 @@ Misc. self-explanatory stuff
 Demo
 ::
 	
-	// It's an actual programming language
+	// It's an actual language.
 	function moveCursor(x, y) { Mouse.move(x,y, true, 1); }
 	for (var i=0; i<500; i++) 
 		moveCursor(i*2, Math.sin((i/50.0)*6)*300);

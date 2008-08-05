@@ -17,22 +17,22 @@ Time.sleep() is used very frequently in scripts. It is used to pause the script,
 Process
 ================
 
-One key part of automation is opening a program. This act is seemingly simple, but there are actually many options involved. Do you want the script to wait until the program is closed? Do you want to run a cmd.exe command like ``dir``? Here is an overview of the ways to start another program:
+One key part of automation is opening a program. This would seem to be simple, but there are actually choices involved. Do you want the script to wait until the program is closed? Do you want to read from the command-line? Here are some ways to start another program:
 
-- Process.open	-opens the program and DOESN'T wait for it to close
+- Process.open	-opens the program and *doesn't* wait for it to close
 - Process.runAndWait	-opens the program and waits for it to close
 - Process.runAndRead	-opens the program, reads stdout, and waits for it to close
 - Process.runCmdLine	-runs command line like copy, del, rm, and waits for it to close
-- Process.openFile	-open a file or URL with default program, doesn't wait for close.
+- Process.openFile	-open a file or URL with default program, doesn't wait for close
 
-For Windows executables, you won't need the entire path. In other words, you can just type Process.open('calc.exe') or Process.open('notepad').
+For programs that are in the Windows directory, you won't need the entire path. In other words, you can just type Process.open('calc.exe') or Process.open('notepad').
 
 Mouse
 ===============
 
 It's pretty fun to be able to type ``Mouse.move(1,1)`` and watch the cursor move. LnzScript can also simulate mouse clicks, drags, and scroll-wheel.
 
-However, the problem with using the mouse is that it recquires coordinates, and this can always be somewhat fragile. What if the window is in a different place from what you expected? It is better to use Keyboard or direct Control where possible.
+However, the problem with using the mouse is that it recquires coordinates, and this can always be somewhat fragile. What if the window is in a different place from what you expected? It is recommended to use Keyboard or direct Control where possible.
 
 Note that Keyboard.send('<Shift>{F10}') can be used to simulate right-clicking on something that has focus.
 
@@ -47,15 +47,15 @@ One can often use {TAB} to walk through the options in a dialog and {ENTER}. <Al
 Window
 ==============
 
-There are ways to interact with a window. In the reference, many of these functions take a first parameter "string window". Here is what is meant by this. You just opened Calculator, maybe with Process.open('calc.exe'). Here are the possible ways to refer to the window:
+There are ways to interact with a window. In the reference, many of these functions take a first parameter "string window". Here is what is meant by this. You just opened Calculator, maybe with Process.open('calc.exe'), and you want to close the window. Here are the possible ways to refer to the window:
 
-- ``''``				Use the currently active window (when given empty string '')
-- ``'Calc'``			Match a window whose title starts with "Calc"
-- ``'"Calculator"'``		Match a window whose title is exactly "Calculator"
-- ``'%ulator%'``			Match any window with title containing "ulator" 
-- ``{'title':'Calculator', 'class':'SciCalc', 'instance':2}`` 	Match the 2nd instance of an open Calculator with the title "Calculator"
+- ``Window.close('')``		Close the currently active window (when given empty string '')
+- ``Window.close('Calc')``			Close a window whose title starts with "Calc"
+- ``Window.close('"Calculator"')``		Close a window whose title is exactly "Calculator"
+- ``Window.close('%ulator%')``			Close any one window with title containing "ulator" 
+- ``Window.close({'title':'Calculator', 'class':'SciCalc', 'instance':2})`` 	Close the 2nd instance of an open Calculator with the title "Calculator"
 
-Note that in the last example an object (like a Perl hash or Python dictionary) was passed, not a string.
+Note that in the last example an object (like a Python dict or Perl hash) was passed, not a string.
 
 Controls
 ================
@@ -69,7 +69,7 @@ Control methods generally take "string window" as a parameter - see above sectio
 File
 ===============
 
-There are many functions in this namespace, but they should be self-explanatory. Note that File.readFile() and File.writeFile() are not intended for binary data, and the file cannot be larger than available RAM memory.
+There are many functions in this namespace, but they should be self-explanatory. Note that File.readFile() and File.writeFile() are not intended for binary data, and the file cannot be larger than available memory.
 
 Dialog
 ====================================
@@ -84,11 +84,13 @@ There are two special variables. The variable called ``argv`` is an array contai
 
 LnzScript code can include another file with the include() function. It is recommended to avoid name collisions by following these suggestions: To declare a variable private to a script file, use "var". To declare a function private, declare it with ``function foo(x,y) { return x+y }``. To expose a function as public, use the syntax ``foo = function(x,y) { return x+y }`` In this way functions from one file will not be accidently overwritten. Similar to Python, one can use the special variable called ``__name__`` to find out if the currently running script is "main" (i.e. was the one specified by lnzscript /f name_of_file.js). In this way, a module can contain test code that is not run when it is included.
 
+For more advanced scripts, use the statement ``include('<std>')`` to import a code library. Currently, this library provides prototype methods such as .startsWith() / .endsWith() for strings, prototype methods such as .max() and .min() for arrays, and printarr(a) for printing arrays. These are documented in the Reference under String and Array.
+
 You can associate the extension .js with lnzscript.exe, so that you can double-click a script to run it. It is recommended to associate with lnzscript.exe /fconfirm "%1". /fconfirm with ask for confirmation before running the script.
 
 Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object oriented JavaScript.
 
-In a script that has non-trivial code, a standard JavaScript library is provided. The library is not included by default, and the special expression ``include('<std>')`` is used to import it. Currently, this library provides  printarr(a) for printing arrays, prototype methods such as .startsWith() / .endsWith() for strings, and prototype methods such as .max() and .min() for arrays. These are documented in the reference under String and Array.
+
 
 
 

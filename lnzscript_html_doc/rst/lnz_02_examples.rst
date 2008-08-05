@@ -15,7 +15,7 @@ Here are screencasts showing how LnzScript works.
 
 	Summary:
 
-	- When referring to a filepath, one must type 'c:\\myfile.txt' and not 'c:\myfile.txt'
+	- When referring to a filepath, one must type 'c:\\\\myfile.txt' and not 'c:\\myfile.txt'
 	- Keyboard.send can be used to emulate both typing and Control- keyboard shortcuts
 
 `Video 2, Opening Firefox Tabs <http://jamon.ben.googlepages.com/movlnz_02_screencast_fftabs.htm>`_
