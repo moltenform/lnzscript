@@ -47,6 +47,8 @@ Here are screencasts showing how LnzScript works.
 
 	Summary:
 	
+	- Open "Window Info" from the Tools menu to open the Window Info tool
+	- When the tool is open, it will display information about the control currently under the cursor
 	- The "ClassNN" or "id" of the control can both be used to refer to a control.
 
 
