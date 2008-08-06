@@ -1,5 +1,5 @@
 #include <QtScript>
-#include "testinterfaceconsole.h"
+#include "lnzconsole.h"
 #include "provide_script/print_function.h"
 #include <iostream>
 
