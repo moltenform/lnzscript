@@ -1,0 +1,7 @@
+Eventually, there should be a script to do this. For now, refer to the release before to see what is needed.
+
+Rename SciTE.exe to lnzeditor.exe
+Include nir folder in distribution (was part of the license)
+
+(Refer to the earlier release to see structure)
+

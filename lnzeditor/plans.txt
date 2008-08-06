@@ -1,36 +1,21 @@
 LnzEditor Plans
 =================
 
-
-Before 0.2 release
-----------------
+	Create "clipboard", 5th screen-cast
 
 
-Tools
-	--------Add au3_window_info and so on to the Tools menu
-
-rename scite.exe to lnzeditor.exe when distributing
-
-Documentation!
-	Write use cases
-		-quick one-off scripts
-		project dependencies in visual studio
-		open websites in different tabs
 	
-	
-	Document scripts start in their own directory
-
-
-(Make sure to test everything in a directory with spaces in the path)
 
 
 
 For 0.3 release
 -------------------
 
-Bugs (pushed to 0.3)
+Bugs
 	System.openUtility broken
 	minor bug in File.ini* for return values, returns true even if false
+	eliminate pause on closing program - only one temp file
+	
 Test cases
 	cover the api with tests
 	
@@ -104,7 +89,7 @@ Cleanup
 
 Long term
 -------------
-Run command. A file can, in the first line, provide a run command, such as "//# Runcommand:`run main.py`" which will be seen by Scite. 
+Run command. A file can, in the first line, provide a run command, such as "//# Runcommand:`run main.py`" which will be seen by Scite.
 
 End goal: a launchy that doesn't have to index at all
 
