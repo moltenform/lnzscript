@@ -30,19 +30,19 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (argc<2) { puts(documentation); puts("\nNot enough arguments"); return ErrorResult; }
 
 	_TCHAR* mode = get_argument(1, argc, argv);
-	if (wcscmp(mode,_T("simple"))==0)
+	if (stringequal(mode,_T("simple")))
 	{
 		return dialog_simple(argc - 1, &argv[1]); // Pass arguments except name of program
 	}
-	else if (wcscmp(mode,_T("color"))==0)
+	else if (stringequal(mode,_T("color")))
 	{
 		return dialog_color(argc - 1, &argv[1]);
 	}
-	else if (wcscmp(mode,_T("file"))==0)
+	else if (stringequal(mode,_T("file")))
 	{
 		return dialog_file(argc - 1, &argv[1]);
 	}
-	else if (wcscmp(mode,_T("sound"))==0)
+	else if (stringequal(mode,_T("sound")))
 	{
 		return dialog_sound(argc - 1, &argv[1]);
 	}
@@ -53,6 +53,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	return 0;
+}
+
+bool stringequal(const _TCHAR* s1, const _TCHAR* s2)
+{
+	return (wcscmp(s1, s2) == 0);
 }
 
 // Bounds-checking when retrieving argument. Checks if argument exists. If it doesn't quit program.

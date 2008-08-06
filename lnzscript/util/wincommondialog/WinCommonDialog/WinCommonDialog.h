@@ -11,3 +11,4 @@
 
 _TCHAR* get_argument(int index, int argc, _TCHAR** argv);
 
+bool stringequal(const _TCHAR* s1, const _TCHAR* s2);
