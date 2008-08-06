@@ -5,19 +5,13 @@ Powerful JavaScript libraries for Win32 automation
 by Ben Fisher
 =================
 
-Write short JavaScript scripts to do nearly anything on a Windows machine: 
-open programs, simulate keystrokes, simulate mouse movements and clicks, and work with files. 
-Current implementation uses a combination of Qt toolkit, an AutoIt dll, and Nircmd.
+To Get Started:
+Unzip the .zip file to someplace on your computer, possibly in Program Files. 
+Open the "editor" folder and run lnzeditor.exe. This is a code editor specifically for the Launchorz project. 
+Begin typing a script, such as Mouse.move(1,1); alert('hello');. 
+Choose run script from the Run menu (or press F5) to run. 
 
-test.js: 
-Process.open('notepad.exe')
-Time.sleep(500);
-Keyboard.send('hello!')
-
-from a command line: 
-lnzscript /f test.js
-
-or, use the editor Lnz Scite (lnzscite.exe) which has integrated Launchorz support.
+(Alternatively, from the command line, you can run a script by typing lnzscript.exe /f myscript.js .)
 
 =================
 Documentation at http://jamon.ben.googlepages.com/lnz_02_intro.html
