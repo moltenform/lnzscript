@@ -35,11 +35,19 @@ Array.prototype.min = function()
 	return min;
 }
 
-function artest()
+Array.prototype.shuffle = function()
 {
-	a = [1,2,-5,3,2,1];
-	print(a.max());
-	print(a.min());
+	// Fisher-yates, http://sedition.com/perl/javascript-fy.html
+	var i = this.length;
+	if ( i == 0 ) return false;
+	while ( --i ) {
+	var j = Math.floor( Math.random() * ( i + 1 ) );
+	var tempi = this[i];
+	var tempj = this[j];
+	this[i] = tempj;
+	this[j] = tempi;
+	}
+	return this;
 }
 
-// add isArray, isFunction, and so on from Douglas Crockford
+

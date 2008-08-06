@@ -44,7 +44,6 @@ Features
 
 	Python features: zip, url (and eventually ftp)
 
-	prototype for arrays, .shuffle()
 
 	add a way to detect the Python directory
 		this could be done with an lnzscript .js file

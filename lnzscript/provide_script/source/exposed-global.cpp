@@ -30,6 +30,8 @@
 ///Implementation:Javascript
 {}
 
+
+
 //-----------------------------------
 // imported from <std> : (i.e., std.js)
 	
@@ -45,6 +47,35 @@
 ///Returns:
 ///Doc:Prints object, with keys. Use include('<std>') to import this function.
 ///Implementation:Javascript
+{}
+
+///Function:(Global).isFunction
+///Arguments:object obj
+///Returns:
+///Doc:Returns true if the object is a function. Use include('<std>') to import this function.
+///Implementation:Javascript
+{}
+
+///Function:(Global).isArray
+///Arguments:object obj
+///Returns:
+///Doc:Returns true if the object is an array. Use include('<std>') to import this function.
+///Implementation:Javascript
+{}
+
+///Function:(Global).isNumber
+///Arguments:object obj
+///Returns:
+///Doc:Returns true if the object is a number or can be used as a number. Use include('<std>') to import this function.
+///Implementation:Javascript
+{}
+
+///Function:Array.shuffle
+///Arguments:
+///Returns:
+///Doc:Shuffles (randomizes) order of elements in array. Use include('<std>') to import this function. Note that apparently, initial random seed of lnzScript is the same due to Qt. Fisher-Yates algorithm.
+///Implementation:Javascript
+///InstanceMethod:true
 {}
 
 ///Function:Array.clone
