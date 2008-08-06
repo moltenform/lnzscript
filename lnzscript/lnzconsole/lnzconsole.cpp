@@ -3,11 +3,11 @@
 #include "provide_script/print_function.h"
 #include <iostream>
 
-TestInterfaceConsole::TestInterfaceConsole()
+LnzConsole::LnzConsole()
 {
 	// ProvideScript object is created implicitly.
 }
-void TestInterfaceConsole::addArgv(int argc, char *argv[])
+void LnzConsole::addArgv(int argc, char *argv[])
 {
 	// ProvideScript object is created implicitly.
 
@@ -15,7 +15,7 @@ void TestInterfaceConsole::addArgv(int argc, char *argv[])
 	provideScript.addArgv(argc, argv);
 }
 
-void TestInterfaceConsole::beginInteractiveSession()
+void LnzConsole::beginInteractiveSession()
 {
 	std::cout << std::endl << "LnzScript Interactive session, enter q or exit to quit." << std::endl;
 	std::string strLineInput;
@@ -31,7 +31,7 @@ void TestInterfaceConsole::beginInteractiveSession()
 }
 
 
-void TestInterfaceConsole::evaluateAndPrintResults(const char * c_strInput)
+void LnzConsole::evaluateAndPrintResults(const char * c_strInput)
 {
 	QString strIn(c_strInput);
 	
@@ -49,7 +49,7 @@ void g_LnzScriptPrintCallback(QString * str)
 	std::cout << "\n" << s;
 }
 
-bool TestInterfaceConsole::getConfirmationToRunScript()
+bool LnzConsole::getConfirmationToRunScript()
 {
 	// this is gross. we shouldn't have to do this.
 	StringResult res = provideScript.EvalString("(confirm('Are you sure you want to run this script?')) ? 1:0");

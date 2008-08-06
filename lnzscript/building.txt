@@ -1,34 +1,20 @@
 Requirements:
+Python 2.5
 Qt 4.4
 Mingw and GCC compiler
 
-Note that there are several preprocessing steps involved.
+Note that there are preprocessing steps involved.
 1)
-Open command prompt, set directory to /trunk/lnzscript/
-Using the "Qt command prompt" will include the right things in the path, recommended.
+Open the "Qt command prompt" , set directory to /trunk/lnzscript/
+(The qt bin and gcc must be in the path, so I recommend the qt command prompt that comes with Qt)
 
 2)
-Run "qmake testinterfaceconsole.pro" or "qmake testinterfaceform.pro" depending
-on whether you are building the form, or the console interface.
+Run "qmake lnzconsole.pro" 
 
-From here on, build.bat should do the rest. Otherwise here are the steps:
+3) run build.bat, which should do the rest for you. This runs Python scripts that create c++ to be compiled.
 
-3)
-Run c:\python25\python .\provide_script\source\script_createcpp.py .\provide_script\source
-(Change path to python if necessary).
-This important step generates the .cpp files to be used later.
+4) If there were not errors, the "release" directory should contain a binary. 
 
-4) Run c:\python25\python .\provide_script\source\script_create_std_js.py .\provide_script\source .\release
-Generates .js file
+To run this binary, I would recommend downloading an earlier release of LnzScript, and placing the binary into the same directory.
+(This way, the binary will have all of its dependencies including qt dlls, wincommondialog.exe, nircmd.exe, mingw.dll and so on).
 
-5)
-Run "make"
-
-
-6) If there were not errors, the "release" directory should contain a binary. Note that the binary must be able to find
-qt Dlls (found in /trunk/distribution/lnzscript/common/QtDlls_extract_here.rar, or in one of the distributions)
-as well as the autoit Dll.
-
-
-
-(If you build the console, and then want to build the form interface, you might have to run "make clean".)

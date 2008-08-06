@@ -13,6 +13,6 @@ make
 
 :notqmade
 @echo off
-echo No makefile. You probably need to run something like "qmake testinterfaceconsole.pro"
+echo No makefile. You probably need to run something like "qmake lnzconsole.pro"
 echo Read "building.txt"for more information.
 echo (Quitting)
