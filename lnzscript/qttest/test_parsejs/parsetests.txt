@@ -1,0 +1,73 @@
+nothing
+~
+nothing
+~~
+"nothing"
+~
+"nothing"
+~~
+Something long that has no at "symbol" //with comments /* and other characters */
+~
+Something long that has no at "symbol" //with comments /* and other characters */
+~~
+@The @ sign shouldn't change anything by @ its self
+~
+@The @ sign shouldn't change anything by @ its self
+~~
+@@ @@ hello @@ @@
+~
+@@ @@ hello @@ @@
+~~
+var path = @'c:\mypath'
+~
+var path = 'c:\\mypath'
+~~
+var path = @'c:\mypath\this\that\'
+~
+var path = 'c:\\mypath\\this\\that\\'
+~~
+var nosub = @"dont sub\in\ here";
+~
+var nosub = @"dont sub\in\ here";
+~~
+var a= "here is a @ in a \string\ there"
+var a= "here is a @'a \string\ but in ' there"
+var a= 'not valid syntax but no @'do not \string\ there'
+~
+var a= "here is a @ in a \string\ there"
+var a= "here is a @'a \string\ but in ' there"
+var a= 'not valid syntax but no @'do not \string\ there'
+~~
+// in a comment @'
+do not \sub\ here!
+~
+// in a comment @'
+do not \sub\ here!
+~~
+/* // in a block comment @'
+do not \sub\ here!
+@' or in \here\ */ or \here
+~
+/* // in a block comment @'
+do not \sub\ here!
+@' or in \here\ */ or \here
+~~
+/* in comment @'w\w\w' */ out /*of*/ comment @'w\w\w'
+~
+/* in comment @'w\w\w' */ out /*of*/ comment 'w\\w\\w'
+~~
+// in comment ' @'
+ou\t "of" 'comment' @'w\w\w'
+~
+// in comment ' @'
+ou\t "of" 'comment' 'w\\w\\w'
+~~
+"in a string ' and \" @' still \part\ of the string' " 
+~
+"in a string ' and \" @' still \part\ of the string' " 
+~~
+'in a string " and \' @' string \ended\ there.
+~
+'in a string " and \' @' string \ended\ there.
+
+
