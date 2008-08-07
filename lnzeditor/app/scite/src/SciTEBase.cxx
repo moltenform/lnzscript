@@ -4116,8 +4116,12 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		break;			
 	case IDM_HELP_DOCBROWSER: {
 			SelectionIntoProperties();
-			AddCommand(props.GetWild("command.helpbrowser.", FileNameExt().AsInternal()), "",
-			        SubsystemType("command.helpbrowser.subsystem."));
+			if (CurrentBuffer()->IsUntitled()) //if document is untitled, treat it as a .js file.
+				AddCommand(props.GetWild("command.helpbrowser.", "dummyfilename.js"), "",
+					SubsystemType("command.helpbrowser.subsystem."));
+			else
+				AddCommand(props.GetWild("command.helpbrowser.", FileNameExt().AsInternal()), "",
+					SubsystemType("command.helpbrowser.subsystem."));
 			if (jobQueue.commandCurrent > 0) {
 				jobQueue.isBuilding = true;
 				Execute();
