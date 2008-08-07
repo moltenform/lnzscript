@@ -22,7 +22,6 @@
 #define IDM_TOOLS_PRINTFILENAME	 360
 #define IDM_TOOLS_SHOWINEXPLORER	 361
 #define IDM_SETCWD_CURRENT	 362
-#define IDM_CLEANUPTEMP	 370
 // end custom
 
 // File

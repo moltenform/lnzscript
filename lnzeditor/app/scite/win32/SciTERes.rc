@@ -169,65 +169,6 @@ END
 
 
 
-/*
-POPUP "&View"
-BEGIN
-	MENUITEM "Toggle &current fold",		IDM_EXPAND
-	MENUITEM "Toggle &all folds",		IDM_TOGGLE_FOLDALL
-	MENUITEM SEPARATOR
-	
-	MENUITEM "&Tool Bar",          			IDM_VIEWTOOLBAR
-	MENUITEM "Tab &Bar",          			IDM_VIEWTABBAR
-	MENUITEM SEPARATOR
-	//MENUITEM "&Indentation Guides", 		IDM_VIEWGUIDES
-	MENUITEM "&Line Numbers",          		IDM_LINENUMBERMARGIN
-	MENUITEM "&Margin",          			IDM_SELMARGIN
-	MENUITEM "&Fold Margin",			IDM_FOLDMARGIN
-	MENUITEM "&Output\tF8",				IDM_TOGGLEOUTPUT
-	MENUITEM "&Parameters\tShift+F8",			IDM_TOGGLEPARAMETERS
-END
-*/
-
-/*
-POPUP "&Options"
-BEGIN
-	
-	MENUITEM "Open Files &Here",		IDM_OPENFILESHERE
-	MENUITEM "Vertical &Split",			IDM_SPLITVERTICAL
-	
-	MENUITEM "Wrap Out&put",			IDM_WRAPOUTPUT
-	MENUITEM "&Read-Only",				IDM_READONLY
-	MENUITEM SEPARATOR
-	
-	MENUITEM SEPARATOR
-	
-	MENUITEM SEPARATOR
-	MENUITEM "Open Local &Options File",		IDM_OPENLOCALPROPERTIES
-	MENUITEM "Open &Directory Options File",		IDM_OPENDIRECTORYPROPERTIES
-	MENUITEM "Open &User Options File",		IDM_OPENUSERPROPERTIES
-		
-	MENUITEM "Open Lua Startup Scr&ipt", 		IDM_OPENLUAEXTERNALFILE
-	MENUITEM SEPARATOR
-END // used: abcghlmoprstux
-*/
-
-/*
-POPUP "&Language"
-BEGIN
-	MENUITEM "", IDM_LANGUAGE
-END
-*/
-
-/*
-Ben - removed Buffers menu
-POPUP "&Buffers"
-BEGIN
-	MENUITEM "&Previous\tShift+F6",			IDM_PREVFILE
-	MENUITEM "&Next\tF6",			IDM_NEXTFILE
-	MENUITEM "&Close All",				IDM_CLOSEALL
-	MENUITEM "&Save All",				IDM_SAVEALL
-END
-*/
 
 POPUP "&Help"
 BEGIN

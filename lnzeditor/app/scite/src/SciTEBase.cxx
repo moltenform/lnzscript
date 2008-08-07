@@ -3357,65 +3357,6 @@ void SciTEBase::SetLineNumberWidth() {
 	}
 }
 
-
-bool SciTEBase::GetATempFileName(TCHAR* szTempName)
-{
-#if PLAT_WIN
-	// Creating and using a temporary file:
-	// http://msdn.microsoft.com/en-us/library/aa363875(VS.85).aspx
-	// http://64.233.183.104/search?q=cache:jC2wYHi709oJ:delphi.about.com/od/windowsshellapi/l/aa101303a.htm+winapi+get+temporary+file+name&hl=en&ct=clnk&cd=18&gl=us
-	
-	const DWORD BUFSIZE = 512;
-	TCHAR lpPathBuffer[BUFSIZE]; 
-	
-	// Use a "tmp" directory instead of the system temp directory.
-	FilePath tmpdir(GetSciteDefaultHome());
-	strcpy(lpPathBuffer, tmpdir.AsInternal());
-	
-	int np = strlen(lpPathBuffer);
-	lpPathBuffer[np++] = '\\';lpPathBuffer[np++] = 't';lpPathBuffer[np++] = 'm';lpPathBuffer[np++] = 'p';lpPathBuffer[np++] = '\0';
-	
-	//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "path is :");
-	//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, lpPathBuffer);
-	//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "\n\n");
-	
-	if (! GetTempFileName(lpPathBuffer, TEXT("lnz"), 0, szTempName))
-		return false;
-	// hard code the extension on:
-	int nL = strlen(szTempName);
-	//szTempName[nL++] = '.'; szTempName[nL++] = 'p'; szTempName[nL++] = 'y'; szTempName[nL++] = '\0';
-	szTempName[nL++] = '.'; szTempName[nL++] = 'j'; szTempName[nL++] = 's'; szTempName[nL++] = '\0';
-	return true;
-#else
-	return false;
-#endif
-}
-
-bool SciTEBase::GetATempFileNameClear()
-{
-	// http://windows-programming.suite101.com/article.cfm/searching_opening_files_in_win32
-	// Instead of this, we use a Lnzscript to clear the temp files. A lot easier.
-	/* const DWORD BUFSIZE = 512;
-	TCHAR lpPathBuffer[BUFSIZE]; 
-	if (! GetTempPath(BUFSIZE,   lpPathBuffer)) return false; 
-	int nL = strlen(lpPathBuffer); lpPathBuffer[nL++] = '\\'; lpPathBuffer[nL++] = 'l'; lpPathBuffer[nL++] = 'n'; lpPathBuffer[nL++] = 'z';	lpPathBuffer[nL++] = '*'; lpPathBuffer[nL++] = '\0';
-	
-	// now delete all lnz* files in here.
-	WIN32_FIND_DATA myFileData;
-	HANDLE hSearch;
-
-	hSearch = FindFirstFile(lpPathBuffer, &myFileData);
-	while (hSearch != INVALID_HANDLE_VALUE)
-	{
-		// DeleteFile(myFileData.cFileName); This appears to be a relative name...
-		SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, myFileData.cFileName);
-		
-		// test for more files
-		if (FindNextFile(hSearch, &myFileData) == 0) break; // stop when none left
-	} */
-	return false;
-}
-
 void SciTEBase::MenuCommand(int cmdID, int source) {
 	switch (cmdID) {
 	case IDM_NEW:
@@ -3917,35 +3858,29 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 
 	case IDM_GO: {
 
-			//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, FileNameExt().AsInternal() );
-		
 			bool bUntitled = CurrentBuffer()->IsUntitled();  // possibly also filePath.IsUntitled()
 			
 			if (bUntitled)
 			{
-				
-				TCHAR szTempName[512];
-				bool bCouldCreateTemp = GetATempFileName(szTempName);
-				if (!bCouldCreateTemp) {SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "Error: Could not create temp. file"); return;}
-						
-				FilePath fpTempName(szTempName);
-				SaveBuffer(fpTempName); // cool, we saved a buffer someplace. Next step is to run this thing?
-				
-				//SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, szTempName);
+				FilePath fpTempName(GetSciteDefaultHome(), "untitled.tmp.js");
+
+				bool bResult = SaveBuffer(fpTempName);
+				if (!bResult) {
+					SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "Error: Could not create temp. file");
+					return;
+				}
 				
 				// remember old values
 				SString oldFilePath=props.Get("FilePath"); SString oldFileDir=props.Get("FilePath"); SString oldFileName=props.Get("FileName");  SString oldFileExt=props.Get("FileExt");  SString oldFileNameExt=props.Get("FileNameExt"); 
-				// trick the computer into momentarily thinking it is somewhere else
+				// change settings as if the current file were somewhere else
 				props.Set("FilePath", fpTempName.AsFileSystem());
 				props.Set("FileDir", fpTempName.Directory().AsFileSystem());
 				props.Set("FileName", fpTempName.BaseName().AsFileSystem());
 				props.Set("FileExt", fpTempName.Extension().AsFileSystem());
-				//props.Set("FileNameExt", fpTempName.Name().AsFileSystem());
-				props.Set("FileNameExt", fpTempName.AsFileSystem()); // give it the entire path
+				props.Set("FileNameExt", fpTempName.AsFileSystem());
 						
 				SelectionIntoProperties();
 				long flags = 0;
-
 				if (!jobQueue.isBuilt) {
 					SString buildcmd = props.GetNewExpand("command.go.needs.", fpTempName.AsInternal());
 					AddCommand(buildcmd, "", SubsystemType("command.go.needs.subsystem."));
@@ -3961,14 +3896,7 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 				// Restore the property settings.
 				props.Set("FilePath", oldFilePath.c_str()); props.Set("FileDir", oldFileDir.c_str());	props.Set("FileName", oldFileName.c_str());props.Set("FileExt", oldFileExt.c_str()); props.Set("FileNameExt", oldFileNameExt.c_str());
 				
-								
-				//This won't work - in the same thread...
-				// we'll have to clean up files later...
-				//pause a bit
-				//::Sleep(900);
-				
-				// Now delete it
-				//fpTempName.Remove();
+				// We aren't concerned with clearing the temporary file. Because there is only one, the size will not accumulate over time.
 			}
 			else
 			{
@@ -4093,10 +4021,6 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		}
 		}
 		break;
-	case IDM_CLEANUPTEMP: {
-		RunCommandFromProperties( "command.lnzcleanup", "command.lnzcleanup.subsystem");
-		}
-		break;
 	case IDM_TOOLS_PRINTFILENAME: {
 		RunCommandFromProperties( "command.lnzprintname", "command.lnzprintname.subsystem");
 		}
@@ -4116,12 +4040,8 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		break;			
 	case IDM_HELP_DOCBROWSER: {
 			SelectionIntoProperties();
-			if (CurrentBuffer()->IsUntitled()) //if document is untitled, treat it as a .js file.
-				AddCommand(props.GetWild("command.helpbrowser.", "dummyfilename.js"), "",
-					SubsystemType("command.helpbrowser.subsystem."));
-			else
-				AddCommand(props.GetWild("command.helpbrowser.", FileNameExt().AsInternal()), "",
-					SubsystemType("command.helpbrowser.subsystem."));
+			AddCommand(props.GetWild("command.helpbrowser.", FileNameExt().AsInternal()), "",
+			        SubsystemType("command.helpbrowser.subsystem."));
 			if (jobQueue.commandCurrent > 0) {
 				jobQueue.isBuilding = true;
 				Execute();

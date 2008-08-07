@@ -742,8 +742,6 @@ protected:
 	void SaveTitledBuffers();
 	virtual void CopyAsRTF() {};
 	void SetLineNumberWidth();
-	bool GetATempFileNameClear();
-	bool GetATempFileName(TCHAR* szTempName);
 	void MenuCommand(int cmdID, int source = 0);
 	void RunCommandFromProperties(const char* propName, const char* propSubsystemName);
 	
