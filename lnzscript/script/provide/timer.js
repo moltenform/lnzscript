@@ -19,8 +19,3 @@ _Timer.prototype.check = function()
 	return nDiff;
 }
 
-//hack. This should be it's own method.
-if (Process && Internet)
-{
-	Internet.openUrl = Process.openFile;
-}

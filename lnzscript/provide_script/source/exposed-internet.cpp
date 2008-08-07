@@ -30,12 +30,14 @@
 	return util_runExternalCommand("RUNDLL32.EXE shdocvw.dll,DoOrganizeFavDlg");
 }
 
-// this shouldn't be in JavaScript, but it is. Right now it is just an alias of Process.openFile
+
+// this does the same thing as Process.openFile - see provide_script.cpp, where it explicitly says Internet.openUrl = Process.openFile;
+// not that pretty, but works.
 
 ///Function:Internet.openUrl
 ///Arguments:string strUrl
 ///Returns:
-///Doc:Use include('<std>') to import this function. Opens URL in the default browser.
+///Doc:Opens URL in the default browser.
 ///Implementation:Javascript
 {}
 

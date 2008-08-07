@@ -101,3 +101,24 @@ System
 
 (Look through au3 / ahk docs and add good features)
 (Look online for cool Au3 /autohotkey scripts and add features from them).
+
+Weak plans
+========
+Wanted in Launchorz
+--------------
+DllCall
+
+
+
+Wanted Kind of
+--------------
+printerr() - go to stderr
+SetEnvironmentVar
+directory - copy (with subdirs, files) move (with subdirs, files)
+createDirectory, getDirectorySize
+
+Somewhat wanted
+--------------
+getDriveType (cdrom, removable
+DriveGetFileSystem (FAT, NTFS
+MemGetStats  - Retrieves memory related information.

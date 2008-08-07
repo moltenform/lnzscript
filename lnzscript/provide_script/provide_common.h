@@ -27,7 +27,7 @@ namespace launchorz_functions
 	#define QStrToCStr(s) ((s).toLatin1())
 	//or toAscii() ?
 	#define IntToQStr(n) (QString("%1").arg(n))
-	// note that QString(34) probably gives "34", but QString(0) gives "" and not "0"
+	// note that QString(34) turns into ascii character 34 and QString(0) gives "" and not "0"
 	
 	void util_SetAU3PixelRelativeCoords(bool bRelative);
 	void util_SetAU3MouseRelativeCoords(bool bRelative);
