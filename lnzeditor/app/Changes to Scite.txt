@@ -27,6 +27,7 @@ Menubar
 		Added Doc Browser
 			command.helpbrowser.py = 
 			command.helpbrowser.subsystem.py =
+			If doc is Untitled, default to .js
 		Added online docs
 			command.scite.helponline
 			command.scite.helponline.subsystem
@@ -38,7 +39,7 @@ Menubar
 		Currently, languages shown are limited to 2.
 		This is so that the .properties appear in the right location
 		
-		If a properties file begins with_, it won't appear in the menu!
+		If a properties file begins with _, it won't appear in the menu!
 	
 	Removed buffers menu
 	
@@ -47,9 +48,14 @@ Other
 	Adding "run without save" feature
 		Creates a temporary file and runs it.
 		Presumably handy for one-time scripts
-		For cleaning temp files,
+		Version 0.3:
+			simply creates an untitled.tmp.js file. simple.
+		Version 0.2:
+			creates a temp file in tmp directory.
 			command.lnzcleanup
 			command.lnzcleanup.subsystem
+			used to clean up.
+			On app-close code located in SaveIfUnsureAll, // Cleanup temp files used to be here.
 	
 	Right-clicking on tab doesn't show tools in menu.
 	
@@ -57,6 +63,8 @@ Other
 	
 	File must exist before opening
 	Concept of pathInitialOpenDialogDirectory to be used, current directory. (actually a good idea)
+	
+	$(allargs) expands to all arguments
 	
 
 Cosmetic
