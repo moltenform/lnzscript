@@ -29,7 +29,7 @@ namespace LnzDocViewer
         private void InitializeComponent()
         {
             this.tableMain = new System.Windows.Forms.TableLayoutPanel();
-            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblLanguage = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnOpenWebDoc = new System.Windows.Forms.Button();
@@ -48,7 +48,7 @@ namespace LnzDocViewer
             this.tableMain.AutoSize = true;
             this.tableMain.ColumnCount = 1;
             this.tableMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableMain.Controls.Add(this.lblVersion, 0, 0);
+            this.tableMain.Controls.Add(this.lblLanguage, 0, 0);
             this.tableMain.Controls.Add(this.flowLayoutPanel1, 0, 1);
             this.tableMain.Controls.Add(this.splitContainer1, 0, 2);
             this.tableMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -62,14 +62,15 @@ namespace LnzDocViewer
             this.tableMain.Size = new System.Drawing.Size(292, 266);
             this.tableMain.TabIndex = 0;
             // 
-            // lblVersion
+            // lblLanguage
             // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(3, 0);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(233, 13);
-            this.lblVersion.TabIndex = 1;
-            this.lblVersion.Text = "Double-click a function to insert it into the script.";
+            this.lblLanguage.AutoSize = true;
+            this.lblLanguage.Location = new System.Drawing.Point(3, 0);
+            this.lblLanguage.Name = "lblLanguage";
+            this.lblLanguage.Size = new System.Drawing.Size(89, 13);
+            this.lblLanguage.TabIndex = 1;
+            this.lblLanguage.Text = "Switch language.";
+            this.lblLanguage.Click += new System.EventHandler(this.lblLanguage_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -152,7 +153,7 @@ namespace LnzDocViewer
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "LnzScript Reference v0.1";
+            this.Text = "DocViewer";
             this.tableMain.ResumeLayout(false);
             this.tableMain.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -169,7 +170,7 @@ namespace LnzDocViewer
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableMain;
-        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblLanguage;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnOpenWebDoc;

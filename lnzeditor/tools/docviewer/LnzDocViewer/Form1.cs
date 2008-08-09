@@ -13,38 +13,79 @@ namespace LnzDocViewer
 {
     public partial class Form1 : Form
     {
+        public enum LanguageMode { Python, Lnz, C };
         private SciteMsg scitemsg;
         private DocumentationFromXmlBase docObject;
-        private bool bStartedWithArgs = false;
-        private bool bPythonMode = true;
+        private bool bSciteEditorConnection = false;
+        private string docurl = "";
+
+        private LanguageMode currentMode;
+        public void setLanguage(LanguageMode mode)
+        {
+            switch (mode)
+            {
+                case LanguageMode.Python:
+                    docurl = "http://docs.python.org/lib/lib.html";
+                    docObject = new DocumentationFromPythonXml("pythondoc.xml");
+                    this.Text = "Python";
+                    break;
+                case LanguageMode.Lnz:
+                    docurl = "http://students.olin.edu/2010/bfisher/lnz_script/lnz_02_documentation.xml";
+                    docObject = new DocumentationFromLnzXml("lnzdoc.xml");
+                    this.Text = "LnzScript";
+                    break;
+                case LanguageMode.C:
+                    docurl = "http://www.acm.uiuc.edu/webmonkeys/book/c_guide/";
+                    docObject = new DocumentationFromCXml("cdoc.xml");
+                    this.Text = "C";
+                    break;
+                default:
+                    break;
+            }
+            this.lblLanguage.Text = this.Text + " (switch)";
+            this.treeView.Nodes.Clear();
+            docObject.InitialGetSections(this.treeView.Nodes);
+            currentMode = mode;
+        }
+
+        // Command-line syntax: docviewer.exe python 410243
+        // Another feature could be to look up based on selected word, but that will have to wait
         public Form1()
         {
             InitializeComponent();
-            // note that ShowInTaskbar is set to false if command-line arguments are given
+            this.txtOutput.MouseWheel += new MouseEventHandler(txtOutput_MouseWheel);
+            // In Program.cs, ShowInTaskbar is set to false if command-line arguments are given
 
-            // Scite Communication
+            LanguageMode mode = LanguageMode.Lnz;
+
+            // get language
             string[] args = Environment.GetCommandLineArgs();
-            long hwnd = 0;
-            this.lblVersion.Text = "Can't see editor.";
             if (args.Length > 1)
             {
-                bStartedWithArgs = true;
-                bool bParsed; 
-                bParsed = long.TryParse(args[1], out hwnd);
+                if (args[1].StartsWith("py")) mode = LanguageMode.Python;
+                else if (args[1].StartsWith("lnz")) mode = LanguageMode.Lnz;
+                else if (args[1] == ("c")) mode = LanguageMode.C;
+            }
+
+            // Scite Communication
+            long hwnd = 0;
+            if (args.Length > 2)
+            {
+                bool bParsed = long.TryParse(args[2], out hwnd);
                 if (bParsed)
-                    this.lblVersion.Text = "Double-click on a function to insert it into a script.";                    
+                {
+                    bSciteEditorConnection = true;
+                    // loses the ability to switch languages, because with a connection to editor uses context of the current doc type
+                    this.lblLanguage.Text = "Double-click on a function to insert it into a script.";
+                }
             }
             this.scitemsg = new SciteMsg(hwnd);
 
-            // set up TreeView
-            if (bPythonMode)
-                docObject = new DocumentationFromPythonXml("pythondoc.xml");
-            else
-                docObject = new DocumentationFromLnzXml("lnzdoc.xml");
-
-            docObject.InitialGetSections(this.treeView.Nodes);
-
+            // set up treeview
+            this.setLanguage(mode);
         }
+
+        
 
         
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -57,8 +98,7 @@ namespace LnzDocViewer
                 return;
             }
             // next, see if it is a function
-            NodeDocFunctionBase nodefn = e.Node as NodeDocLnzFunction;
-            if (nodefn==null) nodefn = e.Node as NodeDocPythonFunction;
+            NodeDocFunctionBase nodefn = e.Node as NodeDocFunctionBase;
             if (nodefn != null)
             {
                 this.txtOutput.Text = nodefn.renderDocumentation();
@@ -88,10 +128,9 @@ namespace LnzDocViewer
 
         private void treeView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            NodeDocFunctionBase nodefn = treeView.SelectedNode as NodeDocLnzFunction;
-            if (nodefn == null) nodefn = treeView.SelectedNode as NodeDocPythonFunction;
+            NodeDocFunctionBase nodefn = treeView.SelectedNode as NodeDocFunctionBase;
             if (nodefn == null) return;
-            if (!bStartedWithArgs)
+            if (!bSciteEditorConnection)
                 MessageBox.Show(nodefn.renderDocumentationInsertion());
             else
                 scitemsg.insertText(nodefn.renderDocumentationInsertion());
@@ -99,21 +138,32 @@ namespace LnzDocViewer
 
         private void btnOpenWebDoc_Click(object sender, EventArgs e)
         {
-            if (bPythonMode)
-                System.Diagnostics.Process.Start("http://docs.python.org/lib/lib.html");
-            else
-                System.Diagnostics.Process.Start("http://students.olin.edu/2010/bfisher/lnz_script/lnz_02_documentation.xml");
-
+            System.Diagnostics.Process.Start(docurl);
         }
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             // Feature not implemented yet. 
             this.txtOutput.Text = "You can search by opening the online docs, clicking (All), and using Ctrl+F.";
 
         }
+        private void lblLanguage_Click(object sender, EventArgs e)
+        {
+            if (!bSciteEditorConnection)
+            {
+                if (currentMode == LanguageMode.C) this.setLanguage(LanguageMode.Lnz);
+                else if (currentMode == LanguageMode.Lnz) this.setLanguage(LanguageMode.Python);
+                else if (currentMode == LanguageMode.Python) this.setLanguage(LanguageMode.C);
+            }
+        }
 
 
+        void txtOutput_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0) SendKeys.Send("{UP}{UP}");
+            else SendKeys.Send("{DOWN}{DOWN}");
+        }
+
+        
 
     }
 }

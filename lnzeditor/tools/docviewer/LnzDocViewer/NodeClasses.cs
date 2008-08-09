@@ -44,7 +44,7 @@ namespace LnzDocViewer
             this.strSection = section;
             this.strNamespacename = strnamespace;
         }
-        protected string commonRenderDocumentation()
+        protected virtual string commonRenderDocumentation()
         {
             string strDoc = "";
             if (strNamespacename == "(Global)")
@@ -142,6 +142,29 @@ namespace LnzDocViewer
             // don't try to remove optional arguments and so on.
             // just insert the function name only
             return commonRenderDocumentation() + "( "; // "os.rename( "
+        }
+
+    }
+
+    public class NodeDocCFunction : NodeDocPythonFunction
+    {
+
+        public NodeDocCFunction(string section, string strnamespace, string name)
+            : base(section, strnamespace, name) { }
+
+        public override string renderDocumentation()
+        {
+            // the strFullSyntax will include the fn. name
+            string strDoc = "Syntax: " + ((strFullSyntax == null) ? "" : strFullSyntax);
+            if (strDocumentation != null && strDocumentation != "")
+                strDoc += "\r\n\r\n" + strDocumentation;
+            return strDoc;
+        }
+        public override string renderDocumentationInsertion()
+        {
+            // don't try to remove argument types and so on.
+            // insert the function name only
+            return strFunctionname + "( ";
         }
 
     }

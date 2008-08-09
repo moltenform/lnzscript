@@ -17,6 +17,8 @@ namespace LnzDocViewer
             : base(strFilenameIn)
         { }
 
+        protected virtual bool emphasizeStaticness() {return true;}
+
         public override void ExpandNamespace(NodeDocNamespace node)
         {
             resetReader();
@@ -52,12 +54,18 @@ namespace LnzDocViewer
             }
             reader.Close();
         }
+
+        //this exists only so that subclass can override it 
+        protected virtual NodeDocPythonFunction newnode(string strSection, string strNamespace, string strFnname)
+        {
+            return new NodeDocPythonFunction(strSection, strNamespace, strFnname);
+        }
         private void expandNamespace_function(TreeNodeCollection outNodes, string strSection, string strNamespace, XmlReader reader)
         {
             bool bContinue = reader.ReadToDescendant("function");
             while (bContinue)
             {
-                NodeDocPythonFunction node = new NodeDocPythonFunction(strSection, strNamespace, reader.GetAttribute("name"));
+                NodeDocPythonFunction node = newnode(strSection, strNamespace, reader.GetAttribute("name"));
                 outNodes.Add(node);
 
                 bool bInstance = reader.GetAttribute("instance") == "true";
@@ -65,10 +73,13 @@ namespace LnzDocViewer
                 string strSyntax = reader.GetAttribute("fullsyntax"); if (strSyntax != null && strSyntax != "") node.strFullSyntax = strSyntax;
                 node.strDocumentation = getFunctionDocAndExample(reader.ReadSubtree()); //assumes doc before example
 
-                if (!bInstance)
+                if (this.emphasizeStaticness())
                 {
-                    //change visible node text to emphasize static-ness
-                    node.Text = node.strNamespacename + "." + node.strFunctionname;
+                    if (!bInstance)
+                    {
+                        //change visible node text to emphasize static-ness
+                        node.Text = node.strNamespacename + "." + node.strFunctionname;
+                    }
                 }
                 bContinue = ReadToNextSibling(reader, "function");
             }

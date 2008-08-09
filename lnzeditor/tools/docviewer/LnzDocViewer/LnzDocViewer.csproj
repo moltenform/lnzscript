@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentationFromCXml.cs" />
     <Compile Include="DocumentationFromLnzXml.cs" />
     <Compile Include="DocumentationFromPythonXml.cs" />
     <Compile Include="DocumentationFromXmlBase.cs" />
