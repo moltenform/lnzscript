@@ -1,76 +1,74 @@
 LnzEditor Plans
 =================
 
-	Create "clipboard", 5th screen-cast
-
-
-	
-
-
 
 For 0.3 release
 -------------------
-
 Bugs
-	System.openUtility broken
+	fix System.openUtility
 	minor bug in File.ini* for return values, returns true even if false
-	eliminate pause on closing program - only one temp file
-	
+	include(), prevent something from including itself. Have a QStringlist of what has been included.
+	File.dirListFiles() doesn't include hidden files. Document or fix this.
+	in for line expand-deletes preceding comments?
+	For System.openControlPanel and related, make options non-case sensitive. Should be easy
+
+
+Features
+	add @'c:\test' feature to main. Document this feature.
+	Dialog.input() to get a string
+		Was considering Smartwin++, but this may not work out (if it looks ugly)
+		CodeProject examples look ugly.
+		If all else fails, use a .NET 1.1 program in C# which would be trivial (but introduces .NET dependency).
+	add DocViewer to editor.
+	Python features: zip, url
+
+
 Test cases
 	cover the api with tests
+	Run tests on Vista
 	
-Bugs
-	File.dirListFiles() doesn't include hidden files
-	in for line expand-deletes preceding comments?
-	
-	File.createShortcut only works for simple shortcuts. Will have to use winapi
-	http://64.233.167.104/search?q=cache:5RhesI33NygJ:www.codeproject.com/KB/winsdk/makelink.aspx+windows+api+create+shortcut&hl=en&ct=clnk&cd=1&gl=us
 
-C++
-	Add @'c:\test' feature
+
+
 	
-	include(), prevent something from including itself.
-	
-	actually add Internet.openUrl method. Right now it's just a hack, in std.js. And even worse, it's in timer.js.
-	
+For 0.4 release
+----------------
+
 Features
-
-	Instead of putting many temp files in a tmp directory, just have one temp file. Then no pause on app close.
-
-	format output of on error, so that if you click output pane it will take you to error
+	Investigate DllCall method
 	
-	context help-lua or something looks at the words you are at, and opens the doc browser to that word
-
-
-	Python features: zip, url (and eventually ftp)
-
+	Create a new File.createShortcut that can handle 
+		File.createShortcut only works for simple shortcuts. Will have to use winapi
+		http://64.233.167.104/search?q=cache:5RhesI33NygJ:www.codeproject.com/KB/winsdk/makelink.aspx+windows+api+create+shortcut&hl=en&ct=clnk&cd=1&gl=us
+	
+	format output of on error, so that if you click output pane it will take you to error
 
 	add a way to detect the Python directory
 		this could be done with an lnzscript .js file
 		findpython.js searches for c:\python30\python.exe, c:\python21\Python.exe, until match
 		then writes a text file like _pythondir.properties
 		note that "import nonexistantfile" doesn't show an error
-		
+	
 	passing arguments to a run command
 		should be able to just write command.go.*.py=pythonw -u "$(FileNameExt)" $(args)
 		which should add quoting of arguments, and just as many arguments as needed
 
-	Add smartwin features
+	Add more dialogs
+		Dialog.choice, perhaps choosing from a handful of items.
+		Would be good for smartwin++ if it didn't look so ugly.
+		Consider Dialog.openFolder, which Smartwin++ can add easily
+		Dialog.choice http://smartwinlib.org/doc/class_choice_string.html\
 		http://smartwinlib.org/doc/class_in_dialog.html
-		Dialog.input
-		Dialog.choice http://smartwinlib.org/doc/class_choice_string.html
 		
-	For System.openControlPanel and related,
-		make options non-case sensitive.
 	
 
-Installer
-	Optionally (but on by default) associates .js files with the editor.
-	I considered the extension .jsz, but using .js means that files will be highlighted in other editors
+	Installer
+		Optionally (on by default?) associates .js files with the editor.
 
-Run tests on Vista
+Create "clipboard", 5th screen-cast ?
 
-For 0.4? release
+
+For 0.5? release
 ---------------------
 Bugs
 
@@ -82,21 +80,43 @@ consistent usage of return values - false or null or -1?
 Cleanup
 	make g_nircmd_directory string a static member, not a global variable
 	add "licenses" directory in output
-
-
+	
+	note Internet.openUrl is in provide_script.cpp, not very elegant.
 
 
 Long term
 -------------
-Run command. A file can, in the first line, provide a run command, such as "//# Runcommand:`run main.py`" which will be seen by Scite.
 
-End goal: a launchy that doesn't have to index at all
+Features
+	ftp, via Python
 
-Document IDM changes/additions, provide them to Lua with the .iface file
+The Launchor
+	a fork of launchy that doesn't have to index at all
 
-Cleanup
+Editor
+	context help-lua or something looks at the words you are at, and opens the doc browser to that word
+	(this isn't easy with the current doc-viewer, although Scite already has the capability)
+	
 	Ctrl+; and Ctrl+. are set by user.shortcuts, instead of in the C++ code. Maybe slightly less good.
+	
+	Document IDM changes/additions, provide them to Lua with the .iface file
 
-scite with Python build
 
-scite-interest list
+Scite Modifications
+	scite with Python instead of Lua
+	
+	Scite recognizes a special comment specifying "Run command". A file can, in the first line, provide a command, such as "//# Runcommand:`run main.py`" 
+	
+	announce to scite-interest list
+	
+
+
+
+
+
+
+
+
+
+
+
