@@ -1,3 +1,6 @@
+//Ben Fisher, 2008
+//Launchorz, GPL
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +16,7 @@ namespace LnzDocViewer
         private SciteMsg scitemsg;
         private DocumentationFromXmlBase docObject;
         private bool bStartedWithArgs = false;
+        private bool bPythonMode = true;
         public Form1()
         {
             InitializeComponent();
@@ -33,11 +37,16 @@ namespace LnzDocViewer
             this.scitemsg = new SciteMsg(hwnd);
 
             // set up TreeView
+            if (bPythonMode)
+                docObject = new DocumentationFromPythonXml("pythondoc.xml");
+            else
+                docObject = new DocumentationFromLnzXml("lnzdoc.xml");
 
-            docObject = new DocumentationFromLnzXml("lnzdoc.xml");
             docObject.InitialGetSections(this.treeView.Nodes);
+
         }
 
+        
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             // first, see if it is a namespace
@@ -48,12 +57,18 @@ namespace LnzDocViewer
                 return;
             }
             // next, see if it is a function
-            NodeDocLnzFunction nodefn = e.Node as NodeDocLnzFunction;
+            NodeDocFunctionBase nodefn = e.Node as NodeDocLnzFunction;
+            if (nodefn==null) nodefn = e.Node as NodeDocPythonFunction;
             if (nodefn != null)
             {
                 this.txtOutput.Text = nodefn.renderDocumentation();
                 return;
             }
+
+            // clear "doc not available" regardless
+            if (this.txtOutput.Text == DocumentationFromXmlBase.NodocsIncluded)
+                this.txtOutput.Text = "";
+
             
         }
 
@@ -73,7 +88,8 @@ namespace LnzDocViewer
 
         private void treeView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            NodeDocLnzFunction nodefn = treeView.SelectedNode as NodeDocLnzFunction;
+            NodeDocFunctionBase nodefn = treeView.SelectedNode as NodeDocLnzFunction;
+            if (nodefn == null) nodefn = treeView.SelectedNode as NodeDocPythonFunction;
             if (nodefn == null) return;
             if (!bStartedWithArgs)
                 MessageBox.Show(nodefn.renderDocumentationInsertion());
@@ -83,7 +99,11 @@ namespace LnzDocViewer
 
         private void btnOpenWebDoc_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://students.olin.edu/2010/bfisher/lnz_script/lnz_02_documentation.xml");
+            if (bPythonMode)
+                System.Diagnostics.Process.Start("http://docs.python.org/lib/lib.html");
+            else
+                System.Diagnostics.Process.Start("http://students.olin.edu/2010/bfisher/lnz_script/lnz_02_documentation.xml");
+
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

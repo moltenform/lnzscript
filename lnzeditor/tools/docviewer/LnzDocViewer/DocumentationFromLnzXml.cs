@@ -1,3 +1,6 @@
+//Ben Fisher, 2008
+//Launchorz, GPL
+
 using System;
 using System.Collections.Generic;
 using System.Text;

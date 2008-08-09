@@ -50,18 +50,25 @@ namespace LnzDocViewer
             }
             mainReader.Close();
         }
-       
+
+        public static string NodocsIncluded = "(Documentation not included. See official library reference.)";
         protected void initialGetNamespaces(TreeNode outCurrentSection, XmlReader reader)
         {
             bool bContinue = reader.ReadToDescendant("namespace");
             while (bContinue)
             {
                 NodeDocNamespace currentNamespace = new NodeDocNamespace(reader.GetAttribute("name"), outCurrentSection.Text);
+                bool bIsEmpty = (reader.GetAttribute("empty") != "true"); //Python might specify some to be empty
+                
                 currentNamespace.strDocumentation = initialGetNamespaceDoc(reader.ReadSubtree());
                 outCurrentSection.Nodes.Add(currentNamespace);
 
-                if (reader.GetAttribute("empty") != "true") //Python might specify some to be empty
+                if (bIsEmpty)
                     currentNamespace.Nodes.Add(new TreeNode("")); // add dummy element, so can be expanded
+                else
+                    if (currentNamespace.strDocumentation == "")
+                        currentNamespace.strDocumentation = NodocsIncluded;
+
 
                 bContinue = ReadToNextSibling(reader, "namespace");
             }

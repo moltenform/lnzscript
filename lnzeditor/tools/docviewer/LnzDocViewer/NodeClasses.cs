@@ -1,3 +1,6 @@
+//Ben Fisher, 2008
+//Launchorz, GPL
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -5,10 +8,11 @@ using System.Windows.Forms;
 
 namespace LnzDocViewer
 {
-    public class NodeDocBase : TreeNode
-    {
-        
-    }
+    // TreeNode classes. They store documentation information associated with a node.
+
+    public abstract class NodeDocBase : TreeNode
+    { }
+
     public class NodeDocNamespace : NodeDocBase
     {
         public string strSection;
@@ -25,18 +29,14 @@ namespace LnzDocViewer
         }
 
     }
-
-    public class NodeDocLnzFunction : NodeDocBase
+    public abstract class NodeDocFunctionBase : NodeDocBase
     {
         public string strSection;
         public string strNamespacename;
         public string strFunctionname;
-        public string strArguments = null;
-        public string strReturns = null;
-        public string strDocumentationAndExample = null;
         public bool bIsInstanceMethod;
 
-        public NodeDocLnzFunction(string section, string strnamespace, string name)
+        public NodeDocFunctionBase(string section, string strnamespace, string name)
         {
             this.Name = name;
             this.Text = name;
@@ -44,19 +44,7 @@ namespace LnzDocViewer
             this.strSection = section;
             this.strNamespacename = strnamespace;
         }
-
-        public string renderDocumentation()
-        {
-            string strDoc = "Syntax: " + commonRenderDocumentation();
-            strDoc += "(" + ((strArguments==null) ? " ":strArguments) + ")\r\n";
-            if (strReturns != null && strReturns != "")
-                strDoc += "Returns: " + strReturns + "\r\n";
-            //strDoc += "\r\n";
-            strDoc += strDocumentationAndExample;
-            return strDoc;
-        }
-        
-        private string commonRenderDocumentation()
+        protected string commonRenderDocumentation()
         {
             string strDoc = "";
             if (strNamespacename == "(Global)")
@@ -68,7 +56,34 @@ namespace LnzDocViewer
             strDoc += strFunctionname;
             return strDoc;
         }
-        public string renderDocumentationInsertion()
+        public abstract string renderDocumentation();
+        public abstract string renderDocumentationInsertion();
+
+    }
+
+    public class NodeDocLnzFunction : NodeDocFunctionBase
+    {
+        public string strArguments = null;
+        public string strReturns = null;
+        public string strDocumentationAndExample = null;
+
+        public NodeDocLnzFunction(string section, string strnamespace, string name)
+            : base(section, strnamespace, name) { }
+
+        public override string renderDocumentation()
+        {
+            string strDoc = "Syntax: " + commonRenderDocumentation();
+            strDoc += "(" + ((strArguments==null) ? " ":strArguments) + ")\r\n";
+            if (strReturns != null && strReturns != "")
+                strDoc += "Returns: " + strReturns + "\r\n";
+            //strDoc += "\r\n";
+            if (strDocumentationAndExample != null)
+                strDoc += strDocumentationAndExample;
+            return strDoc;
+        }
+
+
+        public override string renderDocumentationInsertion()
         {
             string strDoc = commonRenderDocumentation() + "( ";
             //filter out the optional arguments
@@ -93,6 +108,42 @@ namespace LnzDocViewer
         }
 
     }
-    
+
+    public class NodeDocPythonFunction : NodeDocFunctionBase
+    {
+        public string strFullSyntax = null;
+        public string strDocumentation = null;
+
+        public NodeDocPythonFunction(string section, string strnamespace, string name)
+            : base(section, strnamespace, name) { }
+
+        public override string renderDocumentation()
+        {
+            string strDoc = "Syntax: " + commonRenderDocumentation();
+            if (strFullSyntax == null || strFullSyntax == "")
+                strDoc += "( )";
+            else
+            {
+                //problem: duplication of names because name=dostuff and syntax=dostuff(a1, a2)
+                // this workaround seems to solve it
+                if (strFullSyntax.StartsWith(strFunctionname))
+                    strDoc += strFullSyntax.Substring(strFunctionname.Length);
+                else
+                    strDoc += strFullSyntax;
+            }
+            // return information isn't explicitly given.
+
+            if (strDocumentation != null && strDocumentation != "")
+                strDoc += "\r\n\r\n" + strDocumentation;
+            return strDoc;
+        }
+        public override string renderDocumentationInsertion()
+        {
+            // don't try to remove optional arguments and so on.
+            // just insert the function name only
+            return commonRenderDocumentation() + "( "; // "os.rename( "
+        }
+
+    }
 
 }

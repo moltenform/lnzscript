@@ -145,8 +145,8 @@ def process(fout, s):
 				
 				fout.write('<function name="%s" fullsyntax="%s"  '%(xmlescape(function.name),xmlescape(function.syntax)))
 				print function.name
-				if  function.static: fout.write('instance="true">')
-				else: fout.write(' >')
+				if  function.static: fout.write(' >')
+				else: fout.write('instance="true">')
 				if function.doc: fout.write('<doc>%s</doc>'%xmlescape(function.doc))
 				#if function.example: fout.write('<example>%s</example>'%xmlescape(function.example)) - included within doc
 				fout.write('</function>')

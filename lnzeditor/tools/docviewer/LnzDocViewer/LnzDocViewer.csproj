@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentationFromLnzXml.cs" />
+    <Compile Include="DocumentationFromPythonXml.cs" />
     <Compile Include="DocumentationFromXmlBase.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
