@@ -52,7 +52,8 @@ def xmlescape(s):
 reRstDirective = re.compile(r':[^ \r\n\t]+:')
 reIndex = re.compile(r'\.\. index::.*?\n\s*\n',re.DOTALL)
 reComment = re.compile(r'\.\. XXX.*?\n',re.DOTALL)
-#~ reVersion = re.compile(r'\.\. version((added)|(changed))::(?! 2\.6).*?\n\s*\n',re.DOTALL) //gets next lines too, too dangerous
+
+#If it was added in 2.6, that's important-keep it. Otherwise, strip it.
 reVersion = re.compile(r'\.\. version((added)|(changed))::(?! 2\.6).*?\n',re.DOTALL)
 
 def unstructuretext(s):
@@ -135,7 +136,7 @@ def process(fout, s):
 		for namespace in section.namespaces:
 			
 			isempty = '' if len(namespace.functions) > 0 else ' empty="true" '
-			if len(namespace.functions) == 0: namespace.doc+='\n(documentation not included)'
+			#~ if len(namespace.functions) == 0: namespace.doc+='\n(documentation not included)'
 			fout.write('<namespace name="%s"%s>'%(xmlescape(namespace.name), isempty))
 			if namespace.doc: fout.write('<namespace_doc>%s</namespace_doc>'%xmlescape(namespace.doc))
 			
@@ -144,8 +145,8 @@ def process(fout, s):
 				
 				fout.write('<function name="%s" fullsyntax="%s"  '%(xmlescape(function.name),xmlescape(function.syntax)))
 				print function.name
-				if  function.static: fout.write('>')
-				else: fout.write('static="false">')
+				if  function.static: fout.write('instance="true">')
+				else: fout.write(' >')
 				if function.doc: fout.write('<doc>%s</doc>'%xmlescape(function.doc))
 				#if function.example: fout.write('<example>%s</example>'%xmlescape(function.example)) - included within doc
 				fout.write('</function>')
@@ -180,9 +181,9 @@ def go():
 def writeheader(fout):
 	fout.write('<?xml version="1.0" encoding="UTF-8"?>')
 	fout.write('<?xml-stylesheet type="text/xsl" href="viewdoc.xsl"?>')
-	fout.write('<documentation library="python" version="2.5">')
+	fout.write('<launchorzdoc library="python" version="2.5">')
 def writefooter(fout):
-	fout.write('</documentation>')
+	fout.write('</launchorzdoc>')
 
 def splitheader(s): #takes ===Section:Text====== and returns 'Section','Text'
 	s = s.strip('=')
