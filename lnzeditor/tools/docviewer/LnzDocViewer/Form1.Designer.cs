@@ -87,7 +87,7 @@ namespace LnzDocViewer
             this.btnSearch.Location = new System.Drawing.Point(3, 3);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnSearch.TabIndex = 0;
+            this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -98,7 +98,7 @@ namespace LnzDocViewer
             this.btnOpenWebDoc.Location = new System.Drawing.Point(84, 3);
             this.btnOpenWebDoc.Name = "btnOpenWebDoc";
             this.btnOpenWebDoc.Size = new System.Drawing.Size(144, 23);
-            this.btnOpenWebDoc.TabIndex = 1;
+            this.btnOpenWebDoc.TabIndex = 2;
             this.btnOpenWebDoc.Text = "Open Web Documentation";
             this.btnOpenWebDoc.UseVisualStyleBackColor = true;
             this.btnOpenWebDoc.Click += new System.EventHandler(this.btnOpenWebDoc_Click);
@@ -121,7 +121,7 @@ namespace LnzDocViewer
             this.splitContainer1.Panel2MinSize = 50;
             this.splitContainer1.Size = new System.Drawing.Size(286, 212);
             this.splitContainer1.SplitterDistance = 144;
-            this.splitContainer1.TabIndex = 3;
+            this.splitContainer1.TabIndex = 0;
             // 
             // treeView
             // 
@@ -132,6 +132,7 @@ namespace LnzDocViewer
             this.treeView.TabIndex = 0;
             this.treeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView_MouseDoubleClick);
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            this.treeView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.treeView_KeyPress);
             this.treeView.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterExpand);
             // 
             // txtOutput
@@ -141,7 +142,7 @@ namespace LnzDocViewer
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.Size = new System.Drawing.Size(286, 64);
-            this.txtOutput.TabIndex = 0;
+            this.txtOutput.TabIndex = 3;
             // 
             // Form1
             // 

@@ -66,6 +66,8 @@ namespace LnzDocViewer
                 else if (args[1].StartsWith("lnz")) mode = LanguageMode.Lnz;
                 else if (args[1] == ("c")) mode = LanguageMode.C;
             }
+            // set up treeview
+            this.setLanguage(mode);
 
             // Scite Communication
             long hwnd = 0;
@@ -81,8 +83,11 @@ namespace LnzDocViewer
             }
             this.scitemsg = new SciteMsg(hwnd);
 
-            // set up treeview
-            this.setLanguage(mode);
+            // callers can pass in a directory (the location of the xml files)
+            if (args.Length > 3)
+            {
+                System.IO.Directory.SetCurrentDirectory(args[3]);
+            }
         }
 
         
@@ -144,7 +149,7 @@ namespace LnzDocViewer
         {
             // Feature not implemented yet. 
             this.txtOutput.Text = "You can search by opening the online docs, clicking (All), and using Ctrl+F.";
-
+            this.treeView.Focus();
         }
         private void lblLanguage_Click(object sender, EventArgs e)
         {
@@ -161,6 +166,14 @@ namespace LnzDocViewer
         {
             if (e.Delta > 0) SendKeys.Send("{UP}{UP}");
             else SendKeys.Send("{DOWN}{DOWN}");
+        }
+
+        
+        private void treeView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char) Keys.Escape)
+                Environment.Exit(0);
+            return;
         }
 
         
