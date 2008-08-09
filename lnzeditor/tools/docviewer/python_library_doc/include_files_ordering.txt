@@ -1,0 +1,13 @@
+pythondoc_builtin.txt
+pythondoc_numbers.txt
+pythondoc_text.txt
+pythondoc_os.txt
+pythondoc_data.txt
+pythondoc_ui.txt
+pythondoc_internet.txt
+pythondoc_multimedia.txt
+pythondoc_persist.txt
+pythondoc_fileformats.txt
+pythondoc_netformats.txt
+pythondoc_threads.txt
+pythondoc_dev.txt

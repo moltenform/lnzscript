@@ -1,0 +1,718 @@
+
+===Section:User Interface=============
+
+===Mod:curses======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+// ===Mod:curses.ascii======
+// ===ModDoc:====
+// ===EndDoc===
+// .. function:: (To add later)
+
+// ===Mod:curses.panel======
+// ===ModDoc:====
+// ===EndDoc===
+// .. function:: (To add later)
+
+===Mod:tkinter======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:tix======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+// ===Mod:scrolledtext======
+// ===ModDoc:====
+// ===EndDoc===
+// .. function:: (To add later)
+
+===Mod:turtle======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+// ===Mod:idle======
+// ===ModDoc:====
+// ===EndDoc===
+// .. function:: (To add later)
+
+===Mod:getopt======
+===ModDoc:====
+This module helps scripts to parse the command line arguments in ``sys.argv``.
+It supports the same conventions as the Unix :cfunc:`getopt` function (including
+the special meanings of arguments of the form '``-``' and '``--``').  Long
+options similar to those supported by GNU software may be used as well via an
+optional third argument. 
+
+In a script, typical usage is something like this::
+
+   import getopt, sys
+
+   def main():
+       try:
+           opts, args = getopt.getopt(sys.argv[1:], "ho:v", ["help", "output="])
+       except getopt.GetoptError, err:
+           # print help information and exit:
+           print str(err) # will print something like "option -a not recognized"
+           usage()
+           sys.exit(2)
+       output = None
+       verbose = False
+       for o, a in opts:
+           if o == "-v":
+               verbose = True
+           elif o in ("-h", "--help"):
+               usage()
+               sys.exit()
+           elif o in ("-o", "--output"):
+               output = a
+           else:
+               assert False, "unhandled option"
+       # ...
+
+   if __name__ == "__main__":
+       main()
+===EndDoc===
+.. function:: getopt(args, options[, long_options])
+
+   Parses command line options and parameter list.  *args* is the argument list to
+   be parsed, without the leading reference to the running program. Typically, this
+   means ``sys.argv[1:]``. *options* is the string of option letters that the
+   script wants to recognize, with options that require an argument followed by a
+   colon (``':'``; i.e., the same format that Unix :cfunc:`getopt` uses).
+
+   .. note::
+
+      Unlike GNU :cfunc:`getopt`, after a non-option argument, all further arguments
+      are considered also non-options. This is similar to the way non-GNU Unix systems
+      work.
+
+   *long_options*, if specified, must be a list of strings with the names of the
+   long options which should be supported.  The leading ``'-``\ ``-'`` characters
+   should not be included in the option name.  Long options which require an
+   argument should be followed by an equal sign (``'='``).  To accept only long
+   options, *options* should be an empty string.  Long options on the command line
+   can be recognized so long as they provide a prefix of the option name that
+   matches exactly one of the accepted options.  For example, if *long_options* is
+   ``['foo', 'frob']``, the option :option:`--fo` will match as :option:`--foo`,
+   but :option:`--f` will not match uniquely, so :exc:`GetoptError` will be raised.
+
+   The return value consists of two elements: the first is a list of ``(option,
+   value)`` pairs; the second is the list of program arguments left after the
+   option list was stripped (this is a trailing slice of *args*).  Each
+   option-and-value pair returned has the option as its first element, prefixed
+   with a hyphen for short options (e.g., ``'-x'``) or two hyphens for long
+   options (e.g., ``'-``\ ``-long-option'``), and the option argument as its
+   second element, or an empty string if the option has no argument.  The
+   options occur in the list in the same order in which they were found, thus
+   allowing multiple occurrences.  Long and short options may be mixed.
+
+
+.. function:: gnu_getopt(args, options[, long_options])
+
+   This function works like :func:`getopt`, except that GNU style scanning mode is
+   used by default. This means that option and non-option arguments may be
+   intermixed. The :func:`getopt` function stops processing options as soon as a
+   non-option argument is encountered.
+
+   If the first character of the option string is '+', or if the environment
+   variable POSIXLY_CORRECT is set, then option processing stops as soon as a
+   non-option argument is encountered.
+   
+===Mod:optparse======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+
+===Mod:cmd======
+===ModDoc:====
+The :class:`Cmd` class provides a simple framework for writing line-oriented
+command interpreters.  These are often useful for test harnesses, administrative
+tools, and prototypes that will later be wrapped in a more sophisticated
+interface.
+===EndDoc===
+
+.. function:: Cmd([completekey[, stdin[, stdout]]])
+
+   A :class:`Cmd` instance or subclass instance is a line-oriented interpreter
+   framework.  There is no good reason to instantiate :class:`Cmd` itself; rather,
+   it's useful as a superclass of an interpreter class you define yourself in order
+   to inherit :class:`Cmd`'s methods and encapsulate action methods.
+
+   The optional argument *completekey* is the :mod:`readline` name of a completion
+   key; it defaults to :kbd:`Tab`. If *completekey* is not :const:`None` and
+   :mod:`readline` is available, command completion is done automatically.
+
+   The optional arguments *stdin* and *stdout* specify the  input and output file
+   objects that the Cmd instance or subclass  instance will use for input and
+   output. If not specified, they will default to *sys.stdin* and *sys.stdout*.
+
+.. method:: Cmd.cmdloop([intro])
+
+   Repeatedly issue a prompt, accept input, parse an initial prefix off the
+   received input, and dispatch to action methods, passing them the remainder of
+   the line as argument.
+
+   The optional argument is a banner or intro string to be issued before the first
+   prompt (this overrides the :attr:`intro` class member).
+
+   If the :mod:`readline` module is loaded, input will automatically inherit
+   :program:`bash`\ -like history-list editing (e.g. :kbd:`Control-P` scrolls back
+   to the last command, :kbd:`Control-N` forward to the next one, :kbd:`Control-F`
+   moves the cursor to the right non-destructively, :kbd:`Control-B` moves the
+   cursor to the left non-destructively, etc.).
+
+   An end-of-file on input is passed back as the string ``'EOF'``.
+
+   An interpreter instance will recognize a command name ``foo`` if and only if it
+   has a method :meth:`do_foo`.  As a special case, a line beginning with the
+   character ``'?'`` is dispatched to the method :meth:`do_help`.  As another
+   special case, a line beginning with the character ``'!'`` is dispatched to the
+   method :meth:`do_shell` (if such a method is defined).
+
+   This method will return when the :meth:`postcmd` method returns a true value.
+   The *stop* argument to :meth:`postcmd` is the return value from the command's
+   corresponding :meth:`do_\*` method.
+
+   If completion is enabled, completing commands will be done automatically, and
+   completing of commands args is done by calling :meth:`complete_foo` with
+   arguments *text*, *line*, *begidx*, and *endidx*.  *text* is the string prefix
+   we are attempting to match: all returned matches must begin with it. *line* is
+   the current input line with leading whitespace removed, *begidx* and *endidx*
+   are the beginning and ending indexes of the prefix text, which could be used to
+   provide different completion depending upon which position the argument is in.
+
+   All subclasses of :class:`Cmd` inherit a predefined :meth:`do_help`. This
+   method, called with an argument ``'bar'``, invokes the corresponding method
+   :meth:`help_bar`.  With no argument, :meth:`do_help` lists all available help
+   topics (that is, all commands with corresponding :meth:`help_\*` methods), and
+   also lists any undocumented commands.
+
+
+.. method:: Cmd.onecmd(str)
+
+   Interpret the argument as though it had been typed in response to the prompt.
+   This may be overridden, but should not normally need to be; see the
+   :meth:`precmd` and :meth:`postcmd` methods for useful execution hooks.  The
+   return value is a flag indicating whether interpretation of commands by the
+   interpreter should stop.  If there is a :meth:`do_\*` method for the command
+   *str*, the return value of that method is returned, otherwise the return value
+   from the :meth:`default` method is returned.
+
+
+.. method:: Cmd.emptyline()
+
+   Method called when an empty line is entered in response to the prompt. If this
+   method is not overridden, it repeats the last nonempty command entered.
+
+
+.. method:: Cmd.default(line)
+
+   Method called on an input line when the command prefix is not recognized. If
+   this method is not overridden, it prints an error message and returns.
+
+
+.. method:: Cmd.completedefault(text, line, begidx, endidx)
+
+   Method called to complete an input line when no command-specific
+   :meth:`complete_\*` method is available.  By default, it returns an empty list.
+
+
+.. method:: Cmd.precmd(line)
+
+   Hook method executed just before the command line *line* is interpreted, but
+   after the input prompt is generated and issued.  This method is a stub in
+   :class:`Cmd`; it exists to be overridden by subclasses.  The return value is
+   used as the command which will be executed by the :meth:`onecmd` method; the
+   :meth:`precmd` implementation may re-write the command or simply return *line*
+   unchanged.
+
+
+.. method:: Cmd.postcmd(stop, line)
+
+   Hook method executed just after a command dispatch is finished.  This method is
+   a stub in :class:`Cmd`; it exists to be overridden by subclasses.  *line* is the
+   command line which was executed, and *stop* is a flag which indicates whether
+   execution will be terminated after the call to :meth:`postcmd`; this will be the
+   return value of the :meth:`onecmd` method.  The return value of this method will
+   be used as the new value for the internal flag which corresponds to *stop*;
+   returning false will cause interpretation to continue.
+
+
+.. method:: Cmd.preloop()
+
+   Hook method executed once when :meth:`cmdloop` is called.  This method is a stub
+   in :class:`Cmd`; it exists to be overridden by subclasses.
+
+
+.. method:: Cmd.postloop()
+
+   Hook method executed once when :meth:`cmdloop` is about to return. This method
+   is a stub in :class:`Cmd`; it exists to be overridden by subclasses.
+
+.. function:: (Attributes)
+Instances of :class:`Cmd` subclasses have some public instance variables:
+
+
+Cmd.prompt
+   The prompt issued to solicit input.
+Cmd.identchars
+   The string of characters accepted for the command prefix.
+Cmd.lastcmd
+   The last nonempty command prefix seen.
+Cmd.intro
+   A string to issue as an intro or banner.  May be overridden by giving the
+   :meth:`cmdloop` method an argument.
+Cmd.doc_header
+   The header to issue if the help output has a section for documented commands.
+Cmd.misc_header
+   The header to issue if the help output has a section for miscellaneous  help
+   topics (that is, there are :meth:`help_\*` methods without corresponding
+   :meth:`do_\*` methods).
+Cmd.undoc_header
+   The header to issue if the help output has a section for undocumented  commands
+   (that is, there are :meth:`do_\*` methods without corresponding :meth:`help_\*`
+   methods).
+Cmd.ruler
+   The character used to draw separator lines under the help-message headers.  If
+   empty, no ruler line is drawn.  It defaults to ``'='``.
+Cmd.use_rawinput
+   A flag, defaulting to true.  If true, :meth:`cmdloop` uses :func:`raw_input` to
+   display a prompt and read the next command; if false, :meth:`sys.stdout.write`
+   and :meth:`sys.stdin.readline` are used. (This means that by importing
+   :mod:`readline`, on systems that support it, the interpreter will automatically
+   support :program:`Emacs`\ -like line editing  and command-history keystrokes.)
+
+
+===Mod:shlex======
+===ModDoc:====
+The :class:`shlex` class makes it easy to write lexical analyzers for simple
+syntaxes resembling that of the Unix shell.  This will often be useful for
+writing minilanguages, (for example, in run control files for Python
+applications) or for parsing quoted strings.
+
+===EndDoc===
+.. function:: split(s[, comments[, posix]])
+
+   Split the string *s* using shell-like syntax. If *comments* is :const:`False`
+   (the default), the parsing of comments in the given string will be disabled
+   (setting the :attr:`commenters` member of the :class:`shlex` instance to the
+   empty string).  This function operates in POSIX mode by default, but uses
+   non-POSIX mode if the *posix* argument is false.
+
+   .. note::
+
+      Since the :func:`split` function instantiates a :class:`shlex` instance, passing
+      ``None`` for *s* will read the string to split from standard input.
+
+.. function:: shlex([instream[, infile[, posix]]])
+
+   A :class:`shlex` instance or subclass instance is a lexical analyzer object.
+   The initialization argument, if present, specifies where to read characters
+   from. It must be a file-/stream-like object with :meth:`read` and
+   :meth:`readline` methods, or a string (strings are accepted since Python 2.3).
+   If no argument is given, input will be taken from ``sys.stdin``.  The second
+   optional argument is a filename string, which sets the initial value of the
+   :attr:`infile` member.  If the *instream* argument is omitted or equal to
+   ``sys.stdin``, this second argument defaults to "stdin".  The *posix* argument
+   was introduced in Python 2.3, and defines the operational mode.  When *posix* is
+   not true (default), the :class:`shlex` instance will operate in compatibility
+   mode.  When operating in POSIX mode, :class:`shlex` will try to be as close as
+   possible to the POSIX shell parsing rules.
+
+.. method:: shlex.get_token()
+
+   Return a token.  If tokens have been stacked using :meth:`push_token`, pop a
+   token off the stack.  Otherwise, read one from the input stream.  If reading
+   encounters an immediate end-of-file, :attr:`self.eof` is returned (the empty
+   string (``''``) in non-POSIX mode, and ``None`` in POSIX mode).
+
+
+.. method:: shlex.push_token(str)
+
+   Push the argument onto the token stack.
+
+
+.. method:: shlex.read_token()
+
+   Read a raw token.  Ignore the pushback stack, and do not interpret source
+   requests.  (This is not ordinarily a useful entry point, and is documented here
+   only for the sake of completeness.)
+
+
+.. method:: shlex.sourcehook(filename)
+
+   When :class:`shlex` detects a source request (see :attr:`source` below) this
+   method is given the following token as argument, and expected to return a tuple
+   consisting of a filename and an open file-like object.
+
+   Normally, this method first strips any quotes off the argument.  If the result
+   is an absolute pathname, or there was no previous source request in effect, or
+   the previous source was a stream (such as ``sys.stdin``), the result is left
+   alone.  Otherwise, if the result is a relative pathname, the directory part of
+   the name of the file immediately before it on the source inclusion stack is
+   prepended (this behavior is like the way the C preprocessor handles ``#include
+   "file.h"``).
+
+   The result of the manipulations is treated as a filename, and returned as the
+   first component of the tuple, with :func:`open` called on it to yield the second
+   component. (Note: this is the reverse of the order of arguments in instance
+   initialization!)
+
+   This hook is exposed so that you can use it to implement directory search paths,
+   addition of file extensions, and other namespace hacks. There is no
+   corresponding 'close' hook, but a shlex instance will call the :meth:`close`
+   method of the sourced input stream when it returns EOF.
+
+   For more explicit control of source stacking, use the :meth:`push_source` and
+   :meth:`pop_source` methods.
+
+
+.. method:: shlex.push_source(stream[, filename])
+
+   Push an input source stream onto the input stack.  If the filename argument is
+   specified it will later be available for use in error messages.  This is the
+   same method used internally by the :meth:`sourcehook` method.
+
+   .. versionadded:: 2.1
+
+
+.. method:: shlex.pop_source()
+
+   Pop the last-pushed input source from the input stack. This is the same method
+   used internally when the lexer reaches EOF on a stacked input stream.
+
+   .. versionadded:: 2.1
+
+
+.. method:: shlex.error_leader([file[, line]])
+
+   This method generates an error message leader in the format of a Unix C compiler
+   error label; the format is ``'"%s", line %d: '``, where the ``%s`` is replaced
+   with the name of the current source file and the ``%d`` with the current input
+   line number (the optional arguments can be used to override these).
+
+   This convenience is provided to encourage :mod:`shlex` users to generate error
+   messages in the standard, parseable format understood by Emacs and other Unix
+   tools.
+   
+.. method:: (Attributes)
+Instances of :class:`shlex` subclasses have some public instance variables which
+either control lexical analysis or can be used for debugging:
+
+a.commenters
+   The string of characters that are recognized as comment beginners. All
+   characters from the comment beginner to end of line are ignored. Includes just
+   ``'#'`` by default.
+a.wordchars
+   The string of characters that will accumulate into multi-character tokens.  By
+   default, includes all ASCII alphanumerics and underscore.
+a.whitespace
+   Characters that will be considered whitespace and skipped.  Whitespace bounds
+   tokens.  By default, includes space, tab, linefeed and carriage-return.
+a.escape
+   Characters that will be considered as escape. This will be only used in POSIX
+   mode, and includes just ``'\'`` by default.
+a.quotes
+   Characters that will be considered string quotes.  The token accumulates until
+   the same quote is encountered again (thus, different quote types protect each
+   other as in the shell.)  By default, includes ASCII single and double quotes.
+a.escapedquotes
+   Characters in :attr:`quotes` that will interpret escape characters defined in
+   :attr:`escape`.  This is only used in POSIX mode, and includes just ``'"'`` by
+   default.
+a.whitespace_split
+   If ``True``, tokens will only be split in whitespaces. This is useful, for
+   example, for parsing command lines with :class:`shlex`, getting tokens in a
+   similar way to shell arguments.
+a.infile
+   The name of the current input file, as initially set at class instantiation time
+   or stacked by later source requests.  It may be useful to examine this when
+   constructing error messages.
+a.instream
+   The input stream from which this :class:`shlex` instance is reading characters.
+a.source
+   This member is ``None`` by default.  If you assign a string to it, that string
+   will be recognized as a lexical-level inclusion request similar to the
+   ``source`` keyword in various shells.  That is, the immediately following token
+   will opened as a filename and input taken from that stream until EOF, at which
+   point the :meth:`close` method of that stream will be called and the input
+   source will again become the original input stream. Source requests may be
+   stacked any number of levels deep.
+a.debug
+   If this member is numeric and ``1`` or more, a :class:`shlex` instance will
+   print verbose progress output on its behavior.  If you need to use this, you can
+   read the module source code to learn the details.
+a.lineno
+   Source line number (count of newlines seen so far plus one).
+a.token
+   The token buffer.  It may be useful to examine this when catching exceptions.
+a.eof
+   Token used to determine end of file. This will be set to the empty string
+   (``''``), in non-POSIX mode, and to ``None`` in POSIX mode.
+
+
+===Mod:readline======
+===ModDoc:====
+The :mod:`readline` module defines a number of functions to facilitate
+completion and reading/writing of history files from the Python interpreter.
+This module can be used directly or via the :mod:`rlcompleter` module.  Settings
+made using  this module affect the behaviour of both the interpreter's
+interactive prompt  and the prompts offered by the :func:`raw_input` and
+:func:`input` built-in functions.
+===EndDoc===
+.. function:: parse_and_bind(string)
+
+   Parse and execute single line of a readline init file.
+
+
+.. function:: get_line_buffer()
+
+   Return the current contents of the line buffer.
+
+
+.. function:: insert_text(string)
+
+   Insert text into the command line.
+
+
+.. function:: read_init_file([filename])
+
+   Parse a readline initialization file. The default filename is the last filename
+   used.
+
+
+.. function:: read_history_file([filename])
+
+   Load a readline history file. The default filename is :file:`~/.history`.
+
+
+.. function:: write_history_file([filename])
+
+   Save a readline history file. The default filename is :file:`~/.history`.
+
+
+.. function:: clear_history()
+
+   Clear the current history.  (Note: this function is not available if the
+   installed version of GNU readline doesn't support it.)
+
+   .. versionadded:: 2.4
+
+
+.. function:: get_history_length()
+
+   Return the desired length of the history file.  Negative values imply unlimited
+   history file size.
+
+
+.. function:: set_history_length(length)
+
+   Set the number of lines to save in the history file. :func:`write_history_file`
+   uses this value to truncate the history file when saving.  Negative values imply
+   unlimited history file size.
+
+
+.. function:: get_current_history_length()
+
+   Return the number of lines currently in the history.  (This is different from
+   :func:`get_history_length`, which returns the maximum number of lines that will
+   be written to a history file.)
+
+   .. versionadded:: 2.3
+
+
+.. function:: get_history_item(index)
+
+   Return the current contents of history item at *index*.
+
+   .. versionadded:: 2.3
+
+
+.. function:: remove_history_item(pos)
+
+   Remove history item specified by its position from the history.
+
+   .. versionadded:: 2.4
+
+
+.. function:: replace_history_item(pos, line)
+
+   Replace history item specified by its position with the given line.
+
+   .. versionadded:: 2.4
+
+
+.. function:: redisplay()
+
+   Change what's displayed on the screen to reflect the current contents of the
+   line buffer.
+
+   .. versionadded:: 2.3
+
+
+.. function:: set_startup_hook([function])
+
+   Set or remove the startup_hook function.  If *function* is specified, it will be
+   used as the new startup_hook function; if omitted or ``None``, any hook function
+   already installed is removed.  The startup_hook function is called with no
+   arguments just before readline prints the first prompt.
+
+
+.. function:: set_pre_input_hook([function])
+
+   Set or remove the pre_input_hook function.  If *function* is specified, it will
+   be used as the new pre_input_hook function; if omitted or ``None``, any hook
+   function already installed is removed.  The pre_input_hook function is called
+   with no arguments after the first prompt has been printed and just before
+   readline starts reading input characters.
+
+
+.. function:: set_completer([function])
+
+   Set or remove the completer function.  If *function* is specified, it will be
+   used as the new completer function; if omitted or ``None``, any completer
+   function already installed is removed.  The completer function is called as
+   ``function(text, state)``, for *state* in ``0``, ``1``, ``2``, ..., until it
+   returns a non-string value.  It should return the next possible completion
+   starting with *text*.
+
+
+.. function:: get_completer()
+
+   Get the completer function, or ``None`` if no completer function has been set.
+
+   .. versionadded:: 2.3
+
+
+.. function:: get_completion_type()
+
+   Get the type of completion being attempted.
+
+   .. versionadded:: 2.6
+
+.. function:: get_begidx()
+
+   Get the beginning index of the readline tab-completion scope.
+
+
+.. function:: get_endidx()
+
+   Get the ending index of the readline tab-completion scope.
+
+
+.. function:: set_completer_delims(string)
+
+   Set the readline word delimiters for tab-completion.
+
+
+.. function:: get_completer_delims()
+
+   Get the readline word delimiters for tab-completion.
+
+.. function:: set_completion_display_matches_hook([function])
+
+   Set or remove the completion display function.  If *function* is
+   specified, it will be used as the new completion display function;
+   if omitted or ``None``, any completion display function already
+   installed is removed.  The completion display function is called as
+   ``function(substitution, [matches], longest_match_length)`` once
+   each time matches need to be displayed.
+
+   .. versionadded:: 2.6
+
+.. function:: add_history(line)
+
+   Append a line to the history buffer, as if it was the last line typed.
+   
+.. function:: (example)
+
+   Example
+-------
+
+The following example demonstrates how to use the :mod:`readline` module's
+history reading and writing functions to automatically load and save a history
+file named :file:`.pyhist` from the user's home directory.  The code below would
+normally be executed automatically during interactive sessions from the user's
+:envvar:`PYTHONSTARTUP` file. ::
+
+   import os
+   histfile = os.path.join(os.environ["HOME"], ".pyhist")
+   try:
+       readline.read_history_file(histfile)
+   except IOError:
+       pass
+   import atexit
+   atexit.register(readline.write_history_file, histfile)
+   del os, histfile
+
+The following example extends the :class:`code.InteractiveConsole` class to
+support history save/restore. ::
+
+   import code
+   import readline
+   import atexit
+   import os
+
+   class HistoryConsole(code.InteractiveConsole):
+       def __init__(self, locals=None, filename="<console>",
+                    histfile=os.path.expanduser("~/.console-history")):
+           code.InteractiveConsole.__init__(self)
+           self.init_history(histfile)
+
+       def init_history(self, histfile):
+           readline.parse_and_bind("tab: complete")
+           if hasattr(readline, "read_history_file"):
+               try:
+                   readline.read_history_file(histfile)
+               except IOError:
+                   pass
+               atexit.register(self.save_history, histfile)
+
+       def save_history(self, histfile):
+           readline.write_history_file(histfile)
+   
+===Mod:getpass======
+===ModDoc:====
+Portable reading of passwords and retrieval of the userid.
+===EndDoc===
+.. function:: getpass([prompt[, stream]])
+
+   Prompt the user for a password without echoing.  The user is prompted using the
+   string *prompt*, which defaults to ``'Password: '``. On Unix, the prompt is
+   written to the file-like object *stream*.  *stream* defaults to the
+   controlling terminal (/dev/tty) or if that is unavailable to ``sys.stderr``
+   (this argument is ignored on Windows).
+
+   If echo free input is unavailable getpass() falls back to printing
+   a warning message to *stream* and reading from ``sys.stdin`` and
+   issuing a :exc:`GetPassWarning`.
+
+   Availability: Macintosh, Unix, Windows.
+
+   .. versionchanged:: 2.5
+      The *stream* parameter was added.
+   .. versionchanged:: 2.6
+      On Unix it defaults to using /dev/tty before falling back
+      to ``sys.stdin`` and ``sys.stderr``.
+   .. note::
+      If you call getpass from within IDLE, the input may be done in the
+      terminal you launched IDLE from rather than the idle window itself.
+
+.. function:: getuser()
+
+   Return the "login name" of the user. Availability: Unix, Windows.
+
+   This function checks the environment variables :envvar:`LOGNAME`,
+   :envvar:`USER`, :envvar:`LNAME` and :envvar:`USERNAME`, in order, and returns
+   the value of the first one which is set to a non-empty string.  If none are set,
+   the login name from the password database is returned on systems which support
+   the :mod:`pwd` module, otherwise, an exception is raised.
+
+

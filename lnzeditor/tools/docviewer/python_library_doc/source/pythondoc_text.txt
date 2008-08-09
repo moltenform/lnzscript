@@ -1,0 +1,644 @@
+
+===Section:Text=============
+
+===Mod:re=============
+===ModDoc:re==========
+
+This module provides regular expression matching operations similar to
+those found in Perl. Both patterns and strings to be searched can be
+Unicode strings as well as 8-bit strings. 
+
+**match** checks for a match only at the beginning of the string, while
+**search** checks for a match anywhere in the string (this is what Perl does
+by default).
+
+Regular expressions use the backslash character (``'\'``) to indicate
+special forms or to allow special characters to be used without invoking
+their special meaning.  This collides with Python's usage of the same
+character for the same purpose in string literals; for example, to match
+a literal backslash, one might have to write ``'\\\\'`` as the pattern
+string, because the regular expression must be ``\\``, and each
+backslash must be expressed as ``\\`` inside a regular Python string
+literal.
+
+The solution is to use Python's raw string notation for regular expression
+patterns; backslashes are not handled in any special way in a string literal
+prefixed with ``'r'``.  So ``r"\n"`` is a two-character string containing
+``'\'`` and ``'n'``, while ``"\n"`` is a one-character string containing a
+newline.  Usually patterns will be expressed in Python code using this raw
+string notation.
+
+
+===EndDoc===========
+
+.. function:: (regex operators)
+``'.'``
+   (Dot.)  In the default mode, this matches any character except a newline.  If
+   the :const:`DOTALL` flag has been specified, this matches any character
+   including a newline.
+
+``'^'``
+   (Caret.)  Matches the start of the string, and in :const:`MULTILINE` mode also
+   matches immediately after each newline.
+
+``'$'``
+   Matches the end of the string or just before the newline at the end of the
+   string, and in :const:`MULTILINE` mode also matches before a newline.  ``foo``
+   matches both 'foo' and 'foobar', while the regular expression ``foo$`` matches
+   only 'foo'.  More interestingly, searching for ``foo.$`` in ``'foo1\nfoo2\n'``
+   matches 'foo2' normally, but 'foo1' in :const:`MULTILINE` mode; searching for
+   a single ``$`` in ``'foo\n'`` will find two (empty) matches: one just before
+   the newline, and one at the end of the string.
+
+``'*'``
+   Causes the resulting RE to match 0 or more repetitions of the preceding RE, as
+   many repetitions as are possible.  ``ab*`` will match 'a', 'ab', or 'a' followed
+   by any number of 'b's.
+
+``'+'``
+   Causes the resulting RE to match 1 or more repetitions of the preceding RE.
+   ``ab+`` will match 'a' followed by any non-zero number of 'b's; it will not
+   match just 'a'.
+
+``'?'``
+   Causes the resulting RE to match 0 or 1 repetitions of the preceding RE.
+   ``ab?`` will match either 'a' or 'ab'.
+
+``*?``, ``+?``, ``??``
+   The ``'*'``, ``'+'``, and ``'?'`` qualifiers are all :dfn:`greedy`; they match
+   as much text as possible.  Sometimes this behaviour isn't desired; if the RE
+   ``<.*>`` is matched against ``'<H1>title</H1>'``, it will match the entire
+   string, and not just ``'<H1>'``.  Adding ``'?'`` after the qualifier makes it
+   perform the match in :dfn:`non-greedy` or :dfn:`minimal` fashion; as *few*
+   characters as possible will be matched.  Using ``.*?`` in the previous
+   expression will match only ``'<H1>'``.
+
+``{m}``
+   Specifies that exactly *m* copies of the previous RE should be matched; fewer
+   matches cause the entire RE not to match.  For example, ``a{6}`` will match
+   exactly six ``'a'`` characters, but not five.
+
+``{m,n}``
+   Causes the resulting RE to match from *m* to *n* repetitions of the preceding
+   RE, attempting to match as many repetitions as possible.  For example,
+   ``a{3,5}`` will match from 3 to 5 ``'a'`` characters.  Omitting *m* specifies a
+   lower bound of zero,  and omitting *n* specifies an infinite upper bound.  As an
+   example, ``a{4,}b`` will match ``aaaab`` or a thousand ``'a'`` characters
+   followed by a ``b``, but not ``aaab``. The comma may not be omitted or the
+   modifier would be confused with the previously described form.
+
+``{m,n}?``
+   Causes the resulting RE to match from *m* to *n* repetitions of the preceding
+   RE, attempting to match as *few* repetitions as possible.  This is the
+   non-greedy version of the previous qualifier.  For example, on the
+   6-character string ``'aaaaaa'``, ``a{3,5}`` will match 5 ``'a'`` characters,
+   while ``a{3,5}?`` will only match 3 characters.
+
+``'\'``
+   Either escapes special characters (permitting you to match characters like
+   ``'*'``, ``'?'``, and so forth), or signals a special sequence; special
+   sequences are discussed below.
+
+   If you're not using a raw string to express the pattern, remember that Python
+   also uses the backslash as an escape sequence in string literals; if the escape
+   sequence isn't recognized by Python's parser, the backslash and subsequent
+   character are included in the resulting string.  However, if Python would
+   recognize the resulting sequence, the backslash should be repeated twice.  This
+   is complicated and hard to understand, so it's highly recommended that you use
+   raw strings for all but the simplest expressions.
+
+``[]``
+   Used to indicate a set of characters.  Characters can be listed individually, or
+   a range of characters can be indicated by giving two characters and separating
+   them by a ``'-'``.  Special characters are not active inside sets.  For example,
+   ``[akm$]`` will match any of the characters ``'a'``, ``'k'``,
+   ``'m'``, or ``'$'``; ``[a-z]`` will match any lowercase letter, and
+   ``[a-zA-Z0-9]`` matches any letter or digit.  Character classes such
+   as ``\w`` or ``\S`` (defined below) are also acceptable inside a
+   range, although the characters they match depends on whether :const:`LOCALE`
+   or  :const:`UNICODE` mode is in force.  If you want to include a
+   ``']'`` or a ``'-'`` inside a set, precede it with a backslash, or
+   place it as the first character.  The pattern ``[]]`` will match
+   ``']'``, for example.
+
+   You can match the characters not within a range by :dfn:`complementing` the set.
+   This is indicated by including a ``'^'`` as the first character of the set;
+   ``'^'`` elsewhere will simply match the ``'^'`` character.  For example,
+   ``[^5]`` will match any character except ``'5'``, and ``[^^]`` will match any
+   character except ``'^'``.
+
+``'|'``
+   ``A|B``, where A and B can be arbitrary REs, creates a regular expression that
+   will match either A or B.  An arbitrary number of REs can be separated by the
+   ``'|'`` in this way.  This can be used inside groups (see below) as well.  As
+   the target string is scanned, REs separated by ``'|'`` are tried from left to
+   right. When one pattern completely matches, that branch is accepted. This means
+   that once ``A`` matches, ``B`` will not be tested further, even if it would
+   produce a longer overall match.  In other words, the ``'|'`` operator is never
+   greedy.  To match a literal ``'|'``, use ``\|``, or enclose it inside a
+   character class, as in ``[|]``.
+
+``(...)``
+   Matches whatever regular expression is inside the parentheses, and indicates the
+   start and end of a group; the contents of a group can be retrieved after a match
+   has been performed, and can be matched later in the string with the ``\number``
+   special sequence, described below.  To match the literals ``'('`` or ``')'``,
+   use ``\(`` or ``\)``, or enclose them inside a character class: ``[(] [)]``.
+
+``(?...)``
+   This is an extension notation (a ``'?'`` following a ``'('`` is not meaningful
+   otherwise).  The first character after the ``'?'`` determines what the meaning
+   and further syntax of the construct is. Extensions usually do not create a new
+   group; ``(?P<name>...)`` is the only exception to this rule. Following are the
+   currently supported extensions.
+
+``(?iLmsux)``
+   (One or more letters from the set ``'i'``, ``'L'``, ``'m'``, ``'s'``,
+   ``'u'``, ``'x'``.)  The group matches the empty string; the letters
+   set the corresponding flags: :const:`re.I` (ignore case),
+   :const:`re.L` (locale dependent), :const:`re.M` (multi-line),
+   :const:`re.S` (dot matches all), :const:`re.U` (Unicode dependent),
+   and :const:`re.X` (verbose), for the entire regular expression. (The
+   flags are described in :ref:`contents-of-module-re`.) This
+   is useful if you wish to include the flags as part of the regular
+   expression, instead of passing a *flag* argument to the
+   :func:`compile` function.
+
+   Note that the ``(?x)`` flag changes how the expression is parsed. It should be
+   used first in the expression string, or after one or more whitespace characters.
+   If there are non-whitespace characters before the flag, the results are
+   undefined.
+
+``(?:...)``
+   A non-grouping version of regular parentheses. Matches whatever regular
+   expression is inside the parentheses, but the substring matched by the group
+   *cannot* be retrieved after performing a match or referenced later in the
+   pattern.
+
+``(?P<name>...)``
+   Similar to regular parentheses, but the substring matched by the group is
+   accessible via the symbolic group name *name*.  Group names must be valid Python
+   identifiers, and each group name must be defined only once within a regular
+   expression.  A symbolic group is also a numbered group, just as if the group
+   were not named.  So the group named 'id' in the example below can also be
+   referenced as the numbered group 1.
+
+   For example, if the pattern is ``(?P<id>[a-zA-Z_]\w*)``, the group can be
+   referenced by its name in arguments to methods of match objects, such as
+   ``m.group('id')`` or ``m.end('id')``, and also by name in pattern text (for
+   example, ``(?P=id)``) and replacement text (such as ``\g<id>``).
+
+``(?P=name)``
+   Matches whatever text was matched by the earlier group named *name*.
+
+``(?#...)``
+   A comment; the contents of the parentheses are simply ignored.
+
+``(?=...)``
+   Matches if ``...`` matches next, but doesn't consume any of the string.  This is
+   called a lookahead assertion.  For example, ``Isaac (?=Asimov)`` will match
+   ``'Isaac '`` only if it's followed by ``'Asimov'``.
+
+``(?!...)``
+   Matches if ``...`` doesn't match next.  This is a negative lookahead assertion.
+   For example, ``Isaac (?!Asimov)`` will match ``'Isaac '`` only if it's *not*
+   followed by ``'Asimov'``.
+
+``(?<=...)``
+   Matches if the current position in the string is preceded by a match for ``...``
+   that ends at the current position.  This is called a :dfn:`positive lookbehind
+   assertion`. ``(?<=abc)def`` will find a match in ``abcdef``, since the
+   lookbehind will back up 3 characters and check if the contained pattern matches.
+   The contained pattern must only match strings of some fixed length, meaning that
+   ``abc`` or ``a|b`` are allowed, but ``a*`` and ``a{3,4}`` are not.  Note that
+   patterns which start with positive lookbehind assertions will never match at the
+   beginning of the string being searched; you will most likely want to use the
+   :func:`search` function rather than the :func:`match` function:
+
+      >>> import re
+      >>> m = re.search('(?<=abc)def', 'abcdef')
+      >>> m.group(0)
+      'def'
+
+   This example looks for a word following a hyphen:
+
+      >>> m = re.search('(?<=-)\w+', 'spam-egg')
+      >>> m.group(0)
+      'egg'
+
+``(?<!...)``
+   Matches if the current position in the string is not preceded by a match for
+   ``...``.  This is called a :dfn:`negative lookbehind assertion`.  Similar to
+   positive lookbehind assertions, the contained pattern must only match strings of
+   some fixed length.  Patterns which start with negative lookbehind assertions may
+   match at the beginning of the string being searched.
+
+``(?(id/name)yes-pattern|no-pattern)``
+   Will try to match with ``yes-pattern`` if the group with given *id* or *name*
+   exists, and with ``no-pattern`` if it doesn't. ``no-pattern`` is optional and
+   can be omitted. For example,  ``(<)?(\w+@\w+(?:\.\w+)+)(?(1)>)`` is a poor email
+   matching pattern, which will match with ``'<user@host.com>'`` as well as
+   ``'user@host.com'``, but not with ``'<user@host.com'``.
+
+.. function:: (special characters)
+
+``\1``
+   Matches the contents of the group of the same number.  Groups are numbered
+   starting from 1.  For example, ``(.+) \1`` matches ``'the the'`` or ``'55 55'``,
+   but not ``'the end'`` (note the space after the group).  This special sequence
+   can only be used to match one of the first 99 groups.  If the first digit of
+   *number* is 0, or *number* is 3 octal digits long, it will not be interpreted as
+   a group match, but as the character with octal value *number*. Inside the
+   ``'['`` and ``']'`` of a character class, all numeric escapes are treated as
+   characters.
+
+``\A``
+   Matches only at the start of the string.
+
+``\b``
+   Matches the empty string, but only at the beginning or end of a word.  A word is
+   defined as a sequence of alphanumeric or underscore characters, so the end of a
+   word is indicated by whitespace or a non-alphanumeric, non-underscore character.
+   Note that  ``\b`` is defined as the boundary between ``\w`` and ``\ W``, so the
+   precise set of characters deemed to be alphanumeric depends on the values of the
+   ``UNICODE`` and ``LOCALE`` flags.  Inside a character range, ``\b`` represents
+   the backspace character, for compatibility with Python's string literals.
+
+``\B``
+   Matches the empty string, but only when it is *not* at the beginning or end of a
+   word.  This is just the opposite of ``\b``, so is also subject to the settings
+   of ``LOCALE`` and ``UNICODE``.
+
+``\d``
+   When the :const:`UNICODE` flag is not specified, matches any decimal digit; this
+   is equivalent to the set ``[0-9]``.  With :const:`UNICODE`, it will match
+   whatever is classified as a digit in the Unicode character properties database.
+
+``\D``
+   When the :const:`UNICODE` flag is not specified, matches any non-digit
+   character; this is equivalent to the set  ``[^0-9]``.  With :const:`UNICODE`, it
+   will match  anything other than character marked as digits in the Unicode
+   character  properties database.
+
+``\s``
+   When the :const:`LOCALE` and :const:`UNICODE` flags are not specified, matches
+   any whitespace character; this is equivalent to the set ``[ \t\n\r\f\v]``. With
+   :const:`LOCALE`, it will match this set plus whatever characters are defined as
+   space for the current locale. If :const:`UNICODE` is set, this will match the
+   characters ``[ \t\n\r\f\v]`` plus whatever is classified as space in the Unicode
+   character properties database.
+
+``\S``
+   When the :const:`LOCALE` and :const:`UNICODE` flags are not specified, matches
+   any non-whitespace character; this is equivalent to the set ``[^ \t\n\r\f\v]``
+   With :const:`LOCALE`, it will match any character not in this set, and not
+   defined as space in the current locale. If :const:`UNICODE` is set, this will
+   match anything other than ``[ \t\n\r\f\v]`` and characters marked as space in
+   the Unicode character properties database.
+
+``\w``
+   When the :const:`LOCALE` and :const:`UNICODE` flags are not specified, matches
+   any alphanumeric character and the underscore; this is equivalent to the set
+   ``[a-zA-Z0-9_]``.  With :const:`LOCALE`, it will match the set ``[0-9_]`` plus
+   whatever characters are defined as alphanumeric for the current locale.  If
+   :const:`UNICODE` is set, this will match the characters ``[0-9_]`` plus whatever
+   is classified as alphanumeric in the Unicode character properties database.
+
+``\W``
+   When the :const:`LOCALE` and :const:`UNICODE` flags are not specified, matches
+   any non-alphanumeric character; this is equivalent to the set ``[^a-zA-Z0-9_]``.
+   With :const:`LOCALE`, it will match any character not in the set ``[0-9_]``, and
+   not defined as alphanumeric for the current locale. If :const:`UNICODE` is set,
+   this will match anything other than ``[0-9_]`` and characters marked as
+   alphanumeric in the Unicode character properties database.
+
+``\Z``
+   Matches only at the end of the string.
+
+Most of the standard escapes supported by Python string literals are also
+accepted by the regular expression parser::
+
+   \a      \b      \f      \n
+   \r      \t      \v      \x
+   \\
+
+
+.. function:: MatchObject
+
+Match objects are returned by regex functions like search. Methods include:
+
+MatchObject.expand(template)
+   Return the string obtained by doing backslash substitution on the template
+   string *template*, as done by the :meth:`sub` method. 
+MatchObject.group()
+	Returns entire match
+MatchObject.group(1)
+	Returns first subgroup match
+MatchObject.group('namedgroup')
+	Returns named subgroup match
+MatchObject.groups()
+	Returns tuple of subgroups
+MatchObject.groupdict()
+	Returns dict of named subgroups
+MatchObject.groups()
+	Returns tuple of subgroups
+MatchObject.span()
+	Returns (firstIndex, lastIndex) of match in string
+MatchObject.span(1)
+	Returns (firstIndex, lastIndex) of first group match in string
+MatchObject.pos
+MatchObject.endpos
+MatchObject.lastindex
+MatchObject.lastgroup
+MatchObject.re
+MatchObject.string
+
+
+
+.. function:: compile(pattern[, flags])
+
+   Compile a regular expression pattern into a regular expression object, which
+   can be used for matching using its :func:`match` and :func:`search` methods,
+   described below.
+
+   The expression's behaviour can be modified by specifying a *flags* value.
+   Values can be any of the following variables, combined using bitwise OR (the
+   ``|`` operator).
+   re.I (IGNORECASE)
+   re.L (LOCALE)
+   re.M (MULTILINE)
+   re.S (DOTALL)
+   re.U (UNICODE)
+   re.V (VERBOSE)
+   This flag allows you to write regular expressions that look nicer. Whitespace within the pattern is ignored, except when in a character class or preceded by an unescaped backslash, and, when a line contains a "#" neither in a character class or preceded by an unescaped backslash, all characters from the leftmost such "#" through the end of the line are ignored. 
+
+   The sequence ::
+
+      prog = re.compile(pat)
+      result = prog.match(str)
+
+   is equivalent to ::
+
+      result = re.match(pat, str)
+
+   but the version using :func:`compile` is more efficient when the expression
+   will be used several times in a single program.
+
+.. method:: search(string[, flags])
+
+   Scan through *string* looking for a location where the regular expression
+   *pattern* produces a match, and return a corresponding :class:`MatchObject`
+   instance. Return ``None`` if no position in the string matches the pattern; note
+   that this is different from finding a zero-length match at some point in the
+   string.
+
+
+.. method:: match(string[, flags])
+
+   If zero or more characters at the beginning of *string* match the regular
+   expression *pattern*, return a corresponding :class:`MatchObject` instance.
+   Return ``None`` if the string does not match the pattern; note that this is
+   different from a zero-length match.
+
+   .. note::
+
+      If you want to locate a match anywhere in *string*, use :meth:`search`
+      instead.
+      
+.. method:: search(string[, flags])
+        Scan through *string* looking for a location where this regular expression
+   produces a match, and return a corresponding :class:`MatchObject` instance.
+   Return ``None`` if no position in the string matches the pattern; note that this
+   is different from finding a zero-length match at some point in the string.
+
+   The optional *pos* and *endpos* parameters have the same meaning as for the
+   :meth:`match` method.
+   
+.. method:: split(string[, maxsplit=0])
+
+   Split *string* by the occurrences of *pattern*.  If capturing parentheses are
+   used in *pattern*, then the text of all groups in the pattern are also returned
+   as part of the resulting list. If *maxsplit* is nonzero, at most *maxsplit*
+   splits occur, and the remainder of the string is returned as the final element
+   of the list.
+      >>> re.split('\W+', 'Words, words, words.')
+      ['Words', 'words', 'words', '']
+      >>> re.split('(\W+)', 'Words, words, words.')
+      ['Words', ', ', 'words', ', ', 'words', '.', '']
+      >>> re.split('\W+', 'Words, words, words.', 1)
+      ['Words', 'words, words.']
+	...
+.. method:: findall(string[, flags])
+
+   Return all non-overlapping matches of *pattern* in *string*, as a list of
+   strings.  If one or more groups are present in the pattern, return a list of
+   groups; this will be a list of tuples if the pattern has more than one group.
+   Empty matches are included in the result unless they touch the beginning of
+   another match.
+
+.. method:: finditer(string[, flags])
+
+   Return an :term:`iterator` yielding :class:`MatchObject` instances over all
+   non-overlapping matches for the RE *pattern* in *string*.  Empty matches are
+   included in the result unless they touch the beginning of another match.
+
+.. method:: sub(repl, string[, count])
+
+   Return the string obtained by replacing the leftmost non-overlapping occurrences
+   of *pattern* in *string* by the replacement *repl*.  If the pattern isn't found,
+   *string* is returned unchanged.  *repl* can be a string or a function; if it is
+   a string, any backslash escapes in it are processed.  That is, ``\n`` is
+   converted to a single newline character, ``\r`` is converted to a linefeed, and
+   so forth.  Unknown escapes such as ``\j`` are left alone.  Backreferences, such
+   as ``\6``, are replaced with the substring matched by group 6 in the pattern.
+   For example:
+
+      >>> re.sub(r'def\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*\(\s*\):',
+      ...        r'static PyObject*\npy_\1(void)\n{',
+      ...        'def myfunc():')
+      'static PyObject*\npy_myfunc(void)\n{'
+
+   If *repl* is a function, it is called for every non-overlapping occurrence of
+   *pattern*.  The function takes a single match object argument, and returns the
+   replacement string.  For example:
+
+      >>> def dashrepl(matchobj):
+      ...     if matchobj.group(0) == '-': return ' '
+      ...     else: return '-'
+      >>> re.sub('-{1,2}', dashrepl, 'pro----gram-files')
+      'pro--gram files'
+
+   The pattern may be a string or an RE object; if you need to specify regular
+   expression flags, you must use a RE object, or use embedded modifiers in a
+   pattern; for example, ``sub("(?i)b+", "x", "bbbb BBBB")`` returns ``'x x'``.
+
+   The optional argument *count* is the maximum number of pattern occurrences to be
+   replaced; *count* must be a non-negative integer.  If omitted or zero, all
+   occurrences will be replaced. Empty matches for the pattern are replaced only
+   when not adjacent to a previous match, so ``sub('x*', '-', 'abc')`` returns
+   ``'-a-b-c-'``.
+
+   In addition to character escapes and backreferences as described above,
+   ``\g<name>`` will use the substring matched by the group named ``name``, as
+   defined by the ``(?P<name>...)`` syntax. ``\g<number>`` uses the corresponding
+   group number; ``\g<2>`` is therefore equivalent to ``\2``, but isn't ambiguous
+   in a replacement such as ``\g<2>0``.  ``\20`` would be interpreted as a
+   reference to group 20, not a reference to group 2 followed by the literal
+   character ``'0'``.  The backreference ``\g<0>`` substitutes in the entire
+   substring matched by the RE.
+
+
+.. method:: subn(repl, string[, count])
+
+   Perform the same operation as :func:`sub`, but return a tuple ``(new_string,
+   number_of_subs_made)``.
+
+.. function:: escape(string)
+
+   Return *string* with all non-alphanumerics backslashed; this is useful if you
+   want to match an arbitrary literal string that may have regular expression
+   metacharacters in it.
+
+===Mod:struct=============
+===ModDoc:struct==========
+This module performs conversions between Python values and C structs represented
+as Python strings.  It uses :dfn:`format strings` (explained below) as compact
+descriptions of the lay-out of the C structs and the intended conversion to/from
+Python values.  This can be used in handling binary data stored in files or from
+network connections, among other sources.
+
+
+Format characters have the following meaning; the conversion between C and
+Python values should be obvious given their types:
+
++--------+-------------------------+--------------------+-------+
+| Format | C Type                  | Python             | Notes |
++========+=========================+====================+=======+
+| ``x``  | pad byte                | no value           |       |
++--------+-------------------------+--------------------+-------+
+| ``c``  | :ctype:`char`           | string of length 1 |       |
++--------+-------------------------+--------------------+-------+
+| ``b``  | :ctype:`signed char`    | integer            |       |
++--------+-------------------------+--------------------+-------+
+| ``B``  | :ctype:`unsigned char`  | integer            |       |
++--------+-------------------------+--------------------+-------+
+| ``?``  | :ctype:`_Bool`          | bool               | \(1)  |
++--------+-------------------------+--------------------+-------+
+| ``h``  | :ctype:`short`          | integer            |       |
++--------+-------------------------+--------------------+-------+
+| ``H``  | :ctype:`unsigned short` | integer            |       |
++--------+-------------------------+--------------------+-------+
+| ``i``  | :ctype:`int`            | integer            |       |
++--------+-------------------------+--------------------+-------+
+| ``I``  | :ctype:`unsigned int`   | integer or long    |       |
++--------+-------------------------+--------------------+-------+
+| ``l``  | :ctype:`long`           | integer            |       |
++--------+-------------------------+--------------------+-------+
+| ``L``  | :ctype:`unsigned long`  | long               |       |
++--------+-------------------------+--------------------+-------+
+| ``q``  | :ctype:`long long`      | long               | \(2)  |
++--------+-------------------------+--------------------+-------+
+| ``Q``  | :ctype:`unsigned long   | long               | \(2)  |
+|        | long`                   |                    |       |
++--------+-------------------------+--------------------+-------+
+| ``f``  | :ctype:`float`          | float              |       |
++--------+-------------------------+--------------------+-------+
+| ``d``  | :ctype:`double`         | float              |       |
++--------+-------------------------+--------------------+-------+
+| ``s``  | :ctype:`char[]`         | string             |       |
++--------+-------------------------+--------------------+-------+
+| ``p``  | :ctype:`char[]`         | string             |       |
++--------+-------------------------+--------------------+-------+
+| ``P``  | :ctype:`void \*`        | long               |       |
++--------+-------------------------+--------------------+-------+
+(see online docs for more)
+===EndDoc==========
+
+.. function:: pack(fmt, v1, v2, ...)
+
+   Return a string containing the values ``v1, v2, ...`` packed according to the
+   given format.  The arguments must match the values required by the format
+   exactly.
+
+
+.. function:: pack_into(fmt, buffer, offset, v1, v2, ...)
+
+   Pack the values ``v1, v2, ...`` according to the given format, write the packed
+   bytes into the writable *buffer* starting at *offset*. Note that the offset is
+   a required argument.
+
+
+.. function:: unpack(fmt, string)
+
+   Unpack the string (presumably packed by ``pack(fmt, ...)``) according to the
+   given format.  The result is a tuple even if it contains exactly one item.  The
+   string must contain exactly the amount of data required by the format
+   (``len(string)`` must equal ``calcsize(fmt)``).
+
+
+.. function:: unpack_from(fmt, buffer[,offset=0])
+
+   Unpack the *buffer* according to tthe given format. The result is a tuple even
+   if it contains exactly one item. The *buffer* must contain at least the amount
+   of data required by the format (``len(buffer[offset:])`` must be at least
+   ``calcsize(fmt)``).
+
+
+.. function:: calcsize(fmt)
+
+   Return the size of the struct (and hence of the string) corresponding to the
+   given format.
+
+===Mod:difflib=============
+===ModDoc:difflib==========
+This module provides classes and functions for comparing sequences. It
+can be used for example, for comparing files, and can produce difference
+information in various formats, including HTML and context and unified
+diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
+
+SequenceMatcher
+This is a flexible class for comparing pairs of sequences of any type, so long
+as the sequence elements are :term:`hashable`.
+
+Differ
+This is a class for comparing sequences of lines of text, and producing human-readable differences or deltas.
+
+HtmlDiff 
+This class can be used to create an HTML table (or a complete HTML file
+   containing the table) showing a side by side, line by line comparison of text
+   with inter-line and intra-line change highlights. 
+
+
+See online docs for more.
+===EndDoc==========
+// .. function:: (To add later)
+
+
+
+===Mod:gettext======
+===ModDoc:====
+The gettext module provides internationalization (I18N) and localization (L10N) services for your Python modules and applications. It supports both the GNU gettext message catalog API and a higher level, class-based API that may be more appropriate for Python files. The interface described below allows you to write your module and application messages in one natural language, and provide a catalog of translated messages for running under different natural languages.
+
+Some hints on localizing your Python modules and applications are also given.
+===EndDoc===
+// .. function:: (To add later)
+
+
+===Mod:locale======
+===ModDoc:====
+The locale module opens access to the POSIX locale database and functionality. The POSIX locale mechanism allows programmers to deal with certain cultural issues in an application, without requiring the programmer to know all the specifics of each country where the software is executed.
+
+The locale module is implemented on top of the _locale module, which in turn uses an ANSI C locale implementation if available.
+===EndDoc===
+// .. function:: (To add later)
+
+
+
+
+
+
+
+
+
+
+

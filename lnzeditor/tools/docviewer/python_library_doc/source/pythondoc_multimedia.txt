@@ -1,0 +1,1494 @@
+
+===Section:Multimedia=============
+===Mod:audioop======
+===ModDoc:====
+
+The :mod:`audioop` module contains some useful operations on sound fragments.
+It operates on sound fragments consisting of signed integer samples 8, 16 or 32
+bits wide, stored in Python strings.  This is the same format as used by the
+:mod:`al` and :mod:`sunaudiodev` modules.  All scalar items are integers, unless
+specified otherwise.
+
+This module provides support for a-LAW, u-LAW and Intel/DVI ADPCM encodings.
+ *width* is the sample width in bytes, either ``1``, ``2`` or ``4``.  Both
+   fragments should have the same length.
+
+A few of the more complicated operations only take 16-bit samples, otherwise the
+sample size (in bytes) is always a parameter of the operation.
+
+The :func:`find\*` routines might look a bit funny at first sight. They are
+primarily meant to do echo cancellation.  A reasonably fast way to do this is to
+pick the most energetic piece of the output sample, locate that in the input
+sample and subtract the whole output sample from the input sample::
+
+   def echocancel(outputdata, inputdata):
+       pos = audioop.findmax(outputdata, 800)    # one tenth second
+       out_test = outputdata[pos*2:]
+       in_test = inputdata[pos*2:]
+       ipos, factor = audioop.findfit(in_test, out_test)
+       # Optional (for better cancellation):
+       # factor = audioop.findfactor(in_test[ipos*2:ipos*2+len(out_test)], 
+       #              out_test)
+       prefill = '\0'*(pos+ipos)*2
+       postfill = '\0'*(len(inputdata)-len(prefill)-len(outputdata))
+       outputdata = prefill + audioop.mul(outputdata,2,-factor) + postfill
+       return audioop.add(inputdata, outputdata, 2)
+===EndDoc===
+.. function:: add(fragment1, fragment2, width)
+
+   Return a fragment which is the addition of the two samples passed as parameters.
+   *width* is the sample width in bytes, either ``1``, ``2`` or ``4``.  Both
+   fragments should have the same length.
+
+
+.. function:: adpcm2lin(adpcmfragment, width, state)
+
+   Decode an Intel/DVI ADPCM coded fragment to a linear fragment.  See the
+   description of :func:`lin2adpcm` for details on ADPCM coding. Return a tuple
+   ``(sample, newstate)`` where the sample has the width specified in *width*.
+
+
+.. function:: alaw2lin(fragment, width)
+
+   Convert sound fragments in a-LAW encoding to linearly encoded sound fragments.
+   a-LAW encoding always uses 8 bits samples, so *width* refers only to the sample
+   width of the output fragment here.
+
+   .. versionadded:: 2.5
+
+
+.. function:: avg(fragment, width)
+
+   Return the average over all samples in the fragment.
+
+
+.. function:: avgpp(fragment, width)
+
+   Return the average peak-peak value over all samples in the fragment. No
+   filtering is done, so the usefulness of this routine is questionable.
+
+
+.. function:: bias(fragment, width, bias)
+
+   Return a fragment that is the original fragment with a bias added to each
+   sample.
+
+
+.. function:: cross(fragment, width)
+
+   Return the number of zero crossings in the fragment passed as an argument.
+
+
+.. function:: findfactor(fragment, reference)
+
+   Return a factor *F* such that ``rms(add(fragment, mul(reference, -F)))`` is
+   minimal, i.e., return the factor with which you should multiply *reference* to
+   make it match as well as possible to *fragment*.  The fragments should both
+   contain 2-byte samples.
+
+   The time taken by this routine is proportional to ``len(fragment)``.
+
+
+.. function:: findfit(fragment, reference)
+
+   Try to match *reference* as well as possible to a portion of *fragment* (which
+   should be the longer fragment).  This is (conceptually) done by taking slices
+   out of *fragment*, using :func:`findfactor` to compute the best match, and
+   minimizing the result.  The fragments should both contain 2-byte samples.
+   Return a tuple ``(offset, factor)`` where *offset* is the (integer) offset into
+   *fragment* where the optimal match started and *factor* is the (floating-point)
+   factor as per :func:`findfactor`.
+
+
+.. function:: findmax(fragment, length)
+
+   Search *fragment* for a slice of length *length* samples (not bytes!) with
+   maximum energy, i.e., return *i* for which ``rms(fragment[i*2:(i+length)*2])``
+   is maximal.  The fragments should both contain 2-byte samples.
+
+   The routine takes time proportional to ``len(fragment)``.
+
+
+.. function:: getsample(fragment, width, index)
+
+   Return the value of sample *index* from the fragment.
+
+
+.. function:: lin2adpcm(fragment, width, state)
+
+   Convert samples to 4 bit Intel/DVI ADPCM encoding.  ADPCM coding is an adaptive
+   coding scheme, whereby each 4 bit number is the difference between one sample
+   and the next, divided by a (varying) step.  The Intel/DVI ADPCM algorithm has
+   been selected for use by the IMA, so it may well become a standard.
+
+   *state* is a tuple containing the state of the coder.  The coder returns a tuple
+   ``(adpcmfrag, newstate)``, and the *newstate* should be passed to the next call
+   of :func:`lin2adpcm`.  In the initial call, ``None`` can be passed as the state.
+   *adpcmfrag* is the ADPCM coded fragment packed 2 4-bit values per byte.
+
+
+.. function:: lin2alaw(fragment, width)
+
+   Convert samples in the audio fragment to a-LAW encoding and return this as a
+   Python string.  a-LAW is an audio encoding format whereby you get a dynamic
+   range of about 13 bits using only 8 bit samples.  It is used by the Sun audio
+   hardware, among others.
+
+   .. versionadded:: 2.5
+
+
+.. function:: lin2lin(fragment, width, newwidth)
+
+   Convert samples between 1-, 2- and 4-byte formats.
+
+   .. note::
+
+      In some audio formats, such as .WAV files, 16 and 32 bit samples are
+      signed, but 8 bit samples are unsigned.  So when converting to 8 bit wide
+      samples for these formats, you need to also add 128 to the result::
+
+         new_frames = audioop.lin2lin(frames, old_width, 1)
+         new_frames = audioop.bias(new_frames, 1, 128)
+
+      The same, in reverse, has to be applied when converting from 8 to 16 or 32
+      bit width samples.
+
+
+.. function:: lin2ulaw(fragment, width)
+
+   Convert samples in the audio fragment to u-LAW encoding and return this as a
+   Python string.  u-LAW is an audio encoding format whereby you get a dynamic
+   range of about 14 bits using only 8 bit samples.  It is used by the Sun audio
+   hardware, among others.
+
+
+.. function:: minmax(fragment, width)
+
+   Return a tuple consisting of the minimum and maximum values of all samples in
+   the sound fragment.
+
+
+.. function:: max(fragment, width)
+
+   Return the maximum of the *absolute value* of all samples in a fragment.
+
+
+.. function:: maxpp(fragment, width)
+
+   Return the maximum peak-peak value in the sound fragment.
+
+
+.. function:: mul(fragment, width, factor)
+
+   Return a fragment that has all samples in the original fragment multiplied by
+   the floating-point value *factor*.  Overflow is silently ignored.
+
+
+.. function:: ratecv(fragment, width, nchannels, inrate, outrate, state[, weightA[, weightB]])
+
+   Convert the frame rate of the input fragment.
+
+   *state* is a tuple containing the state of the converter.  The converter returns
+   a tuple ``(newfragment, newstate)``, and *newstate* should be passed to the next
+   call of :func:`ratecv`.  The initial call should pass ``None`` as the state.
+
+   The *weightA* and *weightB* arguments are parameters for a simple digital filter
+   and default to ``1`` and ``0`` respectively.
+
+
+.. function:: reverse(fragment, width)
+
+   Reverse the samples in a fragment and returns the modified fragment.
+
+
+.. function:: rms(fragment, width)
+
+   Return the root-mean-square of the fragment, i.e. ``sqrt(sum(S_i^2)/n)``.
+
+   This is a measure of the power in an audio signal.
+
+
+.. function:: tomono(fragment, width, lfactor, rfactor)
+
+   Convert a stereo fragment to a mono fragment.  The left channel is multiplied by
+   *lfactor* and the right channel by *rfactor* before adding the two channels to
+   give a mono signal.
+
+
+.. function:: tostereo(fragment, width, lfactor, rfactor)
+
+   Generate a stereo fragment from a mono fragment.  Each pair of samples in the
+   stereo fragment are computed from the mono sample, whereby left channel samples
+   are multiplied by *lfactor* and right channel samples by *rfactor*.
+
+
+.. function:: ulaw2lin(fragment, width)
+
+   Convert sound fragments in u-LAW encoding to linearly encoded sound fragments.
+   u-LAW encoding always uses 8 bits samples, so *width* refers only to the sample
+   width of the output fragment here.
+
+===Mod:ossaudiodev======
+===ModDoc:====
+This module allows you to access the OSS (Open Sound System) audio interface.
+OSS is available for a wide range of open-source and commercial Unices, and is
+the standard audio interface for Linux and recent versions of FreeBSD.
+
+Audio Device Objects
+--------------------
+
+Before you can write to or read from an audio device, you must call three
+methods in the correct order:
+
+#. :meth:`setfmt` to set the output format
+
+#. :meth:`channels` to set the number of channels
+
+#. :meth:`speed` to set the sample rate
+
+Alternately, you can use the :meth:`setparameters` method to set all three audio
+parameters at once.  This is more convenient, but may not be as flexible in all
+cases.
+
+
+   `Open Sound System Programmer's Guide <http://www.opensound.com/pguide/oss.pdf>`_
+      the official documentation for the OSS C API
+
+   The module defines a large number of constants supplied by the OSS device
+   driver; see ``<sys/soundcard.h>`` on either Linux or FreeBSD for a listing .
+===EndDoc===
+
+.. function:: open([device, ]mode)
+
+   Open an audio device and return an OSS audio device object.  This object
+   supports many file-like methods, such as :meth:`read`, :meth:`write`, and
+   :meth:`fileno` (although there are subtle differences between conventional Unix
+   read/write semantics and those of OSS audio devices).  It also supports a number
+   of audio-specific methods; see below for the complete list of methods.
+
+   *device* is the audio device filename to use.  If it is not specified, this
+   module first looks in the environment variable :envvar:`AUDIODEV` for a device
+   to use.  If not found, it falls back to :file:`/dev/dsp`.
+
+   *mode* is one of ``'r'`` for read-only (record) access, ``'w'`` for
+   write-only (playback) access and ``'rw'`` for both. Since many sound cards
+   only allow one process to have the recorder or player open at a time, it is a
+   good idea to open the device only for the activity needed.  Further, some
+   sound cards are half-duplex: they can be opened for reading or writing, but
+   not both at once.
+
+   Note the unusual calling syntax: the *first* argument is optional, and the
+   second is required.  This is a historical artifact for compatibility with the
+   older :mod:`linuxaudiodev` module which :mod:`ossaudiodev` supersedes.
+
+   .. XXX it might also be motivated
+      by my unfounded-but-still-possibly-true belief that the default
+      audio device varies unpredictably across operating systems.  -GW
+
+
+
+   
+.. method:: oss_audio_device.close()
+
+   Explicitly close the audio device.  When you are done writing to or reading from
+   an audio device, you should explicitly close it.  A closed device cannot be used
+   again.
+
+
+.. method:: oss_audio_device.fileno()
+
+   Return the file descriptor associated with the device.
+
+
+.. method:: oss_audio_device.read(size)
+
+   Read *size* bytes from the audio input and return them as a Python string.
+   Unlike most Unix device drivers, OSS audio devices in blocking mode (the
+   default) will block :func:`read` until the entire requested amount of data is
+   available.
+
+
+.. method:: oss_audio_device.write(data)
+
+   Write the Python string *data* to the audio device and return the number of
+   bytes written.  If the audio device is in blocking mode (the default), the
+   entire string is always written (again, this is different from usual Unix device
+   semantics).  If the device is in non-blocking mode, some data may not be written
+   ---see :meth:`writeall`.
+
+
+.. method:: oss_audio_device.writeall(data)
+
+   Write the entire Python string *data* to the audio device: waits until the audio
+   device is able to accept data, writes as much data as it will accept, and
+   repeats until *data* has been completely written. If the device is in blocking
+   mode (the default), this has the same effect as :meth:`write`; :meth:`writeall`
+   is only useful in non-blocking mode.  Has no return value, since the amount of
+   data written is always equal to the amount of data supplied.
+
+The following methods each map to exactly one :func:`ioctl` system call.  The
+correspondence is obvious: for example, :meth:`setfmt` corresponds to the
+``SNDCTL_DSP_SETFMT`` ioctl, and :meth:`sync` to ``SNDCTL_DSP_SYNC`` (this can
+be useful when consulting the OSS documentation).  If the underlying
+:func:`ioctl` fails, they all raise :exc:`IOError`.
+
+
+.. method:: oss_audio_device.nonblock()
+
+   Put the device into non-blocking mode.  Once in non-blocking mode, there is no
+   way to return it to blocking mode.
+
+
+.. method:: oss_audio_device.getfmts()
+
+   Return a bitmask of the audio output formats supported by the soundcard.  Some
+   of the formats supported by OSS are:
+
+   +-------------------------+---------------------------------------------+
+   | Format                  | Description                                 |
+   +=========================+=============================================+
+   | :const:`AFMT_MU_LAW`    | a logarithmic encoding (used by Sun ``.au`` |
+   |                         | files and :file:`/dev/audio`)               |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_A_LAW`     | a logarithmic encoding                      |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_IMA_ADPCM` | a 4:1 compressed format defined by the      |
+   |                         | Interactive Multimedia Association          |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_U8`        | Unsigned, 8-bit audio                       |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_S16_LE`    | Signed, 16-bit audio, little-endian byte    |
+   |                         | order (as used by Intel processors)         |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_S16_BE`    | Signed, 16-bit audio, big-endian byte order |
+   |                         | (as used by 68k, PowerPC, Sparc)            |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_S8`        | Signed, 8 bit audio                         |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_U16_LE`    | Unsigned, 16-bit little-endian audio        |
+   +-------------------------+---------------------------------------------+
+   | :const:`AFMT_U16_BE`    | Unsigned, 16-bit big-endian audio           |
+   +-------------------------+---------------------------------------------+
+
+   Consult the OSS documentation for a full list of audio formats, and note that
+   most devices support only a subset of these formats.  Some older devices only
+   support :const:`AFMT_U8`; the most common format used today is
+   :const:`AFMT_S16_LE`.
+
+
+.. method:: oss_audio_device.setfmt(format)
+
+   Try to set the current audio format to *format*---see :meth:`getfmts` for a
+   list.  Returns the audio format that the device was set to, which may not be the
+   requested format.  May also be used to return the current audio format---do this
+   by passing an "audio format" of :const:`AFMT_QUERY`.
+
+
+.. method:: oss_audio_device.channels(nchannels)
+
+   Set the number of output channels to *nchannels*.  A value of 1 indicates
+   monophonic sound, 2 stereophonic.  Some devices may have more than 2 channels,
+   and some high-end devices may not support mono. Returns the number of channels
+   the device was set to.
+
+
+.. method:: oss_audio_device.speed(samplerate)
+
+   Try to set the audio sampling rate to *samplerate* samples per second.  Returns
+   the rate actually set.  Most sound devices don't support arbitrary sampling
+   rates.  Common rates are:
+
+   +-------+-------------------------------------------+
+   | Rate  | Description                               |
+   +=======+===========================================+
+   | 8000  | default rate for :file:`/dev/audio`       |
+   +-------+-------------------------------------------+
+   | 11025 | speech recording                          |
+   +-------+-------------------------------------------+
+   | 22050 |                                           |
+   +-------+-------------------------------------------+
+   | 44100 | CD quality audio (at 16 bits/sample and 2 |
+   |       | channels)                                 |
+   +-------+-------------------------------------------+
+   | 96000 | DVD quality audio (at 24 bits/sample)     |
+   +-------+-------------------------------------------+
+
+
+.. method:: oss_audio_device.sync()
+
+   Wait until the sound device has played every byte in its buffer.  (This happens
+   implicitly when the device is closed.)  The OSS documentation recommends closing
+   and re-opening the device rather than using :meth:`sync`.
+
+
+.. method:: oss_audio_device.reset()
+
+   Immediately stop playing or recording and return the device to a state where it
+   can accept commands.  The OSS documentation recommends closing and re-opening
+   the device after calling :meth:`reset`.
+
+
+.. method:: oss_audio_device.post()
+
+   Tell the driver that there is likely to be a pause in the output, making it
+   possible for the device to handle the pause more intelligently.  You might use
+   this after playing a spot sound effect, before waiting for user input, or before
+   doing disk I/O.
+
+The following convenience methods combine several ioctls, or one ioctl and some
+simple calculations.
+
+
+.. method:: oss_audio_device.setparameters(format, nchannels, samplerate [, strict=False])
+
+   Set the key audio sampling parameters---sample format, number of channels, and
+   sampling rate---in one method call.  *format*,  *nchannels*, and *samplerate*
+   should be as specified in the :meth:`setfmt`, :meth:`channels`, and
+   :meth:`speed`  methods.  If *strict* is true, :meth:`setparameters` checks to
+   see if each parameter was actually set to the requested value, and raises
+   :exc:`OSSAudioError` if not.  Returns a tuple (*format*, *nchannels*,
+   *samplerate*) indicating the parameter values that were actually set by the
+   device driver (i.e., the same as the return values of :meth:`setfmt`,
+   :meth:`channels`, and :meth:`speed`).
+
+   For example,  ::
+
+      (fmt, channels, rate) = dsp.setparameters(fmt, channels, rate)
+
+   is equivalent to  ::
+
+      fmt = dsp.setfmt(fmt)
+      channels = dsp.channels(channels)
+      rate = dsp.rate(channels)
+
+
+.. method:: oss_audio_device.bufsize()
+
+   Returns the size of the hardware buffer, in samples.
+
+
+.. method:: oss_audio_device.obufcount()
+
+   Returns the number of samples that are in the hardware buffer yet to be played.
+
+
+.. method:: oss_audio_device.obuffree()
+
+   Returns the number of samples that could be queued into the hardware buffer to
+   be played without blocking.
+   
+.. method:: (attributes)
+Audio device objects also support several read-only attributes:
+a.oss_audio_device.closed
+   Boolean indicating whether the device has been closed.
+a.oss_audio_device.name
+   String containing the name of the device file.
+a.oss_audio_device.mode
+   The I/O mode for the file, either ``"r"``, ``"rw"``, or ``"w"``.
+   
+.. function:: openmixer([device])
+
+   Open a mixer device and return an OSS mixer device object.   *device* is the
+   mixer device filename to use.  If it is not specified, this module first looks
+   in the environment variable :envvar:`MIXERDEV` for a device to use.  If not
+   found, it falls back to :file:`/dev/mixer`.
+
+
+.. method:: oss_mixer_device.close()
+
+   This method closes the open mixer device file.  Any further attempts to use the
+   mixer after this file is closed will raise an :exc:`IOError`.
+
+
+.. method:: oss_mixer_device.fileno()
+
+   Returns the file handle number of the open mixer device file.
+
+
+.. method:: oss_mixer_device.controls()
+
+   This method returns a bitmask specifying the available mixer controls ("Control"
+   being a specific mixable "channel", such as :const:`SOUND_MIXER_PCM` or
+   :const:`SOUND_MIXER_SYNTH`).  This bitmask indicates a subset of all available
+   mixer controls---the :const:`SOUND_MIXER_\*` constants defined at module level.
+   To determine if, for example, the current mixer object supports a PCM mixer, use
+   the following Python code::
+
+      mixer=ossaudiodev.openmixer()
+      if mixer.controls() & (1 << ossaudiodev.SOUND_MIXER_PCM):
+          # PCM is supported
+          ... code ...
+
+   For most purposes, the :const:`SOUND_MIXER_VOLUME` (master volume) and
+   :const:`SOUND_MIXER_PCM` controls should suffice---but code that uses the mixer
+   should be flexible when it comes to choosing mixer controls.  On the Gravis
+   Ultrasound, for example, :const:`SOUND_MIXER_VOLUME` does not exist.
+
+
+.. method:: oss_mixer_device.stereocontrols()
+
+   Returns a bitmask indicating stereo mixer controls.  If a bit is set, the
+   corresponding control is stereo; if it is unset, the control is either
+   monophonic or not supported by the mixer (use in combination with
+   :meth:`controls` to determine which).
+
+   See the code example for the :meth:`controls` function for an example of getting
+   data from a bitmask.
+
+
+.. method:: oss_mixer_device.reccontrols()
+
+   Returns a bitmask specifying the mixer controls that may be used to record.  See
+   the code example for :meth:`controls` for an example of reading from a bitmask.
+
+
+.. method:: oss_mixer_device.get(control)
+
+   Returns the volume of a given mixer control.  The returned volume is a 2-tuple
+   ``(left_volume,right_volume)``.  Volumes are specified as numbers from 0
+   (silent) to 100 (full volume).  If the control is monophonic, a 2-tuple is still
+   returned, but both volumes are the same.
+
+   Raises :exc:`OSSAudioError` if an invalid control was is specified, or
+   :exc:`IOError` if an unsupported control is specified.
+
+
+.. method:: oss_mixer_device.set(control, (left, right))
+
+   Sets the volume for a given mixer control to ``(left,right)``. ``left`` and
+   ``right`` must be ints and between 0 (silent) and 100 (full volume).  On
+   success, the new volume is returned as a 2-tuple. Note that this may not be
+   exactly the same as the volume specified, because of the limited resolution of
+   some soundcard's mixers.
+
+   Raises :exc:`OSSAudioError` if an invalid mixer control was specified, or if the
+   specified volumes were out-of-range.
+
+
+.. method:: oss_mixer_device.get_recsrc()
+
+   This method returns a bitmask indicating which control(s) are currently being
+   used as a recording source.
+
+
+.. method:: oss_mixer_device.set_recsrc(bitmask)
+
+   Call this function to specify a recording source.  Returns a bitmask indicating
+   the new recording source (or sources) if successful; raises :exc:`IOError` if an
+   invalid source was specified.  To set the current recording source to the
+   microphone input::
+
+      mixer.setrecsrc (1 << ossaudiodev.SOUND_MIXER_MIC)
+
+===Mod:winsound======
+===ModDoc:====
+The :mod:`winsound` module provides access to the basic sound-playing machinery
+provided by Windows platforms.  It includes functions and several constants.
+===EndDoc===
+.. function:: Beep(frequency, duration)
+
+   Beep the PC's speaker. The *frequency* parameter specifies frequency, in hertz,
+   of the sound, and must be in the range 37 through 32,767. The *duration*
+   parameter specifies the number of milliseconds the sound should last.  If the
+   system is not able to beep the speaker, :exc:`RuntimeError` is raised.
+
+   .. note::
+
+      Under Windows 95 and 98, the Windows :cfunc:`Beep` function exists but is
+      useless (it ignores its arguments).  In that case Python simulates it via direct
+      port manipulation (added in version 2.1).  It's unknown whether that will work
+      on all systems.
+
+   .. versionadded:: 1.6
+
+
+.. function:: PlaySound(sound, flags)
+
+   Call the underlying :cfunc:`PlaySound` function from the Platform API.  The
+   *sound* parameter may be a filename, audio data as a string, or ``None``.  Its
+   interpretation depends on the value of *flags*, which can be a bitwise ORed
+   combination of the constants described below.  If the system indicates an error,
+   :exc:`RuntimeError` is raised.
+
+
+   For example::
+
+      import winsound
+      # Play Windows exit sound.
+      winsound.PlaySound("SystemExit", winsound.SND_ALIAS)
+
+      # Probably play Windows default sound, if any is registered (because
+      # "*" probably isn't the registered name of any sound).
+      winsound.PlaySound("*", winsound.SND_ALIAS)
+      
+      If flag includes SND_ALIAS, the *sound* parameter is a sound association name from the registry.  If the
+   registry contains no such name, play the system default sound unless
+   :const:`SND_NODEFAULT` is also specified. If no default sound is registered,
+   raise :exc:`RuntimeError`. Do not use with :const:`SND_FILENAME`.
+
+   All Win32 systems support at least the following; most systems support many
+   more:
+
+   +--------------------------+----------------------------------------+
+   | :func:`PlaySound` *name* | Corresponding Control Panel Sound name |
+   +==========================+========================================+
+   | ``'SystemAsterisk'``     | Asterisk                               |
+   +--------------------------+----------------------------------------+
+   | ``'SystemExclamation'``  | Exclamation                            |
+   +--------------------------+----------------------------------------+
+   | ``'SystemExit'``         | Exit Windows                           |
+   +--------------------------+----------------------------------------+
+   | ``'SystemHand'``         | Critical Stop                          |
+   +--------------------------+----------------------------------------+
+   | ``'SystemQuestion'``     | Question                               |
+   +--------------------------+----------------------------------------+
+
+Other flags:
+      
+      sound.SND_FILENAME
+
+   The *sound* parameter is the name of a WAV file. Do not use with
+   :const:`SND_ALIAS`.
+
+sound.SND_LOOP
+
+   Play the sound repeatedly.  The :const:`SND_ASYNC` flag must also be used to
+   avoid blocking.  Cannot be used with :const:`SND_MEMORY`.
+sound.SND_MEMORY
+
+   The *sound* parameter to :func:`PlaySound` is a memory image of a WAV file, as a
+   string.
+
+   .. note::
+
+      This module does not support playing from a memory image asynchronously, so a
+      combination of this flag and :const:`SND_ASYNC` will raise :exc:`RuntimeError`.
+sound.SND_PURGE
+
+   Stop playing all instances of the specified sound.
+sound.SND_ASYNC
+
+   Return immediately, allowing sounds to play asynchronously.
+sound.SND_NODEFAULT
+
+   If the specified sound cannot be found, do not play the system default sound.
+sound.SND_NOSTOP
+
+   Do not interrupt sounds currently playing.
+sound.SND_NOWAIT
+
+   Return immediately if the sound driver is busy.
+sound.MB_ICONASTERISK
+
+   Play the ``SystemDefault`` sound.
+sound.MB_ICONEXCLAMATION
+
+   Play the ``SystemExclamation`` sound.
+sound.MB_ICONHAND
+
+   Play the ``SystemHand`` sound.
+sound.MB_ICONQUESTION
+
+   Play the ``SystemQuestion`` sound.
+sound.MB_OK
+
+   Play the ``SystemDefault`` sound.
+
+
+.. function:: MessageBeep([type=MB_OK])
+
+   Call the underlying :cfunc:`MessageBeep` function from the Platform API.  This
+   plays a sound as specified in the registry.  The *type* argument specifies which
+   sound to play; possible values are ``-1``, ``MB_ICONASTERISK``,
+   ``MB_ICONEXCLAMATION``, ``MB_ICONHAND``, ``MB_ICONQUESTION``, and ``MB_OK``, all
+   described below.  The value ``-1`` produces a "simple beep"; this is the final
+   fallback if a sound cannot be played otherwise.
+
+===Mod:sndhdr======
+===ModDoc:====
+The :mod:`sndhdr` provides utility functions which attempt to determine the type
+of sound data which is in a file.  When these functions are able to determine
+what type of sound data is stored in a file, they return a tuple ``(type,
+sampling_rate, channels, frames, bits_per_sample)``.  The value for *type*
+indicates the data type and will be one of the strings ``'aifc'``, ``'aiff'``,
+``'au'``, ``'hcom'``, ``'sndr'``, ``'sndt'``, ``'voc'``, ``'wav'``, ``'8svx'``,
+``'sb'``, ``'ub'``, or ``'ul'``.  The *sampling_rate* will be either the actual
+value or ``0`` if unknown or difficult to decode.  Similarly, *channels* will be
+either the number of channels or ``0`` if it cannot be determined or if the
+value is difficult to decode.  The value for *frames* will be either the number
+of frames or ``-1``.  The last item in the tuple, *bits_per_sample*, will either
+be the sample size in bits or ``'A'`` for A-LAW or ``'U'`` for u-LAW.
+===EndDoc===
+
+.. function:: what(filename)
+
+   Determines the type of sound data stored in the file *filename* using
+   :func:`whathdr`.  If it succeeds, returns a tuple as described above, otherwise
+   ``None`` is returned.
+
+
+.. function:: whathdr(filename)
+
+   Determines the type of sound data stored in a file based on the file  header.
+   The name of the file is given by *filename*.  This function returns a tuple as
+   described above on success, or ``None``.
+
+===Mod:wave======
+===ModDoc:====
+The :mod:`wave` module provides a convenient interface to the WAV sound format.
+It does not support compression/decompression, but it does support mono/stereo.
+===EndDoc===
+.. function:: open(file[, mode])
+
+   If *file* is a string, open the file by that name, other treat it as a seekable
+   file-like object. *mode* can be any of
+
+   ``'r'``, ``'rb'``
+      Read only mode.
+
+   ``'w'``, ``'wb'``
+      Write only mode.
+
+   Note that it does not allow read/write WAV files.
+
+   A *mode* of ``'r'`` or ``'rb'`` returns a :class:`Wave_read` object, while a
+   *mode* of ``'w'`` or ``'wb'`` returns a :class:`Wave_write` object.  If *mode*
+   is omitted and a file-like  object is passed as *file*, ``file.mode`` is used as
+   the default value for *mode* (the ``'b'`` flag is still added if  necessary).
+
+.. method:: Wave_read.close()
+
+   Close the stream, and make the instance unusable. This is called automatically
+   on object collection.
+
+
+.. method:: Wave_read.getnchannels()
+
+   Returns number of audio channels (``1`` for mono, ``2`` for stereo).
+
+
+.. method:: Wave_read.getsampwidth()
+
+   Returns sample width in bytes.
+
+
+.. method:: Wave_read.getframerate()
+
+   Returns sampling frequency.
+
+
+.. method:: Wave_read.getnframes()
+
+   Returns number of audio frames.
+
+
+.. method:: Wave_read.getcomptype()
+
+   Returns compression type (``'NONE'`` is the only supported type).
+
+
+.. method:: Wave_read.getcompname()
+
+   Human-readable version of :meth:`getcomptype`. Usually ``'not compressed'``
+   parallels ``'NONE'``.
+
+
+.. method:: Wave_read.getparams()
+
+   Returns a tuple ``(nchannels, sampwidth, framerate, nframes, comptype,
+   compname)``, equivalent to output of the :meth:`get\*` methods.
+
+
+.. method:: Wave_read.readframes(n)
+
+   Reads and returns at most *n* frames of audio, as a string of bytes.
+
+
+.. method:: Wave_read.rewind()
+
+   Rewind the file pointer to the beginning of the audio stream.
+
+The following two methods are defined for compatibility with the :mod:`aifc`
+module, and don't do anything interesting.
+
+
+.. method:: Wave_read.getmarkers()
+
+   Returns ``None``.
+
+
+.. method:: Wave_read.getmark(id)
+
+   Raise an error.
+
+The following two methods define a term "position" which is compatible between
+them, and is otherwise implementation dependent.
+
+
+.. method:: Wave_read.setpos(pos)
+
+   Set the file pointer to the specified position.
+
+
+.. method:: Wave_read.tell()
+
+   Return current file pointer position.
+
+.. method:: Wave_write.close()
+
+   Make sure *nframes* is correct, and close the file. This method is called upon
+   deletion.
+
+
+.. method:: Wave_write.setnchannels(n)
+
+   Set the number of channels.
+
+
+.. method:: Wave_write.setsampwidth(n)
+
+   Set the sample width to *n* bytes.
+
+
+.. method:: Wave_write.setframerate(n)
+
+   Set the frame rate to *n*.
+
+
+.. method:: Wave_write.setnframes(n)
+
+   Set the number of frames to *n*. This will be changed later if more frames are
+   written.
+
+
+.. method:: Wave_write.setcomptype(type, name)
+
+   Set the compression type and description. At the moment, only compression type
+   ``NONE`` is supported, meaning no compression.
+
+
+.. method:: Wave_write.setparams(tuple)
+
+   The *tuple* should be ``(nchannels, sampwidth, framerate, nframes, comptype,
+   compname)``, with values valid for the :meth:`set\*` methods.  Sets all
+   parameters.
+
+
+.. method:: Wave_write.tell()
+
+   Return current position in the file, with the same disclaimer for the
+   :meth:`Wave_read.tell` and :meth:`Wave_read.setpos` methods.
+
+
+.. method:: Wave_write.writeframesraw(data)
+
+   Write audio frames, without correcting *nframes*.
+
+
+.. method:: Wave_write.writeframes(data)
+
+   Write audio frames and make sure *nframes* is correct.
+
+Note that it is invalid to set any parameters after calling :meth:`writeframes`
+or :meth:`writeframesraw`, and any attempt to do so will raise
+:exc:`wave.Error`.
+
+
+===Mod:aifc======
+===ModDoc:====
+This module provides support for reading and writing AIFF and AIFF-C files.
+AIFF is Audio Interchange File Format, a format for storing digital audio
+samples in a file.  AIFF-C is a newer version of the format that includes the
+ability to compress the audio data.
+
+.. warning::
+   
+   Some operations may only work under IRIX; these will raise :exc:`ImportError`
+   when attempting to import the :mod:`cl` module, which is only available on IRIX.
+
+Audio files have a number of parameters that describe the audio data. The
+sampling rate or frame rate is the number of times per second the sound is
+sampled.  The number of channels indicate if the audio is mono, stereo, or
+quadro.  Each frame consists of one sample per channel.  The sample size is the
+size in bytes of each sample.  Thus a frame consists of
+*nchannels*\**samplesize* bytes, and a second's worth of audio consists of
+*nchannels*\**samplesize*\**framerate* bytes.
+
+For example, CD quality audio has a sample size of two bytes (16 bits), uses two
+channels (stereo) and has a frame rate of 44,100 frames/second.  This gives a
+frame size of 4 bytes (2\*2), and a second's worth occupies 2\*2\*44100 bytes
+(176,400 bytes).
+===EndDoc===
+.. function:: open(file[, mode])
+
+   Open an AIFF or AIFF-C file and return an object instance with methods that are
+   described below.  The argument *file* is either a string naming a file or a file
+   object.  *mode* must be ``'r'`` or ``'rb'`` when the file must be opened for
+   reading, or ``'w'``  or ``'wb'`` when the file must be opened for writing.  If
+   omitted, ``file.mode`` is used if it exists, otherwise ``'rb'`` is used.  When
+   used for writing, the file object should be seekable, unless you know ahead of
+   time how many samples you are going to write in total and use
+   :meth:`writeframesraw` and :meth:`setnframes`.
+   
+   .. method:: aifc.getnchannels()
+
+   Return the number of audio channels (1 for mono, 2 for stereo).
+
+
+.. method:: aifc.getsampwidth()
+
+   Return the size in bytes of individual samples.
+
+
+.. method:: aifc.getframerate()
+
+   Return the sampling rate (number of audio frames per second).
+
+
+.. method:: aifc.getnframes()
+
+   Return the number of audio frames in the file.
+
+
+.. method:: aifc.getcomptype()
+
+   Return a four-character string describing the type of compression used in the
+   audio file.  For AIFF files, the returned value is ``'NONE'``.
+
+
+.. method:: aifc.getcompname()
+
+   Return a human-readable description of the type of compression used in the audio
+   file.  For AIFF files, the returned value is ``'not compressed'``.
+
+
+.. method:: aifc.getparams()
+
+   Return a tuple consisting of all of the above values in the above order.
+
+
+.. method:: aifc.getmarkers()
+
+   Return a list of markers in the audio file.  A marker consists of a tuple of
+   three elements.  The first is the mark ID (an integer), the second is the mark
+   position in frames from the beginning of the data (an integer), the third is the
+   name of the mark (a string).
+
+
+.. method:: aifc.getmark(id)
+
+   Return the tuple as described in :meth:`getmarkers` for the mark with the given
+   *id*.
+
+
+.. method:: aifc.readframes(nframes)
+
+   Read and return the next *nframes* frames from the audio file.  The returned
+   data is a string containing for each frame the uncompressed samples of all
+   channels.
+
+
+.. method:: aifc.rewind()
+
+   Rewind the read pointer.  The next :meth:`readframes` will start from the
+   beginning.
+
+
+.. method:: aifc.setpos(pos)
+
+   Seek to the specified frame number.
+
+
+.. method:: aifc.tell()
+
+   Return the current frame number.
+
+
+.. method:: aifc.close()
+
+   Close the AIFF file.  After calling this method, the object can no longer be
+   used.
+
+Objects returned by :func:`open` when a file is opened for writing have all the
+above methods, except for :meth:`readframes` and :meth:`setpos`.  In addition
+the following methods exist.  The :meth:`get\*` methods can only be called after
+the corresponding :meth:`set\*` methods have been called.  Before the first
+:meth:`writeframes` or :meth:`writeframesraw`, all parameters except for the
+number of frames must be filled in.
+
+
+.. method:: aifc.aiff()
+
+   Create an AIFF file.  The default is that an AIFF-C file is created, unless the
+   name of the file ends in ``'.aiff'`` in which case the default is an AIFF file.
+
+
+.. method:: aifc.aifc()
+
+   Create an AIFF-C file.  The default is that an AIFF-C file is created, unless
+   the name of the file ends in ``'.aiff'`` in which case the default is an AIFF
+   file.
+
+
+.. method:: aifc.setnchannels(nchannels)
+
+   Specify the number of channels in the audio file.
+
+
+.. method:: aifc.setsampwidth(width)
+
+   Specify the size in bytes of audio samples.
+
+
+.. method:: aifc.setframerate(rate)
+
+   Specify the sampling frequency in frames per second.
+
+
+.. method:: aifc.setnframes(nframes)
+
+   Specify the number of frames that are to be written to the audio file. If this
+   parameter is not set, or not set correctly, the file needs to support seeking.
+
+
+.. method:: aifc.setcomptype(type, name)
+
+   .. index::
+      single: u-LAW
+      single: A-LAW
+      single: G.722
+
+   Specify the compression type.  If not specified, the audio data will not be
+   compressed.  In AIFF files, compression is not possible.  The name parameter
+   should be a human-readable description of the compression type, the type
+   parameter should be a four-character string.  Currently the following
+   compression types are supported: NONE, ULAW, ALAW, G722.
+
+
+.. method:: aifc.setparams(nchannels, sampwidth, framerate, comptype, compname)
+
+   Set all the above parameters at once.  The argument is a tuple consisting of the
+   various parameters.  This means that it is possible to use the result of a
+   :meth:`getparams` call as argument to :meth:`setparams`.
+
+
+.. method:: aifc.setmark(id, pos, name)
+
+   Add a mark with the given id (larger than 0), and the given name at the given
+   position.  This method can be called at any time before :meth:`close`.
+
+
+.. method:: aifc.tell()
+
+   Return the current write position in the output file.  Useful in combination
+   with :meth:`setmark`.
+
+
+.. method:: aifc.writeframes(data)
+
+   Write data to the output file.  This method can only be called after the audio
+   file parameters have been set.
+
+
+.. method:: aifc.writeframesraw(data)
+
+   Like :meth:`writeframes`, except that the header of the audio file is not
+   updated.
+
+
+.. method:: aifc.close()
+
+   Close the AIFF file.  The header of the file is updated to reflect the actual
+   size of the audio data. After calling this method, the object can no longer be
+   used.
+
+
+===Mod:sunau======
+===ModDoc:====
+The :mod:`sunau` module provides a convenient interface to the Sun AU sound
+format.  Note that this module is interface-compatible with the modules
+:mod:`aifc` and :mod:`wave`.
+
+An audio file consists of a header followed by the data.  The fields of the
+header are:
+
++---------------+-----------------------------------------------+
+| Field         | Contents                                      |
++===============+===============================================+
+| magic word    | The four bytes ``.snd``.                      |
++---------------+-----------------------------------------------+
+| header size   | Size of the header, including info, in bytes. |
++---------------+-----------------------------------------------+
+| data size     | Physical size of the data, in bytes.          |
++---------------+-----------------------------------------------+
+| encoding      | Indicates how the audio samples are encoded.  |
++---------------+-----------------------------------------------+
+| sample rate   | The sampling rate.                            |
++---------------+-----------------------------------------------+
+| # of channels | The number of channels in the samples.        |
++---------------+-----------------------------------------------+
+| info          | ASCII string giving a description of the      |
+|               | audio file (padded with null bytes).          |
++---------------+-----------------------------------------------+
+
+Apart from the info field, all header fields are 4 bytes in size. They are all
+32-bit unsigned integers encoded in big-endian byte order.
+===EndDoc===
+.. function:: open(file, mode)
+
+   If *file* is a string, open the file by that name, otherwise treat it as a
+   seekable file-like object. *mode* can be any of
+
+   ``'r'``
+      Read only mode.
+
+   ``'w'``
+      Write only mode.
+
+   Note that it does not allow read/write files.
+
+   A *mode* of ``'r'`` returns a :class:`AU_read` object, while a *mode* of ``'w'``
+   or ``'wb'`` returns a :class:`AU_write` object.
+
+.. method:: AU_read.close()
+
+   Close the stream, and make the instance unusable. (This is  called automatically
+   on deletion.)
+
+
+.. method:: AU_read.getnchannels()
+
+   Returns number of audio channels (1 for mone, 2 for stereo).
+
+
+.. method:: AU_read.getsampwidth()
+
+   Returns sample width in bytes.
+
+
+.. method:: AU_read.getframerate()
+
+   Returns sampling frequency.
+
+
+.. method:: AU_read.getnframes()
+
+   Returns number of audio frames.
+
+
+.. method:: AU_read.getcomptype()
+
+   Returns compression type. Supported compression types are ``'ULAW'``, ``'ALAW'``
+   and ``'NONE'``.
+
+
+.. method:: AU_read.getcompname()
+
+   Human-readable version of :meth:`getcomptype`.  The supported types have the
+   respective names ``'CCITT G.711 u-law'``, ``'CCITT G.711 A-law'`` and ``'not
+   compressed'``.
+
+
+.. method:: AU_read.getparams()
+
+   Returns a tuple ``(nchannels, sampwidth, framerate, nframes, comptype,
+   compname)``, equivalent to output of the :meth:`get\*` methods.
+
+
+.. method:: AU_read.readframes(n)
+
+   Reads and returns at most *n* frames of audio, as a string of bytes.  The data
+   will be returned in linear format.  If the original data is in u-LAW format, it
+   will be converted.
+
+
+.. method:: AU_read.rewind()
+
+   Rewind the file pointer to the beginning of the audio stream.
+
+The following two methods define a term "position" which is compatible between
+them, and is otherwise implementation dependent.
+
+
+.. method:: AU_read.setpos(pos)
+
+   Set the file pointer to the specified position.  Only values returned from
+   :meth:`tell` should be used for *pos*.
+
+
+.. method:: AU_read.tell()
+
+   Return current file pointer position.  Note that the returned value has nothing
+   to do with the actual position in the file.
+
+The following two functions are defined for compatibility with the  :mod:`aifc`,
+and don't do anything interesting.
+
+
+.. method:: AU_read.getmarkers()
+
+   Returns ``None``.
+
+
+.. method:: AU_read.getmark(id)
+
+   Raise an error.
+
+
+.. method:: AU_write.setnchannels(n)
+
+   Set the number of channels.
+
+
+.. method:: AU_write.setsampwidth(n)
+
+   Set the sample width (in bytes.)
+
+
+.. method:: AU_write.setframerate(n)
+
+   Set the frame rate.
+
+
+.. method:: AU_write.setnframes(n)
+
+   Set the number of frames. This can be later changed, when and if more  frames
+   are written.
+
+
+.. method:: AU_write.setcomptype(type, name)
+
+   Set the compression type and description. Only ``'NONE'`` and ``'ULAW'`` are
+   supported on output.
+
+
+.. method:: AU_write.setparams(tuple)
+
+   The *tuple* should be ``(nchannels, sampwidth, framerate, nframes, comptype,
+   compname)``, with values valid for the :meth:`set\*` methods.  Set all
+   parameters.
+
+
+.. method:: AU_write.tell()
+
+   Return current position in the file, with the same disclaimer for the
+   :meth:`AU_read.tell` and :meth:`AU_read.setpos` methods.
+
+
+.. method:: AU_write.writeframesraw(data)
+
+   Write audio frames, without correcting *nframes*.
+
+
+.. method:: AU_write.writeframes(data)
+
+   Write audio frames and make sure *nframes* is correct.
+
+
+.. method:: AU_write.close()
+
+   Make sure *nframes* is correct, and close the file.
+
+   This method is called upon deletion.
+
+Note that it is invalid to set any parameters after calling  :meth:`writeframes`
+or :meth:`writeframesraw`.  
+
+
+===Mod:imageop======
+===ModDoc:====
+The :mod:`imageop` module contains some useful operations on images. It operates
+on images consisting of 8 or 32 bit pixels stored in Python strings.  This is
+the same format as used by :func:`gl.lrectwrite` and the :mod:`imgfile` module.
+===EndDoc===
+.. function:: crop(image, psize, width, height, x0, y0, x1, y1)
+
+   Return the selected part of *image*, which should be *width* by *height* in size
+   and consist of pixels of *psize* bytes. *x0*, *y0*, *x1* and *y1* are like the
+   :func:`gl.lrectread` parameters, i.e. the boundary is included in the new image.
+   The new boundaries need not be inside the picture.  Pixels that fall outside the
+   old image will have their value set to zero.  If *x0* is bigger than *x1* the
+   new image is mirrored.  The same holds for the y coordinates.
+
+
+.. function:: scale(image, psize, width, height, newwidth, newheight)
+
+   Return *image* scaled to size *newwidth* by *newheight*. No interpolation is
+   done, scaling is done by simple-minded pixel duplication or removal.  Therefore,
+   computer-generated images or dithered images will not look nice after scaling.
+
+
+.. function:: tovideo(image, psize, width, height)
+
+   Run a vertical low-pass filter over an image.  It does so by computing each
+   destination pixel as the average of two vertically-aligned source pixels.  The
+   main use of this routine is to forestall excessive flicker if the image is
+   displayed on a video device that uses interlacing, hence the name.
+
+
+.. function:: grey2mono(image, width, height, threshold)
+
+   Convert a 8-bit deep greyscale image to a 1-bit deep image by thresholding all
+   the pixels.  The resulting image is tightly packed and is probably only useful
+   as an argument to :func:`mono2grey`.
+
+
+.. function:: dither2mono(image, width, height)
+
+   Convert an 8-bit greyscale image to a 1-bit monochrome image using a
+   (simple-minded) dithering algorithm.
+
+
+.. function:: mono2grey(image, width, height, p0, p1)
+
+   Convert a 1-bit monochrome image to an 8 bit greyscale or color image. All
+   pixels that are zero-valued on input get value *p0* on output and all one-value
+   input pixels get value *p1* on output.  To convert a monochrome black-and-white
+   image to greyscale pass the values ``0`` and ``255`` respectively.
+
+
+.. function:: grey2grey4(image, width, height)
+
+   Convert an 8-bit greyscale image to a 4-bit greyscale image without dithering.
+
+
+.. function:: grey2grey2(image, width, height)
+
+   Convert an 8-bit greyscale image to a 2-bit greyscale image without dithering.
+
+
+.. function:: dither2grey2(image, width, height)
+
+   Convert an 8-bit greyscale image to a 2-bit greyscale image with dithering.  As
+   for :func:`dither2mono`, the dithering algorithm is currently very simple.
+
+
+.. function:: grey42grey(image, width, height)
+
+   Convert a 4-bit greyscale image to an 8-bit greyscale image.
+
+
+.. function:: grey22grey(image, width, height)
+
+   Convert a 2-bit greyscale image to an 8-bit greyscale image.
+
+===Mod:imghdr======
+===ModDoc:====
+The :mod:`imghdr` module determines the type of image contained in a file or
+byte stream.
+
+Example::
+
+   >>> import imghdr
+   >>> imghdr.what('/tmp/bass.gif')
+   'gif'
+
+===EndDoc===
+.. function:: what(filename[, h])
+
+   Tests the image data contained in the file named by *filename*, and returns a
+   string describing the image type.  If optional *h* is provided, the *filename*
+   is ignored and *h* is assumed to contain the byte stream to test.
+
+The following image types are recognized, as listed below with the return value
+from :func:`what`:
+
++------------+-----------------------------------+
+| Value      | Image format                      |
++============+===================================+
+| ``'rgb'``  | SGI ImgLib Files                  |
++------------+-----------------------------------+
+| ``'gif'``  | GIF 87a and 89a Files             |
++------------+-----------------------------------+
+| ``'pbm'``  | Portable Bitmap Files             |
++------------+-----------------------------------+
+| ``'pgm'``  | Portable Graymap Files            |
++------------+-----------------------------------+
+| ``'ppm'``  | Portable Pixmap Files             |
++------------+-----------------------------------+
+| ``'tiff'`` | TIFF Files                        |
++------------+-----------------------------------+
+| ``'rast'`` | Sun Raster Files                  |
++------------+-----------------------------------+
+| ``'xbm'``  | X Bitmap Files                    |
++------------+-----------------------------------+
+| ``'jpeg'`` | JPEG data in JFIF or Exif formats |
++------------+-----------------------------------+
+| ``'bmp'``  | BMP files                         |
++------------+-----------------------------------+
+| ``'png'``  | Portable Network Graphics         |
++------------+-----------------------------------+
+
+.. versionadded:: 2.5
+   Exif detection.
+
+You can extend the list of file types :mod:`imghdr` can recognize by appending
+to this variable:
+
+imghdr.tests
+   A list of functions performing the individual tests.  Each function takes two
+   arguments: the byte-stream and an open file-like object. When :func:`what` is
+   called with a byte-stream, the file-like object will be ``None``.
+
+   The test function should return a string describing the image type if the test
+   succeeded, or ``None`` if it failed.
+
+===Mod:colorsys======
+===ModDoc:====
+
+The :mod:`colorsys` module defines bidirectional conversions of color values
+between colors expressed in the RGB (Red Green Blue) color space used in
+computer monitors and three other coordinate systems: YIQ, HLS (Hue Lightness
+Saturation) and HSV (Hue Saturation Value).  Coordinates in all of these color
+spaces are floating point values.  In the YIQ space, the Y coordinate is between
+0 and 1, but the I and Q coordinates can be positive or negative.  In all other
+spaces, the coordinates are all between 0 and 1.
+
+More information about color spaces can be found at
+http://www.poynton.com/ColorFAQ.html.
+
+Example::
+
+   >>> import colorsys
+   >>> colorsys.rgb_to_hsv(.3, .4, .2)
+   (0.25, 0.5, 0.4)
+   >>> colorsys.hsv_to_rgb(0.25, 0.5, 0.4)
+   (0.3, 0.4, 0.2)
+
+===EndDoc===
+
+The :mod:`colorsys` module defines the following functions:
+
+
+.. function:: rgb_to_yiq(r, g, b)
+
+   Convert the color from RGB coordinates to YIQ coordinates.
+
+
+.. function:: yiq_to_rgb(y, i, q)
+
+   Convert the color from YIQ coordinates to RGB coordinates.
+
+
+.. function:: rgb_to_hls(r, g, b)
+
+   Convert the color from RGB coordinates to HLS coordinates.
+
+
+.. function:: hls_to_rgb(h, l, s)
+
+   Convert the color from HLS coordinates to RGB coordinates.
+
+
+.. function:: rgb_to_hsv(r, g, b)
+
+   Convert the color from RGB coordinates to HSV coordinates.
+
+
+.. function:: hsv_to_rgb(h, s, v)
+
+   Convert the color from HSV coordinates to RGB coordinates.
+===Mod:chunk======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)

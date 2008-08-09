@@ -1,0 +1,2331 @@
+
+===Section:Data=============
+
+===Mod:array==========
+===ModDoc:==========
+This module defines an object type which can compactly represent an array of
+basic values: characters, integers, floating point numbers.  Arrays are sequence
+types and behave very much like lists, except that the type of objects stored in
+them is constrained.  The type is specified at object creation time by using a
+:dfn:`type code`, which is a single character.  The following type codes are
+defined:
+
++-----------+----------------+-------------------+-----------------------+
+| Type code | C Type         | Python Type       | Minimum size in bytes |
+---------------------------
+| ``'c'``   | char           | character         | 1                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'b'``   | signed char    | int               | 1                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'B'``   | unsigned char  | int               | 1                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'u'``   | Py_UNICODE     | Unicode character | 2                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'h'``   | signed short   | int               | 2                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'H'``   | unsigned short | int               | 2                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'i'``   | signed int     | int               | 2                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'I'``   | unsigned int   | long              | 2                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'l'``   | signed long    | int               | 4                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'L'``   | unsigned long  | long              | 4                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'f'``   | float          | float             | 4                     |
++-----------+----------------+-------------------+-----------------------+
+| ``'d'``   | double         | float             | 8                     |
++-----------+----------------+-------------------+-----------------------+
+
+The actual representation of values is determined by the machine architecture
+(strictly speaking, by the C implementation).  The actual size can be accessed
+through the :attr:`itemsize` attribute.  The values stored  for ``'L'`` and
+``'I'`` items will be represented as Python long integers when retrieved,
+because Python's plain integer type cannot represent the full range of C's
+unsigned (long) integers.
+
+array.typecode
+   The typecode character used to create the array.
+array.itemsize
+   The length in bytes of one array item in the internal representation.
+
+Examples:
+array('l')
+array('c', 'hello world')
+array('u', u'hello \u2641')
+array('l', [1, 2, 3, 4, 5])
+array('d', [1.0, 2.0, 3.14])
+===EndDoc==========
+.. function:: array(typecode[, initializer])
+
+   Return a new array whose items are restricted by *typecode*, and initialized
+   from the optional *initializer* value, which must be a list, string, or iterable
+   over elements of the appropriate type.
+
+   .. versionchanged:: 2.4
+      Formerly, only lists or strings were accepted.
+
+   If given a list or string, the initializer is passed to the new array's
+   :meth:`fromlist`, :meth:`fromstring`, or :meth:`fromunicode` method (see below)
+   to add initial items to the array.  Otherwise, the iterable initializer is
+   passed to the :meth:`extend` method.
+
+.. method:: array.append(x)
+
+   Append a new item with value *x* to the end of the array.
+
+
+.. method:: array.buffer_info()
+
+   Return a tuple ``(address, length)`` giving the current memory address and the
+   length in elements of the buffer used to hold array's contents.  The size of the
+   memory buffer in bytes can be computed as ``array.buffer_info()[1] *
+   array.itemsize``.  This is occasionally useful when working with low-level (and
+   inherently unsafe) I/O interfaces that require memory addresses, such as certain
+   :cfunc:`ioctl` operations.  The returned numbers are valid as long as the array
+   exists and no length-changing operations are applied to it.
+
+   .. note::
+
+      When using array objects from code written in C or C++ (the only way to
+      effectively make use of this information), it makes more sense to use the buffer
+      interface supported by array objects.  This method is maintained for backward
+      compatibility and should be avoided in new code.  The buffer interface is
+      documented in :ref:`bufferobjects`.
+
+.. method:: array.byteswap()
+
+   "Byteswap" all items of the array.  This is only supported for values which are
+   1, 2, 4, or 8 bytes in size; for other types of values, :exc:`RuntimeError` is
+   raised.  It is useful when reading data from a file written on a machine with a
+   different byte order.
+
+
+.. method:: array.count(x)
+
+   Return the number of occurrences of *x* in the array.
+
+
+.. method:: array.extend(iterable)
+
+   Append items from *iterable* to the end of the array.  If *iterable* is another
+   array, it must have *exactly* the same type code; if not, :exc:`TypeError` will
+   be raised.  If *iterable* is not an array, it must be iterable and its elements
+   must be the right type to be appended to the array.
+
+   .. versionchanged:: 2.4
+      Formerly, the argument could only be another array.
+
+
+.. method:: array.fromfile(f, n)
+
+   Read *n* items (as machine values) from the file object *f* and append them to
+   the end of the array.  If less than *n* items are available, :exc:`EOFError` is
+   raised, but the items that were available are still inserted into the array.
+   *f* must be a real built-in file object; something else with a :meth:`read`
+   method won't do.
+
+
+.. method:: array.fromlist(list)
+
+   Append items from the list.  This is equivalent to ``for x in list:
+   a.append(x)`` except that if there is a type error, the array is unchanged.
+
+
+.. method:: array.fromstring(s)
+
+   Appends items from the string, interpreting the string as an array of machine
+   values (as if it had been read from a file using the :meth:`fromfile` method).
+
+
+.. method:: array.fromunicode(s)
+
+   Extends this array with data from the given unicode string.  The array must
+   be a type ``'u'`` array; otherwise a :exc:`ValueError` is raised.  Use
+   ``array.fromstring(unicodestring.encode(enc))`` to append Unicode data to an
+   array of some other type.
+
+
+.. method:: array.index(x)
+
+   Return the smallest *i* such that *i* is the index of the first occurrence of
+   *x* in the array.
+
+
+.. method:: array.insert(i, x)
+
+   Insert a new item with value *x* in the array before position *i*. Negative
+   values are treated as being relative to the end of the array.
+
+
+.. method:: array.pop([i])
+
+   Removes the item with the index *i* from the array and returns it. The optional
+   argument defaults to ``-1``, so that by default the last item is removed and
+   returned.
+
+
+.. method:: array.read(f, n)
+
+   .. deprecated:: 1.5.1
+      Use the :meth:`fromfile` method.
+
+   Read *n* items (as machine values) from the file object *f* and append them to
+   the end of the array.  If less than *n* items are available, :exc:`EOFError` is
+   raised, but the items that were available are still inserted into the array.
+   *f* must be a real built-in file object; something else with a :meth:`read`
+   method won't do.
+
+
+.. method:: array.remove(x)
+
+   Remove the first occurrence of *x* from the array.
+
+
+.. method:: array.reverse()
+
+   Reverse the order of the items in the array.
+
+
+.. method:: array.tofile(f)
+
+   Write all items (as machine values) to the file object *f*.
+
+
+.. method:: array.tolist()
+
+   Convert the array to an ordinary list with the same items.
+
+
+.. method:: array.tostring()
+
+   Convert the array to an array of machine values and return the string
+   representation (the same sequence of bytes that would be written to a file by
+   the :meth:`tofile` method.)
+
+
+.. method:: array.tounicode()
+
+   Convert the array to a unicode string.  The array must be a type ``'u'`` array;
+   otherwise a :exc:`ValueError` is raised. Use ``array.tostring().decode(enc)`` to
+   obtain a unicode string from an array of some other type.
+
+
+.. method:: array.write(f)
+
+   .. deprecated:: 1.5.1
+      Use the :meth:`tofile` method.
+
+   Write all items (as machine values) to the file object *f*.
+
+
+===Mod:bisect==========
+===ModDoc:====
+This module provides support for maintaining a list in sorted order without
+having to sort the list after each insertion.  For long lists of items with
+expensive comparison operations, this can be an improvement over the more common
+approach.  The module is called :mod:`bisect` because it uses a basic bisection
+algorithm to do its work.  The source code may be most useful as a working
+example of the algorithm (the boundary conditions are already right!).
+
+The :func:`bisect` function is generally useful for categorizing numeric data.
+This example uses :func:`bisect` to look up a letter grade for an exam total
+(say) based on a set of ordered numeric breakpoints: 85 and up is an 'A', 75..84
+is a 'B', etc.
+
+   >>> grades = "FEDCBA"
+   >>> breakpoints = [30, 44, 66, 75, 85]
+   >>> from bisect import bisect
+   >>> def grade(total):
+   ...           return grades[bisect(breakpoints, total)]
+   ...
+   >>> grade(66)
+   'C'
+   >>> map(grade, [33, 99, 77, 44, 12, 88])
+   ['E', 'A', 'B', 'D', 'F', 'A']
+===EndDoc======
+.. function:: bisect_left(list, item[, lo[, hi]])
+
+   Locate the proper insertion point for *item* in *list* to maintain sorted order.
+   The parameters *lo* and *hi* may be used to specify a subset of the list which
+   should be considered; by default the entire list is used.  If *item* is already
+   present in *list*, the insertion point will be before (to the left of) any
+   existing entries.  The return value is suitable for use as the first parameter
+   to ``list.insert()``.  This assumes that *list* is already sorted.
+
+   .. versionadded:: 2.1
+
+
+.. function:: bisect_right(list, item[, lo[, hi]])
+
+   Similar to :func:`bisect_left`, but returns an insertion point which comes after
+   (to the right of) any existing entries of *item* in *list*.
+
+   .. versionadded:: 2.1
+
+
+.. function:: bisect(...)
+
+   Alias for :func:`bisect_right`.
+
+
+.. function:: insort_left(list, item[, lo[, hi]])
+
+   Insert *item* in *list* in sorted order.  This is equivalent to
+   ``list.insert(bisect.bisect_left(list, item, lo, hi), item)``.  This assumes
+   that *list* is already sorted.
+
+   .. versionadded:: 2.1
+
+
+.. function:: insort_right(list, item[, lo[, hi]])
+
+   Similar to :func:`insort_left`, but inserting *item* in *list* after any
+   existing entries of *item*.
+
+   .. versionadded:: 2.1
+
+
+.. function:: insort(...)
+
+   Alias for :func:`insort_right`.
+
+===Mod:calendar==========
+===ModDoc:====
+Calendar is a base class. Use TextCalendar to generate plain text calendars. Use HTMLCalendar to generate HTML calendars.
+
+This module allows you to output calendars like the Unix :program:`cal` program,
+and provides additional useful functions related to the calendar. By default,
+these calendars have Monday as the first day of the week, and Sunday as the last
+(the European convention). Use :func:`setfirstweekday` to set the first day of
+the week to Sunday (6) or to any other weekday.  Parameters that specify dates
+are given as integers. For related
+functionality, see also the :mod:`datetime` and :mod:`time` modules.
+
+Most of these functions and classses rely on the :mod:`datetime` module which
+uses an idealized calendar, the current Gregorian calendar indefinitely extended
+in both directions.  This matches the definition of the "proleptic Gregorian"
+calendar in Dershowitz and Reingold's book "Calendrical Calculations", where
+it's the base calendar for all computations.
+
+calendar.day_name
+	An array that represents the days of the week in the current locale.
+calendar.day_abbr
+	An array that represents the abbreviated days of the week in the current locale.
+calendar.month_name
+	An array that represents the months of the year in the current locale.  This
+   follows normal convention of January being month number 1, so it has a length of
+   13 and  ``month_name[0]`` is the empty string.
+calendar.month_abbr
+	   An array that represents the abbreviated months of the year in the current
+   locale.  This follows normal convention of January being month number 1, so it
+   has a length of 13 and  ``month_abbr[0]`` is the empty string.
+===EndDoc======
+.. function:: Calendar([firstweekday])
+
+   Creates a :class:`Calendar` object. *firstweekday* is an integer specifying the
+   first day of the week. ``0`` is Monday (the default), ``6`` is Sunday.
+
+   A :class:`Calendar` object provides several methods that can be used for
+   preparing the calendar data for formatting. This class doesn't do any formatting
+   itself. This is the job of subclasses.
+   
+   .. method:: iterweekdays(weekday)
+
+      Return an iterator for the week day numbers that will be used for one
+      week.  The first value from the iterator will be the same as the value of
+      the :attr:`firstweekday` property.
+
+
+   .. method:: itermonthdates(year, month)
+
+      Return an iterator for the month *month* (1-12) in the year *year*. This
+      iterator will return all days (as :class:`datetime.date` objects) for the
+      month and all days before the start of the month or after the end of the
+      month that are required to get a complete week.
+
+
+   .. method:: itermonthdays2(year, month)
+
+      Return an iterator for the month *month* in the year *year* similar to
+      :meth:`itermonthdates`. Days returned will be tuples consisting of a day
+      number and a week day number.
+
+
+   .. method:: itermonthdays(year, month)
+
+      Return an iterator for the month *month* in the year *year* similar to
+      :meth:`itermonthdates`. Days returned will simply be day numbers.
+
+
+   .. method:: monthdatescalendar(year, month)
+
+      Return a list of the weeks in the month *month* of the *year* as full
+      weeks.  Weeks are lists of seven :class:`datetime.date` objects.
+
+
+   .. method:: monthdays2calendar(year, month)
+
+      Return a list of the weeks in the month *month* of the *year* as full
+      weeks.  Weeks are lists of seven tuples of day numbers and weekday
+      numbers.
+
+
+   .. method:: monthdayscalendar(year, month)
+
+      Return a list of the weeks in the month *month* of the *year* as full
+      weeks.  Weeks are lists of seven day numbers.
+
+
+   .. method:: yeardatescalendar(year[, width])
+
+      Return the data for the specified year ready for formatting. The return
+      value is a list of month rows. Each month row contains up to *width*
+      months (defaulting to 3). Each month contains between 4 and 6 weeks and
+      each week contains 1--7 days. Days are :class:`datetime.date` objects.
+
+
+   .. method:: yeardays2calendar(year[, width])
+
+      Return the data for the specified year ready for formatting (similar to
+      :meth:`yeardatescalendar`). Entries in the week lists are tuples of day
+      numbers and weekday numbers. Day numbers outside this month are zero.
+
+
+   .. method:: yeardayscalendar(year[, width])
+
+      Return the data for the specified year ready for formatting (similar to
+      :meth:`yeardatescalendar`). Entries in the week lists are day numbers. Day
+      numbers outside this month are zero.
+
+.. function:: TextCalendar([firstweekday])
+
+   This class can be used to generate plain text calendars.
+
+ .. method:: formatmonth(theyear, themonth[, w[, l]])
+
+      Return a month's calendar in a multi-line string. If *w* is provided, it
+      specifies the width of the date columns, which are centered. If *l* is
+      given, it specifies the number of lines that each week will use. Depends
+      on the first weekday as specified in the constructor or set by the
+      :meth:`setfirstweekday` method.
+
+
+   .. method:: prmonth(theyear, themonth[, w[, l]])
+
+      Print a month's calendar as returned by :meth:`formatmonth`.
+
+
+   .. method:: formatyear(theyear, themonth[, w[, l[, c[, m]]]])
+
+      Return a *m*-column calendar for an entire year as a multi-line string.
+      Optional parameters *w*, *l*, and *c* are for date column width, lines per
+      week, and number of spaces between month columns, respectively. Depends on
+      the first weekday as specified in the constructor or set by the
+      :meth:`setfirstweekday` method.  The earliest year for which a calendar
+      can be generated is platform-dependent.
+
+
+   .. method:: pryear(theyear[, w[, l[, c[, m]]]])
+
+      Print the calendar for an entire year as returned by :meth:`formatyear`.
+
+.. function:: HTMLCalendar([firstweekday])
+
+   This class can be used to generate HTML calendars.
+
+   .. method:: formatmonth(theyear, themonth[, withyear])
+
+      Return a month's calendar as an HTML table. If *withyear* is true the year
+      will be included in the header, otherwise just the month name will be
+      used.
+
+
+   .. method:: formatyear(theyear, themonth[, width])
+
+      Return a year's calendar as an HTML table. *width* (defaulting to 3)
+      specifies the number of months per row.
+
+
+   .. method:: formatyearpage(theyear[, width[, css[, encoding]]])
+
+      Return a year's calendar as a complete HTML page. *width* (defaulting to
+      3) specifies the number of months per row. *css* is the name for the
+      cascading style sheet to be used. :const:`None` can be passed if no style
+      sheet should be used. *encoding* specifies the encoding to be used for the
+      output (defaulting to the system default encoding).
+
+.. function:: LocaleTextCalendar([firstweekday[, locale]])
+
+   This subclass of :class:`TextCalendar` can be passed a locale name in the
+   constructor and will return month and weekday names in the specified
+   locale. If this locale includes an encoding all strings containing month and
+   weekday names will be returned as unicode.
+
+.. function:: LocaleHTMLCalendar([firstweekday[, locale]])
+
+   This subclass of :class:`HTMLCalendar` can be passed a locale name in the
+   constructor and will return month and weekday names in the specified
+   locale. If this locale includes an encoding all strings containing month and
+   weekday names will be returned as unicode.
+
+.. function:: setfirstweekday(weekday)
+
+   Sets the weekday (``0`` is Monday, ``6`` is Sunday) to start each week. The
+   values :const:`MONDAY`, :const:`TUESDAY`, :const:`WEDNESDAY`, :const:`THURSDAY`,
+   :const:`FRIDAY`, :const:`SATURDAY`, and :const:`SUNDAY` are provided for
+   convenience. For example, to set the first weekday to Sunday::
+
+      import calendar
+      calendar.setfirstweekday(calendar.SUNDAY)
+
+   .. versionadded:: 2.0
+
+
+.. function:: firstweekday()
+
+   Returns the current setting for the weekday to start each week.
+
+   .. versionadded:: 2.0
+
+
+.. function:: isleap(year)
+
+   Returns :const:`True` if *year* is a leap year, otherwise :const:`False`.
+
+
+.. function:: leapdays(y1, y2)
+
+   Returns the number of leap years in the range from *y1* to *y2* (exclusive),
+   where *y1* and *y2* are years.
+
+   .. versionchanged:: 2.0
+      This function didn't work for ranges spanning a century change in Python
+      1.5.2.
+
+
+.. function:: weekday(year, month, day)
+
+   Returns the day of the week (``0`` is Monday) for *year* (``1970``--...),
+   *month* (``1``--``12``), *day* (``1``--``31``).
+
+
+.. function:: weekheader(n)
+
+   Return a header containing abbreviated weekday names. *n* specifies the width in
+   characters for one weekday.
+
+
+.. function:: monthrange(year, month)
+
+   Returns weekday of first day of the month and number of days in month,  for the
+   specified *year* and *month*.
+
+
+.. function:: monthcalendar(year, month)
+
+   Returns a matrix representing a month's calendar.  Each row represents a week;
+   days outside of the month a represented by zeros. Each week begins with Monday
+   unless set by :func:`setfirstweekday`.
+
+
+.. function:: prmonth(theyear, themonth[, w[, l]])
+
+   Prints a month's calendar as returned by :func:`month`.
+
+
+.. function:: month(theyear, themonth[, w[, l]])
+
+   Returns a month's calendar in a multi-line string using the :meth:`formatmonth`
+   of the :class:`TextCalendar` class.
+
+   .. versionadded:: 2.0
+
+
+.. function:: prcal(year[, w[, l[c]]])
+
+   Prints the calendar for an entire year as returned by  :func:`calendar`.
+
+
+.. function:: calendar(year[, w[, l[c]]])
+
+   Returns a 3-column calendar for an entire year as a multi-line string using the
+   :meth:`formatyear` of the :class:`TextCalendar` class.
+
+   .. versionadded:: 2.0
+
+
+.. function:: timegm(tuple)
+
+   An unrelated but handy function that takes a time tuple such as returned by the
+   :func:`gmtime` function in the :mod:`time` module, and returns the corresponding
+   Unix timestamp value, assuming an epoch of 1970, and the POSIX encoding.  In
+   fact, :func:`time.gmtime` and :func:`timegm` are each others' inverse.
+
+   .. versionadded:: 2.0
+
+
+===Mod:copy==========
+===ModDoc:====
+This module provides generic (shallow and deep) copying operations.
+
+For module specific errors, :exc:`copy.error` is raised.
+
+Two problems often exist with deep copy operations that don't exist with shallow
+copy operations:
+
+* Recursive objects (compound objects that, directly or indirectly, contain a
+  reference to themselves) may cause a recursive loop.
+
+* Because deep copy copies *everything* it may copy too much, e.g.,
+  administrative data structures that should be shared even between copies.
+
+The :func:`deepcopy` function avoids these problems by:
+
+* keeping a "memo" dictionary of objects already copied during the current
+  copying pass; and
+
+* letting user-defined classes override the copying operation or the set of
+  components copied.
+
+This module does not copy types like module, method, stack trace, stack frame,
+file, socket, window, array, or any similar types.  It does "copy" functions and
+classes (shallow and deeply), by returning the original object unchanged; this
+is compatible with the way these are treated by the :mod:`pickle` module.
+
+Shallow copies of dictionaries can also be made using :meth:`dict.copy`, and
+of lists by assigning a slice of the entire list, for example,
+``copied_list = original_list[:]``.
+
+Classes can use the same interfaces to control copying that they use to control
+pickling.  See the description of module :mod:`pickle` for information on these
+methods.  The :mod:`copy` module does not use the :mod:`copy_reg` registration
+module.
+
+In order for a class to define its own copy implementation, it can define
+special methods :meth:`__copy__` and :meth:`__deepcopy__`.  The former is called
+to implement the shallow copy operation; no additional arguments are passed.
+The latter is called to implement the deep copy operation; it is passed one
+argument, the memo dictionary.  If the :meth:`__deepcopy__` implementation needs
+to make a deep copy of a component, it should call the :func:`deepcopy` function
+with the component as first argument and the memo dictionary as second argument.
+
+===EndDoc======
+.. function:: copy(object)
+
+Example: a = copy.copy(object)
+Makes a shallow copy of an object. A *shallow copy* constructs a new compound object and then (to the extent
+  possible) inserts *references* into it to the objects found in the original.
+
+.. function:: deepcopy(object)
+
+Example: a = copy.deepcopy(object)
+Makes a deep copy of an object. A *deep copy* constructs a new compound object and then, recursively, inserts
+  *copies* into it of the objects found in the original.
+
+===Mod:collections.deque==========
+===ModDoc:====
+Deques are a generalization of stacks and queues (the name is pronounced “deck” and is short for “double-ended queue”). Deques support thread-safe, memory efficient appends and pops from either side of the deque with approximately the same O(1) performance in either direction.
+
+Though list objects support similar operations, they are optimized for fast fixed-length operations and incur O(n) memory movement costs for pop(0) and insert(0, v) operations which change both the size and position of the underlying data representation.
+
+The :meth:`rotate` method provides a way to implement :class:`deque` slicing and
+deletion.  For example, a pure python implementation of ``del d[n]`` relies on
+the :meth:`rotate` method to position elements to be popped::
+
+   def delete_nth(d, n):
+       d.rotate(-n)
+       d.popleft()
+       d.rotate(n)
+
+To implement :class:`deque` slicing, use a similar approach applying
+:meth:`rotate` to bring a target element to the left side of the deque. Remove
+old entries with :meth:`popleft`, add new entries with :meth:`extend`, and then
+reverse the rotation.
+With minor variations on that approach, it is easy to implement Forth style
+stack manipulations such as ``dup``, ``drop``, ``swap``, ``over``, ``pick``,
+``rot``, and ``roll``.
+
+Multi-pass data reduction algorithms can be succinctly expressed and efficiently
+coded by extracting elements with multiple calls to :meth:`popleft`, applying
+a reduction function, and calling :meth:`append` to add the result back to the
+deque.
+
+For example, building a balanced binary tree of nested lists entails reducing
+two adjacent nodes into one by grouping them in a list:
+
+   >>> def maketree(iterable):
+   ...     d = deque(iterable)
+   ...     while len(d) > 1:
+   ...         pair = [d.popleft(), d.popleft()]
+   ...         d.append(pair)
+   ...     return list(d)
+   ...
+   >>> print maketree('abcdefgh')
+   [[[['a', 'b'], ['c', 'd']], [['e', 'f'], ['g', 'h']]]]
+
+Bounded length deques provide functionality similar to the ``tail`` filter
+in Unix::
+
+   def tail(filename, n=10):
+       'Return the last n lines of a file'
+       return deque(open(filename), n)
+
+===EndDoc======
+
+.. function:: deque([iterable[, maxlen]])
+
+   Returns a new deque object initialized left-to-right (using :meth:`append`) with
+   data from *iterable*.  If *iterable* is not specified, the new deque is empty.
+
+If maxlen is not specified or is None, deques may grow to an arbitrary length. Otherwise, the deque is bounded to the specified maximum length. Once a bounded length deque is full, when new items are added, a corresponding number of items are discarded from the opposite end. Bounded length deques provide functionality similar to the tail filter in Unix. They are also useful for tracking transactions and other pools of data where only the most recent activity is of interest.
+Added *maxlen* parameter in Python 2.6.
+
+   .. method:: append(x)
+
+      Add *x* to the right side of the deque.
+
+
+   .. method:: appendleft(x)
+
+      Add *x* to the left side of the deque.
+
+
+   .. method:: clear()
+
+      Remove all elements from the deque leaving it with length 0.
+
+
+   .. method:: extend(iterable)
+
+      Extend the right side of the deque by appending elements from the iterable
+      argument.
+
+
+   .. method:: extendleft(iterable)
+
+      Extend the left side of the deque by appending elements from *iterable*.
+      Note, the series of left appends results in reversing the order of
+      elements in the iterable argument.
+
+
+   .. method:: pop()
+
+      Remove and return an element from the right side of the deque. If no
+      elements are present, raises an :exc:`IndexError`.
+
+
+   .. method:: popleft()
+
+      Remove and return an element from the left side of the deque. If no
+      elements are present, raises an :exc:`IndexError`.
+
+
+   .. method:: remove(value)
+
+      Removed the first occurrence of *value*.  If not found, raises a
+      :exc:`ValueError`.
+
+      .. versionadded:: 2.5
+
+
+   .. method:: rotate(n)
+
+      Rotate the deque *n* steps to the right.  If *n* is negative, rotate to
+      the left.  Rotating one step to the right is equivalent to:
+      ``d.appendleft(d.pop())``.
+
+
+===Mod:collections.defaultdict==========
+===ModDoc:====
+   Returns a new dictionary-like object.  :class:`defaultdict` is a subclass of the
+   builtin :class:`dict` class.  It overrides one method and adds one writable
+   instance variable.  The remaining functionality is the same as for the
+   :class:`dict` class and is not documented here.
+
+   The first argument provides the initial value for the :attr:`default_factory`
+   attribute; it defaults to ``None``. All remaining arguments are treated the same
+   as if they were passed to the :class:`dict` constructor, including keyword
+   arguments.
+   
+   Using :class:`list` as the :attr:`default_factory`, it is easy to group a
+sequence of key-value pairs into a dictionary of lists:
+
+   >>> s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
+   >>> d = defaultdict(list)
+   >>> for k, v in s:
+   ...     d[k].append(v)
+   ...
+   >>> d.items()
+   [('blue', [2, 4]), ('red', [1]), ('yellow', [1, 3])]
+   ...
+   Setting the :attr:`default_factory` to :class:`int` makes the
+:class:`defaultdict` useful for counting (like a bag or multiset in other
+languages):
+
+   >>> s = 'mississippi'
+   >>> d = defaultdict(int)
+   >>> for k in s:
+   ...     d[k] += 1
+   ...
+   >>> d.items()
+   [('i', 4), ('p', 2), ('s', 4), ('m', 1)]
+   
+   When a letter is first encountered, it is missing from the mapping, so the
+:attr:`default_factory` function calls :func:`int` to supply a default count of
+zero.  The increment operation then builds up the count for each letter.
+...
+
+===EndDoc======
+   .. method:: defaultdict.__missing__(key)
+
+      If the :attr:`default_factory` attribute is ``None``, this raises an
+      :exc:`KeyError` exception with the *key* as argument.
+
+      If :attr:`default_factory` is not ``None``, it is called without arguments
+      to provide a default value for the given *key*, this value is inserted in
+      the dictionary for the *key*, and returned.
+
+      If calling :attr:`default_factory` raises an exception this exception is
+      propagated unchanged.
+
+      This method is called by the :meth:`__getitem__` method of the
+      :class:`dict` class when the requested key is not found; whatever it
+      returns or raises is then returned or raised by :meth:`__getitem__`.
+===Mod:datetime.datetime==========
+===ModDoc:====
+   A combination of a date and a time. Attributes: :attr:`year`, :attr:`month`,
+   :attr:`day`, :attr:`hour`, :attr:`minute`, :attr:`second`, :attr:`microsecond`,
+   and :attr:`tzinfo`.
+
+A :class:`datetime` object is a single object containing all the information
+from a :class:`date` object and a :class:`time` object.  Like a :class:`date`
+object, :class:`datetime` assumes the current Gregorian calendar extended in
+both directions; like a time object, :class:`datetime` assumes there are exactly
+3600\*24 seconds in every day.
+   
+   Examples of working with datetime objects:
+
+    >>> from datetime import datetime, date, time
+    >>> # Using datetime.combine()
+    >>> d = date(2005, 7, 14)
+    >>> t = time(12, 30)
+    >>> datetime.combine(d, t)
+    datetime.datetime(2005, 7, 14, 12, 30)
+    >>> # Using datetime.now() or datetime.utcnow()
+    >>> datetime.now()   # doctest: +SKIP
+    datetime.datetime(2007, 12, 6, 16, 29, 43, 79043)   # GMT +1
+    >>> datetime.utcnow()   # doctest: +SKIP
+    datetime.datetime(2007, 12, 6, 15, 29, 43, 79060)
+    >>> # Using datetime.strptime()
+    >>> dt = datetime.strptime("21/11/06 16:30", "%d/%m/%y %H:%M")
+    >>> dt
+    datetime.datetime(2006, 11, 21, 16, 30)
+    >>> # Using datetime.timetuple() to get tuple of all attributes
+    >>> tt = dt.timetuple()
+    >>> for it in tt:   # doctest: +SKIP
+    ...     print it
+    ... 
+    2006    # year
+    11      # month
+    21      # day
+    16      # hour
+    30      # minute
+    0       # second
+    1       # weekday (0 = Monday)
+    325     # number of days since 1st January
+    -1      # dst - method tzinfo.dst() returned None
+    >>> # Date in ISO format
+    >>> ic = dt.isocalendar()
+    >>> for it in ic:   # doctest: +SKIP
+    ...     print it
+    ...
+    2006    # ISO year
+    47      # ISO week
+    2       # ISO weekday
+    >>> # Formatting datetime
+    >>> dt.strftime("%A, %d. %B %Y %I:%M%p")
+    'Tuesday, 21. November 2006 04:30PM'
+    
+
+===EndDoc======
+
+
+.. function:: datetime.datetime(year, month, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]])
+
+   The year, month and day arguments are required.  *tzinfo* may be ``None``, or an
+   instance of a :class:`tzinfo` subclass.  The remaining arguments may be ints or
+   longs, in the following ranges:
+
+   * ``MINYEAR <= year <= MAXYEAR``
+   * ``1 <= month <= 12``
+   * ``1 <= day <= number of days in the given month and year``
+   * ``0 <= hour < 24``
+   * ``0 <= minute < 60``
+   * ``0 <= second < 60``
+   * ``0 <= microsecond < 1000000``
+
+   If an argument outside those ranges is given, :exc:`ValueError` is raised.
+
+
+
+
+.. function:: (attributes)
+Instance attributes (read-only):
+a.year
+   Between :const:`MINYEAR` and :const:`MAXYEAR` inclusive.
+a.month
+   Between 1 and 12 inclusive.
+a.day
+   Between 1 and the number of days in the given month of the given year.
+a.hour
+   In ``range(24)``.
+a.minute
+   In ``range(60)``.
+a.second
+   In ``range(60)``.
+a.microsecond
+   In ``range(1000000)``.
+a.tzinfo
+   The object passed as the *tzinfo* argument to the :class:`datetime` constructor,
+   or ``None`` if none was passed.
+   
+Class attributes:
+datetime.min
+	The earliest representable :class:`datetime`, ``datetime(MINYEAR, 1, 1,
+	tzinfo=None)``.
+datetime.max
+	The latest representable :class:`datetime`, ``datetime(MAXYEAR, 12, 31, 23, 59,
+	59, 999999, tzinfo=None)``.
+datetime.resolution
+  The smallest possible difference between non-equal :class:`datetime` objects,
+``timedelta(microseconds=1)``.
+
+
+.. function:: (format characters)
+:class:`date`, :class:`datetime`, and :class:`time` objects all support a
+``strftime(format)`` method, to create a string representing the time under the
+control of an explicit format string.  Broadly speaking, ``d.strftime(fmt)``
+acts like the :mod:`time` module's ``time.strftime(fmt, d.timetuple())``
+although not all objects support a :meth:`timetuple` method.
+
+For :class:`time` objects, the format codes for year, month, and day should not
+be used, as time objects have no such values.  If they're used anyway, ``1900``
+is substituted for the year, and ``0`` for the month and day.
+
+For :class:`date` objects, the format codes for hours, minutes, seconds, and
+microseconds should not be used, as :class:`date` objects have no such
+values.  If they're used anyway, ``0`` is substituted for them.
+
+:class:`time` and :class:`datetime` objects support a ``%f`` format code
+which expands to the number of microseconds in the object, zero-padded on
+the left to six places.
+
+.. versionadded:: 2.6
+
+For a naive object, the ``%z`` and ``%Z`` format codes are replaced by empty
+strings.
+
+For an aware object:
+
+``%z``
+   :meth:`utcoffset` is transformed into a 5-character string of the form +HHMM or
+   -HHMM, where HH is a 2-digit string giving the number of UTC offset hours, and
+   MM is a 2-digit string giving the number of UTC offset minutes.  For example, if
+   :meth:`utcoffset` returns ``timedelta(hours=-3, minutes=-30)``, ``%z`` is
+   replaced with the string ``'-0330'``.
+
+``%Z``
+   If :meth:`tzname` returns ``None``, ``%Z`` is replaced by an empty string.
+   Otherwise ``%Z`` is replaced by the returned value, which must be a string.
+
+The full set of format codes supported varies across platforms, because Python
+calls the platform C library's :func:`strftime` function, and platform
+variations are common.  
+
+The following is a list of all the format codes that the C standard (1989
+version) requires, and these work on all platforms with a standard C
+implementation.  Note that the 1999 version of the C standard added additional
+format codes.
+
+The exact range of years for which :meth:`strftime` works also varies across
+platforms.  Regardless of platform, years before 1900 cannot be used.
+
++-----------+--------------------------------+-------+
+| Directive | Meaning                        | Notes |
++===========+================================+=======+
+| ``%a``    | Locale's abbreviated weekday   |       |
+|           | name.                          |       |
++-----------+--------------------------------+-------+
+| ``%A``    | Locale's full weekday name.    |       |
++-----------+--------------------------------+-------+
+| ``%b``    | Locale's abbreviated month     |       |
+|           | name.                          |       |
++-----------+--------------------------------+-------+
+| ``%B``    | Locale's full month name.      |       |
++-----------+--------------------------------+-------+
+| ``%c``    | Locale's appropriate date and  |       |
+|           | time representation.           |       |
++-----------+--------------------------------+-------+
+| ``%d``    | Day of the month as a decimal  |       |
+|           | number [01,31].                |       |
++-----------+--------------------------------+-------+
+| ``%f``    | Microsecond as a decimal       | \(1)  |
+|           | number [0,999999], zero-padded |       |
+|           | on the left                    |       |
++-----------+--------------------------------+-------+
+| ``%H``    | Hour (24-hour clock) as a      |       |
+|           | decimal number [00,23].        |       |
++-----------+--------------------------------+-------+
+| ``%I``    | Hour (12-hour clock) as a      |       |
+|           | decimal number [01,12].        |       |
++-----------+--------------------------------+-------+
+| ``%j``    | Day of the year as a decimal   |       |
+|           | number [001,366].              |       |
++-----------+--------------------------------+-------+
+| ``%m``    | Month as a decimal number      |       |
+|           | [01,12].                       |       |
++-----------+--------------------------------+-------+
+| ``%M``    | Minute as a decimal number     |       |
+|           | [00,59].                       |       |
++-----------+--------------------------------+-------+
+| ``%p``    | Locale's equivalent of either  | \(2)  |
+|           | AM or PM.                      |       |
++-----------+--------------------------------+-------+
+| ``%S``    | Second as a decimal number     | \(3)  |
+|           | [00,61].                       |       |
++-----------+--------------------------------+-------+
+| ``%U``    | Week number of the year        | \(4)  |
+|           | (Sunday as the first day of    |       |
+|           | the week) as a decimal number  |       |
+|           | [00,53].  All days in a new    |       |
+|           | year preceding the first       |       |
+|           | Sunday are considered to be in |       |
+|           | week 0.                        |       |
++-----------+--------------------------------+-------+
+| ``%w``    | Weekday as a decimal number    |       |
+|           | [0(Sunday),6].                 |       |
++-----------+--------------------------------+-------+
+| ``%W``    | Week number of the year        | \(4)  |
+|           | (Monday as the first day of    |       |
+|           | the week) as a decimal number  |       |
+|           | [00,53].  All days in a new    |       |
+|           | year preceding the first       |       |
+|           | Monday are considered to be in |       |
+|           | week 0.                        |       |
++-----------+--------------------------------+-------+
+| ``%x``    | Locale's appropriate date      |       |
+|           | representation.                |       |
++-----------+--------------------------------+-------+
+| ``%X``    | Locale's appropriate time      |       |
+|           | representation.                |       |
++-----------+--------------------------------+-------+
+| ``%y``    | Year without century as a      |       |
+|           | decimal number [00,99].        |       |
++-----------+--------------------------------+-------+
+| ``%Y``    | Year with century as a decimal |       |
+|           | number.                        |       |
++-----------+--------------------------------+-------+
+| ``%z``    | UTC offset in the form +HHMM   | \(5)  |
+|           | or -HHMM (empty string if the  |       |
+|           | the object is naive).          |       |
++-----------+--------------------------------+-------+
+| ``%Z``    | Time zone name (empty string   |       |
+|           | if the object is naive).       |       |
++-----------+--------------------------------+-------+
+| ``%%``    | A literal ``'%'`` character.   |       |
++-----------+--------------------------------+-------+
+
+.. function:: datetime.today()
+
+   Return the current local datetime, with :attr:`tzinfo` ``None``. This is
+   equivalent to ``datetime.fromtimestamp(time.time())``. See also :meth:`now`,
+   :meth:`fromtimestamp`.
+
+
+.. function:: datetime.now([tz])
+
+   Return the current local date and time.  If optional argument *tz* is ``None``
+   or not specified, this is like :meth:`today`, but, if possible, supplies more
+   precision than can be gotten from going through a :func:`time.time` timestamp
+   (for example, this may be possible on platforms supplying the C
+   :cfunc:`gettimeofday` function).
+
+   Else *tz* must be an instance of a class :class:`tzinfo` subclass, and the
+   current date and time are converted to *tz*'s time zone.  In this case the
+   result is equivalent to ``tz.fromutc(datetime.utcnow().replace(tzinfo=tz))``.
+   See also :meth:`today`, :meth:`utcnow`.
+
+
+.. function:: datetime.utcnow()
+
+   Return the current UTC date and time, with :attr:`tzinfo` ``None``. This is like
+   :meth:`now`, but returns the current UTC date and time, as a naive
+   :class:`datetime` object. See also :meth:`now`.
+
+
+.. function:: datetime.fromtimestamp(timestamp[, tz])
+
+   Return the local date and time corresponding to the POSIX timestamp, such as is
+   returned by :func:`time.time`. If optional argument *tz* is ``None`` or not
+   specified, the timestamp is converted to the platform's local date and time, and
+   the returned :class:`datetime` object is naive.
+
+   Else *tz* must be an instance of a class :class:`tzinfo` subclass, and the
+   timestamp is converted to *tz*'s time zone.  In this case the result is
+   equivalent to
+   ``tz.fromutc(datetime.utcfromtimestamp(timestamp).replace(tzinfo=tz))``.
+
+   :meth:`fromtimestamp` may raise :exc:`ValueError`, if the timestamp is out of
+   the range of values supported by the platform C :cfunc:`localtime` or
+   :cfunc:`gmtime` functions.  It's common for this to be restricted to years in
+   1970 through 2038. Note that on non-POSIX systems that include leap seconds in
+   their notion of a timestamp, leap seconds are ignored by :meth:`fromtimestamp`,
+   and then it's possible to have two timestamps differing by a second that yield
+   identical :class:`datetime` objects. See also :meth:`utcfromtimestamp`.
+
+
+.. function:: datetime.utcfromtimestamp(timestamp)
+
+   Return the UTC :class:`datetime` corresponding to the POSIX timestamp, with
+   :attr:`tzinfo` ``None``. This may raise :exc:`ValueError`, if the timestamp is
+   out of the range of values supported by the platform C :cfunc:`gmtime` function.
+   It's common for this to be restricted to years in 1970 through 2038. See also
+   :meth:`fromtimestamp`.
+
+
+.. function:: datetime.fromordinal(ordinal)
+
+   Return the :class:`datetime` corresponding to the proleptic Gregorian ordinal,
+   where January 1 of year 1 has ordinal 1. :exc:`ValueError` is raised unless ``1
+   <= ordinal <= datetime.max.toordinal()``.  The hour, minute, second and
+   microsecond of the result are all 0, and :attr:`tzinfo` is ``None``.
+
+
+.. function:: datetime.combine(date, time)
+
+   Return a new :class:`datetime` object whose date members are equal to the given
+   :class:`date` object's, and whose time and :attr:`tzinfo` members are equal to
+   the given :class:`time` object's. For any :class:`datetime` object *d*, ``d ==
+   datetime.combine(d.date(), d.timetz())``.  If date is a :class:`datetime`
+   object, its time and :attr:`tzinfo` members are ignored.
+
+.. function:: datetime.strptime(date_string, format)
+
+   Return a :class:`datetime` corresponding to *date_string*, parsed according to
+   *format*.  This is equivalent to ``datetime(*(time.strptime(date_string,
+   format)[0:6]))``. :exc:`ValueError` is raised if the date_string and format
+   can't be parsed by :func:`time.strptime` or if it returns a value which isn't a
+   time tuple.
+
+
+.. method:: datetime.date()
+
+   Return :class:`date` object with same year, month and day.
+
+
+.. method:: datetime.time()
+
+   Return :class:`time` object with same hour, minute, second and microsecond.
+   :attr:`tzinfo` is ``None``.  See also method :meth:`timetz`.
+
+
+.. method:: datetime.timetz()
+
+   Return :class:`time` object with same hour, minute, second, microsecond, and
+   tzinfo members.  See also method :meth:`time`.
+
+
+.. method:: datetime.replace([year[, month[, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]]]]])
+
+   Return a datetime with the same members, except for those members given new
+   values by whichever keyword arguments are specified.  Note that ``tzinfo=None``
+   can be specified to create a naive datetime from an aware datetime with no
+   conversion of date and time members.
+
+
+.. method:: datetime.astimezone(tz)
+
+   Return a :class:`datetime` object with new :attr:`tzinfo` member *tz*, adjusting
+   the date and time members so the result is the same UTC time as *self*, but in
+   *tz*'s local time.
+
+   *tz* must be an instance of a :class:`tzinfo` subclass, and its
+   :meth:`utcoffset` and :meth:`dst` methods must not return ``None``.  *self* must
+   be aware (``self.tzinfo`` must not be ``None``, and ``self.utcoffset()`` must
+   not return ``None``).
+...
+
+.. method:: datetime.utcoffset()
+
+   If :attr:`tzinfo` is ``None``, returns ``None``, else returns
+   ``self.tzinfo.utcoffset(self)``, and raises an exception if the latter doesn't
+   return ``None``, or a :class:`timedelta` object representing a whole number of
+   minutes with magnitude less than one day.
+
+
+.. method:: datetime.dst()
+
+   If :attr:`tzinfo` is ``None``, returns ``None``, else returns
+   ``self.tzinfo.dst(self)``, and raises an exception if the latter doesn't return
+   ``None``, or a :class:`timedelta` object representing a whole number of minutes
+   with magnitude less than one day.
+
+
+.. method:: datetime.tzname()
+
+   If :attr:`tzinfo` is ``None``, returns ``None``, else returns
+   ``self.tzinfo.tzname(self)``, raises an exception if the latter doesn't return
+   ``None`` or a string object,
+
+
+.. method:: datetime.timetuple()
+
+   Return a :class:`time.struct_time` such as returned by :func:`time.localtime`.
+   ``d.timetuple()`` is equivalent to ``time.struct_time((d.year, d.month, d.day,
+   d.hour, d.minute, d.second, d.weekday(), d.toordinal() - date(d.year, 1,
+   1).toordinal() + 1, dst))`` The :attr:`tm_isdst` flag of the result is set
+   according to the :meth:`dst` method:  :attr:`tzinfo` is ``None`` or :meth:`dst`
+   returns ``None``, :attr:`tm_isdst` is set to  ``-1``; else if :meth:`dst`
+   returns a non-zero value, :attr:`tm_isdst` is set to ``1``; else ``tm_isdst`` is
+   set to ``0``.
+
+
+.. method:: datetime.utctimetuple()
+
+   If :class:`datetime` instance *d* is naive, this is the same as
+   ``d.timetuple()`` except that :attr:`tm_isdst` is forced to 0 regardless of what
+   ``d.dst()`` returns.  DST is never in effect for a UTC time.
+
+   If *d* is aware, *d* is normalized to UTC time, by subtracting
+   ``d.utcoffset()``, and a :class:`time.struct_time` for the normalized time is
+   returned.  :attr:`tm_isdst` is forced to 0. Note that the result's
+   :attr:`tm_year` member may be :const:`MINYEAR`\ -1 or :const:`MAXYEAR`\ +1, if
+   *d*.year was ``MINYEAR`` or ``MAXYEAR`` and UTC adjustment spills over a year
+   boundary.
+
+
+.. method:: datetime.toordinal()
+
+   Return the proleptic Gregorian ordinal of the date.  The same as
+   ``self.date().toordinal()``.
+
+
+.. method:: datetime.weekday()
+
+   Return the day of the week as an integer, where Monday is 0 and Sunday is 6.
+   The same as ``self.date().weekday()``. See also :meth:`isoweekday`.
+
+
+.. method:: datetime.isoweekday()
+
+   Return the day of the week as an integer, where Monday is 1 and Sunday is 7.
+   The same as ``self.date().isoweekday()``. See also :meth:`weekday`,
+   :meth:`isocalendar`.
+
+
+.. method:: datetime.isocalendar()
+
+   Return a 3-tuple, (ISO year, ISO week number, ISO weekday).  The same as
+   ``self.date().isocalendar()``.
+
+
+.. method:: datetime.isoformat([sep])
+
+   Return a string representing the date and time in ISO 8601 format,
+   YYYY-MM-DDTHH:MM:SS.mmmmmm or, if :attr:`microsecond` is 0,
+   YYYY-MM-DDTHH:MM:SS
+
+   If :meth:`utcoffset` does not return ``None``, a 6-character string is
+   appended, giving the UTC offset in (signed) hours and minutes:
+   YYYY-MM-DDTHH:MM:SS.mmmmmm+HH:MM or, if :attr:`microsecond` is 0
+   YYYY-MM-DDTHH:MM:SS+HH:MM
+
+   The optional argument *sep* (default ``'T'``) is a one-character separator,
+   placed between the date and time portions of the result.  For example,
+
+      >>> from datetime import tzinfo, timedelta, datetime
+      >>> class TZ(tzinfo):
+      ...     def utcoffset(self, dt): return timedelta(minutes=-399)
+      ...
+      >>> datetime(2002, 12, 25, tzinfo=TZ()).isoformat(' ')
+      '2002-12-25 00:00:00-06:39'
+
+
+.. method:: datetime.__str__()
+
+   For a :class:`datetime` instance *d*, ``str(d)`` is equivalent to
+   ``d.isoformat(' ')``.
+
+
+.. method:: datetime.ctime()
+
+   Return a string representing the date and time, for example ``datetime(2002, 12,
+   4, 20, 30, 40).ctime() == 'Wed Dec  4 20:30:40 2002'``. ``d.ctime()`` is
+   equivalent to ``time.ctime(time.mktime(d.timetuple()))`` on platforms where the
+   native C :cfunc:`ctime` function (which :func:`time.ctime` invokes, but which
+   :meth:`datetime.ctime` does not invoke) conforms to the C standard.
+
+
+.. method:: datetime.strftime(format)
+
+   Return a string representing the date and time, controlled by an explicit format
+   string.  See section :ref:`strftime-behavior`.
+
+
+
+
+
+===Mod:datetime.date==========
+===ModDoc:====
+An idealized naive date, assuming the current Gregorian calendar always was, and
+always will be, in effect. Attributes: :attr:`year`, :attr:`month`, and
+:attr:`day`.
+
+A :class:`date` object represents a date (year, month and day) in an idealized
+calendar, the current Gregorian calendar indefinitely extended in both
+directions.  January 1 of year 1 is called day number 1, January 2 of year 1 is
+called day number 2, and so on.  This matches the definition of the "proleptic
+Gregorian" calendar in Dershowitz and Reingold's book Calendrical Calculations,
+where it's the base calendar for all computations.  See the book for algorithms
+for converting between proleptic Gregorian ordinals and many other calendar
+systems.
+
+Example of working with :class:`date`:
+
+.. doctest::
+
+    >>> from datetime import date
+    >>> d = date.fromordinal(730920) # 730920th day after 1. 1. 0001
+    >>> d
+    datetime.date(2002, 3, 11)
+    >>> t = d.timetuple()
+    >>> for i in t:     # doctest: +SKIP
+    ...     print i
+    2002                # year
+    3                   # month
+    11                  # day
+    0
+    0
+    0
+    0                   # weekday (0 = Monday)
+    70                  # 70th day in the year
+    -1
+    >>> ic = d.isocalendar()
+    >>> for i in ic:    # doctest: +SKIP
+    ...     print i
+    2002                # ISO year
+    11                  # ISO week number
+    1                   # ISO day number ( 1 = Monday )
+    >>> d.isoformat()
+    '2002-03-11'
+    >>> d.strftime("%d/%m/%y")
+    '11/03/02'
+    >>> d.strftime("%A %d. %B %Y")
+    'Monday 11. March 2002'
+===EndDoc======
+
+.. function:: date(year, month, day)
+
+   All arguments are required.  Arguments may be ints or longs, in the following
+   ranges:
+
+   * ``MINYEAR <= year <= MAXYEAR``
+   * ``1 <= month <= 12``
+   * ``1 <= day <= number of days in the given month and year``
+
+   If an argument outside those ranges is given, :exc:`ValueError` is raised.
+
+.. function:: (attributes)
+
+Instance attributes (read-only):
+a.year
+   Between :const:`MINYEAR` and :const:`MAXYEAR` inclusive.
+a.month
+   Between 1 and 12 inclusive.
+a.day
+   Between 1 and the number of days in the given month of the given year.
+   
+Class attributes:
+date.min
+   The earliest representable date, ``date(MINYEAR, 1, 1)``.
+date.max
+   The latest representable date, ``date(MAXYEAR, 12, 31)``.
+date.resolution
+   The smallest possible difference between non-equal date objects,
+   ``timedelta(days=1)``.
+
+.. function:: date.today()
+
+   Return the current local date.  This is equivalent to
+   ``date.fromtimestamp(time.time())``.
+
+
+.. function:: date.fromtimestamp(timestamp)
+
+   Return the local date corresponding to the POSIX timestamp, such as is returned
+   by :func:`time.time`.  This may raise :exc:`ValueError`, if the timestamp is out
+   of the range of values supported by the platform C :cfunc:`localtime` function.
+   It's common for this to be restricted to years from 1970 through 2038.  Note
+   that on non-POSIX systems that include leap seconds in their notion of a
+   timestamp, leap seconds are ignored by :meth:`fromtimestamp`.
+
+
+.. function:: date.fromordinal(ordinal)
+
+   Return the date corresponding to the proleptic Gregorian ordinal, where January
+   1 of year 1 has ordinal 1.  :exc:`ValueError` is raised unless ``1 <= ordinal <=
+   date.max.toordinal()``. For any date *d*, ``date.fromordinal(d.toordinal()) ==
+   d``.
+
+
+
+
+.. method:: date.replace(year, month, day)
+
+   Return a date with the same value, except for those members given new values by
+   whichever keyword arguments are specified.  For example, if ``d == date(2002,
+   12, 31)``, then ``d.replace(day=26) == date(2002, 12, 26)``.
+
+
+.. method:: date.timetuple()
+
+   Return a :class:`time.struct_time` such as returned by :func:`time.localtime`.
+   The hours, minutes and seconds are 0, and the DST flag is -1. ``d.timetuple()``
+   is equivalent to ``time.struct_time((d.year, d.month, d.day, 0, 0, 0,
+   d.weekday(), d.toordinal() - date(d.year, 1, 1).toordinal() + 1, -1))``
+
+
+.. method:: date.toordinal()
+
+   Return the proleptic Gregorian ordinal of the date, where January 1 of year 1
+   has ordinal 1.  For any :class:`date` object *d*,
+   ``date.fromordinal(d.toordinal()) == d``.
+
+
+.. method:: date.weekday()
+
+   Return the day of the week as an integer, where Monday is 0 and Sunday is 6.
+   For example, ``date(2002, 12, 4).weekday() == 2``, a Wednesday. See also
+   :meth:`isoweekday`.
+
+
+.. method:: date.isoweekday()
+
+   Return the day of the week as an integer, where Monday is 1 and Sunday is 7.
+   For example, ``date(2002, 12, 4).isoweekday() == 3``, a Wednesday. See also
+   :meth:`weekday`, :meth:`isocalendar`.
+
+
+.. method:: date.isocalendar()
+
+   Return a 3-tuple, (ISO year, ISO week number, ISO weekday).
+
+   The ISO calendar is a widely used variant of the Gregorian calendar. See
+   http://www.phys.uu.nl/ vgent/calendar/isocalendar.htm for a good explanation.
+
+   The ISO year consists of 52 or 53 full weeks, and where a week starts on a
+   Monday and ends on a Sunday.  The first week of an ISO year is the first
+   (Gregorian) calendar week of a year containing a Thursday. This is called week
+   number 1, and the ISO year of that Thursday is the same as its Gregorian year.
+
+   For example, 2004 begins on a Thursday, so the first week of ISO year 2004
+   begins on Monday, 29 Dec 2003 and ends on Sunday, 4 Jan 2004, so that
+   ``date(2003, 12, 29).isocalendar() == (2004, 1, 1)`` and ``date(2004, 1,
+   4).isocalendar() == (2004, 1, 7)``.
+
+
+.. method:: date.isoformat()
+
+   Return a string representing the date in ISO 8601 format, 'YYYY-MM-DD'.  For
+   example, ``date(2002, 12, 4).isoformat() == '2002-12-04'``.
+
+
+.. method:: date.__str__()
+
+   For a date *d*, ``str(d)`` is equivalent to ``d.isoformat()``.
+
+
+.. method:: date.ctime()
+
+   Return a string representing the date, for example ``date(2002, 12,
+   4).ctime() == 'Wed Dec 4 00:00:00 2002'``. ``d.ctime()`` is equivalent to
+   ``time.ctime(time.mktime(d.timetuple()))`` on platforms where the native C
+   :cfunc:`ctime` function (which :func:`time.ctime` invokes, but which
+   :meth:`date.ctime` does not invoke) conforms to the C standard.
+
+
+.. method:: date.strftime(format)
+
+   Return a string representing the date, controlled by an explicit format string.
+   Format codes referring to hours, minutes or seconds will see 0 values. See
+   section :ref:`strftime-behavior`.
+
+Example of counting days to an event::
+
+    >>> import time
+    >>> from datetime import date
+    >>> today = date.today()
+    >>> today
+    datetime.date(2007, 12, 5)
+    >>> today == date.fromtimestamp(time.time())
+    True
+    >>> my_birthday = date(today.year, 6, 24)
+    >>> if my_birthday < today:
+    ...     my_birthday = my_birthday.replace(year=today.year + 1) 
+    >>> my_birthday
+    datetime.date(2008, 6, 24)
+    >>> time_to_birthday = abs(my_birthday - today) 
+    >>> time_to_birthday.days
+    202
+
+===Mod:datetime.time==========
+===ModDoc:====
+   An idealized time, independent of any particular day, assuming that every day
+   has exactly 24\*60\*60 seconds (there is no notion of "leap seconds" here).
+   Attributes: :attr:`hour`, :attr:`minute`, :attr:`second`, :attr:`microsecond`,
+   and :attr:`tzinfo`.
+
+
+   
+Example:
+    >>> from datetime import time, tzinfo
+    >>> class GMT1(tzinfo):
+    ...     def utcoffset(self, dt):
+    ...         return timedelta(hours=1) 
+    ...     def dst(self, dt):              
+    ...         return timedelta(0)
+    ...     def tzname(self,dt):
+    ...         return "Europe/Prague"
+    ...
+    >>> t = time(12, 10, 30, tzinfo=GMT1())
+    >>> t                               # doctest: +ELLIPSIS
+    datetime.time(12, 10, 30, tzinfo=<GMT1 object at 0x...>)
+    >>> gmt = GMT1()
+    >>> t.isoformat()
+    '12:10:30+01:00'
+    >>> t.dst()
+    datetime.timedelta(0)
+    >>> t.tzname()
+    'Europe/Prague'
+    >>> t.strftime("%H:%M:%S %Z")
+    '12:10:30 Europe/Prague'
+
+===EndDoc======
+.. function:: (attributes)
+
+Instance attributes (read-only):
+a.hour
+   In ``range(24)``.
+a.minute
+   In ``range(60)``.
+a.second
+   In ``range(60)``.
+a.microsecond
+   In ``range(1000000)``.
+a.tzinfo
+   The object passed as the tzinfo argument to the :class:`time` constructor, or
+   ``None`` if none was passed.
+
+Class attributes:
+time.min
+   The earliest representable :class:`time`, ``time(0, 0, 0, 0)``.
+time.max
+   The latest representable :class:`time`, ``time(23, 59, 59, 999999)``.
+time.resolution
+   The smallest possible difference between non-equal :class:`time` objects,
+   ``timedelta(microseconds=1)``, although note that arithmetic on :class:`time`
+   objects is not supported.
+
+
+.. function:: time(hour[, minute[, second[, microsecond[, tzinfo]]]])
+
+   All arguments are optional.  *tzinfo* may be ``None``, or an instance of a
+   :class:`tzinfo` subclass.  The remaining arguments may be ints or longs, in the
+   following ranges:
+
+   * ``0 <= hour < 24``
+   * ``0 <= minute < 60``
+   * ``0 <= second < 60``
+   * ``0 <= microsecond < 1000000``.
+
+   If an argument outside those ranges is given, :exc:`ValueError` is raised.  All
+   default to ``0`` except *tzinfo*, which defaults to :const:`None`.
+
+.. method:: time.replace([hour[, minute[, second[, microsecond[, tzinfo]]]]])
+
+   Return a :class:`time` with the same value, except for those members given new
+   values by whichever keyword arguments are specified.  Note that ``tzinfo=None``
+   can be specified to create a naive :class:`time` from an aware :class:`time`,
+   without conversion of the time members.
+
+
+.. method:: time.isoformat()
+
+   Return a string representing the time in ISO 8601 format, HH:MM:SS.mmmmmm or, if
+   self.microsecond is 0, HH:MM:SS If :meth:`utcoffset` does not return ``None``, a
+   6-character string is appended, giving the UTC offset in (signed) hours and
+   minutes: HH:MM:SS.mmmmmm+HH:MM or, if self.microsecond is 0, HH:MM:SS+HH:MM
+
+
+.. method:: time.__str__()
+
+   For a time *t*, ``str(t)`` is equivalent to ``t.isoformat()``.
+
+
+.. method:: time.strftime(format)
+
+   Return a string representing the time, controlled by an explicit format string.
+   See section :ref:`strftime-behavior`.
+
+
+.. method:: time.utcoffset()
+
+   If :attr:`tzinfo` is ``None``, returns ``None``, else returns
+   ``self.tzinfo.utcoffset(None)``, and raises an exception if the latter doesn't
+   return ``None`` or a :class:`timedelta` object representing a whole number of
+   minutes with magnitude less than one day.
+
+
+.. method:: time.dst()
+
+   If :attr:`tzinfo` is ``None``, returns ``None``, else returns
+   ``self.tzinfo.dst(None)``, and raises an exception if the latter doesn't return
+   ``None``, or a :class:`timedelta` object representing a whole number of minutes
+   with magnitude less than one day.
+
+
+.. method:: time.tzname()
+
+   If :attr:`tzinfo` is ``None``, returns ``None``, else returns
+   ``self.tzinfo.tzname(None)``, or raises an exception if the latter doesn't
+   return ``None`` or a string object.
+
+===Mod:time==========
+===ModDoc:====
+This module provides various time-related functions. For related
+functionality, see also the :mod:`datetime` and :mod:`calendar` modules.
+
+Although this module is always available,
+not all functions are available on all platforms.  Most of the functions
+defined in this module call platform C library functions with the same name.  It
+may sometimes be helpful to consult the platform documentation, because the
+semantics of these functions varies among platforms.
+
+An explanation of some terminology and conventions is in order.
+
+  .. index:: single: epoch
+
+* The :dfn:`epoch` is the point where the time starts.  On January 1st of that
+  year, at 0 hours, the "time since the epoch" is zero.  For Unix, the epoch is
+  1970.  To find out what the epoch is, look at ``gmtime(0)``.
+* The functions in this module do not handle dates and times before the epoch or
+  far in the future.  The cut-off point in the future is determined by the C
+  library; for Unix, it is typically in 2038.
+  
+  * UTC is Coordinated Universal Time (formerly known as Greenwich Mean Time, or
+  GMT).  The acronym UTC is not a mistake but a compromise between English and
+  French.
+
+  .. index:: single: Daylight Saving Time
+
+* DST is Daylight Saving Time, an adjustment of the timezone by (usually) one
+  hour during part of the year.  DST rules are magic (determined by local law) and
+  can change from year to year.  The C library has a table containing the local
+  rules (often it is read from a system file for flexibility) and is the only
+  source of True Wisdom in this respect.
+
+* The precision of the various real-time functions may be less than suggested by
+  the units in which their value or argument is expressed. E.g. on most Unix
+  systems, the clock "ticks" only 50 or 100 times a second, and on the Mac, times
+  are only accurate to whole seconds.
+
+* On the other hand, the precision of :func:`time` and :func:`sleep` is better
+  than their Unix equivalents: times are expressed as floating point numbers,
+  :func:`time` returns the most accurate time available (using Unix
+  :cfunc:`gettimeofday` where available), and :func:`sleep` will accept a time
+  with a nonzero fraction (Unix :cfunc:`select` is used to implement this, where
+  available).
+
+* The time value as returned by :func:`gmtime`, :func:`localtime`, and
+  :func:`strptime`, and accepted by :func:`asctime`, :func:`mktime` and
+  :func:`strftime`, may be considered as a sequence of 9 integers.  The return
+  values of :func:`gmtime`, :func:`localtime`, and :func:`strptime` also offer
+  attribute names for individual fields.
+
+  +-------+-------------------+---------------------------------+
+  | Index | Attribute         | Values                          |
+  +=======+===================+=================================+
+  | 0     | :attr:`tm_year`   | (for example, 1993)             |
+  +-------+-------------------+---------------------------------+
+  | 1     | :attr:`tm_mon`    | range [1,12]                    |
+  +-------+-------------------+---------------------------------+
+  | 2     | :attr:`tm_mday`   | range [1,31]                    |
+  +-------+-------------------+---------------------------------+
+  | 3     | :attr:`tm_hour`   | range [0,23]                    |
+  +-------+-------------------+---------------------------------+
+  | 4     | :attr:`tm_min`    | range [0,59]                    |
+  +-------+-------------------+---------------------------------+
+  | 5     | :attr:`tm_sec`    | range [0,61]; see **(1)** in    |
+  |       |                   | :func:`strftime` description    |
+  +-------+-------------------+---------------------------------+
+  | 6     | :attr:`tm_wday`   | range [0,6], Monday is 0        |
+  +-------+-------------------+---------------------------------+
+  | 7     | :attr:`tm_yday`   | range [1,366]                   |
+  +-------+-------------------+---------------------------------+
+  | 8     | :attr:`tm_isdst`  | 0, 1 or -1; see below           |
+  +-------+-------------------+---------------------------------+
+
+  Note that unlike the C structure, the month value is a range of 1-12, not 0-11.
+  A year value will be handled as described under "Year 2000 (Y2K) issues" above.
+  A ``-1`` argument as the daylight savings flag, passed to :func:`mktime` will
+  usually result in the correct daylight savings state to be filled in.
+
+  When a tuple with an incorrect length is passed to a function expecting a
+  :class:`struct_time`, or having elements of the wrong type, a :exc:`TypeError`
+  is raised.
+===EndDoc======
+.. function:: asctime([t])
+
+   Convert a tuple or :class:`struct_time` representing a time as returned by
+   :func:`gmtime` or :func:`localtime` to a 24-character string of the following
+   form: ``'Sun Jun 20 23:21:05 1993'``.  If *t* is not provided, the current time
+   as returned by :func:`localtime` is used. Locale information is not used by
+   :func:`asctime`.
+
+   .. note::
+
+      Unlike the C function of the same name, there is no trailing newline.
+
+   .. versionchanged:: 2.1
+      Allowed *t* to be omitted.
+
+
+.. function:: clock()
+
+   .. index::
+      single: CPU time
+      single: processor time
+      single: benchmarking
+
+   On Unix, return the current processor time as a floating point number expressed
+   in seconds.  The precision, and in fact the very definition of the meaning of
+   "processor time", depends on that of the C function of the same name, but in any
+   case, this is the function to use for benchmarking Python or timing algorithms.
+
+   On Windows, this function returns wall-clock seconds elapsed since the first
+   call to this function, as a floating point number, based on the Win32 function
+   :cfunc:`QueryPerformanceCounter`. The resolution is typically better than one
+   microsecond.
+
+
+.. function:: ctime([secs])
+
+   Convert a time expressed in seconds since the epoch to a string representing
+   local time. If *secs* is not provided or :const:`None`, the current time as
+   returned by :func:`time` is used.  ``ctime(secs)`` is equivalent to
+   ``asctime(localtime(secs))``. Locale information is not used by :func:`ctime`.
+
+   .. versionchanged:: 2.1
+      Allowed *secs* to be omitted.
+
+   .. versionchanged:: 2.4
+      If *secs* is :const:`None`, the current time is used.
+
+
+
+
+.. function:: gmtime([secs])
+
+   Convert a time expressed in seconds since the epoch to a :class:`struct_time` in
+   UTC in which the dst flag is always zero.  If *secs* is not provided or
+   :const:`None`, the current time as returned by :func:`time` is used.  Fractions
+   of a second are ignored.  See above for a description of the
+   :class:`struct_time` object. See :func:`calendar.timegm` for the inverse of this
+   function.
+
+   .. versionchanged:: 2.1
+      Allowed *secs* to be omitted.
+
+   .. versionchanged:: 2.4
+      If *secs* is :const:`None`, the current time is used.
+
+
+.. function:: localtime([secs])
+
+   Like :func:`gmtime` but converts to local time.  If *secs* is not provided or
+   :const:`None`, the current time as returned by :func:`time` is used.  The dst
+   flag is set to ``1`` when DST applies to the given time.
+
+   .. versionchanged:: 2.1
+      Allowed *secs* to be omitted.
+
+   .. versionchanged:: 2.4
+      If *secs* is :const:`None`, the current time is used.
+
+
+.. function:: mktime(t)
+
+   This is the inverse function of :func:`localtime`.  Its argument is the
+   :class:`struct_time` or full 9-tuple (since the dst flag is needed; use ``-1``
+   as the dst flag if it is unknown) which expresses the time in *local* time, not
+   UTC.  It returns a floating point number, for compatibility with :func:`time`.
+   If the input value cannot be represented as a valid time, either
+   :exc:`OverflowError` or :exc:`ValueError` will be raised (which depends on
+   whether the invalid value is caught by Python or the underlying C libraries).
+   The earliest date for which it can generate a time is platform-dependent.
+
+
+.. function:: sleep(secs)
+
+   Suspend execution for the given number of seconds.  The argument may be a
+   floating point number to indicate a more precise sleep time. The actual
+   suspension time may be less than that requested because any caught signal will
+   terminate the :func:`sleep` following execution of that signal's catching
+   routine.  Also, the suspension time may be longer than requested by an arbitrary
+   amount because of the scheduling of other activity in the system.
+
+
+.. function:: strftime(format[, t])
+
+   Convert a tuple or :class:`struct_time` representing a time as returned by
+   :func:`gmtime` or :func:`localtime` to a string as specified by the *format*
+   argument.  If *t* is not provided, the current time as returned by
+   :func:`localtime` is used.  *format* must be a string.  :exc:`ValueError` is
+   raised if any field in *t* is outside of the allowed range.
+
+   .. versionchanged:: 2.1
+      Allowed *t* to be omitted.
+
+   .. versionchanged:: 2.4
+      :exc:`ValueError` raised if a field in *t* is out of range.
+
+   .. versionchanged:: 2.5
+      0 is now a legal argument for any position in the time tuple; if it is normally
+      illegal the value is forced to a correct one..
+
+   The following directives can be embedded in the *format* string. They are shown
+   without the optional field width and precision specification, and are replaced
+   by the indicated characters in the :func:`strftime` result:
+
+   +-----------+--------------------------------+-------+
+   | Directive | Meaning                        | Notes |
+   +===========+================================+=======+
+   | ``%a``    | Locale's abbreviated weekday   |       |
+   |           | name.                          |       |
+   +-----------+--------------------------------+-------+
+   | ``%A``    | Locale's full weekday name.    |       |
+   +-----------+--------------------------------+-------+
+   | ``%b``    | Locale's abbreviated month     |       |
+   |           | name.                          |       |
+   +-----------+--------------------------------+-------+
+   | ``%B``    | Locale's full month name.      |       |
+   +-----------+--------------------------------+-------+
+   | ``%c``    | Locale's appropriate date and  |       |
+   |           | time representation.           |       |
+   +-----------+--------------------------------+-------+
+   | ``%d``    | Day of the month as a decimal  |       |
+   |           | number [01,31].                |       |
+   +-----------+--------------------------------+-------+
+   | ``%H``    | Hour (24-hour clock) as a      |       |
+   |           | decimal number [00,23].        |       |
+   +-----------+--------------------------------+-------+
+   | ``%I``    | Hour (12-hour clock) as a      |       |
+   |           | decimal number [01,12].        |       |
+   +-----------+--------------------------------+-------+
+   | ``%j``    | Day of the year as a decimal   |       |
+   |           | number [001,366].              |       |
+   +-----------+--------------------------------+-------+
+   | ``%m``    | Month as a decimal number      |       |
+   |           | [01,12].                       |       |
+   +-----------+--------------------------------+-------+
+   | ``%M``    | Minute as a decimal number     |       |
+   |           | [00,59].                       |       |
+   +-----------+--------------------------------+-------+
+   | ``%p``    | Locale's equivalent of either  | \(1)  |
+   |           | AM or PM.                      |       |
+   +-----------+--------------------------------+-------+
+   | ``%S``    | Second as a decimal number     | \(2)  |
+   |           | [00,61].                       |       |
+   +-----------+--------------------------------+-------+
+   | ``%U``    | Week number of the year        | \(3)  |
+   |           | (Sunday as the first day of    |       |
+   |           | the week) as a decimal number  |       |
+   |           | [00,53].  All days in a new    |       |
+   |           | year preceding the first       |       |
+   |           | Sunday are considered to be in |       |
+   |           | week 0.                        |       |
+   +-----------+--------------------------------+-------+
+   | ``%w``    | Weekday as a decimal number    |       |
+   |           | [0(Sunday),6].                 |       |
+   +-----------+--------------------------------+-------+
+   | ``%W``    | Week number of the year        | \(3)  |
+   |           | (Monday as the first day of    |       |
+   |           | the week) as a decimal number  |       |
+   |           | [00,53].  All days in a new    |       |
+   |           | year preceding the first       |       |
+   |           | Monday are considered to be in |       |
+   |           | week 0.                        |       |
+   +-----------+--------------------------------+-------+
+   | ``%x``    | Locale's appropriate date      |       |
+   |           | representation.                |       |
+   +-----------+--------------------------------+-------+
+   | ``%X``    | Locale's appropriate time      |       |
+   |           | representation.                |       |
+   +-----------+--------------------------------+-------+
+   | ``%y``    | Year without century as a      |       |
+   |           | decimal number [00,99].        |       |
+   +-----------+--------------------------------+-------+
+   | ``%Y``    | Year with century as a decimal |       |
+   |           | number.                        |       |
+   +-----------+--------------------------------+-------+
+   | ``%Z``    | Time zone name (no characters  |       |
+   |           | if no time zone exists).       |       |
+   +-----------+--------------------------------+-------+
+   | ``%%``    | A literal ``'%'`` character.   |       |
+   +-----------+--------------------------------+-------+
+
+   Notes:
+
+   (1)
+      When used with the :func:`strptime` function, the ``%p`` directive only affects
+      the output hour field if the ``%I`` directive is used to parse the hour.
+
+   (2)
+      The range really is ``0`` to ``61``; this accounts for leap seconds and the
+      (very rare) double leap seconds.
+
+   (3)
+      When used with the :func:`strptime` function, ``%U`` and ``%W`` are only used in
+      calculations when the day of the week and the year are specified.
+
+   Here is an example, a format for dates compatible with that specified  in the
+   :rfc:`2822` Internet email standard.  [#]_ ::
+
+      >>> from time import gmtime, strftime
+      >>> strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+      'Thu, 28 Jun 2001 14:17:15 +0000'
+
+   Additional directives may be supported on certain platforms, but only the ones
+   listed here have a meaning standardized by ANSI C.
+
+   On some platforms, an optional field width and precision specification can
+   immediately follow the initial ``'%'`` of a directive in the following order;
+   this is also not portable. The field width is normally 2 except for ``%j`` where
+   it is 3.
+
+
+.. function:: strptime(string[, format])
+
+   Parse a string representing a time according to a format.  The return  value is
+   a :class:`struct_time` as returned by :func:`gmtime` or :func:`localtime`.
+
+   The *format* parameter uses the same directives as those used by
+   :func:`strftime`; it defaults to ``"%a %b %d %H:%M:%S %Y"`` which matches the
+   formatting returned by :func:`ctime`. If *string* cannot be parsed according to
+   *format*, or if it has excess data after parsing, :exc:`ValueError` is raised.
+   The default values used to fill in any missing data when more accurate values
+   cannot be inferred are ``(1900, 1, 1, 0, 0, 0, 0, 1, -1)``.
+
+   For example:
+
+      >>> import time
+      >>> time.strptime("30 Nov 00", "%d %b %y")   # doctest: +NORMALIZE_WHITESPACE
+      time.struct_time(tm_year=2000, tm_mon=11, tm_mday=30, tm_hour=0, tm_min=0,
+                       tm_sec=0, tm_wday=3, tm_yday=335, tm_isdst=-1)
+
+   Support for the ``%Z`` directive is based on the values contained in ``tzname``
+   and whether ``daylight`` is true.  Because of this, it is platform-specific
+   except for recognizing UTC and GMT which are always known (and are considered to
+   be non-daylight savings timezones).
+
+   Only the directives specified in the documentation are supported.  Because
+   ``strftime()`` is implemented per platform it can sometimes offer more
+   directives than those listed.  But ``strptime()`` is independent of any platform
+   and thus does not necessarily support all directives available that are not
+   documented as supported.
+
+
+
+
+.. function:: time()
+
+   Return the time as a floating point number expressed in seconds since the epoch,
+   in UTC.  Note that even though the time is always returned as a floating point
+   number, not all systems provide time with a better precision than 1 second.
+   While this function normally returns non-decreasing values, it can return a
+   lower value than a previous call if the system clock has been set back between
+   the two calls.
+
+
+.. function:: tzset()
+
+   Resets the time conversion rules used by the library routines. The environment
+   variable :envvar:`TZ` specifies how this is done.
+
+   .. versionadded:: 2.3
+
+   Availability: Unix.
+
+   .. note::
+
+      Although in many cases, changing the :envvar:`TZ` environment variable may
+      affect the output of functions like :func:`localtime` without calling
+      :func:`tzset`, this behavior should not be relied on.
+
+      The :envvar:`TZ` environment variable should contain no whitespace.
+
+   The standard format of the :envvar:`TZ` environment variable is (whitespace
+   added for clarity)::
+
+      std offset [dst [offset [,start[/time], end[/time]]]]
+
+   Where the components are:
+
+   ``std`` and ``dst``
+      Three or more alphanumerics giving the timezone abbreviations. These will be
+      propagated into time.tzname
+
+   ``offset``
+      The offset has the form: ``Â± hh[:mm[:ss]]``. This indicates the value
+      added the local time to arrive at UTC.  If preceded by a '-', the timezone
+      is east of the Prime Meridian; otherwise, it is west. If no offset follows
+      dst, summer time is assumed to be one hour ahead of standard time.
+
+   ``start[/time], end[/time]``
+      Indicates when to change to and back from DST. The format of the
+      start and end dates are one of the following:
+
+      :samp:`J{n}`
+         The Julian day *n* (1 <= *n* <= 365). Leap days are not counted, so in
+         all years February 28 is day 59 and March 1 is day 60.
+
+      :samp:`{n}`
+         The zero-based Julian day (0 <= *n* <= 365). Leap days are counted, and
+         it is possible to refer to February 29.
+
+      :samp:`M{m}.{n}.{d}`
+         The *d*'th day (0 <= *d* <= 6) or week *n* of month *m* of the year (1
+         <= *n* <= 5, 1 <= *m* <= 12, where week 5 means "the last *d* day in
+         month *m*" which may occur in either the fourth or the fifth
+         week). Week 1 is the first week in which the *d*'th day occurs. Day
+         zero is Sunday.
+
+      ``time`` has the same format as ``offset`` except that no leading sign
+      ('-' or '+') is allowed. The default, if time is not given, is 02:00:00.
+
+   ::
+
+      >>> os.environ['TZ'] = 'EST+05EDT,M4.1.0,M10.5.0'
+      >>> time.tzset()
+      >>> time.strftime('%X %x %Z')
+      '02:07:36 05/08/03 EDT'
+      >>> os.environ['TZ'] = 'AEST-10AEDT-11,M10.5.0,M3.5.0'
+      >>> time.tzset()
+      >>> time.strftime('%X %x %Z')
+      '16:08:12 05/08/03 AEST'
+
+   On many Unix systems (including \*BSD, Linux, Solaris, and Darwin), it is more
+   convenient to use the system's zoneinfo (:manpage:`tzfile(5)`)  database to
+   specify the timezone rules. To do this, set the  :envvar:`TZ` environment
+   variable to the path of the required timezone  datafile, relative to the root of
+   the systems 'zoneinfo' timezone database, usually located at
+   :file:`/usr/share/zoneinfo`. For example,  ``'US/Eastern'``,
+   ``'Australia/Melbourne'``, ``'Egypt'`` or  ``'Europe/Amsterdam'``. ::
+
+      >>> os.environ['TZ'] = 'US/Eastern'
+      >>> time.tzset()
+      >>> time.tzname
+      ('EST', 'EDT')
+      >>> os.environ['TZ'] = 'Egypt'
+      >>> time.tzset()
+      >>> time.tzname
+      ('EET', 'EEST')
+
+===Mod:heapq==========
+===ModDoc:====
+===EndDoc======
+// .. function:: (To add later)
+
+
+===Mod:mutex==========
+===ModDoc:====
+===EndDoc======
+// .. function:: (To add later)
+
+
+===Mod:new==========
+===ModDoc:====
+===EndDoc======
+// .. function:: (To add later)
+
+
+
+===Mod:pprint==========
+===ModDoc:====
+The :mod:`pprint` module provides a capability to "pretty-print" arbitrary
+Python data structures in a form which can be used as input to the interpreter.
+If the formatted structures include objects which are not fundamental Python
+types, the representation may not be loadable.  This may be the case if objects
+such as files, sockets, classes, or instances are included, as well as many
+other builtin objects which are not representable as Python constants.
+
+The formatted representation keeps objects on a single line if it can, and
+breaks them onto multiple lines if they don't fit within the allowed width.
+Construct :class:`PrettyPrinter` objects explicitly if you need to adjust the
+width constraint.
+
+===EndDoc======
+.. function:: pprint.PrettyPrinter.pformat(object[, indent[, width[, depth]]])
+
+   Return the formatted representation of *object* as a string.  *indent*, *width*
+   and *depth* will be passed to the :class:`PrettyPrinter` constructor as
+   formatting parameters.
+
+   .. versionchanged:: 2.4
+      The parameters *indent*, *width* and *depth* were added.
+
+.. function:: pprint.PrettyPrinter.pprint(object[, stream[, indent[, width[, depth]]]])
+
+   Prints the formatted representation of *object* on *stream*, followed by a
+   newline.  If *stream* is omitted, ``sys.stdout`` is used.  This may be used in
+   the interactive interpreter instead of a :keyword:`print` statement for
+   inspecting values.    *indent*, *width* and *depth* will be passed to the
+   :class:`PrettyPrinter` constructor as formatting parameters.
+
+      >>> import pprint
+      >>> stuff = ['spam', 'eggs', 'lumberjack', 'knights', 'ni']
+      >>> stuff.insert(0, stuff)
+      >>> pprint.pprint(stuff)
+      [<Recursion on list with id=...>,
+       'spam',
+       'eggs',
+       'lumberjack',
+       'knights',
+       'ni']
+
+   .. versionchanged:: 2.4
+      The parameters *indent*, *width* and *depth* were added.
+
+
+.. function:: pprint.PrettyPrinter.isreadable(object)
+
+   .. index:: builtin: eval
+
+   Determine if the formatted representation of *object* is "readable," or can be
+   used to reconstruct the value using :func:`eval`.  This always returns ``False``
+   for recursive objects.
+
+      >>> pprint.isreadable(stuff)
+      False
+
+
+.. function:: pprint.PrettyPrinter.isrecursive(object)
+
+   Determine if *object* requires a recursive representation.
+
+.. function:: pprint.PrettyPrinter.saferepr(object)
+
+   Return a string representation of *object*, protected against recursive data
+   structures.  If the representation of *object* exposes a recursive entry, the
+   recursive reference will be represented as ``<Recursion on typename with
+   id=number>``.  The representation is not otherwise formatted.
+
+   >>> pprint.saferepr(stuff)
+   "[<Recursion on list with id=...>, 'spam', 'eggs', 'lumberjack', 'knights', 'ni']"
+
+===Mod:queue==========
+===ModDoc:====
+===EndDoc======
+// .. function:: (To add later)
+
+
+
+===Mod:repr==========
+===ModDoc:====
+===EndDoc======
+// .. function:: (To add later)
+
+
+===Mod:sched==========
+===ModDoc:====
+===EndDoc======
+// .. function:: (To add later)
+
+
+
+
+===Mod:types==========
+===ModDoc:====
+===EndDoc======
+// .. function:: (To add later)
+
+
+===Mod:weakref==========
+===ModDoc:====
+The :mod:`weakref` module allows the Python programmer to create :dfn:`weak
+references` to objects.
+
+.. When making changes to the examples in this file, be sure to update
+   Lib/test/test_weakref.py::libreftest too!
+
+In the following, the term :dfn:`referent` means the object which is referred to
+by a weak reference.
+
+A weak reference to an object is not enough to keep the object alive: when the
+only remaining references to a referent are weak references,
+:term:`garbage collection` is free to destroy the referent and reuse its memory
+for something else.  A primary use for weak references is to implement caches or
+mappings holding large objects, where it's desired that a large object not be
+kept alive solely because it appears in a cache or mapping.
+
+For example, if you have a number of large binary image objects, you may wish to
+associate a name with each.  If you used a Python dictionary to map names to
+images, or images to names, the image objects would remain alive just because
+they appeared as values or keys in the dictionaries.  The
+:class:`WeakKeyDictionary` and :class:`WeakValueDictionary` classes supplied by
+the :mod:`weakref` module are an alternative, using weak references to construct
+mappings that don't keep objects alive solely because they appear in the mapping
+objects.  If, for example, an image object is a value in a
+:class:`WeakValueDictionary`, then when the last remaining references to that
+image object are the weak references held by weak mappings, garbage collection
+can reclaim the object, and its corresponding entries in weak mappings are
+simply deleted.
+...
+
+Testing that a weak reference object is still live should be done using the
+expression ``ref() is not None``.  Normally, application code that needs to use
+a reference object should follow this pattern::
+
+   # r is a weak reference object
+   o = r()
+   if o is None:
+       # referent has been garbage collected
+       print "Object has been deallocated; can't frobnicate."
+   else:
+       print "Object is still live!"
+       o.do_something_useful()
+
+Using a separate test for "liveness" creates race conditions in threaded
+applications; another thread can cause a weak reference to become invalidated
+before the weak reference is called; the idiom shown above is safe in threaded
+applications as well as single-threaded applications.
+
+This simple example shows how an application can use objects IDs to retrieve
+objects that it has seen before.  The IDs of the objects can then be used in
+other data structures without forcing the objects to remain alive, but the
+objects can still be retrieved by ID if they do.
+
+   import weakref
+
+   _id2obj_dict = weakref.WeakValueDictionary()
+
+   def remember(obj):
+       oid = id(obj)
+       _id2obj_dict[oid] = obj
+       return oid
+
+   def id2obj(oid):
+       return _id2obj_dict[oid]
+===EndDoc===
+
+.. function:: proxy(object[, callback])
+
+   Return a proxy to *object* which uses a weak reference.  This supports use of
+   the proxy in most contexts instead of requiring the explicit dereferencing used
+   with weak reference objects.  The returned object will have a type of either
+   ``ProxyType`` or ``CallableProxyType``, depending on whether *object* is
+   callable.  Proxy objects are not :term:`hashable` regardless of the referent; this
+   avoids a number of problems related to their fundamentally mutable nature, and
+   prevent their use as dictionary keys.  *callback* is the same as the parameter
+   of the same name to the :func:`ref` function.
+
+
+.. function:: getweakrefcount(object)
+
+   Return the number of weak references and proxies which refer to *object*.
+
+
+.. function:: getweakrefs(object)
+
+   Return a list of all weak reference and proxy objects which refer to *object*.
+
+
+.. function:: WeakKeyDictionary([dict])
+
+   Mapping class that references keys weakly.  Entries in the dictionary will be
+   discarded when there is no longer a strong reference to the key.  This can be
+   used to associate additional data with an object owned by other parts of an
+   application without adding attributes to those objects.  This can be especially
+   useful with objects that override attribute accesses.
+
+   .. note::
+
+      Caution: Because a :class:`WeakKeyDictionary` is built on top of a Python
+      dictionary, it must not change size when iterating over it.  This can be
+      difficult to ensure for a :class:`WeakKeyDictionary` because actions
+      performed by the program during iteration may cause items in the
+      dictionary to vanish "by magic" (as a side effect of garbage collection).
+
+:class:`WeakKeyDictionary` objects have the following additional methods.  These
+expose the internal references directly.  The references are not guaranteed to
+be "live" at the time they are used, so the result of calling the references
+needs to be checked before being used.  This can be used to avoid creating
+references that will cause the garbage collector to keep the keys around longer
+than needed.
+
+ ReferenceType
+   The type object for weak references objects.
+ ProxyType
+   The type object for proxies of objects which are not callable.
+ CallableProxyType
+   The type object for proxies of callable objects.
+ ProxyTypes
+   Sequence containing all the type objects for proxies.  This can make it simpler
+   to test if an object is a proxy without being dependent on naming both proxy
+   types.
+
+.. method:: WeakKeyDictionary.iterkeyrefs()
+
+   Return an :term:`iterator` that yields the weak references to the keys.
+
+   .. versionadded:: 2.5
+
+
+.. method:: WeakKeyDictionary.keyrefs()
+
+   Return a list of weak references to the keys.
+
+   .. versionadded:: 2.5
+
+
+.. function:: WeakValueDictionary([dict])
+
+   Mapping class that references values weakly.  Entries in the dictionary will be
+   discarded when no strong reference to the value exists any more.
+
+   .. note::
+
+      Caution:  Because a :class:`WeakValueDictionary` is built on top of a Python
+      dictionary, it must not change size when iterating over it.  This can be
+      difficult to ensure for a :class:`WeakValueDictionary` because actions performed
+      by the program during iteration may cause items in the dictionary to vanish "by
+      magic" (as a side effect of garbage collection).
+
+:class:`WeakValueDictionary` objects have the following additional methods.
+These method have the same issues as the :meth:`iterkeyrefs` and :meth:`keyrefs`
+methods of :class:`WeakKeyDictionary` objects.
+
+
+.. method:: WeakValueDictionary.itervaluerefs()
+
+   Return an :term:`iterator` that yields the weak references to the values.
+
+   .. versionadded:: 2.5
+
+
+.. method:: WeakValueDictionary.valuerefs()
+
+   Return a list of weak references to the values.
+===EndDoc======

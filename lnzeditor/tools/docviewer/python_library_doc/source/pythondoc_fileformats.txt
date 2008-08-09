@@ -1,0 +1,364 @@
+===Section:File Formats=============
+
+===Mod:zipfile======
+===ModDoc:====
+The ZIP file format is a common archive and compression standard. This module
+provides tools to create, read, write, append, and list a ZIP file.  Any
+advanced use of this module will require an understanding of the format, as
+defined in `PKZIP Application Note
+<http://www.pkware.com/documents/casestudies/APPNOTE.TXT>`_.
+
+This module does not currently handle multi-disk ZIP files, or ZIP files
+which have appended comments (although it correctly handles comments
+added to individual archive members---for which see the :ref:`zipinfo-objects`
+documentation). It can handle ZIP files that use the ZIP64 extensions
+(that is ZIP files that are more than 4 GByte in size).  It supports
+decryption of encrypted files in ZIP archives, but it currently cannot
+create an encrypted file.  Decryption is extremely slow as it is
+implemented in native python rather than C.
+===EndDoc===
+.. function:: is_zipfile(filename)
+
+   Returns ``True`` if *filename* is a valid ZIP file based on its magic number,
+   otherwise returns ``False``.  This module does not currently handle ZIP files
+   which have appended comments.
+   
+.. function:: ZipFile(file[, mode[, compression[, allowZip64]]])
+
+   Open a ZIP file, where *file* can be either a path to a file (a string) or a
+   file-like object.  The *mode* parameter should be ``'r'`` to read an existing
+   file, ``'w'`` to truncate and write a new file, or ``'a'`` to append to an
+   existing file.  If *mode* is ``'a'`` and *file* refers to an existing ZIP file,
+   then additional files are added to it.  If *file* does not refer to a ZIP file,
+   then a new ZIP archive is appended to the file.  This is meant for adding a ZIP
+   archive to another file, such as :file:`python.exe`.  Using ::
+
+      cat myzip.zip >> python.exe
+
+   also works, and at least :program:`WinZip` can read such files. If *mode* is
+   ``a`` and the file does not exist at all, it is created. *compression* is the
+   ZIP compression method to use when writing the archive, and should be
+   :const:`ZIP_STORED` or :const:`ZIP_DEFLATED`; unrecognized values will cause
+   :exc:`RuntimeError` to be raised.  If :const:`ZIP_DEFLATED` is specified but the
+   :mod:`zlib` module is not available, :exc:`RuntimeError` is also raised.  The
+   default is :const:`ZIP_STORED`.  If *allowZip64* is ``True`` zipfile will create
+   ZIP files that use the ZIP64 extensions when the zipfile is larger than 2 GB. If
+   it is  false (the default) :mod:`zipfile` will raise an exception when the ZIP
+   file would require ZIP64 extensions. ZIP64 extensions are disabled by default
+   because the default :program:`zip` and :program:`unzip` commands on Unix (the
+   InfoZIP utilities) don't support these extensions.
+
+   .. versionchanged:: 2.6
+      If the file does not exist, it is created if the mode is 'a'.
+
+
+.. method:: ZipFile.close()
+
+   Close the archive file.  You must call :meth:`close` before exiting your program
+   or essential records will not be written.
+
+
+.. method:: ZipFile.getinfo(name)
+
+   Return a :class:`ZipInfo` object with information about the archive member
+   *name*.  Calling :meth:`getinfo` for a name not currently contained in the
+   archive will raise a :exc:`KeyError`.
+
+
+.. method:: ZipFile.infolist()
+
+   Return a list containing a :class:`ZipInfo` object for each member of the
+   archive.  The objects are in the same order as their entries in the actual ZIP
+   file on disk if an existing archive was opened.
+
+
+.. method:: ZipFile.namelist()
+
+   Return a list of archive members by name.
+
+
+.. method:: ZipFile.open(name[, mode[, pwd]])
+
+   Extract a member from the archive as a file-like object (ZipExtFile). *name* is
+   the name of the file in the archive. The *mode* parameter, if included, must be
+   one of the following: ``'r'`` (the  default), ``'U'``, or ``'rU'``. Choosing
+   ``'U'`` or  ``'rU'`` will enable universal newline support in the read-only
+   object. *pwd* is the password used for encrypted files.  Calling  :meth:`open`
+   on a closed ZipFile will raise a  :exc:`RuntimeError`.
+
+   .. note::
+
+      The file-like object is read-only and provides the following methods:
+      :meth:`read`, :meth:`readline`, :meth:`readlines`, :meth:`__iter__`,
+      :meth:`next`.
+
+   .. note::
+
+      If the ZipFile was created by passing in a file-like object as the  first
+      argument to the constructor, then the object returned by :meth:`.open` shares the
+      ZipFile's file pointer.  Under these  circumstances, the object returned by
+      :meth:`.open` should not  be used after any additional operations are performed
+      on the  ZipFile object.  If the ZipFile was created by passing in a string (the
+      filename) as the first argument to the constructor, then  :meth:`.open` will
+      create a new file object that will be held by the ZipExtFile, allowing it to
+      operate independently of the  ZipFile.
+
+   .. versionadded:: 2.6
+
+
+.. method:: ZipFile.extract(member[, path[, pwd]])
+
+   Extract a member from the archive to the current working directory, using its
+   full name.  Its file information is extracted as accurately as possible.
+   *path* specifies a different directory to extract to.   *member* can be a
+   filename or a :class:`ZipInfo` object.  *pwd* is the password used for
+   encrypted files.
+
+   .. versionadded:: 2.6
+
+
+.. method:: ZipFile.extractall([path[, members[, pwd]]])
+
+   Extract all members from the archive to the current working directory.  *path* 
+   specifies a different directory to extract to.  *members* is optional and must
+   be a subset of the list returned by :meth:`namelist`.  *pwd* is the password
+   used for encrypted files.
+
+   .. versionadded:: 2.6
+
+
+.. method:: ZipFile.printdir()
+
+   Print a table of contents for the archive to ``sys.stdout``.
+
+
+.. method:: ZipFile.setpassword(pwd)
+
+   Set *pwd* as default password to extract encrypted files.
+
+   .. versionadded:: 2.6
+
+
+.. method:: ZipFile.read(name[, pwd])
+
+   Return the bytes of the file in the archive.  The archive must be open for read
+   or append. *pwd* is the password used for encrypted  files and, if specified, it
+   will override the default password set with :meth:`setpassword`.  Calling
+   :meth:`read` on a closed ZipFile  will raise a :exc:`RuntimeError`.
+
+   .. versionchanged:: 2.6
+      *pwd* was added.
+
+
+.. method:: ZipFile.testzip()
+
+   Read all the files in the archive and check their CRC's and file headers.
+   Return the name of the first bad file, or else return ``None``. Calling
+   :meth:`testzip` on a closed ZipFile will raise a :exc:`RuntimeError`.
+
+
+.. method:: ZipFile.write(filename[, arcname[, compress_type]])
+
+   Write the file named *filename* to the archive, giving it the archive name
+   *arcname* (by default, this will be the same as *filename*, but without a drive
+   letter and with leading path separators removed).  If given, *compress_type*
+   overrides the value given for the *compression* parameter to the constructor for
+   the new entry.  The archive must be open with mode ``'w'`` or ``'a'`` -- calling
+   :meth:`write` on a ZipFile created with mode ``'r'`` will raise a
+   :exc:`RuntimeError`.  Calling  :meth:`write` on a closed ZipFile will raise a
+   :exc:`RuntimeError`.
+
+   .. note::
+
+      There is no official file name encoding for ZIP files. If you have unicode file
+      names, you must convert them to byte strings in your desired encoding before
+      passing them to :meth:`write`. WinZip interprets all file names as encoded in
+      CP437, also known as DOS Latin.
+
+   .. note::
+
+      Archive names should be relative to the archive root, that is, they should not
+      start with a path separator.
+
+   .. note::
+
+      If ``arcname`` (or ``filename``, if ``arcname`` is  not given) contains a null
+      byte, the name of the file in the archive will be truncated at the null byte.
+
+
+.. method:: ZipFile.writestr(zinfo_or_arcname, bytes)
+
+   Write the string *bytes* to the archive; *zinfo_or_arcname* is either the file
+   name it will be given in the archive, or a :class:`ZipInfo` instance.  If it's
+   an instance, at least the filename, date, and time must be given.  If it's a
+   name, the date and time is set to the current date and time. The archive must be
+   opened with mode ``'w'`` or ``'a'`` -- calling  :meth:`writestr` on a ZipFile
+   created with mode ``'r'``  will raise a :exc:`RuntimeError`.  Calling
+   :meth:`writestr` on a closed ZipFile will raise a :exc:`RuntimeError`.
+
+   .. note::
+
+      When passing a :class:`ZipInfo` instance as the *zinfo_or_acrname* parameter, 
+      the compression method used will be that specified in the *compress_type* 
+      member of the given :class:`ZipInfo` instance.  By default, the 
+      :class:`ZipInfo` constructor sets this member to :const:`ZIP_STORED`.
+
+
+===Mod:zipimport======
+===ModDoc:====
+This module adds the ability to import Python modules (:file:`\*.py`,
+:file:`\*.py[co]`) and packages from ZIP-format archives. It is usually not
+needed to use the :mod:`zipimport` module explicitly; it is automatically used
+by the builtin :keyword:`import` mechanism for ``sys.path`` items that are paths
+to ZIP archives.
+
+Typically, ``sys.path`` is a list of directory names as strings.  This module
+also allows an item of ``sys.path`` to be a string naming a ZIP file archive.
+The ZIP archive can contain a subdirectory structure to support package imports,
+and a path within the archive can be specified to only import from a
+subdirectory.  For example, the path :file:`/tmp/example.zip/lib/` would only
+import from the :file:`lib/` subdirectory within the archive.
+
+Any files may be present in the ZIP archive, but only files :file:`.py` and
+:file:`.py[co]` are available for import.  ZIP import of dynamic modules
+(:file:`.pyd`, :file:`.so`) is disallowed. Note that if an archive only contains
+:file:`.py` files, Python will not attempt to modify the archive by adding the
+corresponding :file:`.pyc` or :file:`.pyo` file, meaning that if a ZIP archive
+doesn't contain :file:`.pyc` files, importing may be rather slow.
+
+Using the built-in :func:`reload` function will fail if called on a module
+loaded from a ZIP archive; it is unlikely that :func:`reload` would be needed,
+since this would imply that the ZIP has been altered during runtime.
+Examples
+--------
+
+Here is an example that imports a module from a ZIP archive - note that the
+:mod:`zipimport` module is not explicitly used. ::
+
+   $ unzip -l /tmp/example.zip
+   Archive:  /tmp/example.zip
+     Length     Date   Time    Name
+    --------    ----   ----    ----
+        8467  11-26-02 22:30   jwzthreading.py
+    --------                   -------
+        8467                   1 file
+   $ ./python
+   Python 2.3 (#1, Aug 1 2003, 19:54:32) 
+   >>> import sys
+   >>> sys.path.insert(0, '/tmp/example.zip')  # Add .zip file to front of path
+   >>> import jwzthreading
+   >>> jwzthreading.__file__
+   '/tmp/example.zip/jwzthreading.py'
+
+===EndDoc===
+
+.. function:: zipimporter(archivepath)
+
+   Create a new zipimporter instance. *archivepath* must be a path to a ZIP file.
+   :exc:`ZipImportError` is raised if *archivepath* doesn't point to a valid ZIP
+   archive.
+
+   *archivepath* can also contain a path within the ZIP file -- the importer
+   object will then look under that path instead of the ZIP file root.  For
+   example, an *archivepath* of :file:`foo/bar.zip/lib` will look for modules
+   in the :file:`lib` directory inside the ZIP file :file:`foo/bar.zip`
+   (provided that it exists).
+
+
+   .. method:: find_module(fullname[, path])
+
+      Search for a module specified by *fullname*. *fullname* must be the fully
+      qualified (dotted) module name. It returns the zipimporter instance itself
+      if the module was found, or :const:`None` if it wasn't. The optional
+      *path* argument is ignored---it's there for compatibility with the
+      importer protocol.
+
+
+   .. method:: get_code(fullname)
+
+      Return the code object for the specified module. Raise
+      :exc:`ZipImportError` if the module couldn't be found.
+
+
+   .. method:: get_data(pathname)
+
+      Return the data associated with *pathname*. Raise :exc:`IOError` if the
+      file wasn't found.
+
+
+   .. method:: get_source(fullname)
+
+      Return the source code for the specified module. Raise
+      :exc:`ZipImportError` if the module couldn't be found, return
+      :const:`None` if the archive does contain the module, but has no source
+      for it.
+
+
+   .. method:: is_package(fullname)
+
+      Return True if the module specified by *fullname* is a package. Raise
+      :exc:`ZipImportError` if the module couldn't be found.
+
+
+   .. method:: load_module(fullname)
+
+      Load the module specified by *fullname*. *fullname* must be the fully
+      qualified (dotted) module name. It returns the imported module, or raises
+      :exc:`ZipImportError` if it wasn't found.
+
+
+===Mod:gzip======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:tarfile======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:zlib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+
+
+===Mod:bz2======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+
+
+
+===Mod:csv======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:configparser======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:robotparser======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:netrc======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:xdrlib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:plistlib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+

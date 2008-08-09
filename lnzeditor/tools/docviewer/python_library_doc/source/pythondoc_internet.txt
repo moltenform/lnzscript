@@ -1,0 +1,987 @@
+===Section:Internet======
+
+===Mod:urllib======
+===ModDoc:====
+This module provides a high-level interface for fetching data across the World
+Wide Web.  In particular, the :func:`urlopen` function is similar to the
+built-in function :func:`open`, but accepts Universal Resource Locators (URLs)
+instead of filenames.  Some restrictions apply --- it can only open URLs for
+reading, and no seek operations are available.
+
+Here is an example session that uses the ``GET`` method to retrieve a URL
+containing parameters::
+
+   >>> import urllib
+   >>> params = urllib.urlencode({'spam': 1, 'eggs': 2, 'bacon': 0})
+   >>> f = urllib.urlopen("http://www.musi-cal.com/cgi-bin/query?%s" % params)
+   >>> print f.read()
+
+The following example uses the ``POST`` method instead::
+
+   >>> import urllib
+   >>> params = urllib.urlencode({'spam': 1, 'eggs': 2, 'bacon': 0})
+   >>> f = urllib.urlopen("http://www.musi-cal.com/cgi-bin/query", params)
+   >>> print f.read()
+
+The following example uses an explicitly specified HTTP proxy, overriding
+environment settings::
+
+   >>> import urllib
+   >>> proxies = {'http': 'http://proxy.example.com:8080/'}
+   >>> opener = urllib.FancyURLopener(proxies)
+   >>> f = opener.open("http://www.python.org")
+   >>> f.read()
+
+The following example uses no proxies at all, overriding environment settings::
+
+   >>> import urllib
+   >>> opener = urllib.FancyURLopener({})
+   >>> f = opener.open("http://www.python.org/")
+   >>> f.read()
+===EndDoc===
+
+.. function:: urlopen(url[, data[, proxies]])
+
+   Open a network object denoted by a URL for reading.  If the URL does not have a
+   scheme identifier, or if it has :file:`file:` as its scheme identifier, this
+   opens a local file (without universal newlines); otherwise it opens a socket to
+   a server somewhere on the network.  If the connection cannot be made the
+   :exc:`IOError` exception is raised.  If all went well, a file-like object is
+   returned.  This supports the following methods: :meth:`read`, :meth:`readline`,
+   :meth:`readlines`, :meth:`fileno`, :meth:`close`, :meth:`info`, :meth:`getcode` and
+   :meth:`geturl`.  It also has proper support for the :term:`iterator` protocol. One
+   caveat: the :meth:`read` method, if the size argument is omitted or negative,
+   may not read until the end of the data stream; there is no good way to determine
+   that the entire stream from a socket has been read in the general case.
+
+   Except for the :meth:`info`, :meth:`getcode` and :meth:`geturl` methods,
+   these methods have the same interface as for file objects --- see section
+   :ref:`bltin-file-objects` in this manual.  (It is not a built-in file object,
+   however, so it can't be used at those few places where a true built-in file
+   object is required.)
+
+   .. index:: module: mimetools
+
+   The :meth:`info` method returns an instance of the class
+   :class:`mimetools.Message` containing meta-information associated with the
+   URL.  When the method is HTTP, these headers are those returned by the server
+   at the head of the retrieved HTML page (including Content-Length and
+   Content-Type).  When the method is FTP, a Content-Length header will be
+   present if (as is now usual) the server passed back a file length in response
+   to the FTP retrieval request. A Content-Type header will be present if the
+   MIME type can be guessed.  When the method is local-file, returned headers
+   will include a Date representing the file's last-modified time, a
+   Content-Length giving file size, and a Content-Type containing a guess at the
+   file's type. See also the description of the :mod:`mimetools` module.
+
+   The :meth:`geturl` method returns the real URL of the page.  In some cases, the
+   HTTP server redirects a client to another URL.  The :func:`urlopen` function
+   handles this transparently, but in some cases the caller needs to know which URL
+   the client was redirected to.  The :meth:`geturl` method can be used to get at
+   this redirected URL.
+
+   The :meth:`getcode` method returns the HTTP status code that was sent with the
+   response, or ``None`` if the URL is no HTTP URL.
+
+   If the *url* uses the :file:`http:` scheme identifier, the optional *data*
+   argument may be given to specify a ``POST`` request (normally the request type
+   is ``GET``).  The *data* argument must be in standard
+   :mimetype:`application/x-www-form-urlencoded` format; see the :func:`urlencode`
+   function below.
+
+   The :func:`urlopen` function works transparently with proxies which do not
+   require authentication.  In a Unix or Windows environment, set the
+   :envvar:`http_proxy`, or :envvar:`ftp_proxy` environment variables to a URL that
+   identifies the proxy server before starting the Python interpreter.  For example
+   (the ``'%'`` is the command prompt)::
+
+      % http_proxy="http://www.someproxy.com:3128"
+      % export http_proxy
+      % python
+      ...
+
+   The :envvar:`no_proxy` environment variable can be used to specify hosts which
+   shouldn't be reached via proxy; if set, it should be a comma-separated list
+   of hostname suffixes, optionally with ``:port`` appended, for example
+   ``cern.ch,ncsa.uiuc.edu,some.host:8080``.
+
+   In a Windows environment, if no proxy environment variables are set, proxy
+   settings are obtained from the registry's Internet Settings section.
+
+   .. index:: single: Internet Config
+
+   In a Macintosh environment, :func:`urlopen` will retrieve proxy information from
+   Internet Config.
+
+   Alternatively, the optional *proxies* argument may be used to explicitly specify
+   proxies.  It must be a dictionary mapping scheme names to proxy URLs, where an
+   empty dictionary causes no proxies to be used, and ``None`` (the default value)
+   causes environmental proxy settings to be used as discussed above.  For
+   example::
+
+      # Use http://www.someproxy.com:3128 for http proxying
+      proxies = {'http': 'http://www.someproxy.com:3128'}
+      filehandle = urllib.urlopen(some_url, proxies=proxies)
+      # Don't use any proxies
+      filehandle = urllib.urlopen(some_url, proxies={})
+      # Use proxies from environment - both versions are equivalent
+      filehandle = urllib.urlopen(some_url, proxies=None)
+      filehandle = urllib.urlopen(some_url)
+
+   Proxies which require authentication for use are not currently supported; this
+   is considered an implementation limitation.
+
+   .. versionchanged:: 2.3
+      Added the *proxies* support.
+
+   .. versionchanged:: 2.6
+      Added :meth:`getcode` to returned object and support for the
+      :envvar:`no_proxy` environment variable.
+
+.. function:: urlretrieve(url[, filename[, reporthook[, data]]])
+
+   Copy a network object denoted by a URL to a local file, if necessary. If the URL
+   points to a local file, or a valid cached copy of the object exists, the object
+   is not copied.  Return a tuple ``(filename, headers)`` where *filename* is the
+   local file name under which the object can be found, and *headers* is whatever
+   the :meth:`info` method of the object returned by :func:`urlopen` returned (for
+   a remote object, possibly cached). Exceptions are the same as for
+   :func:`urlopen`.
+
+   The second argument, if present, specifies the file location to copy to (if
+   absent, the location will be a tempfile with a generated name). The third
+   argument, if present, is a hook function that will be called once on
+   establishment of the network connection and once after each block read
+   thereafter.  The hook will be passed three arguments; a count of blocks
+   transferred so far, a block size in bytes, and the total size of the file.  The
+   third argument may be ``-1`` on older FTP servers which do not return a file
+   size in response to a retrieval request.
+
+   If the *url* uses the :file:`http:` scheme identifier, the optional *data*
+   argument may be given to specify a ``POST`` request (normally the request type
+   is ``GET``).  The *data* argument must in standard
+   :mimetype:`application/x-www-form-urlencoded` format; see the :func:`urlencode`
+   function below.
+
+   .. versionchanged:: 2.5
+      :func:`urlretrieve` will raise :exc:`ContentTooShortError` when it detects that
+      the amount of data available  was less than the expected amount (which is the
+      size reported by a  *Content-Length* header). This can occur, for example, when
+      the  download is interrupted.
+
+      The *Content-Length* is treated as a lower bound: if there's more data  to read,
+      urlretrieve reads more data, but if less data is available,  it raises the
+      exception.
+
+      You can still retrieve the downloaded data in this case, it is stored  in the
+      :attr:`content` attribute of the exception instance.
+
+      If no *Content-Length* header was supplied, urlretrieve can not check the size
+      of the data it has downloaded, and just returns it.  In this case you just have
+      to assume that the download was successful.
+
+.. function:: urlcleanup()
+
+   Clear the cache that may have been built up by previous calls to
+   :func:`urlretrieve`.
+
+.. function:: quote(string[, safe])
+
+   Replace special characters in *string* using the ``%xx`` escape. Letters,
+   digits, and the characters ``'_.-'`` are never quoted. The optional *safe*
+   parameter specifies additional characters that should not be quoted --- its
+   default value is ``'/'``.
+
+   Example: ``quote('/~connolly/')`` yields ``'/%7econnolly/'``.
+
+
+.. function:: quote_plus(string[, safe])
+
+   Like :func:`quote`, but also replaces spaces by plus signs, as required for
+   quoting HTML form values.  Plus signs in the original string are escaped unless
+   they are included in *safe*.  It also does not have *safe* default to ``'/'``.
+
+
+.. function:: unquote(string)
+
+   Replace ``%xx`` escapes by their single-character equivalent.
+
+   Example: ``unquote('/%7Econnolly/')`` yields ``'/~connolly/'``.
+
+
+.. function:: unquote_plus(string)
+
+   Like :func:`unquote`, but also replaces plus signs by spaces, as required for
+   unquoting HTML form values.
+
+
+.. function:: urlencode(query[, doseq])
+
+   Convert a mapping object or a sequence of two-element tuples  to a "url-encoded"
+   string, suitable to pass to :func:`urlopen` above as the optional *data*
+   argument.  This is useful to pass a dictionary of form fields to a ``POST``
+   request.  The resulting string is a series of ``key=value`` pairs separated by
+   ``'&'`` characters, where both *key* and *value* are quoted using
+   :func:`quote_plus` above.  If the optional parameter *doseq* is present and
+   evaluates to true, individual ``key=value`` pairs are generated for each element
+   of the sequence. When a sequence of two-element tuples is used as the *query*
+   argument, the first element of each tuple is a key and the second is a value.
+   The order of parameters in the encoded string will match the order of parameter
+   tuples in the sequence. The :mod:`cgi` module provides the functions
+   :func:`parse_qs` and :func:`parse_qsl` which are used to parse query strings
+   into Python data structures.
+
+
+.. function:: pathname2url(path)
+
+   Convert the pathname *path* from the local syntax for a path to the form used in
+   the path component of a URL.  This does not produce a complete URL.  The return
+   value will already be quoted using the :func:`quote` function.
+
+
+.. function:: url2pathname(path)
+
+   Convert the path component *path* from an encoded URL to the local syntax for a
+   path.  This does not accept a complete URL.  This function uses :func:`unquote`
+   to decode *path*.
+   
+.. function:: URLopener([proxies[, **x509]])
+
+   Base class for opening and reading URLs.  Unless you need to support opening
+   objects using schemes other than :file:`http:`, :file:`ftp:`, or :file:`file:`,
+   you probably want to use :class:`FancyURLopener`.
+
+   By default, the :class:`URLopener` class sends a :mailheader:`User-Agent` header
+   of ``urllib/VVV``, where *VVV* is the :mod:`urllib` version number.
+   Applications can define their own :mailheader:`User-Agent` header by subclassing
+   :class:`URLopener` or :class:`FancyURLopener` and setting the class attribute
+   :attr:`version` to an appropriate string value in the subclass definition.
+
+   The optional *proxies* parameter should be a dictionary mapping scheme names to
+   proxy URLs, where an empty dictionary turns proxies off completely.  Its default
+   value is ``None``, in which case environmental proxy settings will be used if
+   present, as discussed in the definition of :func:`urlopen`, above.
+
+   Additional keyword parameters, collected in *x509*, may be used for
+   authentication of the client when using the :file:`https:` scheme.  The keywords
+   *key_file* and *cert_file* are supported to provide an  SSL key and certificate;
+   both are needed to support client authentication.
+
+   :class:`URLopener` objects will raise an :exc:`IOError` exception if the server
+   returns an error code.   
+   
+   methods
+-----------
+open(fullurl[, data])
+   
+   
+       Open *fullurl* using the appropriate protocol.  This method sets up cache and
+       proxy information, then calls the appropriate open method with its input
+       arguments.  If the scheme is not recognized, :meth:`open_unknown` is called.
+       The *data* argument has the same meaning as the *data* argument of
+       :func:`urlopen`.
+       
+retrieve(url[, filename[, reporthook[, data]]])
+
+Retrieves the contents of *url* and places it in *filename*.  The return value
+       is a tuple consisting of a local filename and either a
+       :class:`mimetools.Message` object containing the response headers (for remote
+       URLs) or ``None`` (for local URLs).  The caller must then open and read the
+       contents of *filename*.  If *filename* is not given and the URL refers to a
+       local file, the input filename is returned.  If the URL is non-local and
+       *filename* is not given, the filename is the output of :func:`tempfile.mktemp`
+       with a suffix that matches the suffix of the last path component of the input
+       URL.  If *reporthook* is given, it must be a function accepting three numeric
+       parameters.  It will be called after each chunk of data is read from the
+       network.  *reporthook* is ignored for local URLs.
+
+       If the *url* uses the :file:`http:` scheme identifier, the optional *data*
+       argument may be given to specify a ``POST`` request (normally the request type
+       is ``GET``).  The *data* argument must in standard
+       :mimetype:`application/x-www-form-urlencoded` format; see the :func:`urlencode`
+       function below.
+
+   
+   
+.. function:: FancyURLopener([proxies[, **x509]])
+
+   :class:`FancyURLopener` subclasses :class:`URLopener` providing default handling
+   for the following HTTP response codes: 301, 302, 303, 307 and 401.  For the 30x
+   response codes listed above, the :mailheader:`Location` header is used to fetch
+   the actual URL.  For 401 response codes (authentication required), basic HTTP
+   authentication is performed.  For the 30x response codes, recursion is bounded
+   by the value of the *maxtries* attribute, which defaults to 10.
+
+   For all other response codes, the method :meth:`http_error_default` is called
+   which you can override in subclasses to handle the error appropriately.
+
+   .. note::
+
+      According to the letter of :rfc:`2616`, 301 and 302 responses to POST requests
+      must not be automatically redirected without confirmation by the user.  In
+      reality, browsers do allow automatic redirection of these responses, changing
+      the POST to a GET, and :mod:`urllib` reproduces this behaviour.
+      
+        The :class:`FancyURLopener` class offers one additional method that should be
+    overloaded to provide the appropriate behavior:
+
+       prompt_user_passwd(host, realm)
+
+       Return information needed to authenticate the user at the given host in the
+       specified security realm.  The return value should be a tuple, ``(user,
+       password)``, which can be used for basic authentication.
+
+       The implementation prompts for this information on the terminal; an application
+       should override this method to use an appropriate interaction model in the local
+       environment.
+      
+   
+===Mod:urllib2======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:webbrowser======
+===ModDoc:====
+The :mod:`webbrowser` module provides a high-level interface to allow displaying
+Web-based documents to users. Under most circumstances, simply calling the
+:func:`open` function from this module will do the right thing.
+
+Under Unix, graphical browsers are preferred under X11, but text-mode browsers
+will be used if graphical browsers are not available or an X11 display isn't
+available.  If text-mode browsers are used, the calling process will block until
+the user exits the browser.
+
+If the environment variable :envvar:`BROWSER` exists, it is interpreted to
+override the platform default list of browsers, as a os.pathsep-separated list
+of browsers to try in order.  When the value of a list part contains the string
+``%s``, then it is  interpreted as a literal browser command line to be used
+with the argument URL substituted for ``%s``; if the part does not contain
+``%s``, it is simply interpreted as the name of the browser to launch.
+
+For non-Unix platforms, or when a remote browser is available on Unix, the
+controlling process will not wait for the user to finish with the browser, but
+allow the remote browser to maintain its own windows on the display.  If remote
+browsers are not available on Unix, the controlling process will launch a new
+browser and wait.
+
+The script :program:`webbrowser` can be used as a command-line interface for the
+module. It accepts an URL as the argument. It accepts the following optional
+parameters: :option:`-n` opens the URL in a new browser window, if possible;
+:option:`-t` opens the URL in a new browser page ("tab"). The options are,
+naturally, mutually exclusive.
+===EndDoc===
+.. function:: open(url[, new=0[, autoraise=1]])
+
+   Display *url* using the default browser. If *new* is 0, the *url* is opened in
+   the same browser window if possible.  If *new* is 1, a new browser window is
+   opened if possible.  If *new* is 2, a new browser page ("tab") is opened if
+   possible.  If *autoraise* is true, the window is raised if possible (note that
+   under many window managers this will occur regardless of the setting of this
+   variable).
+
+   .. versionchanged:: 2.5
+      *new* can now be 2.
+
+
+.. function:: open_new(url)
+
+   Open *url* in a new window of the default browser, if possible, otherwise, open
+   *url* in the only browser window.
+
+
+.. function:: open_new_tab(url)
+
+   Open *url* in a new page ("tab") of the default browser, if possible, otherwise
+   equivalent to :func:`open_new`.
+
+   .. versionadded:: 2.5
+
+
+.. function:: get([name])
+
+   Return a controller object for the browser type *name*.  If *name* is empty,
+   return a controller for a default browser appropriate to the caller's
+   environment.
+
+
+.. function:: register(name, constructor[, instance])
+
+   Register the browser type *name*.  Once a browser type is registered, the
+   :func:`get` function can return a controller for that browser type.  If
+   *instance* is not provided, or is ``None``, *constructor* will be called without
+   parameters to create an instance when needed.  If *instance* is provided,
+   *constructor* will never be called, and may be ``None``.
+
+   This entry point is only useful if you plan to either set the :envvar:`BROWSER`
+   variable or call :func:`get` with a nonempty argument matching the name of a
+   handler you declare.
+
+.. function:: (Browser controller objects)
+
+Browser controllers provide two methods which parallel two of the module-level
+convenience functions:
+
+
+controller.open(url[, new[, autoraise=1]])
+
+   Display *url* using the browser handled by this controller. If *new* is 1, a new
+   browser window is opened if possible. If *new* is 2, a new browser page ("tab")
+   is opened if possible.
+
+ controller.open_new(url)
+
+   Open *url* in a new window of the browser handled by this controller, if
+   possible, otherwise, open *url* in the only browser window.  Alias
+   :func:`open_new`.
+
+
+controller.open_new_tab(url)
+
+   Open *url* in a new page ("tab") of the browser handled by this controller, if
+   possible, otherwise equivalent to :func:`open_new`.
+
+   .. versionadded:: 2.5
+
+
+===Mod:urlparse======
+===ModDoc:====
+This module defines a standard interface to break Uniform Resource Locator (URL)
+strings up in components (addressing scheme, network location, path etc.), to
+combine the components back into a URL string, and to convert a "relative URL"
+to an absolute URL given a "base URL."
+
+The module has been designed to match the Internet RFC on Relative Uniform
+Resource Locators (and discovered a bug in an earlier draft!). It supports the
+following URL schemes: ``file``, ``ftp``, ``gopher``, ``hdl``, ``http``,
+``https``, ``imap``, ``mailto``, ``mms``, ``news``,  ``nntp``, ``prospero``,
+``rsync``, ``rtsp``, ``rtspu``,  ``sftp``, ``shttp``, ``sip``, ``sips``,
+``snews``, ``svn``,  ``svn+ssh``, ``telnet``, ``wais``.
+
+
+===EndDoc===
+.. function:: urlparse(urlstring[, default_scheme[, allow_fragments]])
+
+   Parse a URL into six components, returning a 6-tuple.  This corresponds to the
+   general structure of a URL: ``scheme://netloc/path;parameters?query#fragment``.
+   Each tuple item is a string, possibly empty. The components are not broken up in
+   smaller parts (for example, the network location is a single string), and %
+   escapes are not expanded. The delimiters as shown above are not part of the
+   result, except for a leading slash in the *path* component, which is retained if
+   present.  For example:
+
+      >>> from urlparse import urlparse
+      >>> o = urlparse('http://www.cwi.nl:80/%7Eguido/Python.html')
+      >>> o   # doctest: +NORMALIZE_WHITESPACE
+      ParseResult(scheme='http', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html',
+                  params='', query='', fragment='')
+      >>> o.scheme
+      'http'
+      >>> o.port
+      80
+      >>> o.geturl()
+      'http://www.cwi.nl:80/%7Eguido/Python.html'
+
+   If the *default_scheme* argument is specified, it gives the default addressing
+   scheme, to be used only if the URL does not specify one.  The default value for
+   this argument is the empty string.
+
+   If the *allow_fragments* argument is false, fragment identifiers are not
+   allowed, even if the URL's addressing scheme normally does support them.  The
+   default value for this argument is :const:`True`.
+
+   The return value is actually an instance of a subclass of :class:`tuple`.  This
+   class has the following additional read-only convenience attributes:
+
+   +------------------+-------+--------------------------+----------------------+
+   | Attribute        | Index | Value                    | Value if not present |
+   +==================+=======+==========================+======================+
+   | :attr:`scheme`   | 0     | URL scheme specifier     | empty string         |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`netloc`   | 1     | Network location part    | empty string         |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`path`     | 2     | Hierarchical path        | empty string         |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`params`   | 3     | Parameters for last path | empty string         |
+   |                  |       | element                  |                      |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`query`    | 4     | Query component          | empty string         |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`fragment` | 5     | Fragment identifier      | empty string         |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`username` |       | User name                | :const:`None`        |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`password` |       | Password                 | :const:`None`        |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`hostname` |       | Host name (lower case)   | :const:`None`        |
+   +------------------+-------+--------------------------+----------------------+
+   | :attr:`port`     |       | Port number as integer,  | :const:`None`        |
+   |                  |       | if present               |                      |
+   +------------------+-------+--------------------------+----------------------+
+
+   See section :ref:`urlparse-result-object` for more information on the result
+   object.
+
+   .. versionchanged:: 2.5
+      Added attributes to return value.
+
+
+.. function:: urlunparse(parts)
+
+   Construct a URL from a tuple as returned by ``urlparse()``. The *parts* argument
+   can be any six-item iterable. This may result in a slightly different, but
+   equivalent URL, if the URL that was parsed originally had unnecessary delimiters
+   (for example, a ? with an empty query; the RFC states that these are
+   equivalent).
+
+
+.. function:: urlsplit(urlstring[, default_scheme[, allow_fragments]])
+
+   This is similar to :func:`urlparse`, but does not split the params from the URL.
+   This should generally be used instead of :func:`urlparse` if the more recent URL
+   syntax allowing parameters to be applied to each segment of the *path* portion
+   of the URL (see :rfc:`2396`) is wanted.  A separate function is needed to
+   separate the path segments and parameters.  This function returns a 5-tuple:
+   (addressing scheme, network location, path, query, fragment identifier).
+
+   The return value is actually an instance of a subclass of :class:`tuple`.  This
+   class has the following additional read-only convenience attributes:
+
+   +------------------+-------+-------------------------+----------------------+
+   | Attribute        | Index | Value                   | Value if not present |
+   +==================+=======+=========================+======================+
+   | :attr:`scheme`   | 0     | URL scheme specifier    | empty string         |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`netloc`   | 1     | Network location part   | empty string         |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`path`     | 2     | Hierarchical path       | empty string         |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`query`    | 3     | Query component         | empty string         |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`fragment` | 4     | Fragment identifier     | empty string         |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`username` |       | User name               | :const:`None`        |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`password` |       | Password                | :const:`None`        |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`hostname` |       | Host name (lower case)  | :const:`None`        |
+   +------------------+-------+-------------------------+----------------------+
+   | :attr:`port`     |       | Port number as integer, | :const:`None`        |
+   |                  |       | if present              |                      |
+   +------------------+-------+-------------------------+----------------------+
+
+   See section :ref:`urlparse-result-object` for more information on the result
+   object.
+
+   .. versionadded:: 2.2
+
+   .. versionchanged:: 2.5
+      Added attributes to return value.
+
+
+.. function:: urlunsplit(parts)
+
+   Combine the elements of a tuple as returned by :func:`urlsplit` into a complete
+   URL as a string. The *parts* argument can be any five-item iterable. This may
+   result in a slightly different, but equivalent URL, if the URL that was parsed
+   originally had unnecessary delimiters (for example, a ? with an empty query; the
+   RFC states that these are equivalent).
+
+   .. versionadded:: 2.2
+
+
+.. function:: urljoin(base, url[, allow_fragments])
+
+   Construct a full ("absolute") URL by combining a "base URL" (*base*) with
+   another URL (*url*).  Informally, this uses components of the base URL, in
+   particular the addressing scheme, the network location and (part of) the path,
+   to provide missing components in the relative URL.  For example:
+
+      >>> from urlparse import urljoin
+      >>> urljoin('http://www.cwi.nl/%7Eguido/Python.html', 'FAQ.html')
+      'http://www.cwi.nl/%7Eguido/FAQ.html'
+
+   The *allow_fragments* argument has the same meaning and default as for
+   :func:`urlparse`.
+
+   .. note::
+
+      If *url* is an absolute URL (that is, starting with ``//`` or ``scheme://``),
+      the *url*'s host name and/or scheme will be present in the result.  For example:
+
+   .. doctest::
+
+      >>> urljoin('http://www.cwi.nl/%7Eguido/Python.html',
+      ...         '//www.python.org/%7Eguido')
+      'http://www.python.org/%7Eguido'
+
+   If you do not want that behavior, preprocess the *url* with :func:`urlsplit` and
+   :func:`urlunsplit`, removing possible *scheme* and *netloc* parts.
+
+
+.. function:: urldefrag(url)
+
+   If *url* contains a fragment identifier, returns a modified version of *url*
+   with no fragment identifier, and the fragment identifier as a separate string.
+   If there is no fragment identifier in *url*, returns *url* unmodified and an
+   empty string.
+
+===Mod:ftplib======
+===ModDoc:====
+This module defines the class :class:`FTP` and a few related items. The
+:class:`FTP` class implements the client side of the FTP protocol.  You can use
+this to write Python programs that perform a variety of automated FTP jobs, such
+as mirroring other ftp servers.  It is also used by the module :mod:`urllib` to
+handle URLs that use FTP.  For more information on FTP (File Transfer Protocol),
+see Internet :rfc:`959`.
+
+Here's a sample session using the :mod:`ftplib` module::
+
+   >>> from ftplib import FTP
+   >>> ftp = FTP('ftp.cwi.nl')   # connect to host, default port
+   >>> ftp.login()               # user anonymous, passwd anonymous@
+   >>> ftp.retrlines('LIST')     # list directory contents
+   total 24418
+   drwxrwsr-x   5 ftp-usr  pdmaint     1536 Mar 20 09:48 .
+   dr-xr-srwt 105 ftp-usr  pdmaint     1536 Mar 21 14:32 ..
+   -rw-r--r--   1 ftp-usr  pdmaint     5305 Mar 20 09:48 INDEX
+    .
+    .
+    .
+   >>> ftp.retrbinary('RETR README', open('README', 'wb').write)
+   '226 Transfer complete.'
+   >>> ftp.quit()
+===EndDoc===
+.. function:: FTP([host[, user[, passwd[, acct[, timeout]]]]])
+
+   Return a new instance of the :class:`FTP` class.  When *host* is given, the
+   method call ``connect(host)`` is made.  When *user* is given, additionally the
+   method call ``login(user, passwd, acct)`` is made (where *passwd* and *acct*
+   default to the empty string when not given). The optional *timeout* parameter
+   specifies a timeout in seconds for the connection attempt (if is not specified,
+   or passed as None, the global default timeout setting will be used).
+   
+.. method:: FTP.set_debuglevel(level)
+
+   Set the instance's debugging level.  This controls the amount of debugging
+   output printed.  The default, ``0``, produces no debugging output.  A value of
+   ``1`` produces a moderate amount of debugging output, generally a single line
+   per request.  A value of ``2`` or higher produces the maximum amount of
+   debugging output, logging each line sent and received on the control connection.
+
+
+.. method:: FTP.connect(host[, port[, timeout]])
+
+   Connect to the given host and port.  The default port number is ``21``, as
+   specified by the FTP protocol specification.  It is rarely needed to specify a
+   different port number.  This function should be called only once for each
+   instance; it should not be called at all if a host was given when the instance
+   was created.  All other methods can only be used after a connection has been
+   made.
+
+   The optional *timeout* parameter specifies a timeout in seconds for the
+   connection attempt. If is not specified, or passed as None, the  object timeout
+   is used (the timeout that you passed when instantiating the class); if the
+   object timeout is also None, the global default timeout  setting will be used.
+
+   .. versionchanged:: 2.6
+      *timeout* was added.
+
+
+.. method:: FTP.getwelcome()
+
+   Return the welcome message sent by the server in reply to the initial
+   connection.  (This message sometimes contains disclaimers or help information
+   that may be relevant to the user.)
+
+
+.. method:: FTP.login([user[, passwd[, acct]]])
+
+   Log in as the given *user*.  The *passwd* and *acct* parameters are optional and
+   default to the empty string.  If no *user* is specified, it defaults to
+   ``'anonymous'``.  If *user* is ``'anonymous'``, the default *passwd* is
+   ``'anonymous@'``.  This function should be called only once for each instance,
+   after a connection has been established; it should not be called at all if a
+   host and user were given when the instance was created.  Most FTP commands are
+   only allowed after the client has logged in.
+
+
+.. method:: FTP.abort()
+
+   Abort a file transfer that is in progress.  Using this does not always work, but
+   it's worth a try.
+
+
+.. method:: FTP.sendcmd(command)
+
+   Send a simple command string to the server and return the response string.
+
+
+.. method:: FTP.voidcmd(command)
+
+   Send a simple command string to the server and handle the response. Return
+   nothing if a response code in the range 200--299 is received. Raise an exception
+   otherwise.
+
+
+.. method:: FTP.retrbinary(command, callback[, maxblocksize[, rest]])
+
+   Retrieve a file in binary transfer mode.  *command* should be an appropriate
+   ``RETR`` command: ``'RETR filename'``. The *callback* function is called for
+   each block of data received, with a single string argument giving the data
+   block. The optional *maxblocksize* argument specifies the maximum chunk size to
+   read on the low-level socket object created to do the actual transfer (which
+   will also be the largest size of the data blocks passed to *callback*).  A
+   reasonable default is chosen. *rest* means the same thing as in the
+   :meth:`transfercmd` method.
+
+
+.. method:: FTP.retrlines(command[, callback])
+
+   Retrieve a file or directory listing in ASCII transfer mode.  *command*
+   should be an appropriate ``RETR`` command (see :meth:`retrbinary`) or a
+   command such as ``LIST``, ``NLST`` or ``MLSD`` (usually just the string
+   ``'LIST'``).  The *callback* function is called for each line, with the
+   trailing CRLF stripped.  The default *callback* prints the line to
+   ``sys.stdout``.
+
+
+.. method:: FTP.set_pasv(boolean)
+
+   Enable "passive" mode if *boolean* is true, other disable passive mode.  (In
+   Python 2.0 and before, passive mode was off by default; in Python 2.1 and later,
+   it is on by default.)
+
+
+.. method:: FTP.storbinary(command, file[, blocksize, callback])
+
+   Store a file in binary transfer mode.  *command* should be an appropriate
+   ``STOR`` command: ``"STOR filename"``. *file* is an open file object which is
+   read until EOF using its :meth:`read` method in blocks of size *blocksize* to
+   provide the data to be stored.  The *blocksize* argument defaults to 8192.
+   *callback* is an optional single parameter callable that is called
+   on each block of data after it is sent.
+
+   .. versionchanged:: 2.1
+      default for *blocksize* added.
+
+   .. versionchanged:: 2.6
+      *callback* parameter added.
+
+
+.. method:: FTP.storlines(command, file[, callback])
+
+   Store a file in ASCII transfer mode.  *command* should be an appropriate
+   ``STOR`` command (see :meth:`storbinary`).  Lines are read until EOF from the
+   open file object *file* using its :meth:`readline` method to provide the data to
+   be stored.  *callback* is an optional single parameter callable
+   that is called on each line after it is sent.
+
+   .. versionchanged:: 2.6
+      *callback* parameter added.
+
+
+.. method:: FTP.transfercmd(cmd[, rest])
+
+   Initiate a transfer over the data connection.  If the transfer is active, send a
+   ``EPRT`` or  ``PORT`` command and the transfer command specified by *cmd*, and
+   accept the connection.  If the server is passive, send a ``EPSV`` or ``PASV``
+   command, connect to it, and start the transfer command.  Either way, return the
+   socket for the connection.
+
+   If optional *rest* is given, a ``REST`` command is sent to the server, passing
+   *rest* as an argument.  *rest* is usually a byte offset into the requested file,
+   telling the server to restart sending the file's bytes at the requested offset,
+   skipping over the initial bytes.  Note however that RFC 959 requires only that
+   *rest* be a string containing characters in the printable range from ASCII code
+   33 to ASCII code 126.  The :meth:`transfercmd` method, therefore, converts
+   *rest* to a string, but no check is performed on the string's contents.  If the
+   server does not recognize the ``REST`` command, an :exc:`error_reply` exception
+   will be raised.  If this happens, simply call :meth:`transfercmd` without a
+   *rest* argument.
+
+
+.. method:: FTP.ntransfercmd(cmd[, rest])
+
+   Like :meth:`transfercmd`, but returns a tuple of the data connection and the
+   expected size of the data.  If the expected size could not be computed, ``None``
+   will be returned as the expected size.  *cmd* and *rest* means the same thing as
+   in :meth:`transfercmd`.
+
+
+.. method:: FTP.nlst(argument[, ...])
+
+   Return a list of files as returned by the ``NLST`` command.  The optional
+   *argument* is a directory to list (default is the current server directory).
+   Multiple arguments can be used to pass non-standard options to the ``NLST``
+   command.
+
+
+.. method:: FTP.dir(argument[, ...])
+
+   Produce a directory listing as returned by the ``LIST`` command, printing it to
+   standard output.  The optional *argument* is a directory to list (default is the
+   current server directory).  Multiple arguments can be used to pass non-standard
+   options to the ``LIST`` command.  If the last argument is a function, it is used
+   as a *callback* function as for :meth:`retrlines`; the default prints to
+   ``sys.stdout``.  This method returns ``None``.
+
+
+.. method:: FTP.rename(fromname, toname)
+
+   Rename file *fromname* on the server to *toname*.
+
+
+.. method:: FTP.delete(filename)
+
+   Remove the file named *filename* from the server.  If successful, returns the
+   text of the response, otherwise raises :exc:`error_perm` on permission errors or
+   :exc:`error_reply` on other errors.
+
+
+.. method:: FTP.cwd(pathname)
+
+   Set the current directory on the server.
+
+
+.. method:: FTP.mkd(pathname)
+
+   Create a new directory on the server.
+
+
+.. method:: FTP.pwd()
+
+   Return the pathname of the current directory on the server.
+
+
+.. method:: FTP.rmd(dirname)
+
+   Remove the directory named *dirname* on the server.
+
+
+.. method:: FTP.size(filename)
+
+   Request the size of the file named *filename* on the server.  On success, the
+   size of the file is returned as an integer, otherwise ``None`` is returned.
+   Note that the ``SIZE`` command is not  standardized, but is supported by many
+   common server implementations.
+
+
+.. method:: FTP.quit()
+
+   Send a ``QUIT`` command to the server and close the connection. This is the
+   "polite" way to close a connection, but it may raise an exception of the server
+   reponds with an error to the ``QUIT`` command.  This implies a call to the
+   :meth:`close` method which renders the :class:`FTP` instance useless for
+   subsequent calls (see below).
+
+
+.. method:: FTP.close()
+
+   Close the connection unilaterally.  This should not be applied to an already
+   closed connection such as after a successful call to :meth:`quit`.  After this
+   call the :class:`FTP` instance should not be used any more (after a call to
+   :meth:`close` or :meth:`quit` you cannot reopen the connection by issuing
+   another :meth:`login` method).
+
+===Mod:cgi======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:cgitb======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:wsgiref======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+
+
+===Mod:httplib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:poplib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:imaplib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:nntplib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:smtplib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:smtpd======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:telnetlib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:uuid======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:socketserver======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:basehttpserver======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:simplehttpserver======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:cgihttpserver======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:cookielib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:cookie======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:xmlrpclib======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:simplexmlrpcserver======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:docxmlrpcserver======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)

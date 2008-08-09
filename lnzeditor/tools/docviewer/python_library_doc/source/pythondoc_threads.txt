@@ -1,0 +1,1352 @@
+
+===Section:Threads, Communication=============
+
+===Mod:threading======
+===ModDoc:threading====
+
+This module constructs higher-level threading interfaces on top of the  lower
+level :mod:`thread` module.
+See also the :mod:`mutex` and :mod:`Queue` modules.
+
+The Thread class represents an activity that is run in a separate thread of control.
+There are two ways to specify the activity: by passing a callable object to the
+constructor, or by overriding the :meth:`run` method in a subclass.  No other
+methods (except for the constructor) should be overridden in a subclass.  In
+other words,  *only*  override the :meth:`__init__` and :meth:`run` methods of
+this class.
+
+Once a thread object is created, its activity must be started by calling the
+thread's :meth:`start` method.  This invokes the :meth:`run` method in a
+separate thread of control.
+
+Once the thread's activity is started, the thread is considered 'alive'. It
+stops being alive when its :meth:`run` method terminates -- either normally, or
+by raising an unhandled exception.  The :meth:`isAlive` method tests whether the
+thread is alive.
+
+Other threads can call a thread's :meth:`join` method.  This blocks the calling
+thread until the thread whose :meth:`join` method is called is terminated.
+
+A thread has a name.  The name can be passed to the constructor, set with the
+:meth:`setName` method, and retrieved with the :meth:`getName` method.
+
+A thread can be flagged as a "daemon thread".  The significance of this flag is
+that the entire Python program exits when only daemon threads are left.  The
+initial value is inherited from the creating thread.  The flag can be set with
+the :meth:`setDaemon` method and retrieved with the :meth:`isDaemon` method.
+
+There is a "main thread" object; this corresponds to the initial thread of
+control in the Python program.  It is not a daemon thread.
+
+There is the possibility that "dummy thread objects" are created. These are
+thread objects corresponding to "alien threads", which are threads of control
+started outside the threading module, such as directly from C code.  Dummy
+thread objects have limited functionality; they are always considered alive and
+daemonic, and cannot be :meth:`join`\ ed.  They are never deleted, since it is
+impossible to detect the termination of alien threads.
+===EndDoc====
+
+
+.. function:: Thread(group=None, target=None, name=None, args=(), kwargs={})
+
+   This constructor should always be called with keyword arguments.  Arguments are:
+
+   *group* should be ``None``; reserved for future extension when a
+   :class:`ThreadGroup` class is implemented.
+
+   *target* is the callable object to be invoked by the :meth:`run` method.
+   Defaults to ``None``, meaning nothing is called.
+
+   *name* is the thread name.  By default, a unique name is constructed of the form
+   "Thread-*N*" where *N* is a small decimal number.
+
+   *args* is the argument tuple for the target invocation.  Defaults to ``()``.
+
+   *kwargs* is a dictionary of keyword arguments for the target invocation.
+   Defaults to ``{}``.
+
+   If the subclass overrides the constructor, it must make sure to invoke the base
+   class constructor (``Thread.__init__()``) before doing anything else to the
+   thread.
+   
+.. method:: Thread.start()
+
+   Start the thread's activity.
+
+   It must be called at most once per thread object.  It arranges for the object's
+   :meth:`run` method to be invoked in a separate thread of control.
+
+   This method will raise a :exc:`RuntimeException` if called more than once on the
+   same thread object.
+
+
+.. method:: Thread.run()
+
+   Method representing the thread's activity.
+
+   You may override this method in a subclass.  The standard :meth:`run` method
+   invokes the callable object passed to the object's constructor as the *target*
+   argument, if any, with sequential and keyword arguments taken from the *args*
+   and *kwargs* arguments, respectively.
+
+
+.. method:: Thread.join([timeout])
+
+   Wait until the thread terminates. This blocks the calling thread until the
+   thread whose :meth:`join` method is called terminates -- either normally or
+   through an unhandled exception -- or until the optional timeout occurs.
+
+   When the *timeout* argument is present and not ``None``, it should be a floating
+   point number specifying a timeout for the operation in seconds (or fractions
+   thereof). As :meth:`join` always returns ``None``, you must call :meth:`isAlive`
+   after :meth:`join` to decide whether a timeout happened -- if the thread is
+   still alive, the :meth:`join` call timed out.
+
+   When the *timeout* argument is not present or ``None``, the operation will block
+   until the thread terminates.
+
+   A thread can be :meth:`join`\ ed many times.
+
+   :meth:`join` raises a :exc:`RuntimeError` if an attempt is made to join
+   the current thread as that would cause a deadlock. It is also an error to
+   :meth:`join` a thread before it has been started and attempts to do so
+   raises the same exception.
+
+
+.. method:: Thread.getName()
+
+   Return the thread's name.
+
+
+.. method:: Thread.setName(name)
+
+   Set the thread's name.
+
+   The name is a string used for identification purposes only. It has no semantics.
+   Multiple threads may be given the same name.  The initial name is set by the
+   constructor.
+
+
+.. method:: Thread.isAlive()
+
+   Return whether the thread is alive.
+
+   Roughly, a thread is alive from the moment the :meth:`start` method returns
+   until its :meth:`run` method terminates. The module function :func:`enumerate`
+   returns a list of all alive threads.
+
+
+.. method:: Thread.isDaemon()
+
+   Return the thread's daemon flag.
+
+
+.. method:: Thread.setDaemon(daemonic)
+
+   Set the thread's daemon flag to the Boolean value *daemonic*. This must be
+   called before :meth:`start` is called, otherwise :exc:`RuntimeError` is raised.
+
+   The initial value is inherited from the creating thread.
+
+   The entire Python program exits when no alive non-daemon threads are left.
+
+
+.. function:: Timer(interval, function, args=[], kwargs={})
+
+   Create a timer that will run *function* with arguments *args* and  keyword
+   arguments *kwargs*, after *interval* seconds have passed.
+   
+This class represents an action that should be run only after a certain amount
+of time has passed --- a timer.  :class:`Timer` is a subclass of :class:`Thread`
+and as such also functions as an example of creating custom threads.
+
+Timers are started, as with threads, by calling their :meth:`start` method.  The
+timer can be stopped (before its action has begun) by calling the :meth:`cancel`
+method.  The interval the timer will wait before executing its action may not be
+exactly the same as the interval specified by the user.
+
+For example::
+
+   def hello():
+       print "hello, world"
+
+   t = Timer(30.0, hello)
+   t.start() # after 30 seconds, "hello, world" will be printed
+
+	t.cancel()
+   Stop the timer, and cancel the execution of the timer's action.  This will only
+   work if the timer is still in its waiting stage.
+   
+   
+.. function:: activeCount()
+
+   Return the number of :class:`Thread` objects currently alive.  The returned
+   count is equal to the length of the list returned by :func:`enumerate`.
+
+
+.. function:: Condition()
+   :noindex:
+
+   A factory function that returns a new condition variable object. A condition
+   variable allows one or more threads to wait until they are notified by another
+   thread.
+
+
+.. function:: currentThread()
+
+   Return the current :class:`Thread` object, corresponding to the caller's thread
+   of control.  If the caller's thread of control was not created through the
+   :mod:`threading` module, a dummy thread object with limited functionality is
+   returned.
+
+
+.. function:: enumerate()
+
+   Return a list of all :class:`Thread` objects currently alive.  The list includes
+   daemonic threads, dummy thread objects created by :func:`currentThread`, and the
+   main thread.  It excludes terminated threads and threads that have not yet been
+   started.
+
+
+.. function:: Event()
+   :noindex:
+
+   A factory function that returns a new event object.  An event manages a flag
+   that can be set to true with the :meth:`set` method and reset to false with the
+   :meth:`clear` method.  The :meth:`wait` method blocks until the flag is true.
+
+
+.. function:: local
+
+   A class that represents thread-local data.  Thread-local data are data whose
+   values are thread specific.  To manage thread-local data, just create an
+   instance of :class:`local` (or a subclass) and store attributes on it::
+
+      mydata = threading.local()
+      mydata.x = 1
+
+   The instance's values will be different for separate threads.
+
+   For more details and extensive examples, see the documentation string of the
+   :mod:`_threading_local` module.
+
+   .. versionadded:: 2.4
+
+
+.. function:: Lock()
+
+   A factory function that returns a new primitive lock object.  Once a thread has
+   acquired it, subsequent attempts to acquire it block, until it is released; any
+   thread may release it.
+
+
+.. function:: RLock()
+
+   A factory function that returns a new reentrant lock object. A reentrant lock
+   must be released by the thread that acquired it. Once a thread has acquired a
+   reentrant lock, the same thread may acquire it again without blocking; the
+   thread must release it once for each time it has acquired it.
+
+
+.. function:: Semaphore([value])
+   :noindex:
+
+   A factory function that returns a new semaphore object.  A semaphore manages a
+   counter representing the number of :meth:`release` calls minus the number of
+   :meth:`acquire` calls, plus an initial value. The :meth:`acquire` method blocks
+   if necessary until it can return without making the counter negative.  If not
+   given, *value* defaults to 1.
+
+
+.. function:: BoundedSemaphore([value])
+
+   A factory function that returns a new bounded semaphore object.  A bounded
+   semaphore checks to make sure its current value doesn't exceed its initial
+   value.  If it does, :exc:`ValueError` is raised. In most situations semaphores
+   are used to guard resources with limited capacity.  If the semaphore is released
+   too many times it's a sign of a bug.  If not given, *value* defaults to 1.
+
+
+.. function:: settrace(func)
+
+   .. index:: single: trace function
+
+   Set a trace function for all threads started from the :mod:`threading` module.
+   The *func* will be passed to  :func:`sys.settrace` for each thread, before its
+   :meth:`run` method is called.
+
+   .. versionadded:: 2.3
+
+
+.. function:: setprofile(func)
+
+   .. index:: single: profile function
+
+   Set a profile function for all threads started from the :mod:`threading` module.
+   The *func* will be passed to  :func:`sys.setprofile` for each thread, before its
+   :meth:`run` method is called.
+
+   .. versionadded:: 2.3
+
+
+.. function:: stack_size([size])
+
+   Return the thread stack size used when creating new threads.  The optional
+   *size* argument specifies the stack size to be used for subsequently created
+   threads, and must be 0 (use platform or configured default) or a positive
+   integer value of at least 32,768 (32kB). If changing the thread stack size is
+   unsupported, a :exc:`ThreadError` is raised.  If the specified stack size is
+   invalid, a :exc:`ValueError` is raised and the stack size is unmodified.  32kB
+   is currently the minimum supported stack size value to guarantee sufficient
+   stack space for the interpreter itself.  Note that some platforms may have
+   particular restrictions on values for the stack size, such as requiring a
+   minimum stack size > 32kB or requiring allocation in multiples of the system
+   memory page size - platform documentation should be referred to for more
+   information (4kB pages are common; using multiples of 4096 for the stack size is
+   the suggested approach in the absence of more specific information).
+   Availability: Windows, systems with POSIX threads.
+   
+   
+.. function:: (documentation incomplete)
+
+===Mod:ctypes======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:socket======
+===ModDoc:socket====
+This module provides access to the BSD *socket* interface. It is available on
+all modern Unix systems, Windows, Mac OS X, BeOS, OS/2, and probably additional
+platforms.
+
+.. note::
+
+   Some behavior may be platform dependent, since calls are made to the operating
+   system socket APIs.
+
+For an introduction to socket programming (in C), see the following papers: An
+Introductory 4.3BSD Interprocess Communication Tutorial, by Stuart Sechrest and
+An Advanced 4.3BSD Interprocess Communication Tutorial, by Samuel J.  Leffler et
+al, both in the UNIX Programmer's Manual, Supplementary Documents 1 (sections
+PS1:7 and PS1:8).  The platform-specific reference material for the various
+socket-related system calls are also a valuable source of information on the
+details of socket semantics.  For Unix, refer to the manual pages; for Windows,
+see the WinSock (or Winsock 2) specification. For IPv6-ready APIs, readers may
+want to refer to :rfc:`3493` titled Basic Socket Interface Extensions for IPv6.
+
+.. index:: object: socket
+
+The Python interface is a straightforward transliteration of the Unix system
+call and library interface for sockets to Python's object-oriented style: the
+:func:`socket` function returns a :dfn:`socket object` whose methods implement
+the various socket system calls.  Parameter types are somewhat higher-level than
+in the C interface: as with :meth:`read` and :meth:`write` operations on Python
+files, buffer allocation on receive operations is automatic, and buffer length
+is implicit on send operations.
+
+Socket addresses are represented as follows: A single string is used for the
+:const:`AF_UNIX` address family. A pair ``(host, port)`` is used for the
+:const:`AF_INET` address family, where *host* is a string representing either a
+hostname in Internet domain notation like ``'daring.cwi.nl'`` or an IPv4 address
+like ``'100.50.200.5'``, and *port* is an integral port number. For
+:const:`AF_INET6` address family, a four-tuple ``(host, port, flowinfo,
+scopeid)`` is used, where *flowinfo* and *scopeid* represents ``sin6_flowinfo``
+and ``sin6_scope_id`` member in :const:`struct sockaddr_in6` in C. For
+:mod:`socket` module methods, *flowinfo* and *scopeid* can be omitted just for
+backward compatibility. Note, however, omission of *scopeid* can cause problems
+in manipulating scoped IPv6 addresses. Other address families are currently not
+supported. The address format required by a particular socket object is
+automatically selected based on the address family specified when the socket
+object was created.
+
+For IPv4 addresses, two special forms are accepted instead of a host address:
+the empty string represents :const:`INADDR_ANY`, and the string
+``'<broadcast>'`` represents :const:`INADDR_BROADCAST`. The behavior is not
+available for IPv6 for backward compatibility, therefore, you may want to avoid
+these if you intend to support IPv6 with your Python programs.
+
+If you use a hostname in the *host* portion of IPv4/v6 socket address, the
+program may show a nondeterministic behavior, as Python uses the first address
+returned from the DNS resolution.  The socket address will be resolved
+differently into an actual IPv4/v6 address, depending on the results from DNS
+resolution and/or the host configuration.  For deterministic behavior use a
+numeric address in *host* portion.
+===EndDoc:====
+.. function:: (Attributes)
+
+socket.AF_UNIX
+          AF_INET
+          AF_INET6
+
+   These constants represent the address (and protocol) families, used for the
+   first argument to :func:`socket`.  If the :const:`AF_UNIX` constant is not
+   defined then this protocol is unsupported.
+
+
+socket.SOCK_STREAM
+          SOCK_DGRAM
+          SOCK_RAW
+          SOCK_RDM
+          SOCK_SEQPACKET
+
+   These constants represent the socket types, used for the second argument to
+   :func:`socket`. (Only :const:`SOCK_STREAM` and :const:`SOCK_DGRAM` appear to be
+   generally useful.)
+
+
+socket.SO_*
+          SOMAXCONN
+          MSG_*
+          SOL_*
+          IPPROTO_*
+          IPPORT_*
+          INADDR_*
+          IP_*
+          IPV6_*
+          EAI_*
+          AI_*
+          NI_*
+          TCP_*
+
+   Many constants of these forms, documented in the Unix documentation on sockets
+   and/or the IP protocol, are also defined in the socket module. They are
+   generally used in arguments to the :meth:`setsockopt` and :meth:`getsockopt`
+   methods of socket objects.  In most cases, only those symbols that are defined
+   in the Unix header files are defined; for a few symbols, default values are
+   provided.
+
+socket.SIO_*
+          RCVALL_*
+          
+   Constants for Windows' WSAIoctl(). The constants are used as arguments to the
+   :meth:`ioctl` method of socket objects.
+   
+   .. versionadded:: 2.6
+
+socket.TIPC_*
+
+   TIPC related constants, matching the ones exported by the C socket API. See
+   the TIPC documentation for more information.
+
+   .. versionadded:: 2.6
+
+socket.has_ipv6
+
+   This constant contains a boolean value which indicates if IPv6 is supported on
+   this platform.
+
+.. function:: create_connection(address[, timeout])
+
+   Connects to the *address* received (as usual, a ``(host, port)`` pair), with an
+   optional timeout for the connection.  Especially useful for higher-level
+   protocols, it is not normally used directly from application-level code.
+   Passing the optional *timeout* parameter will set the timeout on the socket
+   instance (if it is not given or ``None``, the global default timeout setting is
+   used).
+
+   .. versionadded:: 2.6
+
+
+.. function:: getaddrinfo(host, port[, family[, socktype[, proto[, flags]]]])
+
+   Resolves the *host*/*port* argument, into a sequence of 5-tuples that contain
+   all the necessary argument for the sockets manipulation. *host* is a domain
+   name, a string representation of IPv4/v6 address or ``None``. *port* is a string
+   service name (like ``'http'``), a numeric port number or ``None``.
+
+   The rest of the arguments are optional and must be numeric if specified.  For
+   *host* and *port*, by passing either an empty string or ``None``, you can pass
+   ``NULL`` to the C API.  The :func:`getaddrinfo` function returns a list of
+   5-tuples with the following structure:
+
+   ``(family, socktype, proto, canonname, sockaddr)``
+
+   *family*, *socktype*, *proto* are all integer and are meant to be passed to the
+   :func:`socket` function. *canonname* is a string representing the canonical name
+   of the *host*. It can be a numeric IPv4/v6 address when :const:`AI_CANONNAME` is
+   specified for a numeric *host*. *sockaddr* is a tuple describing a socket
+   address, as described above. See the source for :mod:`socket` and other
+   library modules for a typical usage of the function.
+
+   .. versionadded:: 2.2
+
+
+.. function:: getfqdn([name])
+
+   Return a fully qualified domain name for *name*. If *name* is omitted or empty,
+   it is interpreted as the local host.  To find the fully qualified name, the
+   hostname returned by :func:`gethostbyaddr` is checked, then aliases for the
+   host, if available.  The first name which includes a period is selected.  In
+   case no fully qualified domain name is available, the hostname as returned by
+   :func:`gethostname` is returned.
+
+   .. versionadded:: 2.0
+
+
+.. function:: gethostbyname(hostname)
+
+   Translate a host name to IPv4 address format.  The IPv4 address is returned as a
+   string, such as  ``'100.50.200.5'``.  If the host name is an IPv4 address itself
+   it is returned unchanged.  See :func:`gethostbyname_ex` for a more complete
+   interface. :func:`gethostbyname` does not support IPv6 name resolution, and
+   :func:`getaddrinfo` should be used instead for IPv4/v6 dual stack support.
+
+
+.. function:: gethostbyname_ex(hostname)
+
+   Translate a host name to IPv4 address format, extended interface. Return a
+   triple ``(hostname, aliaslist, ipaddrlist)`` where *hostname* is the primary
+   host name responding to the given *ip_address*, *aliaslist* is a (possibly
+   empty) list of alternative host names for the same address, and *ipaddrlist* is
+   a list of IPv4 addresses for the same interface on the same host (often but not
+   always a single address). :func:`gethostbyname_ex` does not support IPv6 name
+   resolution, and :func:`getaddrinfo` should be used instead for IPv4/v6 dual
+   stack support.
+
+
+.. function:: gethostname()
+
+   Return a string containing the hostname of the machine where  the Python
+   interpreter is currently executing. If you want to know the current machine's IP
+   address, you may want to use ``gethostbyname(gethostname())``. This operation
+   assumes that there is a valid address-to-host mapping for the host, and the
+   assumption does not always hold. Note: :func:`gethostname` doesn't always return
+   the fully qualified domain name; use ``getfqdn()`` (see above).
+
+
+.. function:: gethostbyaddr(ip_address)
+
+   Return a triple ``(hostname, aliaslist, ipaddrlist)`` where *hostname* is the
+   primary host name responding to the given *ip_address*, *aliaslist* is a
+   (possibly empty) list of alternative host names for the same address, and
+   *ipaddrlist* is a list of IPv4/v6 addresses for the same interface on the same
+   host (most likely containing only a single address). To find the fully qualified
+   domain name, use the function :func:`getfqdn`. :func:`gethostbyaddr` supports
+   both IPv4 and IPv6.
+
+
+.. function:: getnameinfo(sockaddr, flags)
+
+   Translate a socket address *sockaddr* into a 2-tuple ``(host, port)``. Depending
+   on the settings of *flags*, the result can contain a fully-qualified domain name
+   or numeric address representation in *host*.  Similarly, *port* can contain a
+   string port name or a numeric port number.
+
+   .. versionadded:: 2.2
+
+
+.. function:: getprotobyname(protocolname)
+
+   Translate an Internet protocol name (for example, ``'icmp'``) to a constant
+   suitable for passing as the (optional) third argument to the :func:`socket`
+   function.  This is usually only needed for sockets opened in "raw" mode
+   (:const:`SOCK_RAW`); for the normal socket modes, the correct protocol is chosen
+   automatically if the protocol is omitted or zero.
+
+
+.. function:: getservbyname(servicename[, protocolname])
+
+   Translate an Internet service name and protocol name to a port number for that
+   service.  The optional protocol name, if given, should be ``'tcp'`` or
+   ``'udp'``, otherwise any protocol will match.
+
+
+.. function:: getservbyport(port[, protocolname])
+
+   Translate an Internet port number and protocol name to a service name for that
+   service.  The optional protocol name, if given, should be ``'tcp'`` or
+   ``'udp'``, otherwise any protocol will match.
+
+
+.. function:: socket([family[, type[, proto]]])
+
+   Create a new socket using the given address family, socket type and protocol
+   number.  The address family should be :const:`AF_INET` (the default),
+   :const:`AF_INET6` or :const:`AF_UNIX`.  The socket type should be
+   :const:`SOCK_STREAM` (the default), :const:`SOCK_DGRAM` or perhaps one of the
+   other ``SOCK_`` constants.  The protocol number is usually zero and may be
+   omitted in that case.
+
+
+.. function:: socketpair([family[, type[, proto]]])
+
+   Build a pair of connected socket objects using the given address family, socket
+   type, and protocol number.  Address family, socket type, and protocol number are
+   as for the :func:`socket` function above. The default family is :const:`AF_UNIX`
+   if defined on the platform; otherwise, the default is :const:`AF_INET`.
+   Availability: Unix.
+
+   .. versionadded:: 2.4
+
+
+.. function:: fromfd(fd, family, type[, proto])
+
+   Duplicate the file descriptor *fd* (an integer as returned by a file object's
+   :meth:`fileno` method) and build a socket object from the result.  Address
+   family, socket type and protocol number are as for the :func:`socket` function
+   above. The file descriptor should refer to a socket, but this is not checked ---
+   subsequent operations on the object may fail if the file descriptor is invalid.
+   This function is rarely needed, but can be used to get or set socket options on
+   a socket passed to a program as standard input or output (such as a server
+   started by the Unix inet daemon).  The socket is assumed to be in blocking mode.
+   Availability: Unix.
+
+
+.. function:: ntohl(x)
+
+   Convert 32-bit positive integers from network to host byte order.  On machines
+   where the host byte order is the same as network byte order, this is a no-op;
+   otherwise, it performs a 4-byte swap operation.
+
+
+.. function:: ntohs(x)
+
+   Convert 16-bit positive integers from network to host byte order.  On machines
+   where the host byte order is the same as network byte order, this is a no-op;
+   otherwise, it performs a 2-byte swap operation.
+
+
+.. function:: htonl(x)
+
+   Convert 32-bit positive integers from host to network byte order.  On machines
+   where the host byte order is the same as network byte order, this is a no-op;
+   otherwise, it performs a 4-byte swap operation.
+
+
+.. function:: htons(x)
+
+   Convert 16-bit positive integers from host to network byte order.  On machines
+   where the host byte order is the same as network byte order, this is a no-op;
+   otherwise, it performs a 2-byte swap operation.
+
+
+.. function:: inet_aton(ip_string)
+
+   Convert an IPv4 address from dotted-quad string format (for example,
+   '123.45.67.89') to 32-bit packed binary format, as a string four characters in
+   length.  This is useful when conversing with a program that uses the standard C
+   library and needs objects of type :ctype:`struct in_addr`, which is the C type
+   for the 32-bit packed binary this function returns.
+
+   If the IPv4 address string passed to this function is invalid,
+   :exc:`socket.error` will be raised. Note that exactly what is valid depends on
+   the underlying C implementation of :cfunc:`inet_aton`.
+
+   :func:`inet_aton` does not support IPv6, and :func:`getnameinfo` should be used
+   instead for IPv4/v6 dual stack support.
+
+
+.. function:: inet_ntoa(packed_ip)
+
+   Convert a 32-bit packed IPv4 address (a string four characters in length) to its
+   standard dotted-quad string representation (for example, '123.45.67.89').  This
+   is useful when conversing with a program that uses the standard C library and
+   needs objects of type :ctype:`struct in_addr`, which is the C type for the
+   32-bit packed binary data this function takes as an argument.
+
+   If the string passed to this function is not exactly 4 bytes in length,
+   :exc:`socket.error` will be raised. :func:`inet_ntoa` does not support IPv6, and
+   :func:`getnameinfo` should be used instead for IPv4/v6 dual stack support.
+
+
+.. function:: inet_pton(address_family, ip_string)
+
+   Convert an IP address from its family-specific string format to a packed, binary
+   format. :func:`inet_pton` is useful when a library or network protocol calls for
+   an object of type :ctype:`struct in_addr` (similar to :func:`inet_aton`) or
+   :ctype:`struct in6_addr`.
+
+   Supported values for *address_family* are currently :const:`AF_INET` and
+   :const:`AF_INET6`. If the IP address string *ip_string* is invalid,
+   :exc:`socket.error` will be raised. Note that exactly what is valid depends on
+   both the value of *address_family* and the underlying implementation of
+   :cfunc:`inet_pton`.
+
+   Availability: Unix (maybe not all platforms).
+
+   .. versionadded:: 2.3
+
+
+.. function:: inet_ntop(address_family, packed_ip)
+
+   Convert a packed IP address (a string of some number of characters) to its
+   standard, family-specific string representation (for example, ``'7.10.0.5'`` or
+   ``'5aef:2b::8'``) :func:`inet_ntop` is useful when a library or network protocol
+   returns an object of type :ctype:`struct in_addr` (similar to :func:`inet_ntoa`)
+   or :ctype:`struct in6_addr`.
+
+   Supported values for *address_family* are currently :const:`AF_INET` and
+   :const:`AF_INET6`. If the string *packed_ip* is not the correct length for the
+   specified address family, :exc:`ValueError` will be raised.  A
+   :exc:`socket.error` is raised for errors from the call to :func:`inet_ntop`.
+
+   Availability: Unix (maybe not all platforms).
+
+   .. versionadded:: 2.3
+
+
+.. function:: getdefaulttimeout()
+
+   Return the default timeout in floating seconds for new socket objects. A value
+   of ``None`` indicates that new socket objects have no timeout. When the socket
+   module is first imported, the default is ``None``.
+
+   .. versionadded:: 2.3
+
+
+.. function:: setdefaulttimeout(timeout)
+
+   Set the default timeout in floating seconds for new socket objects. A value of
+   ``None`` indicates that new socket objects have no timeout. When the socket
+   module is first imported, the default is ``None``.
+
+   .. versionadded:: 2.3
+
+.. method:: socket.accept()
+
+   Accept a connection. The socket must be bound to an address and listening for
+   connections. The return value is a pair ``(conn, address)`` where *conn* is a
+   *new* socket object usable to send and receive data on the connection, and
+   *address* is the address bound to the socket on the other end of the connection.
+
+
+.. method:: socket.bind(address)
+
+   Bind the socket to *address*.  The socket must not already be bound. (The format
+   of *address* depends on the address family --- see above.)
+
+   .. note::
+
+      This method has historically accepted a pair of parameters for :const:`AF_INET`
+      addresses instead of only a tuple.  This was never intentional and is no longer
+      available in Python 2.0 and later.
+
+
+.. method:: socket.close()
+
+   Close the socket.  All future operations on the socket object will fail. The
+   remote end will receive no more data (after queued data is flushed). Sockets are
+   automatically closed when they are garbage-collected.
+
+
+.. method:: socket.connect(address)
+
+   Connect to a remote socket at *address*. (The format of *address* depends on the
+   address family --- see above.)
+
+   .. note::
+
+      This method has historically accepted a pair of parameters for :const:`AF_INET`
+      addresses instead of only a tuple.  This was never intentional and is no longer
+      available in Python 2.0 and later.
+
+
+.. method:: socket.connect_ex(address)
+
+   Like ``connect(address)``, but return an error indicator instead of raising an
+   exception for errors returned by the C-level :cfunc:`connect` call (other
+   problems, such as "host not found," can still raise exceptions).  The error
+   indicator is ``0`` if the operation succeeded, otherwise the value of the
+   :cdata:`errno` variable.  This is useful to support, for example, asynchronous
+   connects.
+
+   .. note::
+
+      This method has historically accepted a pair of parameters for :const:`AF_INET`
+      addresses instead of only a tuple. This was never intentional and is no longer
+      available in Python 2.0 and later.
+
+
+.. method:: socket.fileno()
+
+   Return the socket's file descriptor (a small integer).  This is useful with
+   :func:`select.select`.
+
+   Under Windows the small integer returned by this method cannot be used where a
+   file descriptor can be used (such as :func:`os.fdopen`).  Unix does not have
+   this limitation.
+
+
+.. method:: socket.getpeername()
+
+   Return the remote address to which the socket is connected.  This is useful to
+   find out the port number of a remote IPv4/v6 socket, for instance. (The format
+   of the address returned depends on the address family --- see above.)  On some
+   systems this function is not supported.
+
+
+.. method:: socket.getsockname()
+
+   Return the socket's own address.  This is useful to find out the port number of
+   an IPv4/v6 socket, for instance. (The format of the address returned depends on
+   the address family --- see above.)
+
+
+.. method:: socket.getsockopt(level, optname[, buflen])
+
+   Return the value of the given socket option (see the Unix man page
+   :manpage:`getsockopt(2)`).  The needed symbolic constants (:const:`SO_\*` etc.)
+   are defined in this module.  If *buflen* is absent, an integer option is assumed
+   and its integer value is returned by the function.  If *buflen* is present, it
+   specifies the maximum length of the buffer used to receive the option in, and
+   this buffer is returned as a string.  It is up to the caller to decode the
+   contents of the buffer (see the optional built-in module :mod:`struct` for a way
+   to decode C structures encoded as strings).
+
+   
+.. method:: socket.ioctl(control, option)
+
+   :platform: Windows 
+   
+   The :meth:`ioctl` method is a limited interface to the WSAIoctl system
+   interface. Please refer to the MSDN documentation for more information.
+   
+   .. versionadded:: 2.6
+
+
+.. method:: socket.listen(backlog)
+
+   Listen for connections made to the socket.  The *backlog* argument specifies the
+   maximum number of queued connections and should be at least 1; the maximum value
+   is system-dependent (usually 5).
+
+
+.. method:: socket.makefile([mode[, bufsize]])
+
+   .. index:: single: I/O control; buffering
+
+   Return a :dfn:`file object` associated with the socket.  (File objects are
+   described in :ref:`bltin-file-objects`.) The file object
+   references a :cfunc:`dup`\ ped version of the socket file descriptor, so the
+   file object and socket object may be closed or garbage-collected independently.
+   The socket must be in blocking mode (it can not have a timeout). The optional
+   *mode* and *bufsize* arguments are interpreted the same way as by the built-in
+   :func:`file` function.
+
+
+.. method:: socket.recv(bufsize[, flags])
+
+   Receive data from the socket.  The return value is a string representing the
+   data received.  The maximum amount of data to be received at once is specified
+   by *bufsize*.  See the Unix manual page :manpage:`recv(2)` for the meaning of
+   the optional argument *flags*; it defaults to zero.
+
+   .. note::
+
+      For best match with hardware and network realities, the value of  *bufsize*
+      should be a relatively small power of 2, for example, 4096.
+
+
+.. method:: socket.recvfrom(bufsize[, flags])
+
+   Receive data from the socket.  The return value is a pair ``(string, address)``
+   where *string* is a string representing the data received and *address* is the
+   address of the socket sending the data.  See the Unix manual page
+   :manpage:`recv(2)` for the meaning of the optional argument *flags*; it defaults
+   to zero. (The format of *address* depends on the address family --- see above.)
+
+
+.. method:: socket.recvfrom_into(buffer[, nbytes[, flags]])
+
+   Receive data from the socket, writing it into *buffer* instead of  creating a
+   new string.  The return value is a pair ``(nbytes, address)`` where *nbytes* is
+   the number of bytes received and *address* is the address of the socket sending
+   the data.  See the Unix manual page :manpage:`recv(2)` for the meaning of the
+   optional argument *flags*; it defaults to zero.  (The format of *address*
+   depends on the address family --- see above.)
+
+   .. versionadded:: 2.5
+
+
+.. method:: socket.recv_into(buffer[, nbytes[, flags]])
+
+   Receive up to *nbytes* bytes from the socket, storing the data into a buffer
+   rather than creating a new string.     If *nbytes* is not specified (or 0),
+   receive up to the size available in the given buffer. See the Unix manual page
+   :manpage:`recv(2)` for the meaning of the optional argument *flags*; it defaults
+   to zero.
+
+   .. versionadded:: 2.5
+
+
+.. method:: socket.send(string[, flags])
+
+   Send data to the socket.  The socket must be connected to a remote socket.  The
+   optional *flags* argument has the same meaning as for :meth:`recv` above.
+   Returns the number of bytes sent. Applications are responsible for checking that
+   all data has been sent; if only some of the data was transmitted, the
+   application needs to attempt delivery of the remaining data.
+
+
+.. method:: socket.sendall(string[, flags])
+
+   Send data to the socket.  The socket must be connected to a remote socket.  The
+   optional *flags* argument has the same meaning as for :meth:`recv` above.
+   Unlike :meth:`send`, this method continues to send data from *string* until
+   either all data has been sent or an error occurs.  ``None`` is returned on
+   success.  On error, an exception is raised, and there is no way to determine how
+   much data, if any, was successfully sent.
+
+
+.. method:: socket.sendto(string[, flags], address)
+
+   Send data to the socket.  The socket should not be connected to a remote socket,
+   since the destination socket is specified by *address*.  The optional *flags*
+   argument has the same meaning as for :meth:`recv` above.  Return the number of
+   bytes sent. (The format of *address* depends on the address family --- see
+   above.)
+
+
+.. method:: socket.setblocking(flag)
+
+   Set blocking or non-blocking mode of the socket: if *flag* is 0, the socket is
+   set to non-blocking, else to blocking mode.  Initially all sockets are in
+   blocking mode.  In non-blocking mode, if a :meth:`recv` call doesn't find any
+   data, or if a :meth:`send` call can't immediately dispose of the data, a
+   :exc:`error` exception is raised; in blocking mode, the calls block until they
+   can proceed. ``s.setblocking(0)`` is equivalent to ``s.settimeout(0)``;
+   ``s.setblocking(1)`` is equivalent to ``s.settimeout(None)``.
+
+
+.. method:: socket.settimeout(value)
+
+   Set a timeout on blocking socket operations.  The *value* argument can be a
+   nonnegative float expressing seconds, or ``None``. If a float is given,
+   subsequent socket operations will raise an :exc:`timeout` exception if the
+   timeout period *value* has elapsed before the operation has completed.  Setting
+   a timeout of ``None`` disables timeouts on socket operations.
+   ``s.settimeout(0.0)`` is equivalent to ``s.setblocking(0)``;
+   ``s.settimeout(None)`` is equivalent to ``s.setblocking(1)``.
+
+   .. versionadded:: 2.3
+
+
+.. method:: socket.gettimeout()
+
+   Return the timeout in floating seconds associated with socket operations, or
+   ``None`` if no timeout is set.  This reflects the last call to
+   :meth:`setblocking` or :meth:`settimeout`.
+
+   .. versionadded:: 2.3
+
+Some notes on socket blocking and timeouts: A socket object can be in one of
+three modes: blocking, non-blocking, or timeout.  Sockets are always created in
+blocking mode.  In blocking mode, operations block until complete.  In
+non-blocking mode, operations fail (with an error that is unfortunately
+system-dependent) if they cannot be completed immediately.  In timeout mode,
+operations fail if they cannot be completed within the timeout specified for the
+socket.  The :meth:`setblocking` method is simply a shorthand for certain
+:meth:`settimeout` calls.
+
+Timeout mode internally sets the socket in non-blocking mode.  The blocking and
+timeout modes are shared between file descriptors and socket objects that refer
+to the same network endpoint.  A consequence of this is that file objects
+returned by the :meth:`makefile` method must only be used when the socket is in
+blocking mode; in timeout or non-blocking mode file operations that cannot be
+completed immediately will fail.
+
+Note that the :meth:`connect` operation is subject to the timeout setting, and
+in general it is recommended to call :meth:`settimeout` before calling
+:meth:`connect`.
+
+
+.. method:: socket.setsockopt(level, optname, value)
+
+   .. index:: module: struct
+
+   Set the value of the given socket option (see the Unix manual page
+   :manpage:`setsockopt(2)`).  The needed symbolic constants are defined in the
+   :mod:`socket` module (:const:`SO_\*` etc.).  The value can be an integer or a
+   string representing a buffer.  In the latter case it is up to the caller to
+   ensure that the string contains the proper bits (see the optional built-in
+   module :mod:`struct` for a way to encode C structures as strings).
+
+
+.. method:: socket.shutdown(how)
+
+   Shut down one or both halves of the connection.  If *how* is :const:`SHUT_RD`,
+   further receives are disallowed.  If *how* is :const:`SHUT_WR`, further sends
+   are disallowed.  If *how* is :const:`SHUT_RDWR`, further sends and receives are
+   disallowed.
+   
+
+.. function:: (Example)
+Here are four minimal example programs using the TCP/IP protocol: a server that
+echoes all data that it receives back (servicing only one client), and a client
+using it.  Note that a server must perform the sequence :func:`socket`,
+:meth:`bind`, :meth:`listen`, :meth:`accept` (possibly repeating the
+:meth:`accept` to service more than one client), while a client only needs the
+sequence :func:`socket`, :meth:`connect`.  Also note that the server does not
+:meth:`send`/:meth:`recv` on the  socket it is listening on but on the new
+socket returned by :meth:`accept`.
+
+The first two examples support IPv4 only. ::
+
+   # Echo server program
+   import socket
+
+   HOST = ''                 # Symbolic name meaning all available interfaces
+   PORT = 50007              # Arbitrary non-privileged port
+   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   s.bind((HOST, PORT))
+   s.listen(1)
+   conn, addr = s.accept()
+   print 'Connected by', addr
+   while 1:
+       data = conn.recv(1024)
+       if not data: break
+       conn.send(data)
+   conn.close()
+
+::
+
+   # Echo client program
+   import socket
+
+   HOST = 'daring.cwi.nl'    # The remote host
+   PORT = 50007              # The same port as used by the server
+   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   s.connect((HOST, PORT))
+   s.send('Hello, world')
+   data = s.recv(1024)
+   s.close()
+   print 'Received', repr(data)
+
+The next two examples are identical to the above two, but support both IPv4 and
+IPv6. The server side will listen to the first address family available (it
+should listen to both instead). On most of IPv6-ready systems, IPv6 will take
+precedence and the server may not accept IPv4 traffic. The client side will try
+to connect to the all addresses returned as a result of the name resolution, and
+sends traffic to the first one connected successfully. ::
+
+   # Echo server program
+   import socket
+   import sys
+
+   HOST = ''                 # Symbolic name meaning all available interfaces
+   PORT = 50007              # Arbitrary non-privileged port
+   s = None
+   for res in socket.getaddrinfo(HOST, PORT, socket.AF_UNSPEC, socket.SOCK_STREAM, 0, socket.AI_PASSIVE):
+       af, socktype, proto, canonname, sa = res
+       try:
+   	s = socket.socket(af, socktype, proto)
+       except socket.error, msg:
+   	s = None
+   	continue
+       try:
+   	s.bind(sa)
+   	s.listen(1)
+       except socket.error, msg:
+   	s.close()
+   	s = None
+   	continue
+       break
+   if s is None:
+       print 'could not open socket'
+       sys.exit(1)
+   conn, addr = s.accept()
+   print 'Connected by', addr
+   while 1:
+       data = conn.recv(1024)
+       if not data: break
+       conn.send(data)
+   conn.close()
+
+::
+
+   # Echo client program
+   import socket
+   import sys
+
+   HOST = 'daring.cwi.nl'    # The remote host
+   PORT = 50007              # The same port as used by the server
+   s = None
+   for res in socket.getaddrinfo(HOST, PORT, socket.AF_UNSPEC, socket.SOCK_STREAM):
+       af, socktype, proto, canonname, sa = res
+       try:
+   	s = socket.socket(af, socktype, proto)
+       except socket.error, msg:
+   	s = None
+   	continue
+       try:
+   	s.connect(sa)
+       except socket.error, msg:
+   	s.close()
+   	s = None
+   	continue
+       break
+   if s is None:
+       print 'could not open socket'
+       sys.exit(1)
+   s.send('Hello, world')
+   data = s.recv(1024)
+   s.close()
+   print 'Received', repr(data)
+
+   
+The last example shows how to write a very simple network sniffer with raw
+sockets on Windows. The example requires administrator priviliges to modify
+the interface::
+
+   import socket
+
+   # the public network interface
+   HOST = socket.gethostbyname(socket.gethostname())
+   
+   # create a raw socket and bind it to the public interface
+   s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_IP)
+   s.bind((HOST, 0))
+   
+   # Include IP headers
+   s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+   
+   # receive all packages
+   s.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
+   
+   # receive a package
+   print s.recvfrom(65565)
+   
+   # disabled promiscuous mode
+   s.ioctl(socket.SIO_RCVALL, socket.RCVALL_OFF)
+
+===Mod:signal======
+===ModDoc:signal====
+This module provides mechanisms to use signal handlers in Python. Some general
+rules for working with signals and their handlers:
+
+* A handler for a particular signal, once set, remains installed until it is
+  explicitly reset (Python emulates the BSD style interface regardless of the
+  underlying implementation), with the exception of the handler for
+  :const:`SIGCHLD`, which follows the underlying implementation.
+
+* There is no way to "block" signals temporarily from critical sections (since
+  this is not supported by all Unix flavors).
+
+* Although Python signal handlers are called asynchronously as far as the Python
+  user is concerned, they can only occur between the "atomic" instructions of the
+  Python interpreter.  This means that signals arriving during long calculations
+  implemented purely in C (such as regular expression matches on large bodies of
+  text) may be delayed for an arbitrary amount of time.
+
+* When a signal arrives during an I/O operation, it is possible that the I/O
+  operation raises an exception after the signal handler returns. This is
+  dependent on the underlying Unix system's semantics regarding interrupted system
+  calls.
+
+* Because the C signal handler always returns, it makes little sense to catch
+  synchronous errors like :const:`SIGFPE` or :const:`SIGSEGV`.
+
+* Python installs a small number of signal handlers by default: :const:`SIGPIPE`
+  is ignored (so write errors on pipes and sockets can be reported as ordinary
+  Python exceptions) and :const:`SIGINT` is translated into a
+  :exc:`KeyboardInterrupt` exception.  All of these can be overridden.
+
+* Some care must be taken if both signals and threads are used in the same
+  program.  The fundamental thing to remember in using signals and threads
+  simultaneously is: always perform :func:`signal` operations in the main thread
+  of execution.  Any thread can perform an :func:`alarm`, :func:`getsignal`, 
+  :func:`pause`, :func:`setitimer` or :func:`getitimer`; only the main thread 
+  can set a new signal handler, and the main thread will be the only one to 
+  receive signals (this is enforced by the Python :mod:`signal` module, even 
+  if the underlying thread implementation supports sending signals to 
+  individual threads).  This means that signals can't be used as a means of 
+  inter-thread communication.  Use locks instead.
+===EndDoc====
+
+.. function:: (Attributes)
+signal.SIG_DFL
+
+   This is one of two standard signal handling options; it will simply perform the
+   default function for the signal.  For example, on most systems the default
+   action for :const:`SIGQUIT` is to dump core and exit, while the default action
+   for :const:`SIGCLD` is to simply ignore it.
+
+signal.SIG_IGN
+
+   This is another standard signal handler, which will simply ignore the given
+   signal.
+signal.SIG*
+
+   All the signal numbers are defined symbolically.  For example, the hangup signal
+   is defined as :const:`signal.SIGHUP`; the variable names are identical to the
+   names used in C programs, as found in ``<signal.h>``. The Unix man page for
+   ':cfunc:`signal`' lists the existing signals (on some systems this is
+   :manpage:`signal(2)`, on others the list is in :manpage:`signal(7)`). Note that
+   not all systems define the same set of signal names; only those names defined by
+   the system are defined by this module.
+signal.NSIG
+   One more than the number of the highest signal number.
+signal.ITIMER_REAL    
+   Decrements interval timer in real time, and delivers :const:`SIGALRM` upon expiration.
+signal.ITIMER_VIRTUAL 
+   Decrements interval timer only when the process is executing, and delivers 
+   SIGVTALRM upon expiration.
+signal.ITIMER_PROF
+    Decrements interval timer both when the process executes and when the 
+   system is executing on behalf of the process. Coupled with ITIMER_VIRTUAL, 
+   this timer is usually used to profile the time spent by the application 
+   in user and kernel space. SIGPROF is delivered upon expiration.
+
+.. function:: alarm(time)
+
+   If *time* is non-zero, this function requests that a :const:`SIGALRM` signal be
+   sent to the process in *time* seconds. Any previously scheduled alarm is
+   canceled (only one alarm can be scheduled at any time).  The returned value is
+   then the number of seconds before any previously set alarm was to have been
+   delivered. If *time* is zero, no alarm is scheduled, and any scheduled alarm is
+   canceled.  If the return value is zero, no alarm is currently scheduled.  (See
+   the Unix man page :manpage:`alarm(2)`.) Availability: Unix.
+
+
+.. function:: getsignal(signalnum)
+
+   Return the current signal handler for the signal *signalnum*. The returned value
+   may be a callable Python object, or one of the special values
+   :const:`signal.SIG_IGN`, :const:`signal.SIG_DFL` or :const:`None`.  Here,
+   :const:`signal.SIG_IGN` means that the signal was previously ignored,
+   :const:`signal.SIG_DFL` means that the default way of handling the signal was
+   previously in use, and ``None`` means that the previous signal handler was not
+   installed from Python.
+
+
+.. function:: pause()
+
+   Cause the process to sleep until a signal is received; the appropriate handler
+   will then be called.  Returns nothing.  Not on Windows. (See the Unix man page
+   :manpage:`signal(2)`.)
+
+
+.. function:: setitimer(which, seconds[, interval])
+
+   Sets given interval timer (one of :const:`signal.ITIMER_REAL`, 
+   :const:`signal.ITIMER_VIRTUAL` or :const:`signal.ITIMER_PROF`) specified
+   by *which* to fire after *seconds* (float is accepted, different from 
+   :func:`alarm`) and after that every *interval* seconds. The interval
+   timer specified by *which* can be cleared by setting seconds to zero.
+
+   When an interval timer fires, a signal is sent to the process.
+   The signal sent is dependent on the timer being used; 
+   :const:`signal.ITIMER_REAL` will deliver :const:`SIGALRM`, 
+   :const:`signal.ITIMER_VIRTUAL` sends :const:`SIGVTALRM`,
+   and :const:`signal.ITIMER_PROF` will deliver :const:`SIGPROF`.
+
+   The old values are returned as a tuple: (delay, interval).
+
+   Attempting to pass an invalid interval timer will cause a 
+   :exc:`ItimerError`.
+
+   .. versionadded:: 2.6
+
+
+.. function:: getitimer(which)
+
+   Returns current value of a given interval timer specified by *which*.
+
+   .. versionadded:: 2.6
+
+
+.. function:: set_wakeup_fd(fd)
+
+   Set the wakeup fd to *fd*.  When a signal is received, a ``'\0'`` byte is
+   written to the fd.  This can be used by a library to wakeup a poll or select
+   call, allowing the signal to be fully processed.
+
+   The old wakeup fd is returned.  *fd* must be non-blocking.  It is up to the
+   library to remove any bytes before calling poll or select again.
+
+   When threads are enabled, this function can only be called from the main thread;
+   attempting to call it from other threads will cause a :exc:`ValueError`
+   exception to be raised.
+
+
+.. function:: siginterrupt(signalnum, flag)
+
+   Change system call restart behaviour: if *flag* is :const:`False`, system calls
+   will be restarted when interrupted by signal *signalnum*, otherwise system calls will
+   be interrupted. Returns nothing. Availability: Unix, Mac (see the man page
+   :manpage:`siginterrupt(3)` for further information).
+   
+   Note that installing a signal handler with :func:`signal` will reset the restart
+   behaviour to interruptible by implicitly calling :cfunc:`siginterrupt` with a true *flag*
+   value for the given signal.
+
+   .. versionadded:: 2.6
+
+
+.. function:: signal(signalnum, handler)
+
+   Set the handler for signal *signalnum* to the function *handler*.  *handler* can
+   be a callable Python object taking two arguments (see below), or one of the
+   special values :const:`signal.SIG_IGN` or :const:`signal.SIG_DFL`.  The previous
+   signal handler will be returned (see the description of :func:`getsignal`
+   above).  (See the Unix man page :manpage:`signal(2)`.)
+
+   When threads are enabled, this function can only be called from the main thread;
+   attempting to call it from other threads will cause a :exc:`ValueError`
+   exception to be raised.
+
+   The *handler* is called with two arguments: the signal number and the current
+   stack frame (``None`` or a frame object; for a description of frame objects, see
+   the reference manual section on the standard type hierarchy or see the attribute
+   descriptions in the :mod:`inspect` module).
+   
+.. function:: (example)
+
+Here is a minimal example program. It uses the :func:`alarm` function to limit
+the time spent waiting to open a file; this is useful if the file is for a
+serial device that may not be turned on, which would normally cause the
+:func:`os.open` to hang indefinitely.  The solution is to set a 5-second alarm
+before opening the file; if the operation takes too long, the alarm signal will
+be sent, and the handler raises an exception. ::
+
+   import signal, os
+
+   def handler(signum, frame):
+       print 'Signal handler called with signal', signum
+       raise IOError, "Couldn't open device!"
+
+   # Set the signal handler and a 5-second alarm
+   signal.signal(signal.SIGALRM, handler)
+   signal.alarm(5)
+
+   # This open() may hang indefinitely
+   fd = os.open('/dev/ttyS0', os.O_RDWR)  
+
+   signal.alarm(0)          # Disable the alarm
+
+===Mod:thread======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:ssl======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:select======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:asyncore======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:asynchat======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:io======
+===ModDoc:====
+===EndDoc===
+// .. function:: (To add later)
+
+===Mod:popen2======
+===ModDoc:====
+===EndDoc===
+// .. function:: (Documentation not added)
+
