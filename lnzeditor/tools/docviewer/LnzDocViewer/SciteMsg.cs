@@ -16,7 +16,7 @@ namespace LnzDocViewer
 
             if (File.Exists("scite_msg.exe")) scitemsgpath = "scite_msg.exe";
             else if (File.Exists("..\\scite_msg.exe")) scitemsgpath = "..\\scite_msg.exe";
-            else return;
+            else { this.hwnd = 0; return; }
         }
 
         public bool insertText(string s)
@@ -24,14 +24,10 @@ namespace LnzDocViewer
             return doAction("insert", s);   
         }
 
-        private string escapeString(string s)
+        private static string escapeString(string s)
         {
-            //escape spaces with \040 octal - not obvious. Hex \x20 didn't work.
-            s = s.Replace("\\", "\\\\").Replace(" ", "\\040")
-                .Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
-                
-            // add literal \0 to the end (not a zero byte, but literally \0)
-            s = s+"\\0";
+            s = s.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\\", "\\\\").Replace("\t","\\t");
+            //other special chars should be replaced too, in theory, but I'm not really worried about that.
 
             // escape quotes because this is being passed as a command line parameter
             s = s.Replace("\"", "\\\"");
@@ -43,21 +39,20 @@ namespace LnzDocViewer
         {
             if (this.hwnd == 0)
                 return false;
-            string strHwnd = this.hwnd.ToString();
 
-            // remember to escape string.
-            string strAction = "insert:" + escapeString(argument);
-            
+            // remember to escape characters in string.
+            string strHwnd = this.hwnd.ToString();
+            string strAction = verb + ":" + escapeString(argument);
+
+            // Scite_msg.exe 430245 "insert:hello scite"
             string strArguments = " "+strHwnd+" \""+strAction+"\"";
-            Process p = new Process();
-            p.StartInfo.FileName = scitemsgpath;
-            p.StartInfo.Arguments = strArguments;
-            p.Start();
+
+            ProcessStartInfo psinfo = new ProcessStartInfo(scitemsgpath, strArguments);
+            psinfo.WindowStyle = ProcessWindowStyle.Hidden; // hide the flashing black box
+            Process p = System.Diagnostics.Process.Start(psinfo);
             p.WaitForExit();
-            
-            p.Close();
-            int ret = p.ExitCode;
-            return ret == 0 ? true : false;
+
+            return p.ExitCode == 0 ? true : false;
         }
     }
 }

@@ -58,8 +58,14 @@ namespace LnzDocViewer
 
             LanguageMode mode = LanguageMode.Lnz;
 
-            // get language
+            // callers can pass in a directory (the location of the xml files)
             string[] args = Environment.GetCommandLineArgs();
+            if (args.Length > 3)
+            {
+                System.IO.Directory.SetCurrentDirectory(args[3]);
+            }
+
+            // get language
             if (args.Length > 1)
             {
                 if (args[1].StartsWith("py")) mode = LanguageMode.Python;
@@ -83,11 +89,7 @@ namespace LnzDocViewer
             }
             this.scitemsg = new SciteMsg(hwnd);
 
-            // callers can pass in a directory (the location of the xml files)
-            if (args.Length > 3)
-            {
-                System.IO.Directory.SetCurrentDirectory(args[3]);
-            }
+            
         }
 
         
@@ -173,6 +175,8 @@ namespace LnzDocViewer
         {
             if (e.KeyChar == (char) Keys.Escape)
                 Environment.Exit(0);
+            else if (e.KeyChar == (char) Keys.Enter)
+                treeView_MouseDoubleClick(null, null);
             return;
         }
 
