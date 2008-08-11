@@ -11,6 +11,7 @@
 #include "dialog_file.h"
 #include "dialog_color.h"
 #include "dialog_sound.h"
+#include "dialog_textinput.h"
 
 const char * documentation = 
 "WinCommonDialog.exe, Ben Fisher 2008, GPL\n"
@@ -22,6 +23,7 @@ const char * documentation =
 "WinCommonDialog color /?\n"
 "WinCommonDialog file /?\n"
 "WinCommonDialog sound /?\n"
+"WinCommonDialog text /?\n"
 "\n";
 
 
@@ -45,6 +47,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	else if (stringequal(mode,_T("sound")))
 	{
 		return dialog_sound(argc - 1, &argv[1]);
+	}
+	else if (stringequal(mode,_T("text")))
+	{
+		return dialog_textinput(argc - 1, &argv[1]);
 	}
 	else
 	{
