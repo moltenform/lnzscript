@@ -30,7 +30,12 @@
 ///Implementation:Javascript
 {}
 
-
+///Function:(Global).prompt
+///Arguments:string strPrompt
+///Returns:string strResult
+///Doc:Open a dialog box in which the user can enter text. Returns "" if the user presses cancel. See also Dialog.input, which has more options.
+///Implementation:Javascript
+{}
 
 //-----------------------------------
 // imported from <std> : (i.e., std.js)

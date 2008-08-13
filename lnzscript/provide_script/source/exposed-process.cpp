@@ -27,7 +27,7 @@
 	
 	QString strExecutable = "cmd.exe /c start \"" + strFileOrUrlOrProgram + "\"";
 	objProcess.start(strExecutable);
-	objProcess.waitForFinished(); //the cmd.exe should spawn off what we opened.
+	objProcess.waitForFinished(); //the cmd.exe should spawn off what we opened, so this won't actually block.
 	return eng->nullValue();
 }
 
