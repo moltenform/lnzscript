@@ -126,26 +126,39 @@
 ///Arguments:string strOption
 ///Returns:
 ///Doc:Opens a system utility. Options include: [[br]]Disk Cleanup[[br]]Disk Management[[br]]Services[[br]]Computer Management[[br]]Administrative Tools[[br]]Event Viewer[[br]]
-///Implementation:c++_winext
+///Implementation:c++_qt
 {
 	CHECK_ARGS
-	QString cmd;
-	if (strOption=="Disk Cleanup") cmd = "cleanmgr";
-	else if (strOption=="Disk Management") cmd = "diskmgmt.msc";
-	else if (strOption=="Services") cmd = "services.msc"; //need to start these with Process.openFile
-	else if (strOption=="Computer Management") cmd = "compmgmt.msc";
-	else if (strOption=="Administrative Tools") cmd = "control admintools";
-	else if (strOption=="Event Viewer")
+	if (strOption=="Disk Cleanup") 
 	{
-		QString winver = get_winapi_windows_version();
-		if (winver[0]=='5') cmd = "eventvwr.msc";
-		else if (winver[0]=='6') cmd = "wercon";
-		else return ctx->throwError("System.openUtility, unknown windows version");
+		return util_runExternalCommand( "cleanmgr" ); 
 	}
+	
+	// strangely enough, using cmd.exe /c services.msc seems to block. So instead use c:\windows\system32\mmc.exe c:\windows\system32\services.msc
+	QString systemdir = get_winapi_special_folder_path("System");
+	if (strOption=="Administrative Tools")
+	{
+		return util_runExternalCommand( systemdir + "\\control.exe admintools" ); // or, simply "control admintools" but control isn't in the path
+	}
+	
+	// a problem with util_runExternalCommand? That uses au3 to run, which maybe is different than Qt's run.
+	
+	QString strMscFile;
+	if (strOption=="Disk Management") strMscFile = "diskmgmt.msc";
+	else if (strOption=="Services") strMscFile = "services.msc";
+	else if (strOption=="Computer Management") strMscFile = "compmgmt.msc";
+	else if (strOption=="Event Viewer") strMscFile = "eventvwr.msc"; // test on Vista. Should use wercon there instead? see previous revision
 	else return ctx->throwError("System.openUtility, unknown utilty. See doc.");
-	// return util_runExternalCommand( cmd ); these can't be run this way, probably because they aren't exe.
-	QString realcmd = "cmd.exe /c start \"" + cmd + "\"";
-	return util_runExternalCommand( realcmd );
+	
+	// return util_runExternalCommand( strMscFile ); these can't be run this way, probably because they aren't exe.
+	// and for some reason, util_runExternalCommand given this will open a command console ? ?
+	// so use Qt to run it, in the manner of Process.openFile
+	QString realcmd = "cmd.exe /c start \"" + strMscFile + "\"";
+	QProcess objProcess; objProcess.start(realcmd);
+	bool bFileFound = (objProcess.error() != QProcess::FailedToStart);
+	objProcess.waitForFinished(); //the cmd.exe should spawn off what we opened, so this won't actually block.
+	
+	return QScriptValue(eng, bFileFound);
 }
 
 //Function:System._hash
