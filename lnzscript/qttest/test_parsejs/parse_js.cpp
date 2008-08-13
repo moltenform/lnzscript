@@ -4,42 +4,6 @@
 #include <QFile.h>
 #include "parse_js.h"
 
-/*QString parseLiteralStrings(QString strFilename)
-{
-	QFile file("in.txt");
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-	 return null;
-
-	QTextStream in(&file);
-	while (!in.atEnd()) {
-	 QString line = in.readLine();
-	 process_line(line);
-	}
-	
-}*/
-#define IntToQStr(n) (QString("%1").arg(n))
-
-QString runTests()
-{
-	QFile file("parsetests.txt");
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-	 return "Could not open file.";
-	
-	QString contents = file.readAll();
-	file.close();
-	QStringList astrTests = contents.split("~~");
-	for (int t=0; t<astrTests.size(); t++)
-	{
-		QStringList astrTestParts = astrTests[t].split("~");
-		if (astrTestParts.size() != 2) return "Malformed test " + IntToQStr(t) + " needs 2 parts: " + astrTests[t];
-		QString strInput = astrTestParts[0].trimmed();
-		QString strExpectedOutput = astrTestParts[1].trimmed();
-		QString strActualOutput = parseLiteralStrings(strInput);
-		if (strExpectedOutput != strActualOutput) 
-			return "Test failed " + IntToQStr(t) + " \nExpected:\t" + strExpectedOutput + "\nGot:\t"+strActualOutput;
-	}
-	return "All " + IntToQStr(astrTests.size()) + " tests pass.";
-}
 
 // Transforms @'c:\directory' into 'c:\\directory'
 // Pass in the string as const so that [ ] is faster.

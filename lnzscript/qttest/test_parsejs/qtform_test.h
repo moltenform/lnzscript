@@ -1,8 +1,9 @@
 
-
 #include <QWidget>
 #include "ui_qtform_test_form.h"
 
+#define IntToQStr(n) (QString("%1").arg(n))
+QString runTests();
 
 class TestForm : public QWidget
 {
