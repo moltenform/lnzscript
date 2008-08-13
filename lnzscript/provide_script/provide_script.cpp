@@ -50,7 +50,7 @@ StringResult ProvideScript::EvalScript(QString filename)
 
 // there should be something like this that returns a QScriptValue. This would be better.
 // the problem is that there have to be two return values: What was the result? and Was there an exception?
-StringResult ProvideScript::EvalString(QString contentsRaw)
+StringResult ProvideScript::EvalString(QString contentsRaw, QString optionalFileName /*=0*/)
 {
 	QString contents = processLiteralStrings(contentsRaw);
 	// Set "main" flag signalling that this file was not included
@@ -59,7 +59,7 @@ StringResult ProvideScript::EvalString(QString contentsRaw)
 	{
 		int lineno = engine.uncaughtExceptionLineNumber();
 		QString msg = ret.toString();
-		QString readableError = msg.sprintf("%s, at %d", qPrintable(msg), lineno);
+		QString readableError = msg.sprintf("Script error occurred. \n%s:%d: %s", qPrintable(optionalFileName), lineno, qPrintable(msg));
 		return StringResult(readableError, 1); // set error flag to 1
 		// clear exception here?  engine.clearExceptions();
 	}
@@ -133,7 +133,7 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	{
 		int lineno = eng->uncaughtExceptionLineNumber();
 		QString msg = ret.toString();
-		QString readableError = msg.sprintf("%s, at %d", qPrintable(msg), lineno);
+		QString readableError = msg.sprintf("Script error occurred. \n%s:%d: %s", qPrintable(strFilename), lineno, qPrintable(msg));
 		g_LnzScriptPrintCallback( &readableError); // print readable error
 		
 		// do not reset the exception, so that the script aborts.
