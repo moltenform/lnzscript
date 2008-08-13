@@ -464,7 +464,7 @@
 ///Function:File.iniReadVal
 ///Arguments:string strFilename, string strSection, string strKey
 ///Returns:string strValue
-///Doc:Reads a value from a standard format .ini file. If the key is not found, returns the number -1. Reads 1024 bytes maximum.
+///Doc:Reads a value from a standard format .ini file. If the key is not found, returns false. Reads 1024 bytes maximum.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
@@ -472,8 +472,8 @@
 	char buf[BUFSIZE];
 	
 	AU3_IniRead(QStrToCStr(strFilename), QStrToCStr(strSection),QStrToCStr(strKey),NOTFOUNDFLAG, buf, BUFSIZE);
-	if (strcmp(buf, NOTFOUNDFLAG)==0) // wasn't found
-		return QScriptValue(eng, -1);
+	if (strcmp(buf, NOTFOUNDFLAG)==0 || !AU3_error()) // wasn't found
+		return QScriptValue(eng, false);
 	else
 		return QScriptValue(eng, QString(buf));
 }
@@ -486,7 +486,7 @@
 {
 	CHECK_ARGS
 	long nRes = AU3_IniDelete(QStrToCStr(strFilename), QStrToCStr(strSection),QStrToCStr(strKey));
-	return util_LongToBool(nRes);
+	return QScriptValue(eng, ((nRes==1) && (AU3_error()!=0)));
 }
 
 ///Function:File.iniDeleteSection
@@ -497,7 +497,7 @@
 {
 	CHECK_ARGS
 	long nRes = AU3_IniDelete(QStrToCStr(strFilename), QStrToCStr(strSection),"");
-	return util_LongToBool(nRes);
+	return QScriptValue(eng, ((nRes==1) && (AU3_error()!=0)));
 }
 
 ///Function:File.iniWriteVal
