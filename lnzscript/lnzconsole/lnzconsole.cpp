@@ -31,11 +31,11 @@ void LnzConsole::beginInteractiveSession()
 }
 
 
-void LnzConsole::evaluateAndPrintResults(const char * c_strInput)
+void LnzConsole::evaluateAndPrintResults(const char * c_strInput, const char* c_strName /*=0*/)
 {
 	QString strIn(c_strInput);
 	
-	StringResult strOut = provideScript.EvalString(strIn);
+	StringResult strOut = c_strName ? provideScript.EvalString(strIn, c_strName) : provideScript.EvalString(strIn);
 	
 	// if the result is "null" or "undefined", don't print it.
 	if (strOut.errnumber != -1)

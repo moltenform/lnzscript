@@ -43,7 +43,8 @@ int main(int argc, char *argv[])
 		// add argv
 		console.addArgv(argc, argv);
 		
-		console.evaluateAndPrintResults( contents.toLatin1() );
+		console.evaluateAndPrintResults( contents.toLatin1(), argv[2] );
+		std::cout << std::endl; //ending with newline looks nicer in editor
 	}
 	else if (argc == 2 && strcmp(argv[1], "/r")==0)
 	{

@@ -11,7 +11,7 @@ public:
 	LnzConsole();
 	void addArgv(int argc, char *argv[]);
 	void beginInteractiveSession();
-	void evaluateAndPrintResults(const char * strInput);
+	void evaluateAndPrintResults(const char * strInput, const char * strName = 0);
 	bool getConfirmationToRunScript();
 
 private:
