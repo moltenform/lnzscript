@@ -7,6 +7,11 @@ Current Release
 
 The current release is 0.2.
 
+Additions in 0.3
+- @'literal\ string' syntax added
+- In editor, clicking on error will take you to location.
+- Dialog.input and prompt added
+
 Additions in 0.2
 
 - LnzScite code editor
