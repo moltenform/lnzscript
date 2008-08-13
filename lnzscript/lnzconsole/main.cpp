@@ -1,11 +1,12 @@
 
 
-#include "testinterfaceconsole.h"
+#include "lnzconsole.h"
+#include <QtScript>
 #include <iostream>
 
 int main(int argc, char *argv[])
 {
-	TestInterfaceConsole console;
+	LnzConsole console;
 	
 	char doc[] = "LnzScript Console\n\tRun with /r, read from stdin until EOF\n\tRun with /f, and file name for arg 2, load .js script and run it\n\tRun with /fconfirm, same as /f but ask for confirmation.\n\tRun with /e, and text for arg 2, execute the text and quit\n\tRun with no arguments, interactive mode.";
 
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
 			file.open(QIODevice::ReadOnly);
 			contents = file.readAll();
 			file.close();
-		} catch (...) { std::cerr << "Error."; return 0; }
+		} catch (...) { std::cerr << "Error reading file."; return 0; }
 		
 		if (contents.isEmpty()) return 0; // string was empty
 		
