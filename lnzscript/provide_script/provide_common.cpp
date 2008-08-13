@@ -108,7 +108,9 @@ namespace launchorz_functions
 		if (! QFileInfo(util_wincommondlg_location).exists()) { puts("Cannot find WinCommonDialog.exe. Place it in same directory as lnzscript.exe."); abort(); }
 	}
 	
-	// These are "private" functions, only to be called by this file.
+	// Note that our code assumes shell is cmd.exe, which should work for all Windows NT. For compatibilty with DOS-based os, could use %COMSPEC% env var
+	
+	// These are private functions, only to be called within this file.
 	static int util_run_getstatus(const QString& strExec, const QStringList& astrArgs)
 	{
 		QProcess objProcess;

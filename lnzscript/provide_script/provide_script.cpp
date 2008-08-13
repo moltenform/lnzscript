@@ -2,6 +2,7 @@
 #include "provide_script.h"
 #include "print_function.h"
 #include "provide_common.h"
+#include "parse_js.h"
 
 #include "functions_expose.h"
 
@@ -51,7 +52,7 @@ StringResult ProvideScript::EvalScript(QString filename)
 // the problem is that there have to be two return values: What was the result? and Was there an exception?
 StringResult ProvideScript::EvalString(QString contentsRaw)
 {
-	QString contents = contentsRaw; //processLiteralStrings(contentsRaw);
+	QString contents = processLiteralStrings(contentsRaw);
 	// Set "main" flag signalling that this file was not included
 	QScriptValue ret = engine.evaluate("var __name__ = 'main';" + contents);
 	if (engine.hasUncaughtException())
@@ -125,7 +126,7 @@ QScriptValue g_ProvideScript_IncludeFunction(QScriptContext *ctx, QScriptEngine 
 	{
 		return ctx->throwError("Could not include file.");
 	}
-	QString contents = contentsRaw; //processLiteralStrings(contentsRaw);
+	QString contents = processLiteralStrings(contentsRaw);
 	// Set flag signalling that this WAS included. Because it is declared var, it should be private.
 	QScriptValue ret = eng->evaluate("var __name__ = 'included';" + contents); //if this throws an exception, print it in a way that can be understood.
 	if (eng->hasUncaughtException())
