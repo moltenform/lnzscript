@@ -141,3 +141,20 @@
 	if (!strOutput.size()) return QScriptValue(eng, false);
 	return QScriptValue(eng, strOutput);
 }
+
+///Function:Dialog.input
+///Arguments:string strTitle, string strPrompt, string strDefaultText=""
+///Returns:string strResult
+///Doc:Opens input dialog for the user to type a response. Returns '' if user presses cancel.
+///Implementation:c++_winext
+{
+	CHECK_ARGS
+	QStringList args; 
+	args << "text"  << strTitle <<  strPrompt << strDefaultText;
+	QString strOutput = util_externalCmdStdout(G_WinCommonDialog, args);
+	
+	// if user presses cancel, prints <cancel>. Unfortunately, we can't really handle that, because it is caught in util_externalCmdStdout.
+	
+	return QScriptValue(eng, strOutput);
+}
+
