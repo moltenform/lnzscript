@@ -5,12 +5,15 @@ Versioning
 Current Release
 --------------------------
 
-The current release is 0.2.
+The current release is 0.3.
 
 Additions in 0.3
-- @'literal\ string' syntax added
+
+- @'c:\\myfile.txt' string literals
+- Code editor has Documentation viewer
+- Dialog.input() and prompt() functions
 - In editor, clicking on error will take you to location.
-- Dialog.input and prompt added
+- Bug fixes
 
 Additions in 0.2
 

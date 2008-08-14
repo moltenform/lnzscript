@@ -49,9 +49,13 @@ Keyboard
 Files
 ::
 
-	// note that if \ is used in a filepath, it must be escaped.
+	// new syntax for referring to files:
+	var s = File.readFile(@'c:\dir\myfile.txt')
+	
+	// Otherwise, the \ must be escaped.
 	var s = File.readFile('c:\\dir\\myfile.txt')
-	var arFiles = File.dirListFiles('c:\\dir', 'name'); //array of files in the folder sorted by name
+	
+	var arFiles = File.dirListFiles(@'c:\', 'name'); //returns array of files in the folder sorted by name
 
 Controls - this type of thing is useful 
 ::
@@ -70,7 +74,7 @@ Misc. self-explanatory stuff
 
 	Sound.mute()
 	Window.minimizeAll()
-	Screen.saveScreenshot('c:/shot.png', false)
+	Screen.saveScreenshot(@'c:\shot.png', false)
 	Process.systemShutdown()
 
 Demo

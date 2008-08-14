@@ -19,11 +19,11 @@ Process
 
 One key part of automation is opening a program. This would seem to be simple, but there are actually choices involved. Do you want the script to wait until the program is closed? Do you want to read from the command-line? Here are some ways to start another program:
 
-- Process.open	-opens the program and *doesn't* wait for it to close
-- Process.runAndWait	-opens the program and waits for it to close
-- Process.runAndRead	-opens the program, reads stdout, and waits for it to close
-- Process.runCmdLine	-runs command line like copy, del, rm, and waits for it to close
-- Process.openFile	-open a file or URL with default program, doesn't wait for close
+- Process.open	- opens the program and *doesn't* wait for it to close
+- Process.runAndWait	- opens the program and waits for it to close
+- Process.runAndRead	- opens the program, reads stdout, and waits for it to close
+- Process.runCmdLine	- runs command line like copy, del, rm, and waits for it to close
+- Process.openFile	- open a file or URL with default program, doesn't wait for close
 
 For programs that are in the Windows directory, you won't need the entire path. In other words, you can just type Process.open('calc.exe') or Process.open('notepad').
 
@@ -86,7 +86,7 @@ LnzScript code can include another file with the include() function. It is recom
 
 For more advanced scripts, use the statement ``include('<std>')`` to import a code library. Currently, this library provides prototype methods such as .startsWith() / .endsWith() for strings, prototype methods such as .max() and .min() for arrays, and printarr(a) for printing arrays. These are documented in the Reference under String and Array.
 
-You can associate the extension .js with lnzscript.exe, so that you can double-click a script to run it. It is recommended to associate with lnzscript.exe /fconfirm "%1". /fconfirm with ask for confirmation before running the script.
+You can associate the extension .js with lnzscript.exe, so that you can double-click a script to run it. It is recommended to associate with lnzscript.exe /fconfirm "%1". This will ask for confirmation before running the script.
 
 Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object oriented JavaScript.
 
