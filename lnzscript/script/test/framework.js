@@ -30,6 +30,22 @@ assertFails = function(fn, strMsg)
 	}
 }
 
+assertArrEq = function(a1, a2, strMsg)
+{
+	if (a1.length != a2.length) {print('Assertion failed. Arrays have different lengths. \nLast test was: '+g_lastSeenMethod ); abort('');}
+	for(var i=0; i<a1.length;i++)
+	{
+		v1=a1[i]; v2=a2[i];
+		if (v1!=v2)
+		{
+			print('Assertion failed: Array elements different. '+v1+ ' != '+v2);
+			print('Last test was: '+g_lastSeenMethod );
+			abort('');
+		}
+	}
+	
+}
+
 assert = function(bExp)
 {
 	if (!bExp)

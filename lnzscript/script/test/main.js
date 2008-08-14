@@ -23,6 +23,7 @@ print('Beginning main tests\n\n');
 
 // uncomment the tests you wish to run.
 //~ include('..\\namespace_clipboard.js');
+//~ include('..\\namespace_dialog.js');
 //~ include('..\\namespace_file.js');
 
 //~ include('..\\namespace_system.js');
