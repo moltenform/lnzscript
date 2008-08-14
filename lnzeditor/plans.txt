@@ -1,48 +1,32 @@
 LnzEditor Plans
 =================
 
+For 0.3
+---------------
+add DocViewer to editor properties. Can release tonight!
+test things on Vista. Will do today.
 
-For 0.3 release
--------------------
+
+For 0.4 release
+---------------------
+Create "clipboard", 5th screen-cast ?
+
+Join together Dialog.alert, Dialog.error, Dialog.warning
+Join together Dialog.askYesNo, askYesNoCancel
+Goal: less memory usage, smaller api, smaller binary
+
+
 Bugs
-	fix System.openUtility-Done
-	minor bug in File.ini* for return values, returns true even if false-Hopefully Done
-	include(), prevent something from including itself. Have a QStringlist of what has been included.
-			-- actually, if this occurs, a stack overflow happens, nothing too horrible. won't need to fix.
-	File.dirListFiles() doesn't include hidden files. Document or fix this.
-		-fixed by adding |hidden to params
-	in for line expand-deletes preceding comments?
-		-fixed, uses Scite fns now.
-	For System.openControlPanel and related, make options non-case sensitive. Should be easy
+	For System.openControlPanel and related, make options non-case sensitive. 
+	See System.openControlPanel to see Vista changes in comments
 
+
+Testing
+	minor bug in File.ini* for return values, returns true even if false - verify fix
 
 Features
-	add @'c:\test' feature to main. Document this feature.
-		-Added !
-	Dialog.input() to get a string
-		Was considering Smartwin++, but this may not work out (if it looks ugly)
-		CodeProject examples look ugly.
-		If all else fails, use a .NET 1.1 program in C# which would be trivial (but introduces .NET dependency).
-		Done- wrote from scratch with .rc, win api!!
-		
-	output should work in Scite, if there is an error on line x.
-		done!
-	add DocViewer to editor.
-		Basically done
-	Python features: zip, url
-		Can be done, but not thoroughly tested, tonight
+	Python zip, url
 
-
-Test cases
-	cover the api with tests
-	Run tests on Vista
-	
-
-
-
-	
-For 0.4 release
-----------------
 
 Features
 	Investigate DllCall method
@@ -74,7 +58,6 @@ Features
 	Installer
 		Optionally (on by default?) associates .js files with the editor.
 
-Create "clipboard", 5th screen-cast ?
 
 
 For 0.5? release
