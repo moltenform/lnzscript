@@ -109,7 +109,14 @@ Scite Modifications
 	
 	announce to scite-interest list
 	
-
+64 bit version
+	nircmd is 32, but that shouldn't cause any problems.
+	things blocking this:
+	scite_msg.cpp, reads in, atol to long, which won't be 64 bit
+	not enough time to thoroughly test.
+	no major advantage to 64 bit mode for this project.
+	
+	
 
 
 
