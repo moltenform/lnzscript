@@ -5,22 +5,32 @@ LnzEditor Plans
 For 0.3 release
 -------------------
 Bugs
-	fix System.openUtility
-	minor bug in File.ini* for return values, returns true even if false
+	fix System.openUtility-Done
+	minor bug in File.ini* for return values, returns true even if false-Hopefully Done
 	include(), prevent something from including itself. Have a QStringlist of what has been included.
+			-- actually, if this occurs, a stack overflow happens, nothing too horrible. won't need to fix.
 	File.dirListFiles() doesn't include hidden files. Document or fix this.
+		-fixed by adding |hidden to params
 	in for line expand-deletes preceding comments?
+		-fixed, uses Scite fns now.
 	For System.openControlPanel and related, make options non-case sensitive. Should be easy
 
 
 Features
 	add @'c:\test' feature to main. Document this feature.
+		-Added !
 	Dialog.input() to get a string
 		Was considering Smartwin++, but this may not work out (if it looks ugly)
 		CodeProject examples look ugly.
 		If all else fails, use a .NET 1.1 program in C# which would be trivial (but introduces .NET dependency).
+		Done- wrote from scratch with .rc, win api!!
+		
+	output should work in Scite, if there is an error on line x.
+		done!
 	add DocViewer to editor.
+		Basically done
 	Python features: zip, url
+		Can be done, but not thoroughly tested, tonight
 
 
 Test cases
@@ -40,8 +50,6 @@ Features
 	Create a new File.createShortcut that can handle 
 		File.createShortcut only works for simple shortcuts. Will have to use winapi
 		http://64.233.167.104/search?q=cache:5RhesI33NygJ:www.codeproject.com/KB/winsdk/makelink.aspx+windows+api+create+shortcut&hl=en&ct=clnk&cd=1&gl=us
-	
-	format output of on error, so that if you click output pane it will take you to error
 
 	add a way to detect the Python directory
 		this could be done with an lnzscript .js file
@@ -54,6 +62,7 @@ Features
 		which should add quoting of arguments, and just as many arguments as needed
 
 	Add more dialogs
+		Dialog.input - initial focus to input box
 		Dialog.choice, perhaps choosing from a handful of items.
 		Would be good for smartwin++ if it didn't look so ugly.
 		Consider Dialog.openFolder, which Smartwin++ can add easily
@@ -113,11 +122,11 @@ Scite Modifications
 	nircmd is 32, but that shouldn't cause any problems.
 	things blocking this:
 	scite_msg.cpp, reads in, atol to long, which won't be 64 bit
+	wincommondialog, at least would want to check
 	not enough time to thoroughly test.
-	no major advantage to 64 bit mode for this project.
+	summary: no major advantage to 64 bit mode for this project.
 	
 	
-
 
 
 
