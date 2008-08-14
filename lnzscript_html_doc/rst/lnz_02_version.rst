@@ -13,7 +13,6 @@ Additions in 0.3
 - Code editor has Documentation viewer
 - Dialog.input() and prompt() functions
 - In editor, clicking on error will take you to location.
-- Bug fixes
 
 Additions in 0.2
 
