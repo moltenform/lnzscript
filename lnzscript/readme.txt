@@ -1,4 +1,4 @@
-launchorz 0.2
+launchorz 0.3
 http://jamon.ben.googlepages.com/lnz_02_intro.html
 http://code.google.com/p/launchorz/
 Powerful JavaScript libraries for Win32 automation
@@ -21,11 +21,9 @@ Contribute patches if you come up with something interesting.
 Or, add an issue at http://code.google.com/p/launchorz/issues/list
 
 
-Known Issues, as of version 0.2
-- System.openUtility mostly does not work. Fixed in svn.
-- File.iniDelete and related work, but sometimes return true even upon failure.
-- There is a noticeable pause when closing Lnz Scite editor.
-- File.dirListFiles() does not include hidden files.
+Known Issues, as of version 0.3
+- A few System.openUtility functions do not work under Vista
+- When running .js scripts in the editor, empty command-line arguments are passed
 
 =================
 This program is free software; you can redistribute it and/or
