@@ -15,6 +15,12 @@ Join together Dialog.alert, Dialog.error, Dialog.warning
 Join together Dialog.askYesNo, askYesNoCancel
 Goal: less memory usage, smaller api, smaller binary
 
+for loop expand breaks line?
+prints "here I am"? ? ? - rebuild scite
+
+Docviewer, on untitled document, doesn't see the subsystem=2 and runs in subsystem 1 or something.
+Works fine on titled documents
+
 
 Bugs
 	For System.openControlPanel and related, make options non-case sensitive. 
