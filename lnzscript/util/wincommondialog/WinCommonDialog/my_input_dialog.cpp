@@ -37,9 +37,9 @@ void CenterWindow( HWND hwnd )
 int ControlIDOfCommand(unsigned long wParam) { return wParam & 0xffff; }
 
 /*
-Win api resources
-good win api:
+windows api information:
 http://zetcode.com/tutorials/winapi/firststeps/
+http://www.toymaker.info/Games/html/windows_api.html
 SetWindowText
 http://msdn.microsoft.com/en-us/library/ms633546(VS.85).aspx
 DialogBox Procedures
