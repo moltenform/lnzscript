@@ -12,7 +12,7 @@
 ///Function:System.disableInput
 ///Arguments:
 ///Returns:
-///Doc:Disables mouse and keyboard input from the user. The script can, however, still simulate most mouse and keyboard events. Note that this has different effects based on operating system. Pressing Ctrl+Alt+Del will re-enable input.
+///Doc:Disables mouse and keyboard input from the user. The script can, however, still simulate most mouse and keyboard events. Note that this has different effects based on operating system (and apparently does nothing on Vista). Pressing Ctrl+Alt+Del will re-enable input.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
@@ -57,7 +57,7 @@
 ///Function:System.installScreensaver
 ///Arguments:string strScreensaver
 ///Returns:
-///Doc:Installs a screensaver. Tested on Windows XP.
+///Doc:Installs a screensaver. Tested on Windows XP. On Vista, simply opens Screensaver options and doesn't work.
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
@@ -90,7 +90,7 @@
 	else if (strOption=="Add/Remove") cmd = "appwiz.cpl,,0";
 	else if (strOption=="Regional") cmd = "intl.cpl,,0";
 	else if (strOption=="Time") cmd = "timedate.cpl";
-	else if (strOption=="System") cmd = "sysdm.cpl,,0";
+	else if (strOption=="System") cmd = "sysdm.cpl,,0"; //on Vista: Rundll32 Shell32.dll,Control_RunDLL Sysdm.cpl,,3 
 	else if (strOption=="Display") cmd = "desk.cpl,,4"; //note opens to "settings"; I think that's most useful
 	else if (strOption=="Accessibility") cmd = "access.cpl";
 	else if (strOption=="Network") cmd = "ncpa.cpl";
@@ -98,7 +98,7 @@
 	else if (strOption=="Accounts") cmd = "nusrmgr.cpl";
 	else if (strOption=="Security Center") cmd = "wscui.cpl";
 	else if (strOption=="Firewall") cmd = "firewall.cpl";
-	else if (strOption=="Wireless") cmd = "NetSetup.cpl,@0,WNSW";
+	else if (strOption=="Wireless") cmd = "NetSetup.cpl,@0,WNSW"; //apparently doesn't work on Vista
 	
 	// unusual ones
 	else if (strOption=="Taskbar")
