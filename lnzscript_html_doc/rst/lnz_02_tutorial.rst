@@ -71,6 +71,8 @@ File
 
 There are many functions in this namespace, but they should be self-explanatory. Note that File.readFile() and File.writeFile() are not intended for binary data, and the file cannot be larger than available memory.
 
+When referring to a file path, one should use special string literals beginning with the @ symbol, as in the example ``var s = File.readFile(@'c:\dir\myfile.txt')``. Otherwise, all backslashes in the string will have to be doubled.
+
 Dialog
 ====================================
 
