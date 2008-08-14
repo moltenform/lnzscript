@@ -1593,16 +1593,23 @@ bool SciTEWin::ParametersOpen() {
 }
 
 void SciTEWin::ParamGrab() {
+	// //SString allargs;
 	if (wParameters.Created()) {
+		// //SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "here I 2\n");
 		HWND hDlg = reinterpret_cast<HWND>(wParameters.GetID());
 		for (int param = 0; param < maxParam; param++) {
 			char paramVal[200];
 			::GetDlgItemText(hDlg, IDPARAMSTART + param, paramVal, sizeof(paramVal));
 			SString paramText(param + 1);
 			props.Set(paramText.c_str(), paramVal);
+			
+			// //if (strcmp(paramVal,"")!=0) {
+			// //	SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, "argfound\n");
+			// //allargs.append("\""); allargs.append(paramVal); allargs.append("\" "); }
 		}
 		UpdateStatusBar(true);
 	}
+	// //props.Set("allargs", allargs.c_str());
 }
 
 BOOL SciTEWin::ParametersMessage(HWND hDlg, UINT message, WPARAM wParam) {
