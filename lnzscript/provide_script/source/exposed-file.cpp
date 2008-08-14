@@ -196,7 +196,7 @@
 ///Function:File.dirListFiles
 ///Arguments:string strDirectory, string strSortBy="Unsorted"
 ///Returns:array arFilenames
-///Doc:Returns array of filenames inside folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','size','type'
+///Doc:Returns array of filenames inside folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','size','type'. Includes files marked as hidden, but not those marked as system.
 ///Example:var arFiles = File.dirListFiles('c:\\','size'); print('biggest files in c:'); arFiles.reverse(); for(var i=0;i<arFiles.length;i++) print(arFiles[i]);
 ///Implementation:c++_qt
 {
@@ -204,13 +204,13 @@
 	QDir objDir(strDirectory); 
 	if (! objDir.exists()) return ctx->throwError("File.dirListFiles(). No directory found with that name.");
 	
-	objDir.setFilter(QDir::Files);
+	objDir.setFilter(QDir::Files | QDir::Hidden);
 	return util_ListDirectoryEntries(ctx, eng, objDir, strSortBy);
 }
 ///Function:File.dirListSubdirs
 ///Arguments:string strDirectory, string strSortBy="Unsorted"
 ///Returns:array arSubdirectories
-///Doc:Returns array of folder names that are subfolders of the folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','type'.
+///Doc:Returns array of folder names that are subfolders of the folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','type'. Includes files marked as hidden, but not those marked as system.
 ///Example:var arFolders = File.dirListSubdirs('c:\\','name'); print('subfolders in c:'); for(var i=0;i<arFolders.length;i++) print(arFolders[i]);
 ///Implementation:c++_qt
 {
@@ -218,7 +218,7 @@
 	QDir objDir(strDirectory); 
 	if (! objDir.exists()) return ctx->throwError("File.dirListSubdirs(). No directory found with that name.");
 	
-	objDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot ); // and QDir::Drives ?
+	objDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden); // and QDir::Drives ?
 	return util_ListDirectoryEntries(ctx, eng, objDir, strSortBy);
 }
 
