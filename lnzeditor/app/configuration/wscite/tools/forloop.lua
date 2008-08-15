@@ -10,11 +10,13 @@ function ForLoopExpand()
 	return false
 	end
 
+	linetext = linetext:gsub('\n','')
+	linetext = linetext:gsub('\r','')
 	-- [(] in regexp to represent the literal (
 	local re = 'for%s*[(]([^)]+)[)]?'
 	local tstart,tend,captured = string.find(linetext,re)
 	if captured==nil then return false end
-
+	
 	local result='for(var i=0; i<'..captured..';i++)'
 	editor:DelLineLeft() --clear line
 	editor:ReplaceSel(result) -- add output
