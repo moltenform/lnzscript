@@ -21,6 +21,11 @@ prints "here I am"? ? ? - rebuild scite
 Docviewer, on untitled document, doesn't see the subsystem=2 and runs in subsystem 1 or something.
 Works fine on titled documents
 
+"allparams" property - preliminary, but doesn't work yet.
+- see rev. 286
+
+
+
 
 Bugs
 	For System.openControlPanel and related, make options non-case sensitive. 
