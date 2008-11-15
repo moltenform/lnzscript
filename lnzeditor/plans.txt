@@ -1,6 +1,11 @@
 LnzEditor Plans
 =================
 
+
+One complete build script ?
+specify directories for python scripts.
+
+
 For 0.4 release
 ---------------------
 Create "clipboard", 5th screen-cast ?
@@ -10,12 +15,16 @@ Join together Dialog.askYesNo, askYesNoCancel
 Goal: less memory usage, smaller api, smaller binary
 
 
+
 Docviewer, on untitled document, doesn't see the subsystem=2 and runs in subsystem 1 or something.
 Works fine on titled documents
 
-"allparams" property - preliminary, but doesn't work yet.
-- see rev. 286
-
+passing arguments to a run command
+		should be able to just write command.go.*.py=pythonw -u "$(FileNameExt)" $(args)
+		which should add quoting of arguments, and just as many arguments as needed		
+			"allparams" property - preliminary, but doesn't work yet.
+			- see rev. 286
+		Better solution: if arg is empty string, don't add it. if arg is "" (two quotes), then add empty string as argument
 
 Editor feature
 	Onkey, keep track of cursor position.
@@ -31,6 +40,7 @@ Testing
 
 Features
 	Python zip, url
+	Create api file, autocomplete for Python (for module-level functions)
 
 
 Features
