@@ -1,5 +1,9 @@
 Todo
 =============
+Use qsrand() to seed rng
+bug in editor: if provide arguments, should replace \ with \\, before passing.
+isDirectory should also check fileexists
+String.slice not defined
 
 For development, it should be clear what the working directory should be for Python scripts
 
