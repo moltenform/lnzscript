@@ -69,6 +69,9 @@ BOOL TextInputDialogMsg(void* context, HWND hDlg, UINT message, WPARAM wParam)
 			CenterWindow(hDlg);
 
 			SendDlgItemMessage(hDlg, IDC_EDIT1, EM_LIMITTEXT, MAXSTRINGLENGTH, 1);
+			//SendDlgItemMessage(hDlg, IDC_EDIT1, WM_SETFOCUS, 0, 0); //give it initial focus
+			//SendDlgItemMessage(hDlg, IDC_EDIT1, EM_SETSEL, 0, 4);  //give it initial focus
+			//instead, set focus, simply by editing rc.rc and making the Edit control the first one in the list.
 			return TRUE;
 		}
 		break;
