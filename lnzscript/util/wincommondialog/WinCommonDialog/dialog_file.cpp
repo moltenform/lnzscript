@@ -12,6 +12,7 @@ const char* documentationFile =
 "open\n"
 "openmult\n"
 "save\n"
+//"dir\n"
 "\n"
 "filetype, if present, should be in the format \"bmp\" (not \"*.bmp\")\n"
 "Otherwise, defaults to All files *.*\n"
@@ -34,7 +35,9 @@ int dialog_file(int argc, _TCHAR* argv[])
 		return dialog_file_open(filetype, startdir, false);
 	else if (stringequal(dlgtype, _T("save")))
 		return dialog_file_save(filetype, startdir);
-
+	//else if (stringequal(dlgtype, _T("dir")))
+	//	return dialog_file_dir(startdir);
+	
 	return 0;
 
 
@@ -151,8 +154,7 @@ int dialog_file_save(_TCHAR* filetype, _TCHAR* startdir)
 	// it is possible that this is NULL, but that is intentional. If null it will use current directory as expected
 	ofn.lpstrInitialDir = startdir; 
 
-	ofn.Flags =
-		OFN_HIDEREADONLY | // hide "Open as read only" checkbox
+	ofn.Flags = OFN_HIDEREADONLY | // hide "Open as read only" checkbox
 		OFN_OVERWRITEPROMPT;
 
 	if (GetSaveFileName(&ofn))
@@ -168,50 +170,52 @@ int dialog_file_save(_TCHAR* filetype, _TCHAR* startdir)
 }
 
 
-int oldcode()
+/*
+_TCHAR* g_dir_startdir = NULL; //can be on the stack, since dialog_file_dir will still be in memory.
+//not thread safe or re-entrant though.
+int WINAPI dir_SHBrowseCallBack( HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData )
 {
-	_TCHAR* dlgtype = NULL;
-	_TCHAR* filetype = NULL;
-	OPENFILENAME ofn;       // common dialog box structure
-	WCHAR szFile[16384];     // buffer for file name. Big because of "select multiple files" option
-
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = NULL;
-
-	ofn.lpstrFile = szFile;
-	ofn.lpstrFile[0] = '\0'; // Set lpstrFile[0] to '\0' so that GetOpenFileName does not use the contents of szFile to initialize itself.
-	ofn.nMaxFile = sizeof(szFile);
-	WCHAR typeBuffer[128];
-	// The 3rd argument can be "*", meaning all files, or "bmp", which means *.bmp files. Pass "bmp" and NOT "*.bmp" or ".bmp"
-	// Multiple types are not supported currently.
-	if (filetype==NULL || stringequal(filetype,_T("*")))
-		ofn.lpstrFilter = L"All Files\0*.*\0"; //note, ends with \0\0
-	else
+	if ( uMsg == BFFM_INITIALIZED )
 	{
-		if (_tcslen(filetype) > 10) return ErrorResult;
-
-		_snwprintf(typeBuffer, sizeof(typeBuffer), L"%s Files\0*.%s\0\0", filetype, filetype); 
-		ofn.lpstrFilter = typeBuffer;
+		// Set initial directory
+		if ( g_dir_startdir )
+		{
+			::SendMessage( hWnd,
+			BFFM_SETSELECTION,
+			TRUE,
+			LPARAM(g_dir_startdir)
+			);
+		}
 	}
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = NULL;
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-
-	// Display the Open dialog box. 
-
-	if (GetOpenFileName(&ofn)==TRUE) 
-	{
-		// the result, ofn.lpstrFile, is a Wide (Unicode) string, so convert to Ascii
-		char * psz = new char[_tcslen(ofn.lpstrFile)+1];
-		wsprintfA(psz, "%S", ofn.lpstrFile);
-		fputs(psz, stdout);
-		delete[] psz;
-	}
-	else fputs("<cancel>", stdout);
 	return 0;
-
-
 }
+
+int dialog_file_dir( _TCHAR* startdir)
+{
+	g_dir_startdir = (startdir) ? startdir : NULL;
+
+	BROWSEINFO bi = {0};
+	bi.hwndOwner = NULL;
+	//bi.lpszTitle; use default OS title
+	bi.ulFlags   = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
+	bi.lpfn = BFFCALLBACK( dir_SHBrowseCallBack );
+	bi.lParam = NULL;
+
+	//~ LPMALLOC shellMalloc = 0; 		//what is this??????
+	//~ SHGetMalloc(&shellMalloc);
+	LPCITEMIDLIST pidl = ::SHBrowseForFolderA(&bi);
+
+	_TCHAR bufDirectory[MAXPATH];
+	bool result = false;
+	if (pidl)
+		result = ::SHGetPathFromIDListA(pidl, bufDirectory) != FALSE;
+	//~ shellMalloc->Release();
+	
+	if (result)
+		_putts(bufDirectory);
+	else 
+		fputs("<cancel>", stdout);
+	g_dir_startdir = NULL;
+	return 0;
+}
+*/
