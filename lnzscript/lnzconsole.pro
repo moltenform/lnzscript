@@ -13,4 +13,6 @@ SOURCES     = ./lnzconsole/main.cpp ./lnzconsole/lnzconsole.cpp  \
 
 
 QT += script
-LIBS += ./provide_script/autoit/libautoitx3.a
+LIBS += ./provide_script/autoit/libautoitx3.a \
+		Shell32.lib
+		
