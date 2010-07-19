@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include "provide_script/provide_script.h"
+#include "../provide_script/provide_script.h"
 
 
 class LnzConsole

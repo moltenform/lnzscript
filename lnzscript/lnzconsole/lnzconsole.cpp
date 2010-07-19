@@ -1,6 +1,6 @@
 #include <QtScript>
 #include "lnzconsole.h"
-#include "provide_script/print_function.h"
+#include "../provide_script/print_function.h"
 #include <iostream>
 
 LnzConsole::LnzConsole()
