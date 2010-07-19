@@ -73,6 +73,7 @@ _TCHAR* get_argument(int index, int argc, _TCHAR** argv)
 	{
 		puts("Not enough arguments. Run without any arguments to see doc.");
 		exit(ErrorResult);
+		return 0;
 	}
 	return argv[index];
 }
