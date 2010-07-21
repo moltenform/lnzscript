@@ -1,0 +1,105 @@
+
+For version 0.4
+	
+	Examples
+		Include more examples
+		Set up wiki for examples. Done - see project page. http://code.google.com/p/launchorz/wiki/
+	
+	Editor
+		Point to correct website, not sites.google.com
+		Should not pass "" "" "" "" arguments to scripts
+		bug in editor: if provide arguments, should replace \ with \\, before passing.
+
+		
+	Scripts
+		System.openControlPanel and System.openUtility should be cleaned up, probably using an enum
+			(User would type System.openControlPanel(System.Panel_Keyboard))
+			http://msdn.microsoft.com/en-us/library/cc144191(VS.85).aspx
+			http://msdn.microsoft.com/en-us/library/ee330741(v=VS.85).aspx
+		
+	
+		File.createShortcut, allow a target with arguments. http://lists.trolltech.com/qt-interest/2005-01/msg00241.html
+		wincommondialog input dialog, Dialog.input, field should get focus  --DONE.
+		
+		file.getShortcutTarget, and others from QT  should return paths like
+		c:\foo
+		not
+		c:/foo
+		isDirectory should also check fileexists
+		
+		unify between NirCmd / Au3 window and dialog commands
+		
+		File.copyDirectory, File.moveDirectory (with subdirs)
+		File.dirListFilesPattern - list all entries matching *.txt and so on.
+		-File.dirWalk - to make recursing through directories easier
+		
+		equivalents of os.path, os.path.join, os.path.split. UNC paths? weird paths? 
+
+	Other
+		Make an installer that associates .jsz. maybe even drag/drop onto, py does that
+		Make editor.exe more visible when you download it?
+		Use qsrand() to seed rng
+		dev environment-make working directories clear, clear up build process, and build doc process
+		
+		
+		
+Guidelines
+	Focus on things that python isn't good at. Maybe we can have better file/handling, quick scripts to rename files, etc.
+		(could look at Python's shellutil for copy file, copy directory, move directory, etc. recurse through dir, too, maybe.)
+	Look at ahk for possible.
+	Look at good Au3 /ahk scripts online
+
+
+Probably for later release
+	Internet.downloadURL. Wget-like URL retrieval would be nice. Options: 
+		Python + py2exe
+			(Around 1Mb)
+			Current choice, because I already know it
+			Also, I get zip file support nearly for free
+		QtNetwork4.dll
+			(1.215Mb)
+			Less flexible, don't know it
+		Libcurl
+		Non-option - distribute w/ au3 and call it
+	setEnvironmentvar
+	better build env, maybe templates in subfolder instead of sources, write internal docs so that it could make sense
+
+
+Maybe for a later release
+	CallDll, depending on how hard it is to implement (see ahk src?)
+	getDirectorySize
+	update scite version... not worth it now
+	Python can call LnzScript (extension/subprocess), LnzScript can call Python?
+	
+	
+	
+	
+	We could add the following features by having a python tool. (best if a py2exe'd exe)
+		ftp
+		wget-like file retrieval. http sending via post/get. could automate some things that way.
+		zip file (but qt also supports zip)
+	
+	a printerr to send to stderr
+	a directory Dialog, not really worth it
+	
+	Interact with IE/firefox bookmarks
+	
+	Registr.readKey - provide way to tell reason for failure - key ? value ? type of value?
+	File.driveMapAdd - provide way to tell reason for failure
+	AU3_ControlTreeView, for interacting w treeviews, apparently isn't provided by the dll...
+	AU3_RunAsSet, AU3_PixelChecksum, might not be used
+	getDriveType (cdrom, removable
+	DriveGetFileSystem (FAT, NTFS
+	MemGetStats  - Retrieves memory related information.
+
+	
+
+More unit tests...
+	Test relative coords, MouseCoordMode, PixelCoordMode
+	Test registry read and write, ones that return array
+	
+Note that we probably don't want to introduce a dependency on the large QtGui.dll
+	Can use winapi (wincommondialog.exe) for msgbox, input, file dialogs. 
+	SmartWin and Ultimate++, at least with default themes, look ugly.
+	
+
