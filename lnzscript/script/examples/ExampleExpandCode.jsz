@@ -1,0 +1,28 @@
+include('<std>');
+var sClipboard = Clipboard.getText();
+if (sClipboard  && sClipboard.contains('#'))
+{  
+  var sRep = Dialog.input('Replace', 'How many repetitions? n=0 to ?', '3');
+  if (isNumber(sRep))
+  {    
+    var sResult = '';
+    for (var i=0; i<sRep; i++)
+      sResult += sClipboard.replace(/#/g, i) + '\r\n';
+    Clipboard.setText(sResult);
+  }
+}
+
+/*
+When working on a quick project, or writing in a language like Verilog, sometimes the same line of code is repeated a few times, with a different index. The following script takes a code fragment like
+
+a[#] = b[#] & c[#];
+
+and expands it to
+
+a[0] = b[0] & c[0];
+a[1] = b[1] & c[1];
+a[2] = b[2] & c[2];
+
+... (This isn't a useful example but it depicts what the script does). All it does is replace the '#' character with a number. This can be useful for code with consecutive numbers though. 
+*/
+

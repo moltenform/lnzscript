@@ -1,0 +1,7 @@
+include('getExplorerDirectory.jsz');
+Window.activate( {'class':'CabinetWClass'});
+// activate the most-recently-used Explorer window.
+Time.sleep(100);
+var strDir = getCurrentExplorerDirectory();
+if (strDir)
+  Process.openFile('cmd.exe', strDir);
