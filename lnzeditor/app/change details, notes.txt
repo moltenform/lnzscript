@@ -1,0 +1,69 @@
+
+
+Details on changes made to scite
+------------
+archive the Gtk directory, that we won't ever need.
+
+Modify \scite\src\SciTEIO.cxx:68
+	want it to look in properties directory, not base directory
+	const char propGlobalFileName[] = "properties\\SciTEGlobal.properties"
+	const char propGlobalFileName[] = "properties\\SciTEGlobal.properties";
+	const char propAbbrevFileName[] = "properties\\abbrev.properties";
+	and so on...
+
+Modify \scite\src\SciteWinBar.cxx
+	Line 135, commented out stuff. No Tools menu shown when right-click on a tab
+
+Modify SciteRes.rc
+	Removed MENUITEM "Match &Brace\tCtrl+E",			IDM_MATCHBRACE
+	But, this didn't actually change the keybinding. For that we'll look elsewhere.
+	MENUITEM "Cut Line\tCtrl+L",	2337 added
+
+Modify SciteRes.rc
+	"E", IDM_MATCHBRACE, VIRTKEY, CONTROL
+	"E", IDM_SELECTTOBRACE, VIRTKEY, CONTROL, SHIFT
+
+Modify all sorts of things to add IDM_LINECUT.
+
+In properties, have
+	c:\python25\pythonw -u "$(FileNameExt)" $(1) $(2) $(3) $(4)
+	for args!
+
+Todo: bind Ctrl; to prefs
+	I did this before so it will have to be possible
+
+Removed buffers menu!
+
+Useful defines/info
+----------------
+
+#define MRU_START	16
+#define IMPORT_START 20
+#define TOOLS_START 3
+
+SciteBuffers.cxx
+	void SciTEBase::SetToolsMenu() {
+	
+Scite Base
+    menuFile = 0, menuEdit = 1, menuSearch = 2, menuView = 3,
+    menuTools = 4, menuOptions = 5, menuLanguage = 6, menuBuffers = 7,
+    menuHelp = 8
+    
+	menuFile = 0, menuEdit = 1, menuSearch = 2, menuRun = 3,
+    menuTools = 4, menuOptions = 5, 
+    menuHelp = 8
+    
+note also 
+void SciTEBase::CheckMenus() {
+
+Useful:sciteIO.cxx line 106
+props.Set("FilePath", filePath.AsFileSystem());
+props.Set("FileDir", filePath.Directory().AsFileSystem());
+props.Set("FileName", filePath.BaseName().AsFileSystem());
+props.Set("FileExt", filePath.Extension().AsFileSystem());
+props.Set("FileNameExt", FileNameExt().AsFileSystem());
+
+Useful debugging:
+SendEditorString(SCI_INSERTTEXT, SendEditor(SCI_GETLENGTH)-1, "hello ");
+
+
