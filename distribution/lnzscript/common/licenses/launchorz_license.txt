@@ -1,4 +1,4 @@
-launchorz 0.2
+launchorz 0.4
 http://code.google.com/p/launchorz/
 Powerful JavaScript libraries for Win32 automation
 by Ben Fisher
