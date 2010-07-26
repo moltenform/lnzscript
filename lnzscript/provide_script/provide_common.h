@@ -34,6 +34,7 @@ namespace launchorz_functions
 	void util_SetAU3CaretRelativeCoords(bool bRelative);
 	QString util_AU3KeyboardCommandsReplacement(QString strKeySequence);
 	QScriptValue util_QListToScriptArray(QScriptEngine *eng, QList<QString>& results);
+	QString util_fixQtDirectorySlashes(QString s);
 	QScriptValue util_ListDirectoryEntries(QScriptContext *ctx, QScriptEngine *eng, QDir objDir, QString strSortBy);
 	QString util_Au3WindowGetTextParamFromObj(QScriptValue& val);
 	QString util_Au3WindowParseAndSetMode(QScriptValue& val);

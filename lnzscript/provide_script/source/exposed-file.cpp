@@ -16,7 +16,7 @@
 	else // return the current directory
 	{
 		QFileInfo objFileInfo("."); //refers to current dir.
-		return QScriptValue(eng, objFileInfo.absoluteFilePath()); 
+		return QScriptValue(eng, util_fixQtDirectorySlashes(objFileInfo.absoluteFilePath())); 
 	}
 }
 ///Function:File.readFile
@@ -107,7 +107,7 @@
 {
 	CHECK_ARGS
 	QFileInfo objFileInfo(strFilepath); if (!objFileInfo.exists()) return ctx->throwError("File does not exist.");
-	return QScriptValue(eng, objFileInfo.absoluteFilePath()); 
+	return QScriptValue(eng, util_fixQtDirectorySlashes(objFileInfo.absoluteFilePath())); 
 }
 
 ///Function:File.getSize
@@ -194,15 +194,20 @@
 	return QScriptValue(eng, objDir.count()-2);
 }
 ///Function:File.dirListFiles
-///Arguments:string strDirectory, string strSortBy="Unsorted"
+///Arguments:string strDirectory, string strFileTypes="*", string strSortBy="Unsorted"
 ///Returns:array arFilenames
 ///Doc:Returns array of filenames inside folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','size','type'. Includes files marked as hidden, but not those marked as system.
-///Example:var arFiles = File.dirListFiles('c:\\','size'); print('biggest files in c:'); arFiles.reverse(); for(var i=0;i<arFiles.length;i++) print(arFiles[i]);
+///Example:var arFiles = File.dirListFiles('c:\\','*','size'); print('biggest files in c:'); arFiles.reverse(); for(var i=0;i<arFiles.length;i++) print(arFiles[i]);
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
 	QDir objDir(strDirectory); 
 	if (! objDir.exists()) return ctx->throwError("File.dirListFiles(). No directory found with that name.");
+	QStringList filters;
+	if (!strFileTypes.isEmpty() && strFileTypes!="*") {
+		filters << strFileTypes;
+		objDir.setNameFilters(filters);
+	}
 	
 	objDir.setFilter(QDir::Files | QDir::Hidden);
 	return util_ListDirectoryEntries(ctx, eng, objDir, strSortBy);
@@ -229,7 +234,7 @@
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
-	return QScriptValue(eng, QDir::homePath()); 
+	return QScriptValue(eng, util_fixQtDirectorySlashes(QDir::homePath())); 
 }
 ///Function:File.getPathTemp
 ///Arguments:
@@ -238,7 +243,7 @@
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
-	return QScriptValue(eng, QDir::tempPath()); 
+	return QScriptValue(eng, util_fixQtDirectorySlashes(QDir::tempPath())); 
 }
 
 ///Function:File.getPathSpecial
@@ -309,7 +314,7 @@
 	if (strTarget=="")
 		return ctx->throwError("File.getShortcutTarget(). File is not a valid shortcut.");
 	else
-		return QScriptValue(eng, strTarget); 
+		return QScriptValue(eng, util_fixQtDirectorySlashes(strTarget)); 
 }
 ///Function:File.createShortcut
 ///Arguments:string strFilename, string strTarget

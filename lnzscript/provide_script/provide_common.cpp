@@ -58,7 +58,11 @@ namespace launchorz_functions
 	}
 	
 	
-
+	QString util_fixQtDirectorySlashes(QString s)
+	{
+		return s.replace("/", "\\");
+	}
+	
 	// previous to calling this, use.setFilter to set a filter.
 	QScriptValue util_ListDirectoryEntries(QScriptContext *ctx, QScriptEngine *eng, QDir objDir, QString strSortBy)
 	{
