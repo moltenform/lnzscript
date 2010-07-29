@@ -6,10 +6,11 @@
 ///Doc:Gets text from the clipboard. Returns false if clipboard is empty.
 ///Implementation:c++_au3
 {
+	//would use QtGui, but that requires QtGui.dll which we don't want.
 	CHECK_ARGS
-	char buf[BUFSIZE];
+	char buf[LARGEBUFSIZE];
 	
-	AU3_ClipGet(buf, BUFSIZE);
+	AU3_ClipGet(buf, LARGEBUFSIZE);
 	if (AU3_error()==1)
 		return QScriptValue(eng, false);
 	else
