@@ -1,0 +1,30 @@
+
+I am currently not using or promoting the lnz "launcher."
+There is always Launchy, the inspiration, but that has the following issues:
+	matches occur anyplace in the string "fox" matches "firefox"
+	Can take up cpu
+	limited to alt-space, keystroke, enter. so
+	4 keystrokes at the *Minimum*. not fast.
+
+
+I am currently recommending:
+Clavier+ 10.6.1
+http://utilfr42.free.fr/util/Clavier.php
+It's modern and win7/vista compatible, and open source.
+
+
+
+
+Other options that did not look as appealing:
+-----------------
+shortcutsmap
+http://www.zealsoft.com/shortcuts/index.html
+last release april 2004
+
+hot key plus
+http://www.brianapps.net/hotkeyplus/
+(looks really old)
+http://www.skynergy.com/hotkeyz.html
+http://sourceforge.net/projects/hotkeybind/
+
+
