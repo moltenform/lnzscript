@@ -1,3 +1,9 @@
+Emphasize strengths: 
+	run w/o saving, using clipboard. one-off scripts, using clipboard. cliptolower, etc. 
+	rename / file manip is cool useful. file processing, without import os, import shutil, and so on. fast renaming/file moving...
+	javascript with @'hi' strings
+	clipboard app
+		(as an aside, it's also good at functional programming)
 
 For version 0.4
 	
@@ -10,42 +16,62 @@ For version 0.4
 		
 		bug in editor: if provide arguments, should replace \ with \\, before passing.
 		Docviewer's "view doc online" button, fix url.
+		clicking error lines in Untitled.js, opens the working untitled.js file...
+		//if untitled.tmp.js, don't show error? possible?
+		@"test" is green. intentional?
 		
 	Scripts
 		System.openControlPanel and System.openUtility should be cleaned up, probably using an enum
 			(User would type System.openControlPanel(System.Panel_Keyboard))
 			http://msdn.microsoft.com/en-us/library/cc144191(VS.85).aspx
 			http://msdn.microsoft.com/en-us/library/ee330741(v=VS.85).aspx
-		
+		see object_properties.cpp
+		WindowStyle. --Done
+		File.getPathSpecial
+		File.openExplorerWindowSpecial
+		System.openControlPanel
+		System.openUtility
+		Done, now just document.
 	
 		File.createShortcut, allow a target with arguments. http://lists.trolltech.com/qt-interest/2005-01/msg00241.html
 		wincommondialog input dialog, Dialog.input, field should get focus  --DONE.
 		
-		file.getShortcutTarget, and others from QT  should return paths like
-		c:\foo not c:/foo. --DONE
+		file.getShortcutTarget, and others from QT  should return paths like c:\foo not c:/foo. -Done
 		File.dirListFiles - list all entries matching *.txt and so on. --Done
-				
 		
-		
+		File.createShortcut fix
+		can copyDialog copy a dir?
 		File.copyDirectory, File.moveDirectory (with subdirs)
+			http://stackoverflow.com/questions/2536524/copy-directory-using-qt ?
+		The line File.copyDialog(@'C:\Users\inspy\Documents\autoit-v3-sfx\test1', @'C:\Users\inspy\Documents\autoit-v3-sfx\test2');
+			kills lnzscirpt!! 
 		
 		-File.dirWalk - to make recursing through directories easier. use python's algorithms?
 		
 		equivalents of os.path, os.path.join, os.path.split. UNC paths? weird paths? 
+		Clipboard.getText has small buffer... Done. Fixed. to be 16k
+
+Make it good at renaming files!
+File.cd(@'targetdir')
+Renamer.testRename('*.doc', '*.zip')
+Renamer.renameInFilenames(
+	testRename previews results
+	in fact, give it a preview function. This can be implemented in script.
+
 
 	Other
 		Make an installer that associates .jsz. even drag/drop onto, py does that
 		
-		Use qsrand() to seed rng. strangely, the 1st generated seems similar
-		
-		
-		test path-related functions in a share like \\foo; test util_fixQtDirectorySlashes
+		File.pathjoin
+		test path-related functions in a share like \\foo. Done. test util_fixQtDirectorySlashes. Done.
 		
 Punted
 	unify between NirCmd / Au3 window and dialog commands
 	Should not pass "" "" "" "" arguments to scripts
 	dev environment-make working directories clear, clear up build process, and build doc process
 	Make editor.exe more visible when you download it? -- since in the start menu, ok.
+	Use qsrand() to seed rng. strangely, the 1st generated seems similar. QDateTime::currentDateTime().toTime_t() and qsrand?
+	print() itself  has a small buffer...
 	
 Guidelines
 	Focus on things that python isn't good at. Maybe we can have better file/handling, quick scripts to rename files, etc.
@@ -67,7 +93,7 @@ Probably for later release
 		Non-option - distribute w/ au3 and call it
 	setEnvironmentvar
 	better build env, maybe templates in subfolder instead of sources, write internal docs so that it could make sense
-
+	@'cool' string literals could contain newlines. the processor would just turn it into \r\n
 
 Maybe for a later release
 	CallDll, depending on how hard it is to implement (see ahk src?)
