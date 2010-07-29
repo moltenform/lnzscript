@@ -2,14 +2,19 @@
 
 #include "lnzconsole.h"
 #include <QtScript>
+#include <qapplication.h>
 #include <iostream>
 
 int main(int argc, char *argv[])
 {
+	QCoreApplication unusedApp(argc,argv);
+	// One must have a QApplication instance before running QtScripts.
+	// http://www.developingprogrammers.com/index.php/2006/04/19/console-applications-in-qt/ has a basic qt console app.
+	
 	LnzConsole console;
 	
 	char doc[] = "LnzScript Console\n\tRun with /r, read from stdin until EOF\n\tRun with /f, and file name for arg 2, load .js script and run it\n\tRun with /fconfirm, same as /f but ask for confirmation.\n\tRun with /e, and text for arg 2, execute the text and quit\n\tRun with no arguments, interactive mode.";
-
+	
 	if (argc == 3 && strcmp(argv[1], "/e")==0)
 	{
 		console.evaluateAndPrintResults( argv[2] );
