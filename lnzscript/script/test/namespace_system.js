@@ -21,12 +21,37 @@ assert(Window.exists('Safely Remove'));
 Window.close('Safely Remove');
 */
 
-registerTest('System.getenv');
-var strVersion = System.windowsVersion();
-var objVersion = {'5.0':'Windows2000', '5.1':'WindowsXP','6.0':'Vista','5.2':'Win server 2003'};
-var isVista = (strVersion=='6.0')
-var strOs = objVersion[strVersion]===null ? 'Unknown' : objVersion[strVersion];
-assert(confirm('Your os is:'+strOs));
+
+//~ registerTest('System.getenv');
+//~ var strVersion = System.windowsVersion();
+//~ var objVersion = {'5.0':'Windows2000', '5.1':'WindowsXP','6.0':'Vista','5.2':'Win server 2003','6.1':'Win7'};
+//~ var isVista = (strVersion=='6.0')
+//~ var strOs = objVersion[strVersion]===null ? 'Unknown' : objVersion[strVersion];
+//~ assert(confirm('Your os is:'+strOs));
+
+//~ registerTest('System.openControlPanel');
+//~ System.openControlPanel( ControlPanel.ActionCenter)
+//~ System.openControlPanel( ControlPanel.DateAndTime)
+//~ System.openControlPanel( ControlPanel.ProgramsAndFeatures)
+//~ System.openControlPanel( ControlPanel.UserAccounts)
+
+//works.
+//~ System.openControlPanel(ControlPanelXp.Keyboard)
+//~ System.openControlPanel(ControlPanelXp.AddRemove)
+//~ System.openControlPanel(ControlPanelXp.Accounts)
+//~ System.openControlPanel(3) //Expected a ControlPanel.
+//~ System.openControlPanel('3') //Unknown Ctrlpanel
+//~ System.openControlPanel() //
+
+//~ File.openExplorerWindowSpecial(SpecialFolder.MyDocuments)
+//~ File.openExplorerWindowSpecial(SpecialFolder.ControlPanel)
+print(File.getPathSpecial(SpecialFolder.MyDocuments))
+print(File.getPathSpecial(SpecialFolder.Favorites))
+print(File.getPathSpecial(SpecialFolder.MyPictures))
+//~ print(File.getPathSpecial(SpecialFolder.MyMusic))
+//~ print(File.getPathSpecial(SpecialFolder.MyVideo))
+print(File.getPathSpecial(SpecialFolder.StartMenu))
+//~ File.getPathSpecial(SpecialFolder.ControlPanel)
 
 /*
 registerTest('System.isAdmin');
@@ -72,10 +97,10 @@ for(var i=0; i<aropenUtilityTests.length; i++) { testOpenWindow(System.openUtili
 
 
 
-if (confirm('Install screensaver?'))
-{
-registerTest('System.installScreensaver');
-System.installScreensaver('..\\testfiles\\ssbeniercurves.scr');
-}
+//~ if (confirm('Install screensaver?'))
+//~ {
+//~ registerTest('System.installScreensaver');
+//~ System.installScreensaver('..\\testfiles\\ssbeniercurves.scr');
+//~ }
 
-methods_list_summary_namespace('System');
+//~ methods_list_summary_namespace('System');
