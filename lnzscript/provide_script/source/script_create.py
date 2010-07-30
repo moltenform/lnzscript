@@ -1,8 +1,9 @@
-qtconversion = { 'int':'toInt32()', 'bool':'toBoolean()', 'string':'toString()'} #'double':'Number()', - need to find right method for this
 
-qtconversiontypecheck = { 'int':'isNumber()', 'bool':'isBoolean()', 'string':'isString()'}
-qtconversiontypeconstant = { 'int':'LNZTYPE_int', 'bool':'LNZTYPE_bool', 'string':'LNZTYPE_string'}
-cpptypes = { 'int':'int', 'bool':'bool', 'string':'QString'}
+qtconversion = { 'int':'toInt32()', 'bool':'toBoolean()', 'string':'toString()', 'ControlPanel':'toString()', 'SpecialFolder':'toString()'} #'double':'Number()', - need to find right method for this
+
+qtconversiontypecheck = { 'int':'isNumber()', 'bool':'isBoolean()', 'string':'isString()', 'ControlPanel':'isString()', 'SpecialFolder':'isString()'}
+qtconversiontypeconstant = { 'int':'LNZTYPE_int', 'bool':'LNZTYPE_bool', 'string':'LNZTYPE_string','ControlPanel':'LNZTYPE_controlpanel','SpecialFolder':'LNZTYPE_specialfolder'}
+cpptypes = { 'int':'int', 'bool':'bool', 'string':'QString', 'ControlPanel':'QString', 'SpecialFolder':'QString'}
 
 class ExposedFunctionArg():
 	def __init__(self, arg, n, bOptional=False):

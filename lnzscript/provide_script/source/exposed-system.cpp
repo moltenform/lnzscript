@@ -75,19 +75,33 @@
 }
 
 ///Function:System.openControlPanel
-///Arguments:string strOption
+///Arguments:ControlPanel panelOption
 ///Returns:
-///Doc: Opens a control panel. (To open the panel itself use File.openExplorerWindowSpecial). Options include: Keyboard[[br]]Mouse[[br]]Joystick[[br]]Multimedia[[br]]Internet Options[[br]]Add/Remove[[br]]Regional[[br]]Time[[br]]System[[br]]Display[[br]]Accessibility[[br]]Network[[br]]Power[[br]]Accounts[[br]]Security Center[[br]]Firewall[[br]]Wireless[[br]]Taskbar[[br]]Folder Options[[br]]Device Manager[[br]]Updates
+///Doc: Opens a control panel, i.e System.openControlPanel(ControlPanel.Display). Type "ControlPanel." in the editor to see what is available.
+///Example: System.openControlPanel(ControlPanel.Display);
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
+	QString strOption = panelOption;
+	//is it a canonical Guid? see http://msdn.microsoft.com/en-us/library/ee330741(v=VS.85).aspx
+	if (strOption.length()==38)
+	{
+		bool isValid=true;
+		for (int i=0; i<strOption.length(); i++)
+			if (!(strOption[i]=='{'||strOption[i]=='}'||strOption[i]=='-'||strOption[i].isLetterOrNumber()))
+				isValid=false;
+		if (!isValid) return ctx->throwError("System.openControlPanel, invalid utilty. See documentation.");
+		QString sCmd = "control.exe /name "+strOption;
+		return util_runExternalCommand( sCmd);
+	}
+	//Otherwise, fall back to the old version.
 	QString cmd;
 	if (strOption=="Keyboard") cmd = "main.cpl @1";
 	else if (strOption=="Mouse") cmd = "main.cpl @0";
 	else if (strOption=="Joystick") cmd = "joy.cpl";
 	else if (strOption=="Multimedia") cmd = "mmsys.cpl"; //mmsys.cpl,,0
 	else if (strOption=="Internet Options") cmd = "inetcpl.cpl,,0";
-	else if (strOption=="Add/Remove") cmd = "appwiz.cpl,,0";
+	else if (strOption=="AddRemove") cmd = "appwiz.cpl,,0";
 	else if (strOption=="Regional") cmd = "intl.cpl,,0";
 	else if (strOption=="Time") cmd = "timedate.cpl";
 	else if (strOption=="System") cmd = "sysdm.cpl,,0"; //on Vista: Rundll32 Shell32.dll,Control_RunDLL Sysdm.cpl,,3 
@@ -96,16 +110,16 @@
 	else if (strOption=="Network") cmd = "ncpa.cpl";
 	else if (strOption=="Power") cmd = "powercfg.cpl";
 	else if (strOption=="Accounts") cmd = "nusrmgr.cpl";
-	else if (strOption=="Security Center") cmd = "wscui.cpl";
+	else if (strOption=="SecurityCenter") cmd = "wscui.cpl";
 	else if (strOption=="Firewall") cmd = "firewall.cpl";
 	else if (strOption=="Wireless") cmd = "NetSetup.cpl,@0,WNSW"; //apparently doesn't work on Vista
 	
 	// unusual ones
 	else if (strOption=="Taskbar")
 		return util_runExternalCommand( "rundll32.exe shell32.dll,Options_RunDLL 1");
-	else if (strOption=="Folder Options")
+	else if (strOption=="FolderOptions")
 		return util_runExternalCommand( "rundll32.exe shell32.dll,Options_RunDLL 0");
-	else if (strOption=="Device Manager")
+	else if (strOption=="DeviceManager")
 		return util_runExternalCommand( "rundll32.exe devmgr.dll DeviceManager_Execute");
 	else if (strOption == "Updates")
 	{
@@ -161,13 +175,6 @@
 	return QScriptValue(eng, bFileFound);
 }
 
-//Function:System._hash
-//Doc:(Exposed in String, by JavaScript).  Use Windows API to hash string. Intended for Ascii and not Unicode strings. Returns string in hexadecimal. (256 bytes = 512 characters)
 
-// http://weseetips.com/2008/06/27/how-to-generate-the-hash-key-of-given-data/
-// why I haven't done it - requires shapi lib, and there isn't a direct need for this.
-// 
-// Get file icon: http://weseetips.com/2008/06/03/how-to-get-the-icon-of-a-file/#comments
-// Get program from extension: http://weseetips.com/2008/05/30/how-to-find-the-application-associated-with-particular-file-extension/
-// 
-// return string like 'a4b23a7c3d36b2452a2'
+
+
