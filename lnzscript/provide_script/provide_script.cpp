@@ -17,7 +17,8 @@ ProvideScript::ProvideScript()
 	// the engine was already created
 	// create objects
 	launchorz_functions::AddGlobalObjects(&engine);
-	
+	engine.evaluate("Dialog.YES=2; Dialog.OK=2; Dialog.NO=1; Dialog.CANCEL=0;");
+		
 	// add the print function to the engine
 	QScriptValue fnScriptPrint = engine.newFunction(g_ProvideScript_PrintFunction);
 	engine.globalObject().setProperty("print", fnScriptPrint);
@@ -59,7 +60,13 @@ StringResult ProvideScript::EvalString(QString contentsRaw, QString optionalFile
 	{
 		int lineno = engine.uncaughtExceptionLineNumber();
 		QString msg = ret.toString();
-		QString readableError = msg.sprintf("Script error occurred. \n%s:%d: %s", qPrintable(optionalFileName), lineno, qPrintable(msg));
+		QString readableError;
+		//hack: don't show filename for the temporary files used by the editor.
+		if (optionalFileName.length()>0 && !optionalFileName.endsWith("untitled.tmp.js") && !optionalFileName.endsWith("untitled.tmp.jsz"))
+			readableError = msg.sprintf("Script error occurred. \n%s:%d: %s", qPrintable(optionalFileName), lineno, qPrintable(msg));
+		else
+			readableError = msg.sprintf("Script error occurred. \n%d: %s", lineno, qPrintable(msg));
+		
 		return StringResult(readableError, 1); // set error flag to 1
 		// clear exception here?  engine.clearExceptions();
 	}

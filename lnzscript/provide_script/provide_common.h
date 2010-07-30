@@ -72,5 +72,7 @@ namespace launchorz_functions
 	extern const char* LNZTYPE_bool;
 	extern const char* LNZTYPE_int;
 	extern const char* LNZTYPE_string;
+	extern const char* LNZTYPE_controlpanel;
+	extern const char* LNZTYPE_specialfolder;
 }
 

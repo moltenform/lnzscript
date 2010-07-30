@@ -8,6 +8,8 @@ namespace launchorz_functions
 	const char* LNZTYPE_bool = "bool";
 	const char* LNZTYPE_int = "int";
 	const char* LNZTYPE_string = "string";
+	const char* LNZTYPE_controlpanel = "ControlPanel";
+	const char* LNZTYPE_specialfolder = "SpecialFolder";
 	
 	void util_au3init()
 	{
@@ -61,6 +63,7 @@ namespace launchorz_functions
 	QString util_fixQtDirectorySlashes(QString s)
 	{
 		return s.replace("/", "\\");
+		//see also: QDir::toNativeSeparators
 	}
 	
 	// previous to calling this, use.setFilter to set a filter.
