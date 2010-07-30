@@ -529,6 +529,8 @@
 	return util_LongToBool(nRes);
 }
 
+
+
 // Now the nircmd ones:
 
 ///Function:File.emptyRecycleBin
@@ -548,12 +550,12 @@
 ///Function:File.copyDialog
 ///Arguments:string strPatternFilenames, string strDestination, bool bSilent=false, bool bAnswerYesToQuestions=false, bool bDontShowErrors=false, bool bDontCopySecurityAttributes=false
 ///Returns:bool bStatus
-///Doc:More powerful than File.copy because can specify a pattern lke *.*. Copy one or more files from one folder to another, and display a progress dialog, exactly like copying files in Explorer.
+///Doc:More powerful than File.copy because can specify a pattern like *.*. Copy one or more files from one folder to another, and display a progress dialog, exactly like copying files in Explorer.
 ///Example:File.copyDialog('c:\\temp\\*.*','d:\\destination');
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
-	const char* args[4]; int nargs=0;
+	const char* args[4]={0}; int nargs=0;
 
 	if (bAnswerYesToQuestions) args[nargs++] ="yestoall";
 	if (bDontShowErrors) args[nargs++] ="noerrorui";
@@ -561,3 +563,7 @@
 	if (bDontCopySecurityAttributes) args[nargs++] ="nosecattr";
 	return R_Nircmd("shellcopy", strPatternFilenames, strDestination, args[0], args[1], args[2], args[3]);
 }
+
+
+
+
