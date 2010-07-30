@@ -36,11 +36,11 @@ Filename: "{app}\MyProg.exe"; Description: "{cm:LaunchProgram,LnzScript}"; Flags
 [Registry]
 Root: HKCR; Subkey: ".jsz"; ValueType: string; ValueName: ""; ValueData: "LnzScriptJSFile"; Flags: uninsdeletevalue
 Root: HKCR; Subkey: "LnzScriptJSFile"; ValueType: string; ValueName: ""; ValueData: "LNZ Script"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "LnzScriptJSFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "%SystemRoot%\System32\WScript.exe,1"
-Root: HKCR; Subkey: "LnzScriptJSFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\MYPROG.EXE"" ""%1"""
-Root: HKCR; Subkey: "LnzScriptJSFile\ShellEx\DropHandler"; ValueType: string; ValueName: ""; ValueData: "{60254CA5-953B-11CF-8C96-00AA00B8708C}"
+Root: HKCR; Subkey: "LnzScriptJSFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "%SystemRoot%\System32\WScript.exe,1"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "LnzScriptJSFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\MYPROG.EXE"" ""%1""" ; Flags: uninsdeletekey
+Root: HKCR; Subkey: "LnzScriptJSFile\ShellEx\DropHandler"; ValueType: string; ValueName: ""; ValueData: "{60254CA5-953B-11CF-8C96-00AA00B8708C}" ; Flags: uninsdeletekey
 
-;can make it launchable! http://stackoverflow.com/questions/142844/drag-and-drop-onto-python-script-in-windows-explorer
+;can make it launchable! http://stackoverflow.com/questions/142844/drag-and-drop-onto-python-script-in-windows-explorer   (that's what python uses too)
 ;http://mindlesstechnology.wordpress.com/2008/03/29/make-python-scripts-droppable-in-windows/
 
 
@@ -48,18 +48,5 @@ Root: HKCR; Subkey: "LnzScriptJSFile\ShellEx\DropHandler"; ValueType: string; Va
 
 ;"shell\open\command" is the registry key that specifies the program to execute when a file of the type is double-clicked in Explorer. The surrounding quotes are in the command line so it handles long filenames correctly.
 
-
 ;Subkeys of the verb subkey include the command line and the drop target method: command and DropTarget.
 ;http://msdn.microsoft.com/en-us/library/ee872121%28VS.85%29.aspx
-  ;  HKEY_CLASSES_ROOT
-;  MyProgram.exe
- ;     shell
-  ;       open
-  ;          command
-  ;             (Default) = C:\MyDir\MyProgram.exe /a "%1"
-  ;       print
-   ;         command
- ;              (Default) = C:\MyDir\MyProgram.exe /a /p "%1"
-  ;       printto
-  ;          command
- ;              (Default) = C:\MyDir\MyProgram.exe /a /p "%1" "%2"
