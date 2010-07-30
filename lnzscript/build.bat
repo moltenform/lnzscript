@@ -11,7 +11,7 @@ call %PYTHONDIR%\python .\provide_script\source\script_createcpp.py .\provide_sc
 call %PYTHONDIR%\python .\provide_script\source\script_create_std_js.py .\provide_script\source .\release
 
 :: run make
-make
+make release
 GOTO end
 
 :notqmade
