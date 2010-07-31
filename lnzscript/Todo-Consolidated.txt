@@ -1,3 +1,17 @@
+todo:
+command line escaping is less trivial than I thought.
+http://webcache.googleusercontent.com/search?q=cache:MS28vtWRm7EJ:www.eightypercent.net/Archive/2004/12/05.html+windows+command+line+quote+escape&cd=5&hl=en&ct=clnk&gl=us&client=firefox-a
+http://stackoverflow.com/questions/251557/escape-angle-brackets-in-a-windows-command-prompt
+
+Oh, default command should be to Edit, not to Open! have different verbs
+
+document  System.windowsVersion();
+document all these changes
+rename everything to .jsz rather than .js
+<std>, prototype array.clone interferes w for (var i in)
+none are useful but clone, shuffle. have math.shuffle?
+file.dirList changed. document
+
 Emphasize strengths: 
 	run w/o saving, using clipboard. one-off scripts, using clipboard. cliptolower, etc. 
 	rename / file manip is cool useful. file processing, without import os, import shutil, and so on. fast renaming/file moving...
@@ -17,7 +31,7 @@ For version 0.4
 		bug in editor: if provide arguments, should replace \ with \\, before passing.
 		Docviewer's "view doc online" button, fix url.
 		clicking error lines in Untitled.js, opens the working untitled.js file...
-		//if untitled.tmp.js, don't show error? possible?
+		//if untitled.tmp.js, don't show error? possible? -- Done
 		@"test" is green. intentional?
 		
 	Scripts
@@ -33,6 +47,10 @@ For version 0.4
 		System.openUtility
 		Done, now just document.
 	
+		addition: assert. however, this gives line number 0; not useful.
+		what's actually more useful is a Reference error "if(false) sdsdf();" because it gives the line number... weird...
+		old assert assert = function(b) { if (!b) throw 'assertion failed'; return true;}
+	
 		File.createShortcut, allow a target with arguments. http://lists.trolltech.com/qt-interest/2005-01/msg00241.html
 		wincommondialog input dialog, Dialog.input, field should get focus  --DONE.
 		
@@ -40,16 +58,25 @@ For version 0.4
 		File.dirListFiles - list all entries matching *.txt and so on. --Done
 		
 		File.createShortcut fix
-		can copyDialog copy a dir?
+		Filr. copyDialog can copy an entire dir.! rename this!
 		File.copyDirectory, File.moveDirectory (with subdirs)
 			http://stackoverflow.com/questions/2536524/copy-directory-using-qt ?
 		The line File.copyDialog(@'C:\Users\inspy\Documents\autoit-v3-sfx\test1', @'C:\Users\inspy\Documents\autoit-v3-sfx\test2');
-			kills lnzscirpt!! 
+			kills lnzscirpt!! --fixed, was nullptr
 		
 		-File.dirWalk - to make recursing through directories easier. use python's algorithms?
 		
-		equivalents of os.path, os.path.join, os.path.split. UNC paths? weird paths? 
+		equivalents of os.path, os.path.join, os.path.split. UNC paths? weird paths? --Done
 		Clipboard.getText has small buffer... Done. Fixed. to be 16k
+		
+		main console-
+			lnzscript.exe foo.jsz runs, instead of lnzscript.exe /f foo.jsz --Done
+			untitled.tmp.js hack -- Done
+			
+		Disabled array prototype functions. 
+		Math.shuffleArray not array.Shuffle()
+		
+		Should not pass "" "" "" "" arguments to scripts
 
 Make it good at renaming files!
 File.cd(@'targetdir')
@@ -67,12 +94,17 @@ Renamer.renameInFilenames(
 		
 Punted
 	unify between NirCmd / Au3 window and dialog commands
-	Should not pass "" "" "" "" arguments to scripts
+	
 	dev environment-make working directories clear, clear up build process, and build doc process
 	Make editor.exe more visible when you download it? -- since in the start menu, ok.
 	Use qsrand() to seed rng. strangely, the 1st generated seems similar. QDateTime::currentDateTime().toTime_t() and qsrand?
 	print() itself  has a small buffer...
-	
+	different return code if syntax error? punt.
+	directory walking
+	File.tray should be system.cdTray
+
+A possible example- turning .url files into one text summary
+
 Guidelines
 	Focus on things that python isn't good at. Maybe we can have better file/handling, quick scripts to rename files, etc.
 		(could look at Python's shellutil for copy file, copy directory, move directory, etc. recurse through dir, too, maybe.)
@@ -90,6 +122,7 @@ Probably for later release
 			(1.215Mb)
 			Less flexible, don't know it
 		Libcurl
+		What is ahk's implementation?
 		Non-option - distribute w/ au3 and call it
 	setEnvironmentvar
 	better build env, maybe templates in subfolder instead of sources, write internal docs so that it could make sense
