@@ -1802,8 +1802,49 @@ void SciTEBase::Execute() {
 		
 		ParamGrab();
 	}
-	for (ic = 0; ic < jobQueue.commandMax; ic++) {
+	for (ic = 0; ic < jobQueue.commandMax; ic++) {		
+		//expand properties, in the form $(prop)
 		jobQueue.jobQueue[ic].command = props.Expand(jobQueue.jobQueue[ic].command.c_str());
+		
+		//Modified by Ben Fisher, 2010. Automatically add the properties $(1) $(2) $(3) $(4) to all commands that are run.
+		//This is slightly better than having the command string be 
+			//"foo.exe $(File) $(1) $(2) $(3) $(4)", in which case spaces in params break
+			//"foo.exe $(File) "$(1)" "$(2)" "$(3)" "$(4)"", in which case empty params are always sent, and quotes .
+		//currently, command is just
+			//"foo.exe $(File), and the args are appended here. Quotes don't break it, but backslashes and other chars can.
+			//for example, a parameter test\test works, but test\ breaks it, Escaping cmd is not trivial, ^ is the true escape char
+			//Refer to 
+		//This is a hack because it's appended to all commands run; if there were a "compile" command one wouldn't want this behavior
+		
+		SString cmdBefore = jobQueue.jobQueue[ic].command; 
+		if (cmdBefore.length()==0) //should not append to an empty command.
+			continue;
+		
+		//~ //manually add the parameters.
+		SString p1 = props.Expand("$(1)");
+		SString p2 = props.Expand("$(2)");
+		SString p3 = props.Expand("$(3)");
+		SString p4 = props.Expand("$(4)");
+		
+		//we can substitute for quotes, allowing an embedded quote anywhere
+		//However, to take backslashes or other characters into account would be more complicated, will have to be postponed.
+		
+		p1.substitute("\"","\\\""); 
+		p2.substitute("\"","\\\""); 
+		p3.substitute("\"","\\\""); 
+		p4.substitute("\"","\\\""); 
+		 
+		if (p1.length()>0)
+			cmdBefore.append(" \"").append(p1.c_str()).append("\"");
+		if (p2.length()>0)
+			cmdBefore.append(" \"").append(p2.c_str()).append("\"");
+		if (p3.length()>0)
+			cmdBefore.append(" \"").append(p3.c_str()).append("\"");
+		if (p4.length()>0)
+			cmdBefore.append(" \"").append(p4.c_str()).append("\"");
+		
+		jobQueue.jobQueue[ic].command = cmdBefore;
+		//~ SendOutputString(SCI_INSERTTEXT, SendOutput(SCI_GETLENGTH)-1, ("\n  Debug \n"));
 	}
 
 	if (jobQueue.ClearBeforeExecute()) {
@@ -3864,7 +3905,7 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 			
 			if (bUntitled)
 			{
-				FilePath fpTempName(GetSciteDefaultHome(), "untitled.tmp.js");
+				FilePath fpTempName(GetSciteDefaultHome(), "untitled.tmp.jsz");
 
 				bool bResult = SaveBuffer(fpTempName);
 				if (!bResult) {
