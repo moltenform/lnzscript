@@ -75,53 +75,15 @@
 ///Implementation:Javascript
 {}
 
-///Function:Array.shuffle
-///Arguments:
+///Function:Math.shuffleArray
+///Arguments:array arr
 ///Returns:
-///Doc:Shuffles (randomizes) order of elements in array. Use include('<std>') to import this function. Note that apparently, initial random seed of lnzScript is the same due to Qt. Fisher-Yates algorithm.
+///Doc:Shuffles (randomizes) order of elements in array. Use include('<std>') to import this function. Fisher-Yates algorithm. Note that apparently, initial random seed of lnzScript is the same, which is due to Qt library used. 
 ///Implementation:Javascript
 ///InstanceMethod:true
 {}
 
-///Function:Array.clone
-///Arguments:
-///Returns:array copy
-///Doc:Returns shallow copy of the array. Use include('<std>') to import this function.
-///Implementation:Javascript
-///InstanceMethod:true
-{}
 
-///Function:Array.size
-///Arguments:
-///Returns:int nLength
-///Doc:Returns length of the array. Use include('<std>') to import this function.
-///Implementation:Javascript
-///InstanceMethod:true
-{}
-	
-///Function:Array.last
-///Arguments:
-///Returns:elem value
-///Doc:Retrieves last element of the array. Use include('<std>') to import this function.
-///Implementation:Javascript
-///InstanceMethod:true
-{}
-
-///Function:Array.max
-///Arguments:
-///Returns:number max
-///Doc:Finds and returns greatest numeric value in the array. Use include('<std>') to import this function.
-///Implementation:Javascript
-///InstanceMethod:true
-{}
-
-///Function:Array.min
-///Arguments:
-///Returns:number min
-///Doc:Finds and returns least numeric value in the array. Use include('<std>') to import this function.
-///Implementation:Javascript
-///InstanceMethod:true
-{}
 
 ///Function:String.contains
 ///Arguments:string smallerString
