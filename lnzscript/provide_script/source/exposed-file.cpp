@@ -247,9 +247,9 @@
 }
 
 ///Function:File.getPathSpecial
-///Arguments:string strSpecialFolderName
+///Arguments:SpecialFolder folder
 ///Returns:string strPath
-///Doc:Get the path of a special folder, such as "My Documents". See also openExplorerWindowSpecial. Supported arguments:[[br]]Application Data[[br]]Application Data All Users[[br]]Cookies[[br]]Desktop[[br]]Favorites[[br]]Application Data Local Settings[[br]]My Documents[[br]]My Pictures[[br]]Program Files[[br]]Program Files Common[[br]]Recent Documents[[br]]Start Menu[[br]]Startup Items[[br]]System[[br]]Windows[[br]]
+///Doc:Get the path of a special folder, such as SpecialFolder.MyDocuments. See also openExplorerWindowSpecial. Example: File.getPathSpecial(SpecialFolder.AppData); Also: [[br]]SpecialFolder.AppData[[br]] SpecialFolder.AllUsers[[br]]SpecialFolder.Cookies[[br]]SpecialFolder.Desktop[[br]]SpecialFolder.Favorites[[br]]SpecialFolder.AppDataLocalSettings[[br]]SpecialFolder.MyDocuments[[br]]SpecialFolder.MyPictures[[br]]SpecialFolder.ProgramFiles[[br]]SpecialFolder.ProgramFilesCommon[[br]]SpecialFolder.RecentDocuments[[br]]SpecialFolder.StartMenu[[br]]SpecialFolder.StartupItems[[br]]SpecialFolder.System[[br]]SpecialFolder.Windows[[br]]
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
@@ -260,9 +260,9 @@
 }
 
 ///Function:File.openExplorerWindowSpecial
-///Arguments:string strSpecialFolderName
+///Arguments:SpecialFolder folder
 ///Returns:
-///Doc:Open a special folder in the explorer. See also getPathSpecial. Supported arguments: all of those in File.getPathSpecial and also: [[br]]Control Panel[[br]]Fonts[[br]]Printers[[br]]My Computer[[br]]My Documents[[br]]My Network Places[[br]]Network Computers[[br]]Network Connections[[br]]Printers and Faxes[[br]]Recycle Bin[[br]]Scheduled Tasks
+///Doc:Open a folder in explorer, such as SpecialFolder.MyDocuments. See also getPathSpecial. Supports all available in File.getPathSpecial and also: [[br]]SpecialFolder.ControlPanel[[br]]SpecialFolder.Fonts[[br]]SpecialFolder.Printers[[br]]SpecialFolder.MyComputer[[br]]SpecialFolder.MyDocuments[[br]]SpecialFolder.MyNetworkPlaces[[br]]SpecialFolder.NetworkComputers[[br]]SpecialFolder.NetworkConnections[[br]]SpecialFolder.PrintersAndFaxes[[br]]SpecialFolder.RecycleBin[[br]]SpecialFolder.ScheduledTasks
 ///Implementation:c++_winext
 {
 	CHECK_ARGS

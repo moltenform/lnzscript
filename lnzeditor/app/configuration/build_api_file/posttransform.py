@@ -13,6 +13,12 @@ for i in range(len(atxt)):
 		atxt[i] = atxt[i][0:MAXLINE] + '...'
 txt = '\n'.join(atxt)
 
+#add enumerated constants
+fin=open('appendToApiFile.txt','r')
+added = fin.read()
+fin.close()
+
 fout=open('..\lnzscript.api','w')
 fout.write(txt)
+fout.write(added)
 fout.close()
