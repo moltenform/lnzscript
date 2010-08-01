@@ -42,6 +42,7 @@ Changes from 0.3 to 0.4
 	
 	Other changes
 		When an error in untitled doc, output pane won't link to the temporary file
+		Dialog.input, when getting text from user, focus goes to the input field intially. This is important.
 		
 		examples directory contains some examples
 		examples on wiki http://code.google.com/p/launchorz/wiki/
@@ -50,6 +51,7 @@ Changes from 0.3 to 0.4
 	Trivial changes
 		document  System.windowsVersion(); includes win7
 		references to previous googlepages.com website updated.
+		references to previous googlepages.com website updated in docviewer.exe
 		Window info tool always in Tools menu
 		untitled.tmp.js renamed to untitled.tmp.jsz
 		File.getShortcutTarget and others from QT, changed format from c:/foo to c:\foo 
@@ -60,6 +62,7 @@ Changes from 0.3 to 0.4
 
 Should address in next version
 	A possible example- turning .url files into one text summary
+	More examples/screencasts online docs
 
 	Command-line escaping is less trivial than I thought.
 		This not only effects parameters in lnzeditor, but perhaps many things running different processes to pass data.
@@ -85,7 +88,13 @@ Should address in next version
 	File.tray should be system.cdTray
 	unify between NirCmd / Au3 window and dialog commands
 	@"test" is green. intentional?
-
+	rename everything to .jsz rather than .js
+	
+	Better shortcut. Today's File.createShortcut fails when giving an argument like 'notepad.exe file.txt'; it quotes the whole thing.
+		Need a com object to do this properly, or use vbs scripting...
+		Probably easiest to use a freeware tool like http://optimumx.com/download/#Shortcut 
+	
+	Not sure if the scite-msg utility for sending doc text to scite works in win64, or if it matters
 
 
 Probably for later release
