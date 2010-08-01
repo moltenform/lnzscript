@@ -529,7 +529,19 @@
 	return util_LongToBool(nRes);
 }
 
+///Function:File.pathSplit
+///Arguments:string path
+///Returns:array pathAndFile
+///Doc: (Write include('<std>') to import this function.) Splits a directory into two parts. 1) the path, and 2) the filename. For example, 'c:\docs\foo\test.txt' to ['c:\docs\foo\', 'test.txt']
+///Implementation:Javascript
+{}
 
+///Function:File.pathJoin
+///Arguments:string path, string filename
+///Returns:string sCompletePath
+///Doc: (Write include('<std>') to import this function.) Combines a directory and filename to create a path. For example, File.pathJoin('c:\docs\foo\', 'test.txt') becomes 'c:\docs\foo\test.txt'
+///Implementation:Javascript
+{}
 
 // Now the nircmd ones:
 
