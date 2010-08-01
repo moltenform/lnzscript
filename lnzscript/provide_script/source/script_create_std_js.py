@@ -21,6 +21,7 @@ os.chdir('..\\..\\script\\provide')
 
 #combine all of the js files into output
 allfiles = os.listdir('.')
+allfiles.sort() #the ones beginning with z depend on earlier ones.
 nWritten = 0
 for file in allfiles:
 	if file.endswith('.js'):
