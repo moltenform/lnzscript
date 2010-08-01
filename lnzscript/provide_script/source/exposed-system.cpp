@@ -34,7 +34,7 @@
 ///Function:System.windowsVersion
 ///Arguments:
 ///Returns:string strVersion
-///Doc:Returns a string representing the windows version. '5.0'-Windows2000, '5.1'-WindowsXP,'6.0 Vista','5.2 Win server 2003' and so on. See msdn for more information.
+///Doc:Returns a string representing the windows version. '6.1'-Windows7,'6.0 Vista','5.1'-WindowsXP, '5.0'-Windows2000,,'5.2 Win server 2003' and so on. See msdn for more information.
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
