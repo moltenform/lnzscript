@@ -551,7 +551,7 @@
 ///Arguments:string strSource, string strDestination, bool bSilent=false
 ///Returns:bool bStatus
 ///Doc:Copy an entire directory to another location. One can also copy many files, specifying '*.txt' to copy all text files in the current directory. May sometimes display a window.
-///Example:File.copyDialog('c:\\temp\\folder1','c:\\othertemp\\folder1'); /* copies entire folder. */ File.copyDialog('c:\\temp\\*.*','d:\\destination');
+///Example:File.copyMany('c:\\temp\\folder1','c:\\othertemp\\folder1'); /* copies entire folder. */ File.copyMany('c:\\temp\\*.*','d:\\destination');
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
