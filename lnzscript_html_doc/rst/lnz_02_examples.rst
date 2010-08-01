@@ -5,7 +5,7 @@ Examples
 Here are screencasts showing how LnzScript works.
 
 
-`Video 1, Basics <http://jamon.ben.googlepages.com/movlnz_02_screencast_basics.htm>`_
+`Video 1, Basics <./movlnz_02_screencast_basics.htm>`_
 
 	Covers:
 
@@ -18,7 +18,7 @@ Here are screencasts showing how LnzScript works.
 	- When referring to a filepath, one must type 'c:\\\\myfile.txt' and not 'c:\\myfile.txt'
 	- Keyboard.send can be used to simulate both typing and Control- keyboard shortcuts
 
-`Video 2, Opening Firefox Tabs <http://jamon.ben.googlepages.com/movlnz_02_screencast_fftabs.htm>`_
+`Video 2, Opening Firefox Tabs <./movlnz_02_screencast_fftabs.htm>`_
 
 	Covers:
 	
@@ -32,12 +32,12 @@ Here are screencasts showing how LnzScript works.
 	- File.getPathSpecial() can be used to get the Desktop folder among others.
 	- File.writeFile can be used to create a text file.
 
-`Video 3, Visual studio <http://jamon.ben.googlepages.com/movlnz_02_screencast_vstudio.htm>`_
+`Video 3, Visual studio <./movlnz_02_screencast_vstudio.htm>`_
 
 	This is a real-life example. In Visual Studio, let's say you have a large C++ solution with many projects. You'd like to change all of the projects from Multi-byte character set to Unicode. Instead of clicking through all of the settings, you can write a script to loop through all projects and change the setting for you. The specific code will only work for vs 2003, but the process of writing the script is generalizable.
 
 
-`Video 4, Controls <http://jamon.ben.googlepages.com/movlnz_02_screencast_controls.htm>`_
+`Video 4, Controls <./movlnz_02_screencast_controls.htm>`_
 
 	Covers:
 	
