@@ -304,7 +304,7 @@
 ///Function:Window.setState
 ///Arguments:string window, int flag
 ///Returns:bool bSucess
-///Doc:Set state of a window (e.g. maximized, minimized). Pass a flag such as Window.HIDE, Window.SHOW, Window.MINIMIZE, Window.MAXIMIZE, or Window.RESTORE.
+///Doc:Set state of a window (e.g. maximized, minimized). Pass a flag such as WindowStyle.hide, WindowStyle.show, WindowStyle.minimize, WindowStyle.maximize, or WindowStyle.restore.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
