@@ -40,8 +40,9 @@ Filename: "{app}\editor\lnzeditor.exe"; Description: "{cm:LaunchProgram,LnzScrip
 [Registry]
 Root: HKCR; Subkey: ".jsz"; ValueType: string; ValueName: ""; ValueData: "LnzScriptJSFile"; Flags: uninsdeletevalue
 Root: HKCR; Subkey: "LnzScriptJSFile"; ValueType: string; ValueName: ""; ValueData: "LNZ Script"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "LnzScriptJSFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "%SystemRoot%\System32\WScript.exe,1"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "LnzScriptJSFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\lnzscript.exe"" ""%1""" ; Flags: uninsdeletekey
+Root: HKCR; Subkey: "LnzScriptJSFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "%SystemRoot%\windows\System32\WScript.exe,1"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "LnzScriptJSFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\lnzscript.exe"" ""%1"" %*" ; Flags: uninsdeletekey
+Root: HKCR; Subkey: "LnzScriptJSFile\shell\edit\command"; ValueType: string; ValueName: ""; ValueData: """{app}\editor\lnzeditor.exe"" ""%1""" ; Flags: uninsdeletekey
 Root: HKCR; Subkey: "LnzScriptJSFile\ShellEx\DropHandler"; ValueType: string; ValueName: ""; ValueData: "{{60254CA5-953B-11CF-8C96-00AA00B8708C}" ; Flags: uninsdeletekey
 
 ;ideal behavior: two verbs, open and edit. double-click will edit. drag/drop into will run. right-click:run to run.

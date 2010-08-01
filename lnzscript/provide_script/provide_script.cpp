@@ -83,10 +83,12 @@ StringResult ProvideScript::EvalString(QString contentsRaw, QString optionalFile
 
 void ProvideScript::addArgv(int argc, char *argv[])
 {
-	// arg0 is lnzscript, arg1 is /f
-	if (argc <= 2) return;
-	int offset = 2; // how many arguments to ignore
+	// fixing bug. //if (argc <= 2) { engine.globalObject().setProperty("argv", engine.newArray(0)); return; }
 	
+	int offset = 1; // how many arguments to ignore. defaults to just ignoring the first, 'lnzscript.exe'.
+	if (strcmp(argv[1],"/f")==0 || strcmp(argv[1],"/fconfirm")==0)
+		offset = 2; //if passed these flags, don't pass them on to script
+		
 	QScriptValue ar = engine.newArray(argc - offset);
 	for (int i=offset; i<argc; i++)
 		ar.setProperty(i-offset, QScriptValue(&engine, argv[i]));

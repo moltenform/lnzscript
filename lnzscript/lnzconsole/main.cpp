@@ -67,11 +67,11 @@ int main(int argc, char *argv[])
 		console.evaluateAndPrintResults( strOut.c_str() );
 
 	}
-	else if (argc == 2 && (strcmp(argv[1], "/?")==0||strcmp(argv[1], "-?")==0))
+	else if (argc >= 2 && (strcmp(argv[1], "/?")==0||strcmp(argv[1], "-?")==0))
 	{
 		std::cout << doc << std::endl;
 	}
-	else if (argc == 2) //running a file, as in lnzscript.exe foo.jsz
+	else if (argc >= 2) //try running a file, as in lnzscript.exe foo.jsz arg1
 	{
 		return runScriptFile(&console, argv[1], argc, argv);
 	}
