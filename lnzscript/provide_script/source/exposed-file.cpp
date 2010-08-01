@@ -194,9 +194,9 @@
 	return QScriptValue(eng, objDir.count()-2);
 }
 ///Function:File.dirListFiles
-///Arguments:string strDirectory, string strFileTypes="*", string strSortBy="Unsorted"
+///Arguments:string strDirectory, string strFileTypesPattern="*", string strSortBy="Unsorted"
 ///Returns:array arFilenames
-///Doc:Returns array of filenames inside folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','size','type'. Includes files marked as hidden, but not those marked as system.
+///Doc:Returns array of filenames inside folder. Provide a pattern like '*.txt' to only include .txt files. By default unsorted, but provide a flag such as 'unsorted', 'name','time','size','type'. Includes files marked as hidden, but not those marked as system.
 ///Example:var arFiles = File.dirListFiles('c:\\','*','size'); print('biggest files in c:'); arFiles.reverse(); for(var i=0;i<arFiles.length;i++) print(arFiles[i]);
 ///Implementation:c++_qt
 {
@@ -204,8 +204,8 @@
 	QDir objDir(strDirectory); 
 	if (! objDir.exists()) return ctx->throwError("File.dirListFiles(). No directory found with that name.");
 	QStringList filters;
-	if (!strFileTypes.isEmpty() && strFileTypes!="*") {
-		filters << strFileTypes;
+	if (!strFileTypesPattern.isEmpty() && strFileTypesPattern!="*") {
+		filters << strFileTypesPattern;
 		objDir.setNameFilters(filters);
 	}
 	
@@ -253,7 +253,7 @@
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
-	QString ret = get_winapi_special_folder_path(strSpecialFolderName);
+	QString ret = get_winapi_special_folder_path(folder);
 	if (ret=="") return ctx->throwError("File.getPathSpecial(). Unrecognized folder name. See documentation.");
 	
 	return QScriptValue(eng, ret); 
@@ -266,30 +266,30 @@
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
-	if (strSpecialFolderName=="Control Panel" || strSpecialFolderName=="Fonts" || strSpecialFolderName=="Printers")
+	if (folder=="Control Panel" || folder=="Fonts" || folder=="Printers")
 	{
 		QString cmd;
-		if (strSpecialFolderName=="Control Panel") cmd = "Control_RunDLL";
-		else if (strSpecialFolderName=="Fonts") cmd = "SHHelpShortcuts_RunDLL FontsFolder";
-		else if (strSpecialFolderName=="Printers") cmd = "SHHelpShortcuts_RunDLL PrintersFolder";
+		if (folder=="Control Panel") cmd = "Control_RunDLL";
+		else if (folder=="Fonts") cmd = "SHHelpShortcuts_RunDLL FontsFolder";
+		else if (folder=="Printers") cmd = "SHHelpShortcuts_RunDLL PrintersFolder";
 		else return ctx->throwError("File.openExplorerWindowSpecial(). Internal error.");
 		return util_runExternalCommand("rundll32.exe shell32.dll,"+cmd);
 	}
 	else
 	{
 		QString clsId;
-		if (strSpecialFolderName=="My Computer") clsId="::{20d04fe0-3aea-1069-a2d8-08002b30309d}";
-		else if (strSpecialFolderName=="My Documents") clsId="::{450d8fba-ad25-11d0-98a8-0800361b1103}";
-		else if (strSpecialFolderName=="My Network Places") clsId="::{208d2c60-3aea-1069-a2d7-08002b30309d}";
-		else if (strSpecialFolderName=="Network Computers") clsId="::{1f4de370-d627-11d1-ba4f-00a0c91eedba}";
-		else if (strSpecialFolderName=="Network Connections") clsId="::{7007acc7-3202-11d1-aad2-00805fc1270e}";
-		else if (strSpecialFolderName=="Printers and Faxes") clsId="::{2227a280-3aea-1069-a2de-08002b30309d}";
-		else if (strSpecialFolderName=="Recycle Bin") clsId="::{645ff040-5081-101b-9f08-00aa002f954e}";
-		else if (strSpecialFolderName=="Scheduled Tasks") clsId="::{d6277990-4c6a-11cf-8d87-00aa0060f5bf}";
+		if (folder=="My Computer") clsId="::{20d04fe0-3aea-1069-a2d8-08002b30309d}";
+		else if (folder=="My Documents") clsId="::{450d8fba-ad25-11d0-98a8-0800361b1103}";
+		else if (folder=="My Network Places") clsId="::{208d2c60-3aea-1069-a2d7-08002b30309d}";
+		else if (folder=="Network Computers") clsId="::{1f4de370-d627-11d1-ba4f-00a0c91eedba}";
+		else if (folder=="Network Connections") clsId="::{7007acc7-3202-11d1-aad2-00805fc1270e}";
+		else if (folder=="Printers and Faxes") clsId="::{2227a280-3aea-1069-a2de-08002b30309d}";
+		else if (folder=="Recycle Bin") clsId="::{645ff040-5081-101b-9f08-00aa002f954e}";
+		else if (folder=="Scheduled Tasks") clsId="::{d6277990-4c6a-11cf-8d87-00aa0060f5bf}";
 		else 
 		{
 			// try using getPathSpecial. This will just open a normal directory in the typical manner.
-			QString ret = get_winapi_special_folder_path(strSpecialFolderName);
+			QString ret = get_winapi_special_folder_path(folder);
 			if (ret=="") 
 				return ctx->throwError("File.openExplorerWindowSpecial(). Unrecognized folder name. See documentation.");
 			else
@@ -547,21 +547,24 @@
 		return R_Nircmd("emptybin", strDrive);
 }
 
-///Function:File.copyDialog
-///Arguments:string strPatternFilenames, string strDestination, bool bSilent=false, bool bAnswerYesToQuestions=false, bool bDontShowErrors=false, bool bDontCopySecurityAttributes=false
+///Function:File.copyMany
+///Arguments:string strSource, string strDestination, bool bSilent=false
 ///Returns:bool bStatus
-///Doc:More powerful than File.copy because can specify a pattern like *.*. Copy one or more files from one folder to another, and display a progress dialog, exactly like copying files in Explorer.
-///Example:File.copyDialog('c:\\temp\\*.*','d:\\destination');
+///Doc:Copy an entire directory to another location. One can also copy many files, specifying '*.txt' to copy all text files in the current directory. May sometimes display a window.
+///Example:File.copyDialog('c:\\temp\\folder1','c:\\othertemp\\folder1'); /* copies entire folder. */ File.copyDialog('c:\\temp\\*.*','d:\\destination');
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
+	bool bDontCopySecurityAttributes=false;
+	bool bDontShowErrors=false;
+	bool bAnswerYesToQuestions=false;
 	const char* args[4]={0}; int nargs=0;
 
 	if (bAnswerYesToQuestions) args[nargs++] ="yestoall";
 	if (bDontShowErrors) args[nargs++] ="noerrorui";
 	if (bSilent) args[nargs++] ="silent";
 	if (bDontCopySecurityAttributes) args[nargs++] ="nosecattr";
-	return R_Nircmd("shellcopy", strPatternFilenames, strDestination, args[0], args[1], args[2], args[3]);
+	return R_Nircmd("shellcopy", strSource, strDestination, args[0], args[1], args[2], args[3]);
 }
 
 
