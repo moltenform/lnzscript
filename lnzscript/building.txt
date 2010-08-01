@@ -31,6 +31,17 @@ The easiest way to run this is to copy it into the directory of a
 previous release of LnzScript.
 (This way, the binary will have all of its dependencies including qt dlls, wincommondialog.exe, nircmd.exe, mingw.dll and so on).
 
+
+==documentation.xml===
+lnzscript_html_doc/buildxmldoc.bat
+creates documentation.xml
+
+	documentation.xml and viewdoc.xsl -> lnzscript_html_doc/html, for documentation.
+	lnzeditor\app\configuration\build_api_file\build.bat
+		uses documentation.xml to produce lnzscript.api
+	lnzdoc.xml used by docviewer.exe, if in same directory
+
+
 ==Building other projects==
 Many other scripts depend on documentation.xml.
 Building the editor can be done as described in its readme.
