@@ -84,6 +84,7 @@
 	CHECK_ARGS
 	QString strOption = panelOption;
 	//is it a canonical Guid? see http://msdn.microsoft.com/en-us/library/ee330741(v=VS.85).aspx
+	//see also http://msdn.microsoft.com/en-us/library/cc144191(VS.85).aspx
 	if (strOption.length()==38)
 	{
 		bool isValid=true;

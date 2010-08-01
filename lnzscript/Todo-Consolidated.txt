@@ -1,115 +1,91 @@
-todo:
-command line escaping is less trivial than I thought.
-http://webcache.googleusercontent.com/search?q=cache:MS28vtWRm7EJ:www.eightypercent.net/Archive/2004/12/05.html+windows+command+line+quote+escape&cd=5&hl=en&ct=clnk&gl=us&client=firefox-a
-http://stackoverflow.com/questions/251557/escape-angle-brackets-in-a-windows-command-prompt
 
-Oh, default command should be to Edit, not to Open! have different verbs
+Focus and Purpose
+	
+	- running without saving. useful for one-off scripts using the clipboard
+	- save time on repeated tasks, through automation.
+	- working with files, specifically batch renaming, making shortcuts. don't need to type 'import os, system,shutil' like Python
+	
+	Unique: JavaScript with @'string'
+	Also: The JavaScript language can be useful for functional programming.
 
-document  System.windowsVersion();
-document all these changes
-rename everything to .jsz rather than .js
-<std>, prototype array.clone interferes w for (var i in)
-none are useful but clone, shuffle. have math.shuffle?
-file.dirList changed. document
-
-Emphasize strengths: 
-	run w/o saving, using clipboard. one-off scripts, using clipboard. cliptolower, etc. 
-	rename / file manip is cool useful. file processing, without import os, import shutil, and so on. fast renaming/file moving...
-	javascript with @'hi' strings
-	clipboard app
-		(as an aside, it's also good at functional programming)
-
-For version 0.4
-	
-	Examples
-		Include more examples. Done.
-		Set up wiki for examples. Done - see project page. http://code.google.com/p/launchorz/wiki/
-	
-	Editor
-		Point to correct website, not sites.google.com. Done.
+Changes from 0.3 to 0.4
+	Installer
+		Drag/drop onto script
+	Lnz Language changes
+		File.dirListFiles() now accepts a pattern like '*.txt'
 		
-		bug in editor: if provide arguments, should replace \ with \\, before passing.
-		Docviewer's "view doc online" button, fix url.
-		clicking error lines in Untitled.js, opens the working untitled.js file...
-		//if untitled.tmp.js, don't show error? possible? -- Done
-		@"test" is green. intentional?
+		Enumerated types
+			File.getPathSpecial
+			File.openExplorerWindowSpecial
+			System.openControlPanel
+			, and to a lesser extent Window.setState
+			changed to use enum. types ControlPanel,ControlPanelXp,SpecialFolder, and WindowStyle
+			User would type System.openControlPanel(ControlPanel.Keyboard)
 		
-	Scripts
-		System.openControlPanel and System.openUtility should be cleaned up, probably using an enum
-			(User would type System.openControlPanel(System.Panel_Keyboard))
-			http://msdn.microsoft.com/en-us/library/cc144191(VS.85).aspx
-			http://msdn.microsoft.com/en-us/library/ee330741(v=VS.85).aspx
-		see object_properties.cpp
-		WindowStyle. --Done
-		File.getPathSpecial
-		File.openExplorerWindowSpecial
-		System.openControlPanel
-		System.openUtility
-		Done, now just document.
-	
-		addition: assert. however, this gives line number 0; not useful.
-		what's actually more useful is a Reference error "if(false) sdsdf();" because it gives the line number... weird...
-		old assert assert = function(b) { if (!b) throw 'assertion failed'; return true;}
-	
-		File.createShortcut, allow a target with arguments. http://lists.trolltech.com/qt-interest/2005-01/msg00241.html
-		wincommondialog input dialog, Dialog.input, field should get focus  --DONE.
-		
-		file.getShortcutTarget, and others from QT  should return paths like c:\foo not c:/foo. -Done
-		File.dirListFiles - list all entries matching *.txt and so on. --Done
-		
-		File.createShortcut fix
-		Filr. copyDialog can copy an entire dir.! rename this!
-		File.copyDirectory, File.moveDirectory (with subdirs)
-			http://stackoverflow.com/questions/2536524/copy-directory-using-qt ?
-		The line File.copyDialog(@'C:\Users\inspy\Documents\autoit-v3-sfx\test1', @'C:\Users\inspy\Documents\autoit-v3-sfx\test2');
-			kills lnzscirpt!! --fixed, was nullptr
-		
-		-File.dirWalk - to make recursing through directories easier. use python's algorithms?
-		
-		equivalents of os.path, os.path.join, os.path.split. UNC paths? weird paths? --Done
-		Clipboard.getText has small buffer... Done. Fixed. to be 16k
-		
-		main console-
-			lnzscript.exe foo.jsz runs, instead of lnzscript.exe /f foo.jsz --Done
-			untitled.tmp.js hack -- Done
+		<std> library
+			array objects no longer have prototype methods. (they were making it difficult to loop over arrays with "for (var index in arr)"
+			Math.shuffleArray() added, same as former Array.Shuffle
 			
-		Disabled array prototype functions. 
-		Math.shuffleArray not array.Shuffle()
+		File.copyMany, renamed from File.copyDialog to indicate that it is useful copying whole directories or *.txt file patterns.
+		File.pathJoin, File.pathSplit added
+	
+	Editor changes
+		Running commands are not sent with 4 arguments "" "" "" "", and parameters still work.
+			Automatically add the properties $(1) $(2) $(3) $(4) to all commands. This is slightly better than having the command string be 
+				"foo.exe $(File) $(1) $(2) $(3) $(4)", in which case spaces in params break
+				"foo.exe $(File) "$(1)" "$(2)" "$(3)" "$(4)"", in which case empty params are always sent, and quotes .
+			currently, command is just
+				"foo.exe $(File), and the args are appended here. Quotes don't break it, but backslashes and other chars can.
+				for example, a parameter test\test works, but test\ breaks it, Escaping cmd is not trivial, ^ is the true escape char
+				Refer to 
+			This is a hack because it's appended to all commands run; if there were a "compile" command one wouldn't want this behavior
+	
+	Other changes
+		When an error in untitled doc, output pane won't link to the temporary file
 		
-		Should not pass "" "" "" "" arguments to scripts
+		examples directory contains some examples
+		examples on wiki http://code.google.com/p/launchorz/wiki/
+	
+	
+	Trivial changes
+		document  System.windowsVersion(); includes win7
+		references to previous googlepages.com website updated.
+		Window info tool always in Tools menu
+		untitled.tmp.js renamed to untitled.tmp.jsz
+		File.getShortcutTarget and others from QT, changed format from c:/foo to c:\foo 
+		Fixed uninitialized data bug in File.copyDialog
+		Clipboard.getText, increased buffer so that it can get more text.
+		lnzscript.exe foo.jsz runs, instead of lnzscript.exe /f foo.jsz 
 
-Make it good at renaming files!
-File.cd(@'targetdir')
-Renamer.testRename('*.doc', '*.zip')
-Renamer.renameInFilenames(
-	testRename previews results
-	in fact, give it a preview function. This can be implemented in script.
 
+Should address in next version
+	A possible example- turning .url files into one text summary
 
-	Other
-		Make an installer that associates .jsz. even drag/drop onto, py does that
+	Command-line escaping is less trivial than I thought.
+		This not only effects parameters in lnzeditor, but perhaps many things running different processes to pass data.
+		^ is the true escape character.
+		http://stackoverflow.com/questions/251557/escape-angle-brackets-in-a-windows-command-prompt
+		http://webcache.googleusercontent.com/search?q=cache:MS28vtWRm7EJ:www.eightypercent.net/Archive/2004/12/05.html+windows+command+line+quote+escape&cd=5&hl=en&ct=clnk&gl=us&client=firefox-a
+	
+	Language
+		add an assert. assert = function(b) { if (!b) throw 'assertion failed'; return true;}
+			doesn't work because  gives line number 0; not useful.
 		
-		File.pathjoin
-		test path-related functions in a share like \\foo. Done. test util_fixQtDirectorySlashes. Done.
-		
-Punted
-	unify between NirCmd / Au3 window and dialog commands
+		maybe enumerate System.openUtility
+		document WindowStyle more
+	
+		add: File.moveDirectory
+		File.dirWalk - to make recursing through directories easier. use python's algorithms?
 	
 	dev environment-make working directories clear, clear up build process, and build doc process
 	Make editor.exe more visible when you download it? -- since in the start menu, ok.
 	Use qsrand() to seed rng. strangely, the 1st generated seems similar. QDateTime::currentDateTime().toTime_t() and qsrand?
 	print() itself  has a small buffer...
-	different return code if syntax error? punt.
-	directory walking
+	different return code if syntax error?
 	File.tray should be system.cdTray
+	unify between NirCmd / Au3 window and dialog commands
+	@"test" is green. intentional?
 
-A possible example- turning .url files into one text summary
-
-Guidelines
-	Focus on things that python isn't good at. Maybe we can have better file/handling, quick scripts to rename files, etc.
-		(could look at Python's shellutil for copy file, copy directory, move directory, etc. recurse through dir, too, maybe.)
-	Look at ahk for possible.
-	Look at good Au3 /ahk scripts online
 
 
 Probably for later release
@@ -169,4 +145,6 @@ Note that we probably don't want to introduce a dependency on the large QtGui.dl
 	Can use winapi (wincommondialog.exe) for msgbox, input, file dialogs. 
 	SmartWin and Ultimate++, at least with default themes, look ugly.
 	
+
+
 
