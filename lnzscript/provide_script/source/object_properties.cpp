@@ -134,4 +134,6 @@ objSpecfolder.setProperty("StartupItems", QScriptValue(eng, "Startup Items"));
 objSpecfolder.setProperty("System", QScriptValue(eng, "System"));
 objSpecfolder.setProperty("Windows", QScriptValue(eng, "Windows"));
 
+QScriptValue objRename = eng->newObject();
+eng->globalObject().setProperty("Rename",objRename);
 
