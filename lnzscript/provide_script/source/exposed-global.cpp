@@ -126,5 +126,35 @@
 {}
 
 
+///Function:Rename.rename
+///Arguments:string strSearch, string strReplace
+///Returns:bool bSuccess
+///Doc:Rename strings in filenames. Use include('<std>') to import this. Rename does the following: for each file in the current directory (File.cd()), replace in the filename. Doesn't rename subdirectories. If a file cannot be renamed, throws an exception and leaves other filenames unchanged.
+///Example:File.cd(@'c:\mydir'); Rename.rename('.htm', '.html');
+///Implementation:Javascript
+{}
+
+///Function:Rename.renamePreview
+///Arguments:string strSearch, string strReplace
+///Returns:bool bSuccess
+///Doc:Preview before rename strings in filenames. Use include('<std>') to import this. Prints the results of what Rename.rename would do, without actually renaming the files. Useful for testing.
+///Implementation:Javascript
+{}
+
+///Function:Rename.renameFn
+///Arguments:function fnRename, string strSorted='name'
+///Returns:bool bSuccess
+///Doc:Rename filenames. Use include('<std>') to import this. Provide a function that accepts a string and returns a string, the new name. Doesn't rename subdirectories. You can specify a sort order, which is useful when your function has state; this could be used to rename a set of files to 001, 002, 003... based on modification date. If a file cannot be renamed, throws an exception and leaves other filenames unchanged.
+///Example:File.cd(@'c:\mydir'); function myRename(s) {return 'new'+s;} Rename.rename(myRename);
+///Implementation:Javascript
+{}
+
+///Function:Rename.renameFnPreview
+///Arguments:function fnRename, string strSorted='name'
+///Returns:bool bSuccess
+///Doc:Rename filenames. Use include('<std>') to import this. Prints the results of what Rename.renameFn would do, without actually renaming the files. Useful for testing.
+///Implementation:Javascript
+{}
+
 
 
