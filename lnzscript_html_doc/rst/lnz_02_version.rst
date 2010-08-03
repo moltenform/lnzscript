@@ -1,11 +1,27 @@
 =================
-Versioning
+Version
 =================
 
 Current Release
 --------------------------
 
-The current release is 0.3.
+The current release is 0.4.
+
+Additions in 0.4
+
+- Installer associates .jsz files, so they can be double-clicked on, and accept drag/drop
+- Enumerated types like System.openControlPanel(ControlPanel.Keyboard)
+- Several changes to api, for example
+	- File.getPathSpecial
+	- File.openExplorerWindowSpecial
+	- System.openControlPanel
+	- File.copyMany
+	- File.dirListFiles
+- Additions include
+	- File.pathJoin
+	- File.pathSplit
+	- Rename functions
+- Fixed editor bug where it would run scripts with 4 empty string arguments, also will escape quotes in parameters.
 
 Additions in 0.3
 

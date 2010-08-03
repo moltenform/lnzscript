@@ -7,9 +7,8 @@ Getting Started
 
 Download the latest version from `Google Code <http://code.google.com/p/launchorz/downloads/list>`_.
 
-- Unzip the .zip file to someplace on your computer, possibly in Program Files.
-- Open the ``editor`` folder and run ``lnzeditor.exe``. This is a code editor specifically for the Launchorz project.
-- Begin typing a script, such as ``Mouse.move(1,1); alert('hello');``. 
+- Run the installer. It will open the lnz editor after installing.
+- In the editor, begin typing a script, such as ``Mouse.move(1,1); alert('hello');``. 
 - Choose run script from the Run menu (or press F5) to run.
 
 A few things to note:
@@ -55,7 +54,7 @@ Files
 	// Otherwise, the \ must be escaped.
 	var s = File.readFile('c:\\dir\\myfile.txt')
 	
-	var arFiles = File.dirListFiles(@'c:\', 'name'); //returns array of files in the folder sorted by name
+	var arFiles = File.dirListFiles(@'c:\', '*', 'name'); //returns array of files in the folder sorted by name
 
 Controls - this type of thing is useful 
 ::
@@ -67,6 +66,7 @@ Controls - this type of thing is useful
 	Keyboard.send('{ENTER}');
 	Time.sleep(1500);
 	Control.setText('Calculator','403','1337'); //puts text into control id 403. 
+	// one can find control ids with a window info tool, from the Tools menu
 	// watch the screencasts for more information.
 
 Misc. self-explanatory stuff

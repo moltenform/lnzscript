@@ -88,9 +88,9 @@ LnzScript code can include another file with the include() function. It is recom
 
 For more advanced scripts, use the statement ``include('<std>')`` to import a code library. Currently, this library provides prototype methods such as .startsWith() / .endsWith() for strings, prototype methods such as .max() and .min() for arrays, and printarr(a) for printing arrays. These are documented in the Reference under String and Array.
 
-You can associate the extension .js with lnzscript.exe, so that you can double-click a script to run it. It is recommended to associate with lnzscript.exe /fconfirm "%1". This will ask for confirmation before running the script.
+Scripts with the extension .jsz are associated with lnzscript.exe, so that you can double-click a script to run it. One can also drag and drop a file into a script, and the filename will be in argv[1].
 
-Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object oriented JavaScript.
+Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object-oriented JavaScript.
 
 
 
