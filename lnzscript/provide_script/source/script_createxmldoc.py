@@ -88,7 +88,7 @@ def createDoc():
 	fout = open(r'documentation.xml','w')
 	fout.write('<?xml version="1.0" encoding="UTF-8"?>')
 	fout.write('<?xml-stylesheet type="text/xsl" href="viewdoc.xsl"?>')
-	fout.write('<launchorzdoc version="0.3">')
+	fout.write('<launchorzdoc version="0.4">')
 	
 	i = 0
 	#actually, don't sort the keys, so that "launchors" is before "language"

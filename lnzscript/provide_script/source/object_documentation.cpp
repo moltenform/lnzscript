@@ -116,7 +116,11 @@ Time.sleep() is used very frequently in scripts. It is used to pause the script,
 ///Enddoc::
 
 
-
+///Namespace:Rename
+///Section:Launchorz
+///Doc:
+Functions to help rename files.
+///Enddoc::
 
 //now for the builtin ones
 
