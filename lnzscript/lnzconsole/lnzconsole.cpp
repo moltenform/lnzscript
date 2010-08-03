@@ -45,7 +45,8 @@ void LnzConsole::evaluateAndPrintResults(const char * c_strInput, const char* c_
 
 void g_LnzScriptPrintCallback(QString * str)
 {
-	const char * s = str->toAscii();
+	QByteArray arr = str->toAscii();
+	const char * s =  arr.data();
 	std::cout << "\n" << s;
 }
 
