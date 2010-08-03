@@ -11,6 +11,8 @@ Focus and Purpose
 Changes from 0.3 to 0.4
 	Installer
 		Drag/drop onto script
+		you can give script parameters. test.jsz arg1
+		
 	Lnz Language changes
 		File.dirListFiles() now accepts a pattern like '*.txt'
 		
@@ -60,10 +62,15 @@ Changes from 0.3 to 0.4
 		lnzscript.exe foo.jsz runs, instead of lnzscript.exe /f foo.jsz 
 
 
-Should address in next version
-	A possible example- turning .url files into one text summary
-	More examples/screencasts online docs
-
+Should address in next version 0.4.1?
+	Documentation, add blog examples to wiki, improve the docs and tutorials.
+	.toAscii() is used improperly?-- you need the QByteArray instance so that the memory won't be freed?
+		But the c++ should hold this temporary. this needs to be looked into.
+		see the change to lnzconsole.cpp, g_LnzScriptPrintCallback
+		This can repro'd when trying to print very long strings!
+	an even better behavior: two verbs, open and edit. double-click will edit. drag/drop into will run. right-click:run to run.
+	when double-clicking a .jsz, a black cmd line opens while it runs, which probably isn't desirable.
+	
 	Command-line escaping is less trivial than I thought.
 		This not only effects parameters in lnzeditor, but perhaps many things running different processes to pass data.
 		^ is the true escape character.
@@ -79,6 +86,7 @@ Should address in next version
 	
 		add: File.moveDirectory
 		File.dirWalk - to make recursing through directories easier. use python's algorithms?
+		Renaming, perhaps a renameNumbered for the common 01, 02, 03 renaming scenario
 	
 	dev environment-make working directories clear, clear up build process, and build doc process
 	Make editor.exe more visible when you download it? -- since in the start menu, ok.
@@ -114,6 +122,7 @@ Probably for later release
 	@'cool' string literals could contain newlines. the processor would just turn it into \r\n
 
 Maybe for a later release
+	more rename methods, possibly, like a regexp
 	CallDll, depending on how hard it is to implement (see ahk src?)
 	getDirectorySize
 	update scite version... not worth it now
