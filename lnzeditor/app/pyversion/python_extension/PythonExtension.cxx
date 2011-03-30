@@ -414,7 +414,6 @@ PyObject* pyfun_pane_FindText(PyObject* self, PyObject* pArgs) //returns a tuple
 	if (nPosEnd==-1) nPosEnd= _host->Send(pane, SCI_GETLENGTH, 0, 0);
 	if (nPosStart<0 || nPosEnd<0) return NULL;
 	
-	
 	Sci_TextToFind ft = {{0, 0}, 0, {0, 0}};
 	ft.lpstrText =szText; 
 	ft.chrg.cpMin = nPosStart;
@@ -522,15 +521,13 @@ PyObject* pyfun_pane_SendScintillaFn(PyObject* self, PyObject* pArgs)
 		bool fResult = pullPythonArgument( func.paramType[1], PyTuple_GetItem(pSciArgs, 1), &lParam);
 		if (!fResult)  {	return NULL; }
 	}
-	else if (isStringResult)
-	{
-		// allocate space for the result
+	else if (isStringResult) { // allocate space for the result
 		size_t spaceNeeded = _host->Send(pane, func.value, wParam, NULL);
 		if (strcmp(szCmd, "GetCurLine")==0) // the first param of getCurLine is useless
 			wParam = spaceNeeded;
 		//traceOut("", "allocating", spaceNeeded);
 		lParam = (intptr_t) new char[spaceNeeded ]; //note: no null term !!!
-		for (int i=0; i<spaceNeeded; i++) ((char*)lParam)[i] = 0;
+		for (unsigned i=0; i<spaceNeeded; i++) ((char*)lParam)[i] = 0;
 	}
 	
 	intptr_t result = _host->Send(pane, func.value, wParam, lParam);
@@ -555,6 +552,104 @@ PyObject* pyfun_pane_SendScintillaFn(PyObject* self, PyObject* pArgs)
 	return pyObjReturn;
 }
 
+PyObject* pyfun_pane_SendScintillaGet(PyObject* self, PyObject* pArgs)
+{
+	char* szProp = NULL; /* we do NOT own this pointer, we cannot free it. */
+	int nPane=-1; ExtensionAPI::Pane pane; PyObject* pyObjParam=NULL;
+	if (!PyArg_ParseTuple(pArgs, "is|O", &nPane, &szProp, &pyObjParam)) return NULL;
+	if (!GetPaneFromInt(nPane, &pane)) { PyErr_SetString(PyExc_RuntimeError,"Invalid pane, must be 0 or 1."); return NULL;}
+	
+	int nFnIndex = IFaceTable::FindProperty(szProp);
+	if (nFnIndex == -1) { PyErr_SetString(PyExc_RuntimeError,"Could not find prop."); return NULL; }
+	IFaceProperty prop =  IFaceTable::properties[nFnIndex];
+	if (prop.getter == 0) { PyErr_SetString(PyExc_RuntimeError,"prop can't be get."); return NULL; }
+	intptr_t wParam = 0; //args to be passed to Scite
+	intptr_t lParam = 0; //args to be passed to Scite
+	
+	if (prop.paramType != iface_void)
+	{
+		if (pyObjParam==NULL || pyObjParam == Py_None) { PyErr_SetString(PyExc_RuntimeError,"prop needs param."); return NULL; }
+		bool fResult = pullPythonArgument( prop.paramType, pyObjParam, &wParam);
+		if (!fResult)  {	return NULL; }
+	}	
+	if (prop.valueType == iface_string) {  // allocate space for the result
+		size_t spaceNeeded = _host->Send(pane, prop.getter, wParam, NULL);
+		lParam = (intptr_t) new char[spaceNeeded ]; //note: no null term !!!
+		for (unsigned int i=0; i<spaceNeeded; i++) ((char*)lParam)[i] = 0;
+	}
+	intptr_t result = _host->Send(pane, prop.getter, wParam, lParam);
+	
+	PyObject* pyObjReturn = NULL;
+	if (prop.valueType != iface_string)
+	{
+		bool fRet = pushPythonArgument(prop.valueType, result, &pyObjReturn); // if returns void, it simply returns NONE, so we're good
+		if (!fRet)  { return NULL; }
+	}
+	else
+	{
+		if (!lParam)  { /* Unexpected: returning null instead of string */ Py_INCREF(Py_None); return Py_None; }
+		if (result == 0)
+			pyObjReturn = PyString_FromString("");
+		else
+			pyObjReturn = PyString_FromStringAndSize((char *) lParam, (size_t) result-1);
+		delete (char*) lParam;
+	}
+	Py_INCREF(pyObjReturn); //important to incref
+	return pyObjReturn;
+}
+
+PyObject* pyfun_pane_SendScintillaSet(PyObject* self, PyObject* pArgs)
+{
+	char* szProp = NULL; /* we do NOT own this pointer, we cannot free it. */
+	int nPane=-1; ExtensionAPI::Pane pane; PyObject* pyObjValue=NULL; PyObject* pyObjParam=NULL;
+	if (!PyArg_ParseTuple(pArgs, "isO|O", &nPane, &szProp, &pyObjValue, &pyObjParam)) return NULL;
+	if (!GetPaneFromInt(nPane, &pane)) { PyErr_SetString(PyExc_RuntimeError,"Invalid pane, must be 0 or 1."); return NULL;}
+	
+	int nFnIndex = IFaceTable::FindProperty(szProp);
+	if (nFnIndex == -1) { PyErr_SetString(PyExc_RuntimeError,"Could not find prop."); return NULL; }
+	IFaceProperty prop =  IFaceTable::properties[nFnIndex];
+	if (prop.setter == 0) { PyErr_SetString(PyExc_RuntimeError,"prop can't be set."); return NULL; }
+	intptr_t wParam = 0; //args to be passed to Scite
+	intptr_t lParam = 0; //args to be passed to Scite
+	
+	bool fResult = pullPythonArgument( prop.valueType, pyObjValue, &wParam);
+	if (!fResult)  {	return NULL; }
+	if (prop.paramType != iface_void)
+	{
+		if (pyObjParam==NULL || pyObjParam == Py_None) { PyErr_SetString(PyExc_RuntimeError,"prop needs param."); return NULL; }
+		bool fResult = pullPythonArgument( prop.paramType, pyObjParam, &lParam);
+		if (!fResult)  {	return NULL; }
+	}
+	intptr_t result = _host->Send(pane, prop.setter, wParam, lParam);
+	result;
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+PyObject* pyfun_app_GetConstant(PyObject* self, PyObject* pArgs)
+{
+	char* szProp = NULL; /* we do NOT own this pointer, we cannot free it. */
+	if (!PyArg_ParseTuple(pArgs, "s",  &szProp)) return NULL;
+	
+	int nFnIndex = IFaceTable::FindConstant(szProp);
+	if (nFnIndex == -1) { PyErr_SetString(PyExc_RuntimeError,"Could not find constant."); return NULL; }
+	IFaceConstant faceConstant =  IFaceTable::constants[nFnIndex];
+	PyObject* pyValueOut = PyInt_FromLong(faceConstant.value);
+	Py_INCREF(pyValueOut);
+	return pyValueOut;
+}
+PyObject* pyfun_app_SciteCommand(PyObject* self, PyObject* pArgs)
+{
+	char* szProp = NULL; /* we do NOT own this pointer, we cannot free it. */
+	if (!PyArg_ParseTuple(pArgs, "s",  &szProp)) return NULL;
+	
+	int nFnIndex = FindFriendlyNamedIDMConstant(szProp);
+	if (nFnIndex == -1) { PyErr_SetString(PyExc_RuntimeError,"Could not find command."); return NULL; }
+	IFaceConstant faceConstant =  PythonExtension::friendlyconstants[nFnIndex];
+	_host->DoMenuCommand(faceConstant.value);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
 
 static PyMethodDef methods_LogStdout[] = {
 	{"LogStdout", pyfun_LogStdout, METH_VARARGS, "Logs stdout"},
@@ -572,9 +667,12 @@ static PyMethodDef methods_LogStdout[] = {
 	{"pane_Textrange", pyfun_pane_TextRange, METH_VARARGS, ""},
 	{"pane_FindText", pyfun_pane_FindText, METH_VARARGS, ""},
 	{"pane_ScintillaFn", pyfun_pane_SendScintillaFn, METH_VARARGS, ""},
+	{"pane_ScintillaGet", pyfun_pane_SendScintillaGet, METH_VARARGS, ""},
+	{"pane_ScintillaSet", pyfun_pane_SendScintillaSet, METH_VARARGS, ""},
 	// the match object would be easier to write in Python.
 	
-	{"MenuCommand", pyfun_UnsetProperty, METH_VARARGS, ""},
+	{"app_GetConstant", pyfun_app_GetConstant, METH_VARARGS, ""},
+	{"app_SciteCommand", pyfun_app_SciteCommand, METH_VARARGS, ""},
 	
 	{NULL, NULL, 0, NULL}
 };
@@ -603,4 +701,175 @@ void PythonExtension::SetupPythonNamespace()
 	
 }
 
+int FindFriendlyNamedIDMConstant(const char *name) {
+	int lo = 0;
+	int hi = PythonExtension::lengthfriendlyconstants - 1;
+	do {
+		int idx = (lo+hi)/2;
+		int cmp = strcmp(name, PythonExtension::friendlyconstants[idx].name);
+
+		if (cmp > 0) {
+			lo = idx + 1;
+		} else if (cmp < 0) {
+			hi = idx - 1;
+		} else {
+			return idx;
+		}
+	} while (lo <= hi);
+	return -1;
+}
+
+#include "Scite.h"
+static IFaceConstant rgFriendlyNamedIDMConstants[] = {
+{"Abbrev",IDM_ABBREV},
+{"About",IDM_ABOUT},
+{"Activate",IDM_ACTIVATE},
+{"BlockComment",IDM_BLOCK_COMMENT},
+{"BookmarkClearall",IDM_BOOKMARK_CLEARALL},
+{"BookmarkNext",IDM_BOOKMARK_NEXT},
+{"BookmarkNextSelect",IDM_BOOKMARK_NEXT_SELECT},
+{"BookmarkPrev",IDM_BOOKMARK_PREV},
+{"BookmarkPrevSelect",IDM_BOOKMARK_PREV_SELECT},
+{"BookmarkToggle",IDM_BOOKMARK_TOGGLE},
+{"BoxComment",IDM_BOX_COMMENT},
+{"Buffer",IDM_BUFFER},
+{"Buffersep",IDM_BUFFERSEP},
+{"Build",IDM_BUILD},
+{"Clear",IDM_CLEAR},
+{"ClearOutput",IDM_CLEAROUTPUT},
+{"Close",IDM_CLOSE},
+{"Closeall",IDM_CLOSEALL},
+{"Compile",IDM_COMPILE},
+{"Complete",IDM_COMPLETE},
+{"CompleteWord",IDM_COMPLETEWORD},
+{"Copy",IDM_COPY},
+{"Copyasrtf",IDM_COPYASRTF},
+{"Copypath",IDM_COPYPATH},
+{"Cut",IDM_CUT},
+{"DirectionDown",IDM_DIRECTIONDOWN},
+{"DirectionUp",IDM_DIRECTIONUP},
+{"Duplicate",IDM_DUPLICATE},
+{"Encoding_default",IDM_ENCODING_DEFAULT},
+{"Encoding_ucookie",IDM_ENCODING_UCOOKIE},
+{"Encoding_ucs2be",IDM_ENCODING_UCS2BE},
+{"Encoding_ucs2le",IDM_ENCODING_UCS2LE},
+{"Encoding_utf8",IDM_ENCODING_UTF8},
+{"EnterSelection",IDM_ENTERSELECTION},
+{"Eol_convert",IDM_EOL_CONVERT},
+{"Eol_cr",IDM_EOL_CR},
+{"Eol_crlf",IDM_EOL_CRLF},
+{"Eol_lf",IDM_EOL_LF},
+{"Expand",IDM_EXPAND},
+{"ExpandEnsurechildrenvisible",IDM_EXPAND_ENSURECHILDRENVISIBLE},
+{"Filer",IDM_FILER},
+{"Find",IDM_FIND},
+{"FindInFiles",IDM_FINDINFILES},
+{"FindNext",IDM_FINDNEXT},
+{"FindNextBack",IDM_FINDNEXTBACK},
+{"FindNextBackSel",IDM_FINDNEXTBACKSEL},
+{"FindNextSel",IDM_FINDNEXTSEL},
+{"FinishedExecute",IDM_FINISHEDEXECUTE},
+{"FoldMargin",IDM_FOLDMARGIN},
+{"Fullscreen",IDM_FULLSCREEN},
+{"Go",IDM_GO},
+{"Goto",IDM_GOTO},
+{"Help",IDM_HELP},
+{"Help_scite",IDM_HELP_SCITE},
+{"Import",IDM_IMPORT},
+{"Incsearch",IDM_INCSEARCH},
+{"InsAbbrev",IDM_INS_ABBREV},
+{"Join",IDM_JOIN},
+{"Language",IDM_LANGUAGE},
+{"LineNumberMargin",IDM_LINENUMBERMARGIN},
+{"Loadsession",IDM_LOADSESSION},
+{"Lwrcase",IDM_LWRCASE},
+{"Macrolist",IDM_MACROLIST},
+{"Macroplay",IDM_MACROPLAY},
+{"Macrorecord",IDM_MACRORECORD},
+{"Macrostoprecord",IDM_MACROSTOPRECORD},
+{"Macro_sep",IDM_MACRO_SEP},
+{"Matchbrace",IDM_MATCHBRACE},
+{"Matchcase",IDM_MATCHCASE},
+{"Monofont",IDM_MONOFONT},
+{"Movetableft",IDM_MOVETABLEFT},
+{"Movetabright",IDM_MOVETABRIGHT},
+{"Mrufile",IDM_MRUFILE},
+{"Mru_sep",IDM_MRU_SEP},
+{"New",IDM_NEW},
+{"Nextfile",IDM_NEXTFILE},
+{"Nextfilestack",IDM_NEXTFILESTACK},
+{"Nextmatchppc",IDM_NEXTMATCHPPC},
+{"Nextmsg",IDM_NEXTMSG},
+{"Ontop",IDM_ONTOP},
+{"Open",IDM_OPEN},
+{"Openabbrevproperties",IDM_OPENABBREVPROPERTIES},
+{"Opendirectoryproperties",IDM_OPENDIRECTORYPROPERTIES},
+{"Openfileshere",IDM_OPENFILESHERE},
+{"Openglobalproperties",IDM_OPENGLOBALPROPERTIES},
+{"Openlocalproperties",IDM_OPENLOCALPROPERTIES},
+{"Openluaexternalfile",IDM_OPENLUAEXTERNALFILE},
+{"Openselected",IDM_OPENSELECTED},
+{"Openuserproperties",IDM_OPENUSERPROPERTIES},
+{"Paste",IDM_PASTE},
+{"Pasteanddown",IDM_PASTEANDDOWN},
+{"Prevfile",IDM_PREVFILE},
+{"Prevfilestack",IDM_PREVFILESTACK},
+{"Prevmatchppc",IDM_PREVMATCHPPC},
+{"Prevmsg",IDM_PREVMSG},
+{"Print",IDM_PRINT},
+{"PrintSetup",IDM_PRINTSETUP},
+{"Quit",IDM_QUIT},
+{"Readonly",IDM_READONLY},
+{"Redo",IDM_REDO},
+{"Regexp",IDM_REGEXP},
+{"Replace",IDM_REPLACE},
+{"Revert",IDM_REVERT},
+{"Runwin",IDM_RUNWIN},
+{"Save",IDM_SAVE},
+{"Saveacopy",IDM_SAVEACOPY},
+{"Saveall",IDM_SAVEALL},
+{"Saveas",IDM_SAVEAS},
+{"Saveashtml",IDM_SAVEASHTML},
+{"Saveaspdf",IDM_SAVEASPDF},
+{"Saveasrtf",IDM_SAVEASRTF},
+{"Saveastex",IDM_SAVEASTEX},
+{"Saveasxml",IDM_SAVEASXML},
+{"SaveSession",IDM_SAVESESSION},
+{"SelectAll",IDM_SELECTALL},
+{"SelectToBrace",IDM_SELECTTOBRACE},
+{"SelectToNextmatchppc",IDM_SELECTTONEXTMATCHPPC},
+{"SelectToPrevmatchppc",IDM_SELECTTOPREVMATCHPPC},
+{"SelMargin",IDM_SELMARGIN},
+{"ShowCalltip",IDM_SHOWCALLTIP},
+{"Split",IDM_SPLIT},
+{"SplitVertical",IDM_SPLITVERTICAL},
+{"SrcWin",IDM_SRCWIN},
+{"StatusWin",IDM_STATUSWIN},
+{"StopExecute",IDM_STOPEXECUTE},
+{"StreamComment",IDM_STREAM_COMMENT},
+{"Switchpane",IDM_SWITCHPANE},
+{"Tabsize",IDM_TABSIZE},
+{"Tabwin",IDM_TABWIN},
+{"ToggleOutput",IDM_TOGGLEOUTPUT},
+{"ToggleParameters",IDM_TOGGLEPARAMETERS},
+{"ToggleFoldAll",IDM_TOGGLE_FOLDALL},
+{"ToggleFoldRecursive",IDM_TOGGLE_FOLDRECURSIVE},
+{"Tools",IDM_TOOLS},
+{"Toolwin",IDM_TOOLWIN},
+{"Undo",IDM_UNDO},
+{"Unslash",IDM_UNSLASH},
+{"Uprcase",IDM_UPRCASE},
+{"ViewEol",IDM_VIEWEOL},
+{"ViewGuides",IDM_VIEWGUIDES},
+{"ViewSpace",IDM_VIEWSPACE},
+{"ViewStatusbar",IDM_VIEWSTATUSBAR},
+{"ViewTabbar",IDM_VIEWTABBAR},
+{"ViewToolbar",IDM_VIEWTOOLBAR},
+{"Wholeword",IDM_WHOLEWORD},
+{"Wrap",IDM_WRAP},
+{"Wraparound",IDM_WRAPAROUND},
+{"Wrapoutput",IDM_WRAPOUTPUT},
+};
+const IFaceConstant * const PythonExtension::friendlyconstants = rgFriendlyNamedIDMConstants;
+const size_t PythonExtension::lengthfriendlyconstants = _countof(rgFriendlyNamedIDMConstants);
 
