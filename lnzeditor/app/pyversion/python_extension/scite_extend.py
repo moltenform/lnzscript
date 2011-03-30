@@ -1,68 +1,20 @@
-print 'Loading Pyscript'
-import CScite
-import exceptions
 
-class ScintillaPaneBase():
-	nPane = -1
-	def __init__(self, nPane):
-		self.nPane = nPane
-	def __getattr__(self, sprop):
-		if sprop.startswith('_'):
-			#if it looking for a special method, don't try to do anything.
-			raise exceptions.AttributeError
-		elif sprop.startswith('fn'):
-			sprop = sprop[2:]
-			return (lambda *args: CScite.pane_ScintillaFn(self.nPane, sprop, args))
-		elif sprop.startswith('Get'):
-			sprop = sprop[3:]
-			return (lambda param=None: CScite.pane_ScintillaGet(self.nPane, sprop, param))
-		elif sprop.startswith('Set'):
-			sprop = sprop[3:]
-			return (lambda a1, a2=None: CScite.pane_ScintillaSet(self.nPane, sprop, a1, a2))
-		
-		raise exceptions.AttributeError
-		
-		
-	def Append(self, txt): return CScite.pane_Append(self.nPane, txt)
-	def Insert(self, npos, txt): return CScite.pane_Insert(self.nPane,npos, txt)
-	def Textrange(self, n1, n2): return CScite.pane_Textrange(self.nPane, n1, n2)
-	def FindText(self,s,nFlags=0,n1=0,n2=-1): return CScite.pane_FindText(self.nPane,s,nFlags,n1,n2)
+#makekeumod doesn't work
 
-class SciteAppWrapper():
-	def __getattr__(self, sprop):
-		if sprop.upper() == sprop and '_' in sprop:
-			return CScite.GetConstant(sprop)
-		else:
-			raise exceptions.AttributeError
+from CScite import ScEditor, ScOutput, ScApp
 
-
-CScite.Editor = ScintillaPaneBase(0)
-CScite.Output = ScintillaPaneBase(1)
-CScite.App = SciteAppWrapper()
-
-SCFIND_WHOLEWORD = 2
-SCFIND_MATCHCASE = 4
-SCFIND_WORDSTART = 0x00100000
-SCFIND_REGEXP = 0x00200000
-SCFIND_POSIX = 0x00400000
-
-assert CScite.App.SCFIND_WHOLEWORD == SCFIND_WHOLEWORD
-assert CScite.App.SCFIND_MATCHCASE == SCFIND_MATCHCASE
-assert CScite.App.SCFIND_WORDSTART == SCFIND_WORDSTART
-assert CScite.App.SCFIND_REGEXP == SCFIND_REGEXP
-assert CScite.App.SCFIND_POSIX == SCFIND_POSIX
-
-
-
-#put these into namespace: ScApp, ScEditor, ScOutput
-
+assert ScApp.SCFIND_WHOLEWORD == 2
+assert ScApp.SCFIND_MATCHCASE == 4
+assert ScApp.SCFIND_WORDSTART == 0x00100000
+assert ScApp.SCFIND_REGEXP == 0x00200000
+assert ScApp.SCFIND_POSIX == 0x00400000
 
 def makeKeyMod(keycode, fShift=False, fCtrl=False, fAlt=False):
 	keycode = keycode&0xffff
 	modifiers = 0
-	if fShift: modifiers |= CScite.App.SCMOD_SHIFT
-	if fCtrl: modifiers |= CScite.App.SCMOD_CTRL
-	if fAlt: modifiers |= CScite.App.SCMOD_ALT
+	if fShift: modifiers |= ScApp.SCMOD_SHIFT
+	if fCtrl: modifiers |= ScApp.SCMOD_CTRL
+	if fAlt: modifiers |= ScApp.SCMOD_ALT
 	return keycode | (modifiers << 16)
 
 def OnStart():
@@ -97,7 +49,7 @@ def OnSavePointLeft():
 	pass
 
 testLevel = 1
-whichPaneTest = CScite.Editor
+whichPaneTest = ScEditor
 def OnKey( keycode, fShift, fCtrl, fAlt):
 	global testLevel, whichPaneTest
 	#~ print 'See OnChar %d %d %d %d'%(keycode, fShift, fCtrl, fAlt)
@@ -114,33 +66,33 @@ def OnKey( keycode, fShift, fCtrl, fAlt):
 			return False
 		elif keycode==ord('0'):
 			print ''
-			CScite.trace( 'trace')
-			CScite.trace( 'trace')
+			ScApp.Trace( 'trace')
+			ScApp.Trace( 'trace')
 			#output should be 'tracetrace' on one line
 			print ''
 			return False
 		elif keycode==ord('1'):
-			CScite.OpenFile('c:\\nps.txt')
+			ScApp.OpenFile('c:\\nps.txt')
 			return False
 		elif keycode==ord('2'):
-			assert CScite.GetProperty('tabbar.visible') == '1'
-			assert CScite.GetProperty('margin.width') == '16'
+			assert ScApp.GetProperty('tabbar.visible') == '1'
+			assert ScApp.GetProperty('margin.width') == '16'
 			for prop in ('tabbar.visible', 'margin.width', 'a.new.prop'):
-				print '%s=%s'%(prop, CScite.GetProperty(prop))
+				print '%s=%s'%(prop, ScApp.GetProperty(prop))
 			return False
 		elif keycode==ord('3'):
-			CScite.SetProperty('a.new.prop','|a value here|')
+			ScApp.SetProperty('a.new.prop','|a value here|')
 			return False
 		elif keycode==ord('4'):
-			CScite.MsgBox('Hi')
+			ScApp.MsgBox('Hi')
 			return False
 	elif testLevel == 2:
 		if keycode==ord('0'):
-			if whichPaneTest==CScite.Editor:
-				whichPaneTest = CScite.Output
+			if whichPaneTest==ScEditor:
+				whichPaneTest = ScOutput
 				print 'output to Output'
 			else:
-				whichPaneTest = CScite.Editor
+				whichPaneTest = ScEditor
 				print 'output to Editor'
 			return False
 		elif keycode==ord('1'):
@@ -209,8 +161,9 @@ def OnKey( keycode, fShift, fCtrl, fAlt):
 			whichPaneTest.fnAppendText #iface_void, {iface_length, iface_string}},
 			whichPaneTest.fnClearAll # iface_void, {iface_void, iface_void}}
 			
-			CScite.Output.fnClearAll()
-			#~ whichPaneTest.fnAssignCmdKey(makeKeyMod(ord('p')), 2180 )
+			ScOutput.fnClearAll()
+			#~ whichPaneTest.fnAssignCmdKey(makeKeyMod(ord(','), fCtrl=True), 2180 ) #or ScApp.IDM_ABOUT
+			whichPaneTest.fnAssignCmdKey(makeKeyMod(ord(','), fCtrl=True), ScApp.IDM_ABOUT ) #or ScApp.IDM_ABOUT
 			whichPaneTest.fnCopyText(len('foo'), 'foods')
 			s = whichPaneTest.fnGetLine(2); print 'fnGetLine(2)', s
 			s = whichPaneTest.fnGetSelText(); print 'fnGetSelText', s
@@ -309,6 +262,7 @@ def OnTipEnd():
 def OnUserListSelection(n,sFilename):
 	print 'See OnUserListSelection'
 	pass
+
 
 
 

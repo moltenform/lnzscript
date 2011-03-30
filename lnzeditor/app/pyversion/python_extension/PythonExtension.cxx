@@ -219,7 +219,6 @@ bool PythonExtension::OnDwellStart(int pos, const char *word)
 		return _runCallbackArgs("OnTipStart", pArgs);
 	}
 }
-
 bool PythonExtension::OnUserListSelection(int type, const char *selection)
 {
 	if (!FInitialized()) return false;
@@ -526,8 +525,8 @@ PyObject* pyfun_pane_SendScintillaFn(PyObject* self, PyObject* pArgs)
 		if (strcmp(szCmd, "GetCurLine")==0) // the first param of getCurLine is useless
 			wParam = spaceNeeded;
 		//traceOut("", "allocating", spaceNeeded);
-		lParam = (intptr_t) new char[spaceNeeded ]; //note: no null term !!!
-		for (unsigned i=0; i<spaceNeeded; i++) ((char*)lParam)[i] = 0;
+		lParam = (intptr_t) new char[spaceNeeded+1];
+		for (unsigned i=0; i<spaceNeeded+1; i++) ((char*)lParam)[i] = 0;
 	}
 	
 	intptr_t result = _host->Send(pane, func.value, wParam, lParam);
@@ -546,7 +545,7 @@ PyObject* pyfun_pane_SendScintillaFn(PyObject* self, PyObject* pArgs)
 			pyObjReturn = PyString_FromString("");
 		else
 			pyObjReturn = PyString_FromStringAndSize((char *) lParam, (size_t) result-1);
-		delete (char*) lParam;
+		delete[] (char*) lParam;
 	}
 	Py_INCREF(pyObjReturn); //important to incref
 	return pyObjReturn;
@@ -592,7 +591,7 @@ PyObject* pyfun_pane_SendScintillaGet(PyObject* self, PyObject* pArgs)
 			pyObjReturn = PyString_FromString("");
 		else
 			pyObjReturn = PyString_FromStringAndSize((char *) lParam, (size_t) result-1);
-		delete (char*) lParam;
+		delete[] (char*) lParam;
 	}
 	Py_INCREF(pyObjReturn); //important to incref
 	return pyObjReturn;
@@ -650,17 +649,29 @@ PyObject* pyfun_app_SciteCommand(PyObject* self, PyObject* pArgs)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+PyObject* pyfun_app_UpdateStatusBar(PyObject* self, PyObject* pArgs)
+{
+	PyObject * pyObjBoolUpdate = NULL;
+	if (!PyArg_ParseTuple(pArgs, "|O",  &pyObjBoolUpdate)) return NULL;
+	bool bUpdateSlowData = false;
+	if (pyObjBoolUpdate == Py_True) bUpdateSlowData = true;
+	_host->UpdateStatusBar(bUpdateSlowData);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
 
 static PyMethodDef methods_LogStdout[] = {
 	{"LogStdout", pyfun_LogStdout, METH_VARARGS, "Logs stdout"},
-	{"_ALERT", pyfun_LogStdout, METH_VARARGS, "(for compat with scite-lua scripts)"},
-	{"trace", pyfun_LogStdout, METH_VARARGS, "(for compat with scite-lua scripts)"},
-	{"MsgBox", pyfun_MessageBox, METH_VARARGS, ""},
-	{"OpenFile", pyfun_SciteOpenFile, METH_VARARGS, ""},
-	{"GetProperty", pyfun_GetProperty, METH_VARARGS, "Get SciTE Property"},
-	{"SetProperty", pyfun_SetProperty, METH_VARARGS, "Set SciTE Property"},
-	{"UnsetProperty", pyfun_UnsetProperty, METH_VARARGS, "Unset SciTE Property"},
-	// pane commands
+	{"app_Trace", pyfun_LogStdout, METH_VARARGS, "(for compat with scite-lua scripts)"},
+	{"app_MsgBox", pyfun_MessageBox, METH_VARARGS, ""},
+	{"app_OpenFile", pyfun_SciteOpenFile, METH_VARARGS, ""},
+	{"app_GetProperty", pyfun_GetProperty, METH_VARARGS, "Get SciTE Property"},
+	{"app_SetProperty", pyfun_SetProperty, METH_VARARGS, "Set SciTE Property"},
+	{"app_UnsetProperty", pyfun_UnsetProperty, METH_VARARGS, "Unset SciTE Property"},
+	{"app_UpdateStatusBar", pyfun_app_UpdateStatusBar, METH_VARARGS, ""},
+	{"app_SciteCommand", pyfun_app_SciteCommand, METH_VARARGS, ""},
+	{"app_GetConstant", pyfun_app_GetConstant, METH_VARARGS, ""},
+	
 	{"pane_Append", pyfun_pane_Append, METH_VARARGS, ""},
 	{"pane_Insert", pyfun_pane_Insert, METH_VARARGS, ""},
 	{"pane_Remove", pyfun_pane_Remove, METH_VARARGS, ""},
@@ -669,10 +680,7 @@ static PyMethodDef methods_LogStdout[] = {
 	{"pane_ScintillaFn", pyfun_pane_SendScintillaFn, METH_VARARGS, ""},
 	{"pane_ScintillaGet", pyfun_pane_SendScintillaGet, METH_VARARGS, ""},
 	{"pane_ScintillaSet", pyfun_pane_SendScintillaSet, METH_VARARGS, ""},
-	// the match object would be easier to write in Python.
-	
-	{"app_GetConstant", pyfun_app_GetConstant, METH_VARARGS, ""},
-	{"app_SciteCommand", pyfun_app_SciteCommand, METH_VARARGS, ""},
+	// the match object, if needed, would be easier to write in Python.
 	
 	{NULL, NULL, 0, NULL}
 };
@@ -697,8 +705,18 @@ void PythonExtension::SetupPythonNamespace()
 	{
 		displayError("Unexpected: error capturing stdout from Python. make sure python26.zip is present?");
 		PyErr_Print(); //of course, if printing isn't set up, will not help, but at least will clear python's error bit
+		return;
 	}
-	
+	// now run setup script.
+	//~ ret = PyRun_AnyFile(fp, "pythonsetup.py");
+	CPyObjStrong pName = PyString_FromString("pythonsetup");
+	if (!pName) { displayError("Unexpected error: could not form string pythonsetup."); }
+	CPyObjStrong pModule = PyImport_Import(pName);
+	if (!pModule) {
+		displayError("Error importing pythonsetup module.");
+		PyErr_Print();
+	}
+	//use Python's import. don't have to worry about current directory problems or file handles
 }
 
 int FindFriendlyNamedIDMConstant(const char *name) {
