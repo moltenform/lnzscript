@@ -1,4 +1,7 @@
 
+# SciTE Python Extension
+# Ben Fisher, 2011
+
 print 'Loading Python extension.'
 import CScite
 import exceptions
@@ -18,7 +21,7 @@ class CScintillaPane():
 		return CScite.pane_FindText(self.nPane,s,nFlags,n1,n2)
 	
 	nPane = -1
-	def __init__(self, nPane): 
+	def __init__(self, nPane):
 		self.nPane = nPane
 	
 	def __getattr__(self, sprop):
@@ -39,9 +42,9 @@ class CScintillaPane():
 	def MakeKeymod(self, keycode, fShift=False, fCtrl=False, fAlt=False):
 		keycode = keycode&0xffff
 		modifiers = 0
-		if fShift: modifiers |= ScApp.SCMOD_SHIFT
-		if fCtrl: modifiers |= ScApp.SCMOD_CTRL
-		if fAlt: modifiers |= ScApp.SCMOD_ALT
+		if fShift: modifiers |= CScite.ScApp.SCMOD_SHIFT
+		if fCtrl: modifiers |= CScite.ScApp.SCMOD_CTRL
+		if fAlt: modifiers |= CScite.ScApp.SCMOD_ALT
 		return keycode | (modifiers << 16)
 	
 
@@ -62,7 +65,7 @@ class CSciteApp():
 			raise exceptions.AttributeError
 		elif sprop.startswith('fn'):
 			sprop = sprop[2:]
-			return (lambda *args: CScite.app_SciteCommand(self.nPane, sprop, args))
+			return (lambda: CScite.app_SciteCommand(sprop))
 		elif sprop.upper() == sprop and '_' in sprop:
 			return CScite.app_GetConstant(sprop)
 		else:

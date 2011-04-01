@@ -1,26 +1,21 @@
-#makekeumod doesn't work
 
+import CScite
 from CScite import ScEditor, ScOutput, ScApp
 import exceptions
 
-def expectThrow(fn, sExpectedError, TypeException=exceptions.RuntimeError):
-	try:
-		fn()
-	except TypeException,e:
-		print 'Pass:',sExpectedError, str(e).split('\n')[-1]
-	else:
-		print 'Fail: expected to throw '+sExpectedError
 
 def testSciteCallsApp(nTest):
 	if nTest==1:
 		ScApp.Trace( 'trace')
 		ScApp.Trace( 'trace')
-		#result should be tracetrace with no whitespace between
+		# result should be tracetrace with no whitespace between
 		ScApp.MsgBox( 'mbox')
+		
 	if nTest==2:
 		ScApp.OpenFile('c:\\nps.txt')
 		print 'Output'
 		print 'traced'
+		
 	if nTest==3:
 		ScApp.UnsetProperty('a.new.prop')
 		assert ScApp.GetProperty('tabbar.visible') == '1'
@@ -33,33 +28,58 @@ def testSciteCallsApp(nTest):
 		print 'a.new.prop=' + ScApp.GetProperty('a.new.prop')
 		
 	if nTest==4:
-		ScApp.UpdateStatusBar()
-	if nTest==5:
-		ScApp.UpdateStatusBar(True)
-	if nTest==6:
 		assert ScApp.SCFIND_WHOLEWORD == 2
 		assert ScApp.SCFIND_MATCHCASE == 4
 		assert ScApp.SCFIND_WORDSTART == 0x00100000
 		assert ScApp.SCFIND_REGEXP == 0x00200000
 		assert ScApp.SCFIND_POSIX == 0x00400000
-		expectThrow( lambda: ScApp.NON_PROPERTY, 'not found')
+		expectThrow( lambda: ScApp.NON_PROPERTY, 'could not find constant')
+		expectThrow( lambda: ScApp.GetProperty(1), 'arg 1 must be string', exceptions.TypeError)
+		ScApp.UpdateStatusBar()
 		
-
-#~ def testSciteCallsApp(nTest):
-	#~ if nTest==0:
-	#~ if nTest==1:
-	#~ if nTest==2:
-	#~ if nTest==3:
-	#~ if nTest==4:
-	#~ if nTest==5:
-	#~ if nTest==6:
-	#~ if nTest==7:
+	if nTest==5:
+		ScApp.UpdateStatusBar(True)
+	
+def testSciteCallsAppFn(nTest):
+	if nTest==0:
+		expectThrow( lambda: ScApp.fnNonExist(), 'could not find constant')
+		expectThrow( lambda: ScApp.fn(), 'could not find constant')
+	if nTest==1:
+		ScApp.fnSelectAll()
+		ScApp.fnViewEol()
+		ScApp.fnWrap()
+		ScApp.fnAbout()
+	if nTest==2:
+		ScApp.fnBookmarkToggle()
+		ScApp.fnPaste()
+		ScApp.fnFind()
+		
 	
 def testSciteCallsPane(nTest, objPane):
-	from exceptions import AttributeError
+	from exceptions import AttributeError, TypeError
+	if nTest==1:
+		objPane.Append('_appendtext')
+		objPane.Append('_appendtext')
+		objPane.Append('_appendtext')
+		
+	if nTest==2:
+		objPane.Append('0123456789')
+		objPane.Remove(6,8)
+		objPane.Insert(2, 'aaa')
+		
+	if nTest==3:
+		s = objPane.Textrange(2,4)
+		print 'chars 2-4 are:'+s
+		print 'findtext:', objPane.FindText('lookit')
+		print 'findwhole:', objPane.FindText('lookit', wholeWord=True)
+		print 'findcase:', objPane.FindText('lookit', matchCase=True)
+		print 'findinrange:', objPane.FindText('lookit', 2,50)
+
+
+def testSciteCallsPaneFn(nTest, objPane):
 	if nTest==0:
-		expectThrow( (lambda:CScite.pane_Append(1, 'a', 'b')), 'wrong # args')
-		expectThrow( (lambda:objPane.XXX()), 'noattribute', TypeException=AttributeError)
+		expectThrow( (lambda:CScite.pane_Append(1, 'a', 'b')), 'wrong # args', TypeError)
+		expectThrow( (lambda:objPane.XXX()), 'noattribute', AttributeError)
 		expectThrow( (lambda:objPane.fnNothing()), 'not find fn')
 		expectThrow( (lambda:objPane.fn()), 'not find fn')
 		expectThrow( (lambda:objPane.fnClearAll(1)), 'wrong#args')
@@ -69,37 +89,24 @@ def testSciteCallsPane(nTest, objPane):
 		expectThrow( (lambda:objPane.fnAppendText(False,False)), 'string expected')
 		
 	if nTest==1:
-		objPane.Append('_appendtext')
-		objPane.Append('_appendtext')
-		objPane.Append('_appendtext')
+		objPane.GetCharAt #{"CharAt", 2007, 0, iface_int, iface_position},
+		objPane.GetCaretWidth #{"CaretWidth", 2189, 2188, iface_int, iface_void},
+		objPane.GetCurrentPos #{"CurrentPos", 2008, 2141, iface_position, iface_void},
+		objPane.GetUseTabs #{"UseTabs", 2125, 2124, iface_bool, iface_void},
+		objPane.GetStyleAt #{"StyleAt", 2010, 0, iface_int, iface_position},
+		objPane.GetStyleBold #{"StyleBold", 2483, 2053, iface_bool, iface_int},
+		objPane.GetViewEOL #{"ViewEOL", 2355, 2356, iface_bool, iface_void},
 		
-	if nTest==2:
-		objPane.Append('1234567')
-		objPane.Insert(2, 'aaa')
-		
-	if nTest==3:
-		s = objPane.Textrange(2,4)
-		print 'chars 2-4 are:'+s
-		print 'findtext:', objPane.FindText('lookit')
-		print 'findwhole:', objPane.FindText('lookit', wholeWord=True)
-		print 'findcase:', objPane.FindText('lookit', matchCase=True)
-		print 'findinrange:', objPane.FindText('lookit', 0, 2,50)
-		
-	#~ if nTest==4:
-		
-	#~ if nTest==5:
-	#~ if nTest==6:
-	#~ if nTest==7:
-
-def testSciteCallsPaneFn(nTest, objPane):
-	if nTest==1:
 		n = objPane.GetTextLength(); print 'GetTextLength', n
 		n = objPane.GetUseTabs(); print 'GetUseTabs', n
 		n = objPane.GetLexer(); print 'GetLexer', n
-		n = objPane.GetCursor(); print 'GetCursor', n
-		s = objPane.GetWhitespaceChars(); print 'GetWhitespaceChars', s
-		#this is bad - ir should throw, is set only
-		s = objPane.GetWhitespaceChars(); print 'GetWhitespaceChars', s
+		n = objPane.GetLineCount(); print 'GetLinecount', n
+		expectThrow( (lambda:objPane.SetLineCount(4)), 'prop can\'t be set')
+		expectThrow( (lambda:objPane.GetWhitespaceChars()), 'prop can\'t be get')
+		print objPane.GetLineCount(55) #errror - succeeds
+		#~ expectThrow( (lambda:objPane.GetLineCount('a')), 'prop can\'t be set')
+		
+		
 	if nTest==2:
 		objPane.fnAssignCmdKey #iface_void, {iface_keymod, iface_int}},
 		objPane.fnCopyText # iface_void, {iface_length, iface_string}},
@@ -112,9 +119,6 @@ def testSciteCallsPaneFn(nTest, objPane):
 		objPane.fnAppendText #iface_void, {iface_length, iface_string}},
 		objPane.fnClearAll # iface_void, {iface_void, iface_void}}
 		
-		ScOutput.fnClearAll()
-		#~ objPane.fnAssignCmdKey(makeKeyMod(ord(','), fCtrl=True), 2180 ) #or ScApp.IDM_ABOUT
-		objPane.fnAssignCmdKey(ScEditor.MakeKeymod(ord(','), fCtrl=True), ScApp.IDM_ABOUT ) #or ScApp.IDM_ABOUT
 		objPane.fnCopyText(len('foo'), 'foods')
 		s = objPane.fnGetLine(2); print 'fnGetLine(2)', s
 		s = objPane.fnGetSelText(); print 'fnGetSelText', s
@@ -122,14 +126,13 @@ def testSciteCallsPaneFn(nTest, objPane):
 		n = objPane.fnPositionFromLine(2); print 'PositionFromLine(2)', n
 		ret = objPane.fnGotoLine( 3 ); assert ret == None
 		
+		# does not yet work
+		objPane.fnAssignCmdKey(ScEditor.MakeKeymod(ord('u'), fCtrl=True), 2004 )
+		
 	if nTest==3:
 		objPane.fnSetWhitespaceBack(True, 0x00ff0000) #first turn on view whitespace
 		objPane.fnAppendText(len('_append_'), '_append_')
-		return False
-	#~ if nTest==4:
-	#~ if nTest==5:
-	#~ if nTest==6:
-	#~ if nTest==7:
+		
 
 #~ def testSciteCallsApp(nTest):
 	#~ if nTest==0:
@@ -140,7 +143,6 @@ def testSciteCallsPaneFn(nTest, objPane):
 	#~ if nTest==5:
 	#~ if nTest==6:
 	#~ if nTest==7:
-
 
 
 def OnStart():
@@ -176,10 +178,9 @@ def OnSavePointLeft():
 
 testLevel = 1
 def OnKey( keycode, fShift, fCtrl, fAlt):
-	global testLevel
-	
+	global testLevel	
 	if not (keycode>=ord('0') and keycode<=ord('9')):
-		return True #pass
+		return True
 	
 	if fCtrl and not fShift and not fAlt:
 		ScOutput.fnClearAll()
@@ -191,12 +192,11 @@ def OnKey( keycode, fShift, fCtrl, fAlt):
 		nTest = keycode-ord('0')
 		if testLevel == 1: testSciteCallsApp(nTest)
 		if testLevel == 2: testSciteCallsAppFn(nTest)
-		if testLevel == 3: testSciteCallsPane(nTest, scEditor)
-		if testLevel == 4: testSciteCallsPaneFn(nTest, scEditor)
-		if testLevel == 5: testSciteCallsPaneProp(nTest, scEditor)
+		if testLevel == 3: testSciteCallsPane(nTest, ScEditor)
+		if testLevel == 4: testSciteCallsPaneFn(nTest, ScEditor)
+		
 		if testLevel == 6: testSciteCallsPane(nTest, ScOutput)
 		if testLevel == 7: testSciteCallsPaneFn(nTest, ScOutput)
-		if testLevel == 8: testSciteCallsPaneProp(nTest, ScOutput)
 		return False
 		
 
@@ -225,6 +225,13 @@ def OnUserListSelection(n,sFilename):
 	print 'See OnUserListSelection'
 	pass
 
+def expectThrow(fn, sExpectedError, TypeException=exceptions.RuntimeError):
+	try:
+		fn()
+	except TypeException,e:
+		print 'Pass:',sExpectedError, ':', str(e).split('\n')[-1]
+	else:
+		print 'Fail: expected to throw '+sExpectedError
 
 
 

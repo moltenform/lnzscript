@@ -1,5 +1,5 @@
 
-// JNote: if you set the error string, you HAVE to return null not Py_none, otherwise python gets in a weird state!
+// Note: if you set the error string, you HAVE to return null not Py_none, otherwise python gets in a weird state!
 
 #include <stdlib.h>
 #include <string.h>
