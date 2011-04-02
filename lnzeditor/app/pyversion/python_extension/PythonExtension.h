@@ -1,3 +1,5 @@
+// SciTE Python Extension (Preview)
+// Ben Fisher, 2011
 
 #include "..\python\include\python.h"
 
@@ -18,11 +20,10 @@ public:
 	~CPyObjStrong() { if (m_pyo) Py_DECREF(m_pyo); }
 	operator PyObject*() { return m_pyo; }
 	
-	//~ CPyObjStrong & operator=(const MyClass &rhs) {  
-		//~ if (this==&rhs) return *this; //~ rhis.
-	//~ }
 };
-class CPyObjWeak //no real reason for this besides consistent code
+
+// unnecessary, but makes code more consistent, clear that we don't own the reference
+class CPyObjWeak 
 {
 private:
 	PyObject* m_pyo;
@@ -33,22 +34,24 @@ public:
 };
 
 int FindFriendlyNamedIDMConstant(const char *name);
-
+inline bool getPaneFromInt(int nPane, ExtensionAPI::Pane* outPane);
+bool pullPythonArgument(IFaceType type, CPyObjWeak pyObjNext, intptr_t* param);
+bool pushPythonArgument(IFaceType type, intptr_t param, PyObject** pyValueOut /* caller must incref this! */);
 
 class PythonExtension : public Extension
 {
 
 private:
-	bool displayError(const char *wzError);
-	bool displayError(const char *wzError, const char *wzError2);
+	void writeLog(const char *wzError);
+	bool writeError(const char *wzError);
+	bool writeError(const char *wzError, const char *wzError2);
 	bool _runCallback(const char* szNameOfFunction, int nArgs, const char* szArg1);
 	bool _runCallbackArgs(const char* szNameOfFunction, PyObject* pArgsBorrowed);
 	void InitializePython();
 	void SetupPythonNamespace();
 
 public:
-	void displayText(const char *szText);
-	bool DoOpenFile(const char* sFilename);
+	void writeText(const char *szText);
 
 private:
 	PythonExtension(); // Singleton
@@ -72,7 +75,7 @@ public:
 	virtual bool ActivateBuffer(int index);
 	virtual bool RemoveBuffer(int index);
 
-	virtual bool OnExecute(const char *s); // eg. code from menu commands
+	virtual bool OnExecute(const char *s);
 
 	// file events
 	virtual bool OnOpen(const char *fileName);
@@ -92,3 +95,4 @@ public:
 	virtual bool OnUserListSelection(int type, const char *selection);
 	
 };
+
