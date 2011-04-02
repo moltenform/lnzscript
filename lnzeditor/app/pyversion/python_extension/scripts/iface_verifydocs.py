@@ -21,9 +21,9 @@ def getIfacetablecxx(targettable, prefix):
 	f.close()
 	return out
 
-def go(target, targettable ):
+def go(target, targettable,modifyEntries = False):
 	
-	out = iface_get(target)
+	out = iface_get(target, fSort=False)
 	#make dictionary of iface
 	dictiface = {}
 	for o in out:
@@ -41,8 +41,13 @@ def go(target, targettable ):
 			misleadingNames.append(name)
 		entry = dictiface[name]
 		if entry.type!='fun':
-			print 'incorrect, ',entry.name,entry.type
+			#correct it
+			print 'INCORRECT (should be fn), ',entry.name,entry.type
+			if modifyEntries: entry.type = 'fun'
+			
 		entry.found = True
+		
+		
 	
 	print 'dictIsScintillaFnNotProperty = {'
 	for nm in misleadingNames: print '"%s":True,'%nm,
@@ -77,6 +82,11 @@ def go(target, targettable ):
 				entry = dictiface[name]
 			if entry.type!='get':
 				print 'incorrect (is get), ',entry.name,entry.type
+				raise 'incorrect'
+			if name!=entry.name:
+				print 'INCORRECT: name %s should be %s'%(entry.name, name)
+				if modifyEntries: entry.name = name
+			
 			entry.found = True
 			
 		if hasSet:
@@ -102,6 +112,11 @@ def go(target, targettable ):
 			
 			if entry.type!='set':
 				print 'incorrect (is set), ',entry.name,entry.type
+				raise 'incorrect (is set)'
+			if name!=entry.name:
+				print 'INCORRECT: name %s should be %s'%(entry.name, name)
+				if modifyEntries: entry.name = name
+				
 			entry.found = True
 		
 		
@@ -113,9 +128,11 @@ def go(target, targettable ):
 	assert i== len(out)
 	print 'done', len(out)
 	
+	return out #returns the modified entries. has corrections.
 	
-	
-target = r'C:\Users\bfisher\Desktop\scite1\1newer1\scintilla_include\Scintilla.iface'
-targettable = r'C:\Users\bfisher\Desktop\scite1\1newer1\src\ifacetable.cxx'
-go(target, targettable )
+if __name__=='__main__':
+	target = r'C:\Users\bfisher\Desktop\scite1\1newer1\scintilla_include\Scintilla.iface'
+	targettable = r'C:\Users\bfisher\Desktop\scite1\1newer1\src\ifacetable.cxx'
+	go(target, targettable )
+
 
