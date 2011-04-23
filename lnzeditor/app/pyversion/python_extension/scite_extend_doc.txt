@@ -17,1020 +17,633 @@ ScApp.UnsetProperty(s)
 ScApp.UpdateStatusBar(bUpdateSlowData)
 
 # Menu commands
-ScApp.fnAbbrev()
-ScApp.fnAbout()
-ScApp.fnActivate()
-ScApp.fnBlockComment()
-ScApp.fnBookmarkClearall()
-ScApp.fnBookmarkNext()
-ScApp.fnBookmarkNextSelect()
-ScApp.fnBookmarkPrev()
-ScApp.fnBookmarkPrevSelect()
-ScApp.fnBookmarkToggle()
-ScApp.fnBoxComment()
-ScApp.fnBuffer()
-ScApp.fnBuffersep()
-ScApp.fnBuild()
-ScApp.fnClear()
-ScApp.fnClearOutput()
-ScApp.fnClose()
-ScApp.fnCloseall()
-ScApp.fnCompile()
-ScApp.fnComplete()
-ScApp.fnCompleteWord()
-ScApp.fnCopy()
-ScApp.fnCopyasrtf()
-ScApp.fnCopypath()
-ScApp.fnCut()
-ScApp.fnDirectionDown()
-ScApp.fnDirectionUp()
-ScApp.fnDuplicate()
-ScApp.fnEncoding_default()
-ScApp.fnEncoding_ucookie()
-ScApp.fnEncoding_ucs2be()
-ScApp.fnEncoding_ucs2le()
-ScApp.fnEncoding_utf8()
-ScApp.fnEnterSelection()
-ScApp.fnEol_convert()
-ScApp.fnEol_cr()
-ScApp.fnEol_crlf()
-ScApp.fnEol_lf()
-ScApp.fnExpand()
-ScApp.fnExpandEnsurechildrenvisible()
-ScApp.fnFiler()
-ScApp.fnFind()
-ScApp.fnFindInFiles()
-ScApp.fnFindNext()
-ScApp.fnFindNextBack()
-ScApp.fnFindNextBackSel()
-ScApp.fnFindNextSel()
-ScApp.fnFinishedExecute()
-ScApp.fnFoldMargin()
-ScApp.fnFullscreen()
-ScApp.fnGo()
-ScApp.fnGoto()
-ScApp.fnHelp()
-ScApp.fnHelp_scite()
-ScApp.fnImport()
-ScApp.fnIncsearch()
-ScApp.fnInsAbbrev()
-ScApp.fnJoin()
-ScApp.fnLanguage()
-ScApp.fnLineNumberMargin()
-ScApp.fnLoadsession()
-ScApp.fnLwrcase()
-ScApp.fnMacrolist()
-ScApp.fnMacroplay()
-ScApp.fnMacrorecord()
-ScApp.fnMacrostoprecord()
-ScApp.fnMacro_sep()
-ScApp.fnMatchbrace()
-ScApp.fnMatchcase()
-ScApp.fnMonofont()
-ScApp.fnMovetableft()
-ScApp.fnMovetabright()
-ScApp.fnMrufile()
-ScApp.fnMru_sep()
-ScApp.fnNew()
-ScApp.fnNextfile()
-ScApp.fnNextfilestack()
-ScApp.fnNextmatchppc()
-ScApp.fnNextmsg()
-ScApp.fnOntop()
-ScApp.fnOpen()
-ScApp.fnOpenabbrevproperties()
-ScApp.fnOpendirectoryproperties()
-ScApp.fnOpenfileshere()
-ScApp.fnOpenglobalproperties()
-ScApp.fnOpenlocalproperties()
-ScApp.fnOpenluaexternalfile()
-ScApp.fnOpenselected()
-ScApp.fnOpenuserproperties()
-ScApp.fnPaste()
-ScApp.fnPasteanddown()
-ScApp.fnPrevfile()
-ScApp.fnPrevfilestack()
-ScApp.fnPrevmatchppc()
-ScApp.fnPrevmsg()
-ScApp.fnPrint()
-ScApp.fnPrintSetup()
-ScApp.fnQuit()
-ScApp.fnReadonly()
-ScApp.fnRedo()
-ScApp.fnRegexp()
-ScApp.fnReplace()
-ScApp.fnRevert()
-ScApp.fnRunwin()
-ScApp.fnSave()
-ScApp.fnSaveacopy()
-ScApp.fnSaveall()
-ScApp.fnSaveas()
-ScApp.fnSaveashtml()
-ScApp.fnSaveaspdf()
-ScApp.fnSaveasrtf()
-ScApp.fnSaveastex()
-ScApp.fnSaveasxml()
-ScApp.fnSaveSession()
-ScApp.fnSelectAll()
-ScApp.fnSelectToBrace()
-ScApp.fnSelectToNextmatchppc()
-ScApp.fnSelectToPrevmatchppc()
-ScApp.fnSelMargin()
-ScApp.fnShowCalltip()
-ScApp.fnSplit()
-ScApp.fnSplitVertical()
-ScApp.fnSrcWin()
-ScApp.fnStatusWin()
-ScApp.fnStopExecute()
-ScApp.fnStreamComment()
-ScApp.fnSwitchpane()
-ScApp.fnTabsize()
-ScApp.fnTabwin()
-ScApp.fnToggleOutput()
-ScApp.fnToggleParameters()
-ScApp.fnToggleFoldAll()
-ScApp.fnToggleFoldRecursive()
-ScApp.fnTools()
-ScApp.fnToolwin()
-ScApp.fnUndo()
-ScApp.fnUnslash()
-ScApp.fnUprcase()
-ScApp.fnViewEol()
-ScApp.fnViewGuides()
-ScApp.fnViewSpace()
-ScApp.fnViewStatusbar()
-ScApp.fnViewTabbar()
-ScApp.fnViewToolbar()
-ScApp.fnWholeword()
-ScApp.fnWrap()
-ScApp.fnWraparound()
-ScApp.fnWrapoutput()
+ScApp.Abbrev()
+ScApp.About()
+ScApp.Activate()
+ScApp.BlockComment()
+ScApp.BookmarkClearall()
+ScApp.BookmarkNext()
+ScApp.BookmarkNextSelect()
+ScApp.BookmarkPrev()
+ScApp.BookmarkPrevSelect()
+ScApp.BookmarkToggle()
+ScApp.BoxComment()
+ScApp.Buffer()
+ScApp.Buffersep()
+ScApp.Build()
+ScApp.Clear()
+ScApp.ClearOutput()
+ScApp.Close()
+ScApp.Closeall()
+ScApp.Compile()
+ScApp.Complete()
+ScApp.CompleteWord()
+ScApp.Copy()
+ScApp.Copyasrtf()
+ScApp.Copypath()
+ScApp.Cut()
+ScApp.DirectionDown()
+ScApp.DirectionUp()
+ScApp.Duplicate()
+ScApp.Encoding_default()
+ScApp.Encoding_ucookie()
+ScApp.Encoding_ucs2be()
+ScApp.Encoding_ucs2le()
+ScApp.Encoding_utf8()
+ScApp.EnterSelection()
+ScApp.Eol_convert()
+ScApp.Eol_cr()
+ScApp.Eol_crlf()
+ScApp.Eol_lf()
+ScApp.Expand()
+ScApp.ExpandEnsurechildrenvisible()
+ScApp.Filer()
+ScApp.Find()
+ScApp.FindInFiles()
+ScApp.FindNext()
+ScApp.FindNextBack()
+ScApp.FindNextBackSel()
+ScApp.FindNextSel()
+ScApp.FinishedExecute()
+ScApp.FoldMargin()
+ScApp.Fullscreen()
+ScApp.Go()
+ScApp.Goto()
+ScApp.Help()
+ScApp.Help_scite()
+ScApp.Import()
+ScApp.Incsearch()
+ScApp.InsAbbrev()
+ScApp.Join()
+ScApp.Language()
+ScApp.LineNumberMargin()
+ScApp.Loadsession()
+ScApp.Lwrcase()
+ScApp.Macrolist()
+ScApp.Macroplay()
+ScApp.Macrorecord()
+ScApp.Macrostoprecord()
+ScApp.Macro_sep()
+ScApp.Matchbrace()
+ScApp.Matchcase()
+ScApp.Monofont()
+ScApp.Movetableft()
+ScApp.Movetabright()
+ScApp.Mrufile()
+ScApp.Mru_sep()
+ScApp.New()
+ScApp.Nextfile()
+ScApp.Nextfilestack()
+ScApp.Nextmatchppc()
+ScApp.Nextmsg()
+ScApp.Ontop()
+ScApp.Open()
+ScApp.Openabbrevproperties()
+ScApp.Opendirectoryproperties()
+ScApp.Openfileshere()
+ScApp.Openglobalproperties()
+ScApp.Openlocalproperties()
+ScApp.Openluaexternalfile()
+ScApp.Openselected()
+ScApp.Openuserproperties()
+ScApp.Paste()
+ScApp.Pasteanddown()
+ScApp.Prevfile()
+ScApp.Prevfilestack()
+ScApp.Prevmatchppc()
+ScApp.Prevmsg()
+ScApp.Print()
+ScApp.PrintSetup()
+ScApp.Quit()
+ScApp.Readonly()
+ScApp.Redo()
+ScApp.Regexp()
+ScApp.Replace()
+ScApp.Revert()
+ScApp.Runwin()
+ScApp.Save()
+ScApp.Saveacopy()
+ScApp.Saveall()
+ScApp.Saveas()
+ScApp.Saveashtml()
+ScApp.Saveaspdf()
+ScApp.Saveasrtf()
+ScApp.Saveastex()
+ScApp.Saveasxml()
+ScApp.SaveSession()
+ScApp.SelectAll()
+ScApp.SelectToBrace()
+ScApp.SelectToNextmatchppc()
+ScApp.SelectToPrevmatchppc()
+ScApp.SelMargin()
+ScApp.ShowCalltip()
+ScApp.Split()
+ScApp.SplitVertical()
+ScApp.SrcWin()
+ScApp.StatusWin()
+ScApp.StopExecute()
+ScApp.StreamComment()
+ScApp.Switchpane()
+ScApp.Tabsize()
+ScApp.Tabwin()
+ScApp.ToggleOutput()
+ScApp.ToggleParameters()
+ScApp.ToggleFoldAll()
+ScApp.ToggleFoldRecursive()
+ScApp.Tools()
+ScApp.Toolwin()
+ScApp.Undo()
+ScApp.Unslash()
+ScApp.Uprcase()
+ScApp.ViewEol()
+ScApp.ViewGuides()
+ScApp.ViewSpace()
+ScApp.ViewStatusbar()
+ScApp.ViewTabbar()
+ScApp.ViewToolbar()
+ScApp.Wholeword()
+ScApp.Wrap()
+ScApp.Wraparound()
+ScApp.Wrapoutput()
 
 # Pane methods (all apply to ScOutput as well)
 ScEditor.Append(txt)
 ScEditor.Insert(npos, txt)
 ScEditor.Remove(npos1, npos2)
 ScEditor.Textrange(npos1, npos2)
-ScEditor.FindText(s,npos1=0,npos2=-1,wholeWord=False,matchCase=False,regExp=False)
+ScEditor.FindText(s,n1=0,n2=-1,wholeWord=False,matchCase=False,regExp=False, nFlags=0)
+
 	
-int	ScEditor.fnAddSelection(int caret,int anchor)
- Add a selection
-void	ScEditor.fnAddStyledText(int length, cells c)
- Add array of cells to document.
-void	ScEditor.fnAddText(int length, string text)
+void	ScEditor.AddText(int length, string text)
  Add text to the document at current position.
-void	ScEditor.fnAddUndoAction(int token, int flags)
- Add a container action to the undo stack
-void	ScEditor.fnAllocate(int bytes)
- Enlarge the document to a particular size of text bytes.
-void	ScEditor.fnAnnotationClearAll()
- Clear the annotations from all lines
-void	ScEditor.fnAppendText(int length, string text)
- Append a string to the end of the document without changing the selection.
-void	ScEditor.fnAssignCmdKey(keymod km, int msg)
- When key+modifier combination km is pressed perform msg.
-bool	ScEditor.fnAutoCActive()
- Is there an auto-completion list visible?
-void	ScEditor.fnAutoCCancel()
- Remove the auto-completion list from the screen.
-void	ScEditor.fnAutoCComplete()
- User has selected an item so remove the list and insert the selection.
-int	ScEditor.fnAutoCGetCurrent()
- Get currently selected item position in the auto-completion list
-string	ScEditor.fnAutoCGetCurrentText()
- Get currently selected item text in the auto-completion list Returns the length of the item text
-pos	ScEditor.fnAutoCPosStart()
- Retrieve the position of the caret when the auto-completion list was displayed.
-void	ScEditor.fnAutoCSelect(, string text)
- Select the item in the auto-completion list that starts with a string.
-void	ScEditor.fnAutoCShow(int lenEntered, string itemList)
- The lenEntered parameter indicates how many characters before the caret should be used to provide context.
-void	ScEditor.fnAutoCStops(, string characterSet)
- Define a set of character that when typed cancel the auto-completion list.
-void	ScEditor.fnBackTab()
- Dedent the selected lines.
-void	ScEditor.fnBeginUndoAction()
- Start a sequence of actions that is undone and redone as a unit. May be nested.
-void	ScEditor.fnBraceBadLight(position pos)
- Highlight the character at a position indicating there is no matching brace.
-void	ScEditor.fnBraceHighlight(position pos1, position pos2)
- Highlight the characters at two positions.
-pos	ScEditor.fnBraceMatch(position pos)
- Find the position of a matching brace or INVALID_POSITION if no match.
-bool	ScEditor.fnCallTipActive()
- Is there an active call tip?
-void	ScEditor.fnCallTipCancel()
- Remove the call tip from the screen.
-pos	ScEditor.fnCallTipPosStart()
- Retrieve the position where the caret was before displaying the call tip.
-void	ScEditor.fnCallTipSetHlt(int start, int end)
- Highlight a segment of the definition.
-void	ScEditor.fnCallTipShow(position pos, string definition)
- Show a call tip containing a definition near position pos.
-bool	ScEditor.fnCanPaste()
- Will a paste succeed?
-bool	ScEditor.fnCanRedo()
- Are there any redoable actions in the undo history?
-bool	ScEditor.fnCanUndo()
- Are there any undoable actions in the undo history?
-void	ScEditor.fnCancel()
- Cancel any modes such as call tip or auto-completion list display.
-int	ScEditor.fnChangeLexerState(position start, position end)
- Indicate that the internal state of a lexer has changed over a range and therefore there may be a need to redraw.
-void	ScEditor.fnCharLeft()
- Move caret left one character.
-void	ScEditor.fnCharLeftExtend()
- Move caret left one character extending selection to new caret position.
-void	ScEditor.fnCharLeftRectExtend()
- Move caret left one character, extending rectangular selection to new caret position.
-pos	ScEditor.fnCharPositionFromPoint(int x, int y)
- Find the position of a character from a point within the window.
-pos	ScEditor.fnCharPositionFromPointClose(int x, int y)
- Find the position of a character from a point within the window. Return INVALID_POSITION if not close to text.
-void	ScEditor.fnCharRight()
- Move caret right one character.
-void	ScEditor.fnCharRightExtend()
- Move caret right one character extending selection to new caret position.
-void	ScEditor.fnCharRightRectExtend()
- Move caret right one character, extending rectangular selection to new caret position.
-void	ScEditor.fnChooseCaretX()
- Set the last x chosen value to be the caret x position.
-void	ScEditor.fnClear()
- Clear the selection.
-void	ScEditor.fnClearAll()
- Delete all text in the document.
-void	ScEditor.fnClearAllCmdKeys()
- Drop all key mappings.
-void	ScEditor.fnClearCmdKey(keymod km)
- When key+modifier combination km is pressed do nothing.
-void	ScEditor.fnClearDocumentStyle()
- Set all style bytes to 0, remove all folding information.
-void	ScEditor.fnClearRegisteredImages()
- Clear all the registered XPM images.
-void	ScEditor.fnClearSelections()
- Clear selections to a single empty stream selection
-void	ScEditor.fnColourise(position start, position end)
- Colourise a segment of the document using the current lexing language.
-int	ScEditor.fnContractedFoldNext(int lineStart)
- Find the next line at or after lineStart that is a contracted fold header line. Return -1 when no more lines.
-void	ScEditor.fnConvertEOLs(int eolMode)
- Convert all line endings in the document to one mode.
-void	ScEditor.fnCopy()
- Copy the selection to the clipboard.
-void	ScEditor.fnCopyAllowLine()
- Copy the selection, if selection empty copy the line with the caret
-void	ScEditor.fnCopyRange(position start, position end)
- Copy a range of text to the clipboard. Positions are clipped into the document.
-void	ScEditor.fnCopyText(int length, string text)
- Copy argument text to the clipboard.
-int	ScEditor.fnCreateDocument()
- Create a new document object. Starts with reference count of 1 and not selected into editor.
-void	ScEditor.fnCut()
- Cut the selection to the clipboard.
-void	ScEditor.fnDelLineLeft()
- Delete back from the current position to the start of the line.
-void	ScEditor.fnDelLineRight()
- Delete forwards from the current position to the end of the line.
-void	ScEditor.fnDelWordLeft()
- Delete the word to the left of the caret.
-void	ScEditor.fnDelWordRight()
- Delete the word to the right of the caret.
-void	ScEditor.fnDelWordRightEnd()
- Delete the word to the right of the caret, but not the trailing non-word characters.
-void	ScEditor.fnDeleteBack()
- Delete the selection or if no selection, the character before the caret.
-void	ScEditor.fnDeleteBackNotLine()
- Delete the selection or if no selection, the character before the caret. Will not delete the character before at the start of a line.
-string	ScEditor.fnDescribeKeyWordSets()
- Retrieve a '\n' separated list of descriptions of the keyword sets understood by the current lexer.
-string	ScEditor.fnDescribeProperty(string name)
- Describe a property.
-int	ScEditor.fnDocLineFromVisible(int lineDisplay)
- Find the document line of a display line taking hidden lines into account.
-void	ScEditor.fnDocumentEnd()
- Move caret to last position in document.
-void	ScEditor.fnDocumentEndExtend()
- Move caret to last position in document extending selection to new caret position.
-void	ScEditor.fnDocumentStart()
- Move caret to first position in document.
-void	ScEditor.fnDocumentStartExtend()
- Move caret to first position in document extending selection to new caret position.
-void	ScEditor.fnEditToggleOvertype()
- Switch from insert to overtype mode or the reverse.
-void	ScEditor.fnEmptyUndoBuffer()
- Delete the undo history.
-string	ScEditor.fnEncodedFromUTF8(string utf8)
- Return the length of the result in bytes. On error return 0.
-void	ScEditor.fnEndUndoAction()
- End a sequence of actions that is undone and redone as a unit.
-void	ScEditor.fnEnsureVisible(int line)
- Ensure a particular line is visible by expanding any header line hiding it.
-void	ScEditor.fnEnsureVisibleEnforcePolicy(int line)
- Ensure a particular line is visible by expanding any header line hiding it. Use the currently set visibility policy to determine which range to display.
-int	ScEditor.fnFindColumn(int line, int column)
- Find the position of a column on a line taking into account tabs and multi-byte characters. If beyond end of line, return line end position.
-pos	ScEditor.fnFindText(int flags, findtext ft)
- Find some text in the document.
-void	ScEditor.fnFormFeed()
- Insert a Form Feed character.
-pos	ScEditor.fnFormatRange(bool draw, formatrange fr)
- On Windows, will draw the document into a display context such as a printer.
-string	ScEditor.fnGetCurLine(int length)
- Retrieve the text of the line containing the caret. Returns the index of the caret on the line.
-string	ScEditor.fnGetLine(int line)
- Retrieve the contents of a line. Returns the length of the line.
-pos	ScEditor.fnGetLineSelEndPosition(int line)
- Retrieve the position of the end of the selection at the given line (INVALID_POSITION if no selection on this line).
-pos	ScEditor.fnGetLineSelStartPosition(int line)
- Retrieve the position of the start of the selection at the given line (INVALID_POSITION if no selection on this line).
-string	ScEditor.fnGetProperty(string key)
- Retrieve a "property" value previously set with SetProperty.
-string	ScEditor.fnGetPropertyExpanded(string key)
- Retrieve a "property" value previously set with SetProperty, with "$()" variable replacement on returned buffer.
-string	ScEditor.fnGetSelText()
- Retrieve the selected text. Return the length of the text.
-int	ScEditor.fnGetStyledText(, textrange tr)
- Retrieve a buffer of cells. Returns the number of bytes in the buffer not including terminating NULs.
-string	ScEditor.fnGetTag(int tagNumber)
- Retrieve the value of a tag from a regular expression search.
-string	ScEditor.fnGetText(int length)
- Retrieve all the text in the document. Returns number of characters retrieved.
-int	ScEditor.fnGetTextRange(, textrange tr)
- Retrieve a range of text. Return the length of the text.
-void	ScEditor.fnGotoLine(int line)
- Set caret to start of a line and ensure it is visible.
-void	ScEditor.fnGotoPos(position pos)
- Set caret to a position and ensure it is visible.
-void	ScEditor.fnGrabFocus()
- Set the focus to this Scintilla widget.
-void	ScEditor.fnHideLines(int lineStart, int lineEnd)
- Make a range of lines invisible.
-void	ScEditor.fnHideSelection(bool normal)
- Draw the selection in normal style or with selection highlighted.
-void	ScEditor.fnHome()
- Move caret to first position on line.
-void	ScEditor.fnHomeDisplay()
- Move caret to first position on display line.
-void	ScEditor.fnHomeDisplayExtend()
- Move caret to first position on display line extending selection to new caret position.
-void	ScEditor.fnHomeExtend()
- Move caret to first position on line extending selection to new caret position.
-void	ScEditor.fnHomeRectExtend()
- Move caret to first position on line, extending rectangular selection to new caret position.
-void	ScEditor.fnHomeWrap()
-void	ScEditor.fnHomeWrapExtend()
-int	ScEditor.fnIndicatorAllOnFor(int position)
- Are any indicators present at position?
-void	ScEditor.fnIndicatorClearRange(int position, int clearLength)
- Turn a indicator off over a range.
-int	ScEditor.fnIndicatorEnd(int indicator, int position)
- Where does a particular indicator end?
-void	ScEditor.fnIndicatorFillRange(int position, int fillLength)
- Turn a indicator on over a range.
-int	ScEditor.fnIndicatorStart(int indicator, int position)
- Where does a particular indicator start?
-int	ScEditor.fnIndicatorValueAt(int indicator, int position)
- What value does a particular indicator have at at a position?
-void	ScEditor.fnInsertText(position pos, string text)
+void	ScEditor.AddStyledText(int length, cells c)
+ Add array of cells to document.
+void	ScEditor.InsertText(position pos, string text)
  Insert string at a position.
-void	ScEditor.fnLineCopy()
- Copy the line containing the caret.
-void	ScEditor.fnLineCut()
- Cut the line containing the caret.
-void	ScEditor.fnLineDelete()
- Delete the line containing the caret.
-void	ScEditor.fnLineDown()
- Start of key messages Move caret down one line.
-void	ScEditor.fnLineDownExtend()
- Move caret down one line extending selection to new caret position.
-void	ScEditor.fnLineDownRectExtend()
- RectExtended rectangular selection moves Move caret down one line, extending rectangular selection to new caret position.
-void	ScEditor.fnLineDuplicate()
- Duplicate the current line.
-void	ScEditor.fnLineEnd()
- Move caret to last position on line.
-void	ScEditor.fnLineEndDisplay()
- Move caret to last position on display line.
-void	ScEditor.fnLineEndDisplayExtend()
- Move caret to last position on display line extending selection to new caret position.
-void	ScEditor.fnLineEndExtend()
- Move caret to last position on line extending selection to new caret position.
-void	ScEditor.fnLineEndRectExtend()
- Move caret to last position on line, extending rectangular selection to new caret position.
-void	ScEditor.fnLineEndWrap()
-void	ScEditor.fnLineEndWrapExtend()
-int	ScEditor.fnLineFromPosition(position pos)
- Retrieve the line containing a position.
-int	ScEditor.fnLineLength(int line)
- How many characters are on a line, including end of line characters?
-void	ScEditor.fnLineScroll(int columns, int lines)
- Scroll horizontally and vertically.
-void	ScEditor.fnLineScrollDown()
- Scroll the document down, keeping the caret visible.
-void	ScEditor.fnLineScrollUp()
- Scroll the document up, keeping the caret visible.
-void	ScEditor.fnLineTranspose()
- Switch the current line with the previous.
-void	ScEditor.fnLineUp()
- Move caret up one line.
-void	ScEditor.fnLineUpExtend()
- Move caret up one line extending selection to new caret position.
-void	ScEditor.fnLineUpRectExtend()
- Move caret up one line, extending rectangular selection to new caret position.
-void	ScEditor.fnLinesJoin()
- Join the lines in the target.
-void	ScEditor.fnLinesSplit(int pixelWidth)
- Split the lines in the target into lines that are less wide than pixelWidth where possible.
-void	ScEditor.fnLoadLexerLibrary(, string path)
- Load a lexer library (dll / so).
-void	ScEditor.fnLowerCase()
- Transform the selection to lower case.
-void	ScEditor.fnMarginTextClearAll()
- Clear the margin text on all lines
-int	ScEditor.fnMarkerAdd(int line, int markerNumber)
- Add a marker to a line, returning an ID which can be used to find or delete the marker.
-void	ScEditor.fnMarkerAddSet(int line, int set)
- Add a set of markers to a line.
-void	ScEditor.fnMarkerDefine(int markerNumber, int markerSymbol)
- Set the symbol used for a particular marker number.
-void	ScEditor.fnMarkerDefinePixmap(int markerNumber, string pixmap)
- Define a marker from a pixmap.
-void	ScEditor.fnMarkerDelete(int line, int markerNumber)
- Delete a marker from a line.
-void	ScEditor.fnMarkerDeleteAll(int markerNumber)
- Delete all markers with a particular number from all lines.
-void	ScEditor.fnMarkerDeleteHandle(int handle)
- Delete a marker.
-int	ScEditor.fnMarkerGet(int line)
- Get a bit mask of all the markers set on a line.
-int	ScEditor.fnMarkerLineFromHandle(int handle)
- Retrieve the line number at which a particular marker is located.
-int	ScEditor.fnMarkerNext(int lineStart, int markerMask)
- Find the next line at or after lineStart that includes a marker in mask. Return -1 when no more lines.
-int	ScEditor.fnMarkerPrevious(int lineStart, int markerMask)
- Find the previous line before lineStart that includes a marker in mask.
-void	ScEditor.fnMarkerSetAlpha(int markerNumber, int alpha)
- Set the alpha used for a marker that is drawn in the text area, not the margin.
-void	ScEditor.fnMarkerSetBack(int markerNumber, colour back)
- Set the background colour used for a particular marker number.
-void	ScEditor.fnMarkerSetFore(int markerNumber, colour fore)
- Set the foreground colour used for a particular marker number.
-int	ScEditor.fnMarkerSymbolDefined(int markerNumber)
- Which symbol was defined for markerNumber with MarkerDefine
-void	ScEditor.fnMoveCaretInsideView()
- Move the caret inside current view if it's not there already.
-void	ScEditor.fnNewLine()
- Insert a new line, may use a CRLF, CR or LF depending on EOL mode.
-void	ScEditor.fnNull()
- Null operation.
-void	ScEditor.fnPageDown()
- Move caret one page down.
-void	ScEditor.fnPageDownExtend()
- Move caret one page down extending selection to new caret position.
-void	ScEditor.fnPageDownRectExtend()
- Move caret one page down, extending rectangular selection to new caret position.
-void	ScEditor.fnPageUp()
- Move caret one page up.
-void	ScEditor.fnPageUpExtend()
- Move caret one page up extending selection to new caret position.
-void	ScEditor.fnPageUpRectExtend()
- Move caret one page up, extending rectangular selection to new caret position.
-void	ScEditor.fnParaDown()
- Move caret between paragraphs (delimited by empty lines).
-void	ScEditor.fnParaDownExtend()
-void	ScEditor.fnParaUp()
-void	ScEditor.fnParaUpExtend()
-void	ScEditor.fnPaste()
- Paste the contents of the clipboard into the document replacing the selection.
-int	ScEditor.fnPointXFromPosition(, position pos)
- Retrieve the x value of the point in the window where a position is displayed.
-int	ScEditor.fnPointYFromPosition(, position pos)
- Retrieve the y value of the point in the window where a position is displayed.
-pos	ScEditor.fnPositionAfter(position pos)
- Given a valid document position, return the next position taking code page into account. Maximum value returned is the last position in the document.
-pos	ScEditor.fnPositionBefore(position pos)
- Given a valid document position, return the previous position taking code page into account. Returns 0 if passed 0.
-pos	ScEditor.fnPositionFromLine(int line)
- Retrieve the position at the start of a line.
-pos	ScEditor.fnPositionFromPoint(int x, int y)
- Find the position from a point within the window.
-pos	ScEditor.fnPositionFromPointClose(int x, int y)
- Find the position from a point within the window but return INVALID_POSITION if not close to text.
-int	ScEditor.fnPrivateLexerCall(int operation, int pointer)
- For private communication between an application and a known lexer.
-string	ScEditor.fnPropertyNames()
- Retrieve a '\n' separated list of properties understood by the current lexer.
-int	ScEditor.fnPropertyType(string name)
- Retrieve the type of a property.
-void	ScEditor.fnRedo()
- Redoes the next action on the undo history.
-void	ScEditor.fnRegisterImage(int type, string xpmData)
- Register an XPM image for use in autocompletion lists.
-void	ScEditor.fnReleaseDocument(, int doc)
- Release a reference to the document, deleting document if it fades to black.
-void	ScEditor.fnReplaceSel(, string text)
- Replace the selected text with the argument text.
-int	ScEditor.fnReplaceTarget(int length, string text)
- Text is counted so it can contain NULs. Returns the length of the replacement text.
-int	ScEditor.fnReplaceTargetRE(int length, string text)
- Returns the length of the replacement text including any change caused by processing the \d patterns.
-void	ScEditor.fnRotateSelection()
- Set the main selection to the next selection.
-void	ScEditor.fnScrollCaret()
- Ensure the caret is visible.
-void	ScEditor.fnSearchAnchor()
- Sets the current caret position to be the search anchor.
-int	ScEditor.fnSearchInTarget(int length, string text)
- range. Text is counted so it can contain NULs. Returns length of range or -1 for failure in which case target is not moved.
-int	ScEditor.fnSearchNext(int flags, string text)
- Find some text starting at the search anchor. Does not ensure the selection is visible.
-int	ScEditor.fnSearchPrev(int flags, string text)
- Find some text starting at the search anchor and moving backwards. Does not ensure the selection is visible.
-void	ScEditor.fnSelectAll()
- Select all the text in the document.
-void	ScEditor.fnSelectionDuplicate()
- Duplicate the selection. If selection empty duplicate the line containing the caret.
-void	ScEditor.fnSetCharsDefault()
- Reset the set of characters for whitespace and word characters to the defaults.
-void	ScEditor.fnSetFoldFlags(int flags)
- Set some style options for folding.
-void	ScEditor.fnSetFoldMarginColour(bool useSetting, colour back)
- Set the colours used as a chequerboard pattern in the fold margin
-void	ScEditor.fnSetFoldMarginHiColour(bool useSetting, colour fore)
-void	ScEditor.fnSetLengthForEncode(int bytes)
- Set the length of the utf8 argument for calling EncodedFromUTF8. Set to -1 and the string will be measured to the first nul.
-void	ScEditor.fnSetSavePoint()
- Remember the current position in the undo history as the position at which the document was saved.
-void	ScEditor.fnSetSel(position start, position end)
- Select a range of text.
-void	ScEditor.fnSetSelBack(bool useSetting, colour back)
- Set the background colour of the main and additional selections and whether to use this setting.
-void	ScEditor.fnSetSelFore(bool useSetting, colour fore)
- Set the foreground colour of the main and additional selections and whether to use this setting.
-int	ScEditor.fnSetSelection(int caret,int anchor)
- Set a simple selection
-void	ScEditor.fnSetStyling(int length, int style)
- Change style from current styling position for length characters to a style and move the current styling position to after this newly styled segment.
-void	ScEditor.fnSetStylingEx(int length, string styles)
- Set the styles for a segment of the document.
-void	ScEditor.fnSetText(, string text)
- Replace the contents of the document with the argument text.
-void	ScEditor.fnSetVisiblePolicy(int visiblePolicy, int visibleSlop)
- Set the way the display area is determined when a particular line is to be moved to by Find, FindNext, GotoLine, etc.
-void	ScEditor.fnSetWhitespaceBack(bool useSetting, colour back)
- Set the background colour of all whitespace and whether to use this setting.
-void	ScEditor.fnSetWhitespaceFore(bool useSetting, colour fore)
- Set the foreground colour of all whitespace and whether to use this setting.
-void	ScEditor.fnSetXCaretPolicy(int caretPolicy, int caretSlop)
- Set the way the caret is kept visible when going sideway. The exclusion zone is given in pixels.
-void	ScEditor.fnSetYCaretPolicy(int caretPolicy, int caretSlop)
- Set the way the line the caret is on is kept visible. The exclusion zone is given in lines.
-void	ScEditor.fnShowLines(int lineStart, int lineEnd)
- Make a range of lines visible.
-void	ScEditor.fnStartRecord()
- Start notifying the container of all key presses and commands.
-void	ScEditor.fnStartStyling(position pos, int mask)
- Set the current styling position to pos and the styling mask to mask. The styling mask can be used to protect some bits in each styling byte from modification.
-void	ScEditor.fnStopRecord()
- Stop notifying the container of all key presses and commands.
-void	ScEditor.fnStutteredPageDown()
- Move caret to bottom of page, or one page down if already at bottom of page.
-void	ScEditor.fnStutteredPageDownExtend()
- Move caret to bottom of page, or one page down if already at bottom of page, extending selection to new caret position.
-void	ScEditor.fnStutteredPageUp()
- Move caret to top of page, or one page up if already at top of page.
-void	ScEditor.fnStutteredPageUpExtend()
- Move caret to top of page, or one page up if already at top of page, extending selection to new caret position.
-void	ScEditor.fnStyleClearAll()
- Clear all the styles and make equivalent to the global default style.
-string	ScEditor.fnStyleGetFont(int style)
- Get the font of a style. Returns the length of the fontName
-void	ScEditor.fnStyleResetDefault()
- Reset the default style to its state at startup
-void	ScEditor.fnSwapMainAnchorCaret()
- Swap that caret and anchor of the main selection.
-void	ScEditor.fnTab()
- If selection is empty or all on one line replace the selection with a tab character. If more than one line selected, indent the lines.
-string	ScEditor.fnTargetAsUTF8()
- Returns the target converted to UTF8. Return the length in bytes.
-void	ScEditor.fnTargetFromSelection()
- Make the target range start and end be the same as the selection range start and end.
-int	ScEditor.fnTextHeight(int line)
- Retrieve the height of a particular line of text in pixels.
-int	ScEditor.fnTextWidth(int style, string text)
- NUL terminated text argument. Does not handle tab or control characters.
-void	ScEditor.fnToggleCaretSticky()
- Switch between sticky and non-sticky: meant to be bound to a key.
-void	ScEditor.fnToggleFold(int line)
- Switch a header line between expanded and contracted.
-void	ScEditor.fnUndo()
- Undo one action in the undo history.
-void	ScEditor.fnUpperCase()
- Transform the selection to upper case.
-void	ScEditor.fnUsePopUp(bool allowPopUp)
- Set whether a pop up menu is displayed automatically when the user presses the wrong mouse button.
-void	ScEditor.fnUserListShow(int listType, string itemList)
- Display a list of strings and send notification when user chooses one.
-void	ScEditor.fnVCHome()
- Move caret to before first visible character on line. If already there move to first character on line.
-void	ScEditor.fnVCHomeExtend()
- Like VCHome but extending selection to new caret position.
-void	ScEditor.fnVCHomeRectExtend()
- If already there move to first character on line. In either case, extend rectangular selection to new caret position.
-void	ScEditor.fnVCHomeWrap()
-void	ScEditor.fnVCHomeWrapExtend()
-void	ScEditor.fnVerticalCentreCaret()
- Centre current line in window.
-int	ScEditor.fnVisibleFromDocLine(int line)
- Find the display line of a document line taking hidden lines into account.
-int	ScEditor.fnWordEndPosition(position pos, bool onlyWordCharacters)
- Get position of end of word.
-void	ScEditor.fnWordLeft()
- Move caret left one word.
-void	ScEditor.fnWordLeftEnd()
- Move caret left one word, position cursor at end of word.
-void	ScEditor.fnWordLeftEndExtend()
- Move caret left one word, position cursor at end of word, extending selection to new caret position.
-void	ScEditor.fnWordLeftExtend()
- Move caret left one word extending selection to new caret position.
-void	ScEditor.fnWordPartLeft()
- Move to the previous change in capitalisation.
-void	ScEditor.fnWordPartLeftExtend()
- Move to the previous change in capitalisation extending selection to new caret position.
-void	ScEditor.fnWordPartRight()
- Move to the change next in capitalisation.
-void	ScEditor.fnWordPartRightExtend()
- Move to the next change in capitalisation extending selection to new caret position.
-void	ScEditor.fnWordRight()
- Move caret right one word.
-void	ScEditor.fnWordRightEnd()
- Move caret right one word, position cursor at end of word.
-void	ScEditor.fnWordRightEndExtend()
- Move caret right one word, position cursor at end of word, extending selection to new caret position.
-void	ScEditor.fnWordRightExtend()
- Move caret right one word extending selection to new caret position.
-int	ScEditor.fnWordStartPosition(position pos, bool onlyWordCharacters)
- Get position of start of word.
-int	ScEditor.fnWrapCount(int line)
- The number of display lines needed to wrap a document line
-void	ScEditor.fnZoomIn()
- Magnify the displayed text by increasing the sizes by 1 point.
-void	ScEditor.fnZoomOut()
- Make the displayed text smaller by decreasing the sizes by 1 point.
-int	ScEditor.GetAnnotationLines(int line)
- Get the number of annotation lines for a line
-int	ScEditor.GetAnnotationStyle(int line)
- Get the style number for the annotations for a line
-int	ScEditor.GetAnnotationStyleOffset()
- Get the start of the range of style numbers used for annotations
-string	ScEditor.GetAnnotationStyles(int line)
- Get the annotation styles for a line
-string	ScEditor.GetAnnotationText(int line)
- Get the annotation text for a line
-int	ScEditor.GetAnnotationVisible()
- Get the visibility for the annotations for a view
-bool	ScEditor.GetAutoCAutoHide()
- Retrieve whether or not autocompletion is hidden automatically when nothing matches.
-bool	ScEditor.GetAutoCCancelAtStart()
- Retrieve whether auto-completion cancelled by backspacing before start.
-bool	ScEditor.GetAutoCChooseSingle()
- Retrieve whether a single item auto-completion list automatically choose the item.
-bool	ScEditor.GetAutoCDropRestOfWord()
- Retrieve whether or not autocompletion deletes any word characters after the inserted text upon completion.
-bool	ScEditor.GetAutoCIgnoreCase()
- Retrieve state of ignore case flag.
-int	ScEditor.GetAutoCMaxHeight()
- Set the maximum height, in rows, of auto-completion and user lists.
-int	ScEditor.GetAutoCMaxWidth()
- Get the maximum width, in characters, of auto-completion and user lists.
-int	ScEditor.GetAutoCSeparator()
- Retrieve the auto-completion list separator character.
-int	ScEditor.GetAutoCTypeSeparator()
- Retrieve the auto-completion list type-separator character.
-colour	ScEditor.GetAdditionalCaretFore()
- Get the foreground colour of additional carets.
-bool	ScEditor.GetAdditionalCaretsBlink()
- Whether additional carets will blink
-bool	ScEditor.GetAdditionalCaretsVisible()
- Whether additional carets are visible
-int	ScEditor.GetAdditionalSelAlpha()
- Get the alpha of the selection.
-bool	ScEditor.GetAdditionalSelectionTyping()
- Whether typing can be performed into multiple selections
-pos	ScEditor.GetAnchor()
- Returns the position of the opposite end of the selection to the caret.
-bool	ScEditor.GetBackSpaceUnIndents()
- Does a backspace pressed when caret is within indentation unindent?
-bool	ScEditor.GetBufferedDraw()
- Is drawing done first into a buffer or direct to the screen?
-colour	ScEditor.GetCaretFore()
- Get the foreground colour of the caret.
-colour	ScEditor.GetCaretLineBack()
- Get the colour of the background of the line containing the caret.
-int	ScEditor.GetCaretLineBackAlpha()
- Get the background alpha of the caret line.
-bool	ScEditor.GetCaretLineVisible()
- Is the background of the line containing the caret in a different colour?
-int	ScEditor.GetCaretPeriod()
- Get the time in milliseconds that the caret is on and off.
-int	ScEditor.GetCaretSticky()
- Can the caret preferred x position only be changed by explicit movement commands?
-int	ScEditor.GetCaretStyle()
- Returns the current style of the caret.
-int	ScEditor.GetCaretWidth()
- Returns the width of the insert mode caret.
-int	ScEditor.GetCharAt(position pos)
- Returns the character byte at the position.
-int	ScEditor.GetCharacterPointer()
- Compact the document buffer and return a read-only pointer to the characters in the document.
-int	ScEditor.GetCodePage()
- Get the code page used to interpret the bytes of the document as characters.
-int	ScEditor.GetColumn(position pos)
- Retrieve the column number of a position, taking tab width into account.
-int	ScEditor.GetControlCharSymbol()
- Get the way control characters are displayed.
-pos	ScEditor.GetCurrentPos()
- Returns the position of the caret.
-int	ScEditor.GetCursor()
- Get cursor type.
-int	ScEditor.GetDirectFunction()
- Retrieve a pointer to a function that processes messages for this Scintilla.
-int	ScEditor.GetDirectPointer()
- Retrieve a pointer value to use as the first argument when calling the function returned by GetDirectFunction.
-int	ScEditor.GetDocPointer()
- Retrieve a pointer to the document object.
-int	ScEditor.GetEOLMode()
- Retrieve the current end of line mode - one of CRLF, CR, or LF.
-colour	ScEditor.GetEdgeColour()
- Retrieve the colour used in edge indication.
-int	ScEditor.GetEdgeColumn()
- Retrieve the column number which text should be kept within.
-int	ScEditor.GetEdgeMode()
- Retrieve the edge highlight mode.
-bool	ScEditor.GetEndAtLastLine()
- Retrieve whether the maximum scroll position has the last line at the bottom of the view.
-pos	ScEditor.GetEndStyled()
- Retrieve the position of the last correctly styled character.
-int	ScEditor.GetExtraAscent()
- Get extra ascent for each line
-int	ScEditor.GetExtraDescent()
- Get extra descent for each line
-int	ScEditor.GetFirstVisibleLine()
- Retrieve the display line at the top of the display.
-bool	ScEditor.GetFocus()
- Get internal focus flag.
-bool	ScEditor.GetFoldExpanded(int line)
- Is a header line expanded?
-int	ScEditor.GetFoldLevel(int line)
- Retrieve the fold level of a line.
-int	ScEditor.GetFoldParent(int line)
- Find the parent line of a child line.
-int	ScEditor.GetFontQuality()
- Retrieve the quality level for text.
-bool	ScEditor.GetHScrollBar()
- Is the horizontal scroll bar visible?
-int	ScEditor.GetHighlightGuide()
- Get the highlighted indentation guide column.
-colour	ScEditor.GetHotspotActiveBack()
- Get the back colour for active hotspots.
-colour	ScEditor.GetHotspotActiveFore()
- Get the fore colour for active hotspots.
-bool	ScEditor.GetHotspotActiveUnderline()
- Get whether underlining for active hotspots.
-bool	ScEditor.GetHotspotSingleLine()
- Get the HotspotSingleLine property
-int	ScEditor.GetIndent()
- Retrieve indentation size.
-int	ScEditor.GetIndentationGuides()
- Are the indentation guides visible?
-int	ScEditor.GetIndicatorCurrent()
- Get the current indicator
-int	ScEditor.GetIndicatorValue()
- Get the current indicator vaue
-bool	ScEditor.GetKeysUnicode()
- Are keys always interpreted as Unicode?
-int	ScEditor.GetLastChild(int line, int level)
- Find the last child line of a header line.
-int	ScEditor.GetLayoutCache()
- Retrieve the degree of caching of layout information.
+void	ScEditor.ClearAll()
+ Delete all text in the document.
+void	ScEditor.ClearDocumentStyle()
+ Set all style bytes to 0, remove all folding information.
 int	ScEditor.GetLength()
  Returns the number of bytes in the document.
-int	ScEditor.GetLexer()
- Retrieve the lexing language of the document.
-string	ScEditor.GetLexerLanguage()
- Retrieve the name of the lexer. Return the length of the text.
-int	ScEditor.GetLineCount()
- Returns the number of lines in the document. There is always at least one.
-int	ScEditor.GetLineEndPosition(int line)
- Get the position after the last visible characters on a line.
-pos	ScEditor.GetLineIndentPosition(int line)
- Retrieve the position before the first non indentation character on a line.
-int	ScEditor.GetLineIndentation(int line)
- Retrieve the number of columns that a line is indented.
-int	ScEditor.GetLineState(int line)
- Retrieve the extra styling information for a line.
-bool	ScEditor.GetLineVisible(int line)
- Is a line visible?
-int	ScEditor.GetMainSelection()
- Which selection is the main selection
-int	ScEditor.GetMarginCursorN(int margin)
- Retrieve the cursor shown in a margin.
-int	ScEditor.GetMarginLeft()
- Returns the size in pixels of the left margin.
-int	ScEditor.GetMarginMaskN(int margin)
- Retrieve the marker mask of a margin.
-int	ScEditor.GetMarginRight()
- Returns the size in pixels of the right margin.
-bool	ScEditor.GetMarginSensitiveN(int margin)
- Retrieve the mouse click sensitivity of a margin.
-int	ScEditor.GetMarginTypeN(int margin)
- Retrieve the type of a margin.
-int	ScEditor.GetMarginWidthN(int margin)
- Retrieve the width of a margin in pixels.
-int	ScEditor.GetMaxLineState()
- Retrieve the last line number that has line state.
-int	ScEditor.GetModEventMask()
- Get which document modification events are sent to the container.
-bool	ScEditor.GetModify()
- Is the document different from when it was last saved?
-bool	ScEditor.GetMouseDownCaptures()
- Get whether mouse gets captured.
-int	ScEditor.GetMouseDwellTime()
- Retrieve the time the mouse must sit still to generate a mouse dwell event.
-int	ScEditor.GetMultiPaste()
- Retrieve the effect of pasting when there are multiple selections..
-bool	ScEditor.GetMultipleSelection()
- Whether multiple selections can be made
-bool	ScEditor.GetOvertype()
- Returns true if overtype mode is active otherwise false is returned.
-bool	ScEditor.GetPasteConvertEndings()
- Get convert-on-paste setting
-int	ScEditor.GetPositionCache()
- How many entries are allocated to the position cache?
-int	ScEditor.GetPrintColourMode()
- Returns the print colour mode.
-int	ScEditor.GetPrintMagnification()
- Returns the print magnification.
-int	ScEditor.GetPrintWrapMode()
- Is printing line wrapped?
-int	ScEditor.GetPropertyInt(string key)
- Retrieve a "property" value previously set with SetProperty, interpreted as an int AFTER any "$()" variable replacement.
-bool	ScEditor.GetReadOnly()
- In read-only mode?
-pos	ScEditor.GetRectangularSelectionAnchor()
-int	ScEditor.GetRectangularSelectionAnchorVirtualSpace()
-pos	ScEditor.GetRectangularSelectionCaret()
-int	ScEditor.GetRectangularSelectionCaretVirtualSpace()
-int	ScEditor.GetRectangularSelectionModifier()
- Get the modifier key used for rectangular selection.
-int	ScEditor.GetScrollWidth()
- Retrieve the document width assumed for scrolling.
-bool	ScEditor.GetScrollWidthTracking()
- Retrieve whether the scroll width tracks wide lines.
-int	ScEditor.GetSearchFlags()
- Get the search flags used by SearchInTarget.
-int	ScEditor.GetSelAlpha()
- Get the alpha of the selection.
-bool	ScEditor.GetSelEOLFilled()
- Is the selection end of line filled?
-pos	ScEditor.GetSelectionEnd()
- Returns the position at the end of the selection.
-int	ScEditor.GetSelectionMode()
- Get the mode of the current selection.
-pos	ScEditor.GetSelectionNAnchor(int selection)
-int	ScEditor.GetSelectionNAnchorVirtualSpace(int selection)
-pos	ScEditor.GetSelectionNCaret(int selection)
-int	ScEditor.GetSelectionNCaretVirtualSpace(int selection)
-pos	ScEditor.GetSelectionNEnd(int selection)
- Returns the position at the end of the selection.
-pos	ScEditor.GetSelectionNStart(int selection)
- Returns the position at the start of the selection.
-pos	ScEditor.GetSelectionStart()
- Returns the position at the start of the selection.
-int	ScEditor.GetSelections()
- How many selections are there?
-int	ScEditor.GetStatus()
- Get error status.
+int	ScEditor.GetCharAt(position pos)
+ Returns the character byte at the position.
+pos	ScEditor.GetCurrentPos()
+ Returns the position of the caret.
+pos	ScEditor.GetAnchor()
+ Returns the position of the opposite end of the selection to the caret.
 int	ScEditor.GetStyleAt(position pos)
  Returns the style byte at the position.
-int	ScEditor.GetStyleBits()
- Retrieve number of bits in style bytes used to hold the lexical state.
-int	ScEditor.GetStyleBitsNeeded()
- Retrieve the number of bits the current lexer needs for styling.
-bool	ScEditor.GetTabIndents()
- Does a tab pressed when caret is within indentation indent?
-int	ScEditor.GetTabWidth()
- Retrieve the visible size of a tab.
-pos	ScEditor.GetTargetEnd()
- Get the position that ends the target.
-pos	ScEditor.GetTargetStart()
- Get the position that starts the target.
-int	ScEditor.GetTextLength()
- Retrieve the number of characters in the document.
-bool	ScEditor.GetTwoPhaseDraw()
- Is drawing done in two phases with backgrounds drawn before faoregrounds?
+void	ScEditor.Redo()
+ Redoes the next action on the undo history.
+void	ScEditor.SetUndoCollection(bool collectUndo)
+ Choose between collecting actions into the undo history and discarding them.
+void	ScEditor.SelectAll()
+ Select all the text in the document.
+void	ScEditor.SetSavePoint()
+ Remember the current position in the undo history as the position at which the document was saved.
+int	ScEditor.GetStyledText(, textrange tr)
+ Retrieve a buffer of cells. Returns the number of bytes in the buffer not including terminating NULs.
+bool	ScEditor.CanRedo()
+ Are there any redoable actions in the undo history?
+int	ScEditor.MarkerLineFromHandle(int handle)
+ Retrieve the line number at which a particular marker is located.
+void	ScEditor.MarkerDeleteHandle(int handle)
+ Delete a marker.
 bool	ScEditor.GetUndoCollection()
  Is undo history being collected?
-bool	ScEditor.GetUsePalette()
- In palette mode?
-bool	ScEditor.GetUseTabs()
- Retrieve whether tabs will be used in indentation.
-bool	ScEditor.GetVScrollBar()
- Is the vertical scroll bar visible?
-bool	ScEditor.GetViewEOL()
- Are the end of line characters visible?
 int	ScEditor.GetViewWS()
  Are white space characters currently visible? Returns one of SCWS_* constants.
-int	ScEditor.GetVirtualSpaceOptions()
-int	ScEditor.GetWhitespaceSize()
- Get the size of the dots used to mark space characters.
-int	ScEditor.GetWrapIndentMode()
- Retrieve how wrapped sublines are placed. Default is fixed.
-int	ScEditor.GetWrapMode()
- Retrieve whether text is word wrapped.
-int	ScEditor.GetWrapStartIndent()
- Retrive the start indent for wrapped lines.
-int	ScEditor.GetWrapVisualFlags()
- Retrive the display mode of visual flags for wrapped lines.
-int	ScEditor.GetWrapVisualFlagsLocation()
- Retrive the location of visual flags for wrapped lines.
-int	ScEditor.GetXOffset()
-int	ScEditor.GetZoom()
- Retrieve the zoom level.
-int	ScEditor.GetIndicAlpha(int indicator)
- Get the alpha fill colour of the given indicator.
-colour	ScEditor.GetIndicFore(int indic)
- Retrieve the foreground colour of an indicator.
-int	ScEditor.GetIndicStyle(int indic)
- Retrieve the style of an indicator.
-bool	ScEditor.GetIndicUnder(int indic)
- Retrieve whether indicator drawn under or over text.
-int	ScEditor.GetLinesOnScreen()
- Retrieves the number of lines completely visible.
-int	ScEditor.GetMarginStyle(int line)
- Get the style number for the text margin for a line
-int	ScEditor.GetMarginStyleOffset()
- Get the start of the range of style numbers used for margin text
-string	ScEditor.GetMarginStyles(int line)
- Get the styles in the text margin for a line
-string	ScEditor.GetMarginText(int line)
- Get the text in the text margin for a line
-bool	ScEditor.GetSelectionIsRectangle()
- Is the selection rectangular? The alternative is the more common stream selection.
+void	ScEditor.SetViewWS(int viewWS)
+ Make white space characters invisible, always visible or visible outside indentation.
+pos	ScEditor.PositionFromPoint(int x, int y)
+ Find the position from a point within the window.
+pos	ScEditor.PositionFromPointClose(int x, int y)
+ Find the position from a point within the window but return INVALID_POSITION if not close to text.
+void	ScEditor.GotoLine(int line)
+ Set caret to start of a line and ensure it is visible.
+void	ScEditor.GotoPos(position pos)
+ Set caret to a position and ensure it is visible.
+void	ScEditor.SetAnchor(position posAnchor)
+ Set the selection anchor to a position. The anchor is the opposite end of the selection from the caret.
+string	ScEditor.GetCurLine(int length)
+ Retrieve the text of the line containing the caret. Returns the index of the caret on the line.
+pos	ScEditor.GetEndStyled()
+ Retrieve the position of the last correctly styled character.
+void	ScEditor.ConvertEOLs(int eolMode)
+ Convert all line endings in the document to one mode.
+int	ScEditor.GetEOLMode()
+ Retrieve the current end of line mode - one of CRLF, CR, or LF.
+void	ScEditor.SetEOLMode(int eolMode)
+ Set the current end of line mode.
+void	ScEditor.StartStyling(position pos, int mask)
+ Set the current styling position to pos and the styling mask to mask. The styling mask can be used to protect some bits in each styling byte from modification.
+void	ScEditor.SetStyling(int length, int style)
+ Change style from current styling position for length characters to a style and move the current styling position to after this newly styled segment.
+bool	ScEditor.GetBufferedDraw()
+ Is drawing done first into a buffer or direct to the screen?
+void	ScEditor.SetBufferedDraw(bool buffered)
+ If drawing is buffered then each line of text is drawn into a bitmap buffer before drawing it to the screen to avoid flicker.
+void	ScEditor.SetTabWidth(int tabWidth)
+ Change the visible size of a tab to be a multiple of the width of a space character.
+int	ScEditor.GetTabWidth()
+ Retrieve the visible size of a tab.
+void	ScEditor.SetCodePage(int codePage)
+ Set the code page used to interpret the bytes of the document as characters. The SC_CP_UTF8 value can be used to enter Unicode mode.
+void	ScEditor.SetUsePalette(bool usePalette)
+ In palette mode, Scintilla uses the environment's palette calls to display more colours. This may lead to ugly displays.
+void	ScEditor.MarkerDefine(int markerNumber, int markerSymbol)
+ Set the symbol used for a particular marker number.
+void	ScEditor.MarkerSetFore(int markerNumber, colour fore)
+ Set the foreground colour used for a particular marker number.
+void	ScEditor.MarkerSetBack(int markerNumber, colour back)
+ Set the background colour used for a particular marker number.
+int	ScEditor.MarkerAdd(int line, int markerNumber)
+ Add a marker to a line, returning an ID which can be used to find or delete the marker.
+void	ScEditor.MarkerDelete(int line, int markerNumber)
+ Delete a marker from a line.
+void	ScEditor.MarkerDeleteAll(int markerNumber)
+ Delete all markers with a particular number from all lines.
+int	ScEditor.MarkerGet(int line)
+ Get a bit mask of all the markers set on a line.
+int	ScEditor.MarkerNext(int lineStart, int markerMask)
+ Find the next line at or after lineStart that includes a marker in mask. Return -1 when no more lines.
+int	ScEditor.MarkerPrevious(int lineStart, int markerMask)
+ Find the previous line before lineStart that includes a marker in mask.
+void	ScEditor.MarkerDefinePixmap(int markerNumber, string pixmap)
+ Define a marker from a pixmap.
+void	ScEditor.MarkerAddSet(int line, int set)
+ Add a set of markers to a line.
+void	ScEditor.MarkerSetAlpha(int markerNumber, int alpha)
+ Set the alpha used for a marker that is drawn in the text area, not the margin.
+void	ScEditor.SetMarginTypeN(int margin, int marginType)
+ Set a margin to be either numeric or symbolic.
+int	ScEditor.GetMarginTypeN(int margin)
+ Retrieve the type of a margin.
+void	ScEditor.SetMarginWidthN(int margin, int pixelWidth)
+ Set the width of a margin to a width expressed in pixels.
+int	ScEditor.GetMarginWidthN(int margin)
+ Retrieve the width of a margin in pixels.
+void	ScEditor.SetMarginMaskN(int margin, int mask)
+ Set a mask that determines which markers are displayed in a margin.
+int	ScEditor.GetMarginMaskN(int margin)
+ Retrieve the marker mask of a margin.
+void	ScEditor.SetMarginSensitiveN(int margin, bool sensitive)
+ Make a margin sensitive or insensitive to mouse clicks.
+bool	ScEditor.GetMarginSensitiveN(int margin)
+ Retrieve the mouse click sensitivity of a margin.
+void	ScEditor.SetMarginCursorN(int margin, int cursor)
+ Set the cursor shown when the mouse is inside a margin.
+int	ScEditor.GetMarginCursorN(int margin)
+ Retrieve the cursor shown in a margin.
+void	ScEditor.StyleClearAll()
+ Clear all the styles and make equivalent to the global default style.
+void	ScEditor.SetStyleFore(int style, colour fore)
+ Set the foreground colour of a style.
+void	ScEditor.SetStyleBack(int style, colour back)
+ Set the background colour of a style.
+void	ScEditor.SetStyleBold(int style, bool bold)
+ Set a style to be bold or not.
+void	ScEditor.SetStyleItalic(int style, bool italic)
+ Set a style to be italic or not.
+void	ScEditor.SetStyleSize(int style, int sizePoints)
+ Set the size of characters of a style.
+void	ScEditor.SetStyleFont(int style, string fontName)
+ Set the font of a style.
+void	ScEditor.SetStyleEOLFilled(int style, bool filled)
+ Set a style to have its end of line filled or not.
+void	ScEditor.StyleResetDefault()
+ Reset the default style to its state at startup
+void	ScEditor.SetStyleUnderline(int style, bool underline)
+ Set a style to be underlined or not.
+colour	ScEditor.GetStyleFore(int style)
+ Get the foreground colour of a style.
 colour	ScEditor.GetStyleBack(int style)
  Get the background colour of a style.
 bool	ScEditor.GetStyleBold(int style)
  Get is a style bold or not.
-int	ScEditor.GetStyleCase(int style)
- Get is a style mixed case, or to force upper or lower case.
-bool	ScEditor.GetStyleChangeable(int style)
- Get is a style changeable or not (read only). Experimental feature, currently buggy.
-int	ScEditor.GetStyleCharacterSet(int style)
- Get the character get of the font in a style.
-bool	ScEditor.GetStyleEOLFilled(int style)
- Get is a style to have its end of line filled or not.
-colour	ScEditor.GetStyleFore(int style)
- Get the foreground colour of a style.
-bool	ScEditor.GetStyleHotSpot(int style)
- Get is a style a hotspot or not.
 bool	ScEditor.GetStyleItalic(int style)
  Get is a style italic or not.
 int	ScEditor.GetStyleSize(int style)
  Get the size of characters of a style.
+string	ScEditor.StyleGetFont(int style)
+ Get the font of a style. Returns the length of the fontName
+bool	ScEditor.GetStyleEOLFilled(int style)
+ Get is a style to have its end of line filled or not.
 bool	ScEditor.GetStyleUnderline(int style)
  Get is a style underlined or not.
+int	ScEditor.GetStyleCase(int style)
+ Get is a style mixed case, or to force upper or lower case.
+int	ScEditor.GetStyleCharacterSet(int style)
+ Get the character get of the font in a style.
 bool	ScEditor.GetStyleVisible(int style)
  Get is a style visible or not.
-void	ScEditor.SetAnnotationStyle(int line, int style)
- Set the style number for the annotations for a line
-void	ScEditor.SetAnnotationStyleOffset(int style)
- Get the start of the range of style numbers used for annotations
-void	ScEditor.SetAnnotationStyles(int line, string styles)
- Set the annotation styles for a line
-void	ScEditor.SetAnnotationText(int line, string text)
- Set the annotation text for a line
-void	ScEditor.SetAnnotationVisible(int visible)
- Set the visibility for the annotations for a view
-void	ScEditor.SetAutoCAutoHide(bool autoHide)
- Set whether or not autocompletion is hidden automatically when nothing matches.
-void	ScEditor.SetAutoCCancelAtStart(bool cancel)
- Should the auto-completion list be cancelled if the user backspaces to a position before where the box was created.
-void	ScEditor.SetAutoCChooseSingle(bool chooseSingle)
- Should a single item auto-completion list automatically choose the item.
-void	ScEditor.SetAutoCDropRestOfWord(bool dropRestOfWord)
- Set whether or not autocompletion deletes any word characters after the inserted text upon completion.
-void	ScEditor.SetAutoCFillUps(, string characterSet)
- Define a set of characters that when typed will cause the autocompletion to choose the selected item.
-void	ScEditor.SetAutoCIgnoreCase(bool ignoreCase)
- Set whether case is significant when performing auto-completion searches.
-void	ScEditor.SetAutoCMaxHeight(int rowCount)
- Set the maximum height, in rows, of auto-completion and user lists. The default is 5 rows.
-void	ScEditor.SetAutoCMaxWidth(int characterCount)
- Set the maximum width, in characters, of auto-completion and user lists. Set to 0 to autosize to fit longest item, which is the default.
+bool	ScEditor.GetStyleChangeable(int style)
+ Get is a style changeable or not (read only). Experimental feature, currently buggy.
+bool	ScEditor.GetStyleHotSpot(int style)
+ Get is a style a hotspot or not.
+void	ScEditor.SetStyleCase(int style, int caseForce)
+ Set a style to be mixed case, or to force upper or lower case.
+void	ScEditor.SetStyleCharacterSet(int style, int characterSet)
+ Set the character set of the font in a style.
+void	ScEditor.SetStyleHotSpot(int style, bool hotspot)
+ Set a style to be a hotspot or not.
+void	ScEditor.SetSelFore(bool useSetting, colour fore)
+ Set the foreground colour of the main and additional selections and whether to use this setting.
+void	ScEditor.SetSelBack(bool useSetting, colour back)
+ Set the background colour of the main and additional selections and whether to use this setting.
+int	ScEditor.GetSelAlpha()
+ Get the alpha of the selection.
+void	ScEditor.SetSelAlpha(int alpha)
+ Set the alpha of the selection.
+bool	ScEditor.GetSelEOLFilled()
+ Is the selection end of line filled?
+void	ScEditor.SetSelEOLFilled(bool filled)
+ Set the selection to have its end of line filled or not.
+void	ScEditor.SetCaretFore(colour fore)
+ Set the foreground colour of the caret.
+void	ScEditor.AssignCmdKey(keymod km, int msg)
+ When key+modifier combination km is pressed perform msg.
+void	ScEditor.ClearCmdKey(keymod km)
+ When key+modifier combination km is pressed do nothing.
+void	ScEditor.ClearAllCmdKeys()
+ Drop all key mappings.
+void	ScEditor.SetStylingEx(int length, string styles)
+ Set the styles for a segment of the document.
+void	ScEditor.SetStyleVisible(int style, bool visible)
+ Set a style to be visible or not.
+int	ScEditor.GetCaretPeriod()
+ Get the time in milliseconds that the caret is on and off.
+void	ScEditor.SetCaretPeriod(int periodMilliseconds)
+ Get the time in milliseconds that the caret is on and off. 0 = steady on.
+void	ScEditor.SetWordChars(, string characters)
+ Set the set of characters making up words for when moving or selecting by word. First sets defaults like SetCharsDefault.
+void	ScEditor.BeginUndoAction()
+ Start a sequence of actions that is undone and redone as a unit. May be nested.
+void	ScEditor.EndUndoAction()
+ End a sequence of actions that is undone and redone as a unit.
+void	ScEditor.SetIndicStyle(int indic, int style)
+ Set an indicator to plain, squiggle or TT.
+int	ScEditor.GetIndicStyle(int indic)
+ Retrieve the style of an indicator.
+void	ScEditor.SetIndicFore(int indic, colour fore)
+ Set the foreground colour of an indicator.
+colour	ScEditor.GetIndicFore(int indic)
+ Retrieve the foreground colour of an indicator.
+void	ScEditor.SetIndicUnder(int indic, bool under)
+ Set an indicator to draw under text or over(default).
+bool	ScEditor.GetIndicUnder(int indic)
+ Retrieve whether indicator drawn under or over text.
+void	ScEditor.SetWhitespaceFore(bool useSetting, colour fore)
+ Set the foreground colour of all whitespace and whether to use this setting.
+void	ScEditor.SetWhitespaceBack(bool useSetting, colour back)
+ Set the background colour of all whitespace and whether to use this setting.
+void	ScEditor.SetWhitespaceSize(int size)
+ Set the size of the dots used to mark space characters.
+int	ScEditor.GetWhitespaceSize()
+ Get the size of the dots used to mark space characters.
+void	ScEditor.SetStyleBits(int bits)
+ bits (default: 3). If a lexer requires more than 32 lexical states, then this is used to expand the possible states.
+int	ScEditor.GetStyleBits()
+ Retrieve number of bits in style bytes used to hold the lexical state.
+void	ScEditor.SetLineState(int line, int state)
+ Used to hold extra styling information for each line.
+int	ScEditor.GetLineState(int line)
+ Retrieve the extra styling information for a line.
+int	ScEditor.GetMaxLineState()
+ Retrieve the last line number that has line state.
+bool	ScEditor.GetCaretLineVisible()
+ Is the background of the line containing the caret in a different colour?
+void	ScEditor.SetCaretLineVisible(bool show)
+ Display the background of the line containing the caret in a different colour.
+colour	ScEditor.GetCaretLineBack()
+ Get the colour of the background of the line containing the caret.
+void	ScEditor.SetCaretLineBack(colour back)
+ Set the colour of the background of the line containing the caret.
+void	ScEditor.SetStyleChangeable(int style, bool changeable)
+ Set a style to be changeable or not (read only). Experimental feature, currently buggy.
+void	ScEditor.AutoCShow(int lenEntered, string itemList)
+ The lenEntered parameter indicates how many characters before the caret should be used to provide context.
+void	ScEditor.AutoCCancel()
+ Remove the auto-completion list from the screen.
+bool	ScEditor.AutoCActive()
+ Is there an auto-completion list visible?
+pos	ScEditor.AutoCPosStart()
+ Retrieve the position of the caret when the auto-completion list was displayed.
+void	ScEditor.AutoCComplete()
+ User has selected an item so remove the list and insert the selection.
+void	ScEditor.AutoCStops(, string characterSet)
+ Define a set of character that when typed cancel the auto-completion list.
 void	ScEditor.SetAutoCSeparator(int separatorCharacter)
  Change the separator character in the string setting up an auto-completion list. Default is space but can be changed if items contain space.
+int	ScEditor.GetAutoCSeparator()
+ Retrieve the auto-completion list separator character.
+void	ScEditor.AutoCSelect(, string text)
+ Select the item in the auto-completion list that starts with a string.
+void	ScEditor.SetAutoCCancelAtStart(bool cancel)
+ Should the auto-completion list be cancelled if the user backspaces to a position before where the box was created.
+bool	ScEditor.GetAutoCCancelAtStart()
+ Retrieve whether auto-completion cancelled by backspacing before start.
+void	ScEditor.SetAutoCFillUps(, string characterSet)
+ Define a set of characters that when typed will cause the autocompletion to choose the selected item.
+void	ScEditor.SetAutoCChooseSingle(bool chooseSingle)
+ Should a single item auto-completion list automatically choose the item.
+bool	ScEditor.GetAutoCChooseSingle()
+ Retrieve whether a single item auto-completion list automatically choose the item.
+void	ScEditor.SetAutoCIgnoreCase(bool ignoreCase)
+ Set whether case is significant when performing auto-completion searches.
+bool	ScEditor.GetAutoCIgnoreCase()
+ Retrieve state of ignore case flag.
+void	ScEditor.UserListShow(int listType, string itemList)
+ Display a list of strings and send notification when user chooses one.
+void	ScEditor.SetAutoCAutoHide(bool autoHide)
+ Set whether or not autocompletion is hidden automatically when nothing matches.
+bool	ScEditor.GetAutoCAutoHide()
+ Retrieve whether or not autocompletion is hidden automatically when nothing matches.
+void	ScEditor.SetAutoCDropRestOfWord(bool dropRestOfWord)
+ Set whether or not autocompletion deletes any word characters after the inserted text upon completion.
+bool	ScEditor.GetAutoCDropRestOfWord()
+ Retrieve whether or not autocompletion deletes any word characters after the inserted text upon completion.
+void	ScEditor.RegisterImage(int type, string xpmData)
+ Register an XPM image for use in autocompletion lists.
+void	ScEditor.ClearRegisteredImages()
+ Clear all the registered XPM images.
+int	ScEditor.GetAutoCTypeSeparator()
+ Retrieve the auto-completion list type-separator character.
 void	ScEditor.SetAutoCTypeSeparator(int separatorCharacter)
  Change the type-separator character in the string setting up an auto-completion list. Default is '?' but can be changed if items contain '?'.
+void	ScEditor.SetAutoCMaxWidth(int characterCount)
+ Set the maximum width, in characters, of auto-completion and user lists. Set to 0 to autosize to fit longest item, which is the default.
+int	ScEditor.GetAutoCMaxWidth()
+ Get the maximum width, in characters, of auto-completion and user lists.
+void	ScEditor.SetAutoCMaxHeight(int rowCount)
+ Set the maximum height, in rows, of auto-completion and user lists. The default is 5 rows.
+int	ScEditor.GetAutoCMaxHeight()
+ Set the maximum height, in rows, of auto-completion and user lists.
+void	ScEditor.SetIndent(int indentSize)
+ Set the number of spaces used for one level of indentation.
+int	ScEditor.GetIndent()
+ Retrieve indentation size.
+void	ScEditor.SetUseTabs(bool useTabs)
+ Indentation will only use space characters if useTabs is false, otherwise it will use a combination of tabs and spaces.
+bool	ScEditor.GetUseTabs()
+ Retrieve whether tabs will be used in indentation.
+void	ScEditor.SetLineIndentation(int line, int indentSize)
+ Change the indentation of a line to a number of columns.
+int	ScEditor.GetLineIndentation(int line)
+ Retrieve the number of columns that a line is indented.
+pos	ScEditor.GetLineIndentPosition(int line)
+ Retrieve the position before the first non indentation character on a line.
+int	ScEditor.GetColumn(position pos)
+ Retrieve the column number of a position, taking tab width into account.
+void	ScEditor.SetHScrollBar(bool show)
+ Show or hide the horizontal scroll bar.
+bool	ScEditor.GetHScrollBar()
+ Is the horizontal scroll bar visible?
+void	ScEditor.SetIndentationGuides(int indentView)
+ Show or hide indentation guides.
+int	ScEditor.GetIndentationGuides()
+ Are the indentation guides visible?
+void	ScEditor.SetHighlightGuide(int column)
+ Set the highlighted indentation guide column. 0 = no highlighted guide.
+int	ScEditor.GetHighlightGuide()
+ Get the highlighted indentation guide column.
+int	ScEditor.GetLineEndPosition(int line)
+ Get the position after the last visible characters on a line.
+int	ScEditor.GetCodePage()
+ Get the code page used to interpret the bytes of the document as characters.
+colour	ScEditor.GetCaretFore()
+ Get the foreground colour of the caret.
+bool	ScEditor.GetUsePalette()
+ In palette mode?
+bool	ScEditor.GetReadOnly()
+ In read-only mode?
+void	ScEditor.SetCurrentPos(position pos)
+ Sets the position of the caret.
+void	ScEditor.SetSelectionStart(position pos)
+ Sets the position that starts the selection - this becomes the anchor.
+pos	ScEditor.GetSelectionStart()
+ Returns the position at the start of the selection.
+void	ScEditor.SetSelectionEnd(position pos)
+ Sets the position that ends the selection - this becomes the currentPosition.
+pos	ScEditor.GetSelectionEnd()
+ Returns the position at the end of the selection.
+void	ScEditor.SetPrintMagnification(int magnification)
+ Sets the print magnification added to the point size of each style for printing.
+int	ScEditor.GetPrintMagnification()
+ Returns the print magnification.
+void	ScEditor.SetPrintColourMode(int mode)
+ Modify colours when printing for clearer printed text.
+int	ScEditor.GetPrintColourMode()
+ Returns the print colour mode.
+pos	ScEditor.FindText(int flags, findtext ft)
+ Find some text in the document.
+pos	ScEditor.FormatRange(bool draw, formatrange fr)
+ On Windows, will draw the document into a display context such as a printer.
+int	ScEditor.GetFirstVisibleLine()
+ Retrieve the display line at the top of the display.
+string	ScEditor.GetLine(int line)
+ Retrieve the contents of a line. Returns the length of the line.
+int	ScEditor.GetLineCount()
+ Returns the number of lines in the document. There is always at least one.
+void	ScEditor.SetMarginLeft(, int pixelWidth)
+ Sets the size in pixels of the left margin.
+int	ScEditor.GetMarginLeft()
+ Returns the size in pixels of the left margin.
+void	ScEditor.SetMarginRight(, int pixelWidth)
+ Sets the size in pixels of the right margin.
+int	ScEditor.GetMarginRight()
+ Returns the size in pixels of the right margin.
+bool	ScEditor.GetModify()
+ Is the document different from when it was last saved?
+void	ScEditor.SetSel(position start, position end)
+ Select a range of text.
+string	ScEditor.GetSelText()
+ Retrieve the selected text. Return the length of the text.
+int	ScEditor.GetTextRange(, textrange tr)
+ Retrieve a range of text. Return the length of the text.
+void	ScEditor.HideSelection(bool normal)
+ Draw the selection in normal style or with selection highlighted.
+int	ScEditor.PointXFromPosition(, position pos)
+ Retrieve the x value of the point in the window where a position is displayed.
+int	ScEditor.PointYFromPosition(, position pos)
+ Retrieve the y value of the point in the window where a position is displayed.
+int	ScEditor.LineFromPosition(position pos)
+ Retrieve the line containing a position.
+pos	ScEditor.PositionFromLine(int line)
+ Retrieve the position at the start of a line.
+void	ScEditor.LineScroll(int columns, int lines)
+ Scroll horizontally and vertically.
+void	ScEditor.ScrollCaret()
+ Ensure the caret is visible.
+void	ScEditor.ReplaceSel(, string text)
+ Replace the selected text with the argument text.
+void	ScEditor.SetReadOnly(bool readOnly)
+ Set to read only or read write.
+void	ScEditor.Null()
+ Null operation.
+bool	ScEditor.CanPaste()
+ Will a paste succeed?
+bool	ScEditor.CanUndo()
+ Are there any undoable actions in the undo history?
+void	ScEditor.EmptyUndoBuffer()
+ Delete the undo history.
+void	ScEditor.Undo()
+ Undo one action in the undo history.
+void	ScEditor.Cut()
+ Cut the selection to the clipboard.
+void	ScEditor.Copy()
+ Copy the selection to the clipboard.
+void	ScEditor.Paste()
+ Paste the contents of the clipboard into the document replacing the selection.
+void	ScEditor.Clear()
+ Clear the selection.
+void	ScEditor.SetText(, string text)
+ Replace the contents of the document with the argument text.
+string	ScEditor.GetText(int length)
+ Retrieve all the text in the document. Returns number of characters retrieved.
+int	ScEditor.GetTextLength()
+ Retrieve the number of characters in the document.
+int	ScEditor.GetDirectFunction()
+ Retrieve a pointer to a function that processes messages for this Scintilla.
+int	ScEditor.GetDirectPointer()
+ Retrieve a pointer value to use as the first argument when calling the function returned by GetDirectFunction.
+void	ScEditor.SetOvertype(bool overtype)
+ Set to overtype (true) or insert mode.
+bool	ScEditor.GetOvertype()
+ Returns true if overtype mode is active otherwise false is returned.
+void	ScEditor.SetCaretWidth(int pixelWidth)
+ Set the width of the insert mode caret.
+int	ScEditor.GetCaretWidth()
+ Returns the width of the insert mode caret.
+void	ScEditor.SetTargetStart(position pos)
+ Sets the position that starts the target which is used for updating the document without affecting the scroll position.
+pos	ScEditor.GetTargetStart()
+ Get the position that starts the target.
+void	ScEditor.SetTargetEnd(position pos)
+ Sets the position that ends the target which is used for updating the document without affecting the scroll position.
+pos	ScEditor.GetTargetEnd()
+ Get the position that ends the target.
+int	ScEditor.ReplaceTarget(int length, string text)
+ Text is counted so it can contain NULs. Returns the length of the replacement text.
+int	ScEditor.ReplaceTargetRE(int length, string text)
+ Returns the length of the replacement text including any change caused by processing the \d patterns.
+int	ScEditor.SearchInTarget(int length, string text)
+ range. Text is counted so it can contain NULs. Returns length of range or -1 for failure in which case target is not moved.
+void	ScEditor.SetSearchFlags(int flags)
+ Set the search flags used by SearchInTarget.
+int	ScEditor.GetSearchFlags()
+ Get the search flags used by SearchInTarget.
+void	ScEditor.CallTipShow(position pos, string definition)
+ Show a call tip containing a definition near position pos.
+void	ScEditor.CallTipCancel()
+ Remove the call tip from the screen.
+bool	ScEditor.CallTipActive()
+ Is there an active call tip?
+pos	ScEditor.CallTipPosStart()
+ Retrieve the position where the caret was before displaying the call tip.
+void	ScEditor.CallTipSetHlt(int start, int end)
+ Highlight a segment of the definition.
 void	ScEditor.SetCallTipBack(colour back)
  Set the background colour for the call tip.
 void	ScEditor.SetCallTipFore(colour fore)
@@ -1039,267 +652,657 @@ void	ScEditor.SetCallTipForeHlt(colour fore)
  Set the foreground colour for the highlighted part of the call tip.
 void	ScEditor.SetCallTipUseStyle(int tabSize)
  Enable use of STYLE_CALLTIP and set call tip tab size in pixels.
-void	ScEditor.SetIndicAlpha(int indicator, int alpha)
- Set the alpha fill colour of the given indicator.
-void	ScEditor.SetIndicFore(int indic, colour fore)
- Set the foreground colour of an indicator.
-void	ScEditor.SetIndicStyle(int indic, int style)
- Set an indicator to plain, squiggle or TT.
-void	ScEditor.SetIndicUnder(int indic, bool under)
- Set an indicator to draw under text or over(default).
-void	ScEditor.SetMarginStyle(int line, int style)
- Set the style number for the text margin for a line
-void	ScEditor.SetMarginStyleOffset(int style)
- Get the start of the range of style numbers used for margin text
-void	ScEditor.SetMarginStyles(int line, string styles)
- Set the style in the text margin for a line
-void	ScEditor.SetMarginText(int line, string text)
- Set the text in the text margin for a line
-void	ScEditor.SetAdditionalCaretFore(colour fore)
- Set the foreground colour of additional carets.
-void	ScEditor.SetAdditionalCaretsBlink(bool additionalCaretsBlink)
- Set whether additional carets will blink
-void	ScEditor.SetAdditionalCaretsVisible(bool additionalCaretsBlink)
- Set whether additional carets are visible
-void	ScEditor.SetAdditionalSelAlpha(int alpha)
- Set the alpha of the selection.
-void	ScEditor.SetAdditionalSelBack(colour back)
- Set the background colour of additional selections. Must have previously called SetSelBack with non-zero first argument for this to have an effect.
-void	ScEditor.SetAdditionalSelFore(colour fore)
- Set the foreground colour of additional selections. Must have previously called SetSelFore with non-zero first argument for this to have an effect.
-void	ScEditor.SetAdditionalSelectionTyping(bool additionalSelectionTyping)
- Set whether typing can be performed into multiple selections
-void	ScEditor.SetAnchor(position posAnchor)
- Set the selection anchor to a position. The anchor is the opposite end of the selection from the caret.
-void	ScEditor.SetBackSpaceUnIndents(bool bsUnIndents)
- Sets whether a backspace pressed when caret is within indentation unindents.
-void	ScEditor.SetBufferedDraw(bool buffered)
- If drawing is buffered then each line of text is drawn into a bitmap buffer before drawing it to the screen to avoid flicker.
-void	ScEditor.SetCaretFore(colour fore)
- Set the foreground colour of the caret.
-void	ScEditor.SetCaretLineBack(colour back)
- Set the colour of the background of the line containing the caret.
-void	ScEditor.SetCaretLineBackAlpha(int alpha)
- Set background alpha of the caret line.
-void	ScEditor.SetCaretLineVisible(bool show)
- Display the background of the line containing the caret in a different colour.
-void	ScEditor.SetCaretPeriod(int periodMilliseconds)
- Get the time in milliseconds that the caret is on and off. 0 = steady on.
-void	ScEditor.SetCaretSticky(int useCaretStickyBehaviour)
- Stop the caret preferred x position changing when the user types.
-void	ScEditor.SetCaretStyle(int caretStyle)
- Set the style of the caret to be drawn.
-void	ScEditor.SetCaretWidth(int pixelWidth)
- Set the width of the insert mode caret.
-void	ScEditor.SetCodePage(int codePage)
- Set the code page used to interpret the bytes of the document as characters. The SC_CP_UTF8 value can be used to enter Unicode mode.
-void	ScEditor.SetControlCharSymbol(int symbol)
- Change the way control characters are displayed: If symbol is < 32, keep the drawn way, else, use the given character.
-void	ScEditor.SetCurrentPos(position pos)
- Sets the position of the caret.
-void	ScEditor.SetCursor(int cursorType)
- Sets the cursor to one of the SC_CURSOR* values.
-void	ScEditor.SetDocPointer(, int pointer)
- Change the document object used.
-void	ScEditor.SetEOLMode(int eolMode)
- Set the current end of line mode.
-void	ScEditor.SetEdgeColour(colour edgeColour)
- Change the colour used in edge indication.
-void	ScEditor.SetEdgeColumn(int column)
- Set the column number of the edge. If text goes past the edge then it is highlighted.
-void	ScEditor.SetEdgeMode(int mode)
- The edge may be displayed by a line (EDGE_LINE) or by highlighting text that goes beyond it (EDGE_BACKGROUND) or not displayed at all (EDGE_NONE).
-void	ScEditor.SetEndAtLastLine(bool endAtLastLine)
- the last line at the bottom of the view (default). Setting this to false allows scrolling one page below the last line.
-void	ScEditor.SetExtraAscent(int extraAscent)
- Set extra ascent for each line
-void	ScEditor.SetExtraDescent(int extraDescent)
- Set extra descent for each line
-void	ScEditor.SetFirstVisibleLine(int lineDisplay)
- Scroll so that a display line is at the top of the display.
-void	ScEditor.SetFocus(bool focus)
- Change internal focus flag.
-void	ScEditor.SetFoldExpanded(int line, bool expanded)
- Show the children of a header line.
+int	ScEditor.VisibleFromDocLine(int line)
+ Find the display line of a document line taking hidden lines into account.
+int	ScEditor.DocLineFromVisible(int lineDisplay)
+ Find the document line of a display line taking hidden lines into account.
+int	ScEditor.WrapCount(int line)
+ The number of display lines needed to wrap a document line
 void	ScEditor.SetFoldLevel(int line, int level)
  This encodes an integer level along with flags indicating whether the line is a header and whether it is effectively white space.
-void	ScEditor.SetFontQuality(int fontQuality)
- Choose the quality level for text from the FontQuality enumeration.
-void	ScEditor.SetHScrollBar(bool show)
- Show or hide the horizontal scroll bar.
-void	ScEditor.SetHighlightGuide(int column)
- Set the highlighted indentation guide column. 0 = no highlighted guide.
-void	ScEditor.SetHotspotActiveBack(bool useSetting, colour back)
- Set a back colour for active hotspots.
-void	ScEditor.SetHotspotActiveFore(bool useSetting, colour fore)
- Set a fore colour for active hotspots.
-void	ScEditor.SetHotspotActiveUnderline(bool underline)
- Enable / Disable underlining active hotspots.
-void	ScEditor.SetHotspotSingleLine(bool singleLine)
- Limit hotspots to single line so hotspots on two lines don't merge.
-void	ScEditor.SetIndent(int indentSize)
- Set the number of spaces used for one level of indentation.
-void	ScEditor.SetIndentationGuides(int indentView)
- Show or hide indentation guides.
-void	ScEditor.SetIndicatorCurrent(int indicator)
- Set the indicator used for IndicatorFillRange and IndicatorClearRange
-void	ScEditor.SetIndicatorValue(int value)
- Set the value used for IndicatorFillRange
-void	ScEditor.SetKeyWords(int keywordSet, string keyWords)
- Set up the key words used by the lexer.
-void	ScEditor.SetKeysUnicode(bool keysUnicode)
- Always interpret keyboard input as Unicode
-void	ScEditor.SetLayoutCache(int mode)
- Sets the degree of caching of layout information.
-void	ScEditor.SetLexer(int lexer)
- Set the lexing language of the document.
-void	ScEditor.SetLexerLanguage(, string language)
- Set the lexing language of the document based on string name.
-void	ScEditor.SetLineIndentation(int line, int indentSize)
- Change the indentation of a line to a number of columns.
-void	ScEditor.SetLineState(int line, int state)
- Used to hold extra styling information for each line.
-void	ScEditor.SetMainSelection(int selection)
- Set the main selection
-void	ScEditor.SetMarginCursorN(int margin, int cursor)
- Set the cursor shown when the mouse is inside a margin.
-void	ScEditor.SetMarginLeft(, int pixelWidth)
- Sets the size in pixels of the left margin.
-void	ScEditor.SetMarginMaskN(int margin, int mask)
- Set a mask that determines which markers are displayed in a margin.
-void	ScEditor.SetMarginRight(, int pixelWidth)
- Sets the size in pixels of the right margin.
-void	ScEditor.SetMarginSensitiveN(int margin, bool sensitive)
- Make a margin sensitive or insensitive to mouse clicks.
-void	ScEditor.SetMarginTypeN(int margin, int marginType)
- Set a margin to be either numeric or symbolic.
-void	ScEditor.SetMarginWidthN(int margin, int pixelWidth)
- Set the width of a margin to a width expressed in pixels.
-void	ScEditor.SetModEventMask(int mask)
- Set which document modification events are sent to the container.
-void	ScEditor.SetMouseDownCaptures(bool captures)
- Set whether the mouse is captured when its button is pressed.
-void	ScEditor.SetMouseDwellTime(int periodMilliseconds)
- Sets the time the mouse must sit still to generate a mouse dwell event.
-void	ScEditor.SetMultiPaste(int multiPaste)
- Change the effect of pasting when there are multiple selections.
-void	ScEditor.SetMultipleSelection(bool multipleSelection)
- Set whether multiple selections can be made
-void	ScEditor.SetOvertype(bool overtype)
- Set to overtype (true) or insert mode.
-void	ScEditor.SetPasteConvertEndings(bool convert)
- Enable/Disable convert-on-paste for line endings
-void	ScEditor.SetPositionCache(int size)
- Set number of entries in position cache
-void	ScEditor.SetPrintColourMode(int mode)
- Modify colours when printing for clearer printed text.
-void	ScEditor.SetPrintMagnification(int magnification)
- Sets the print magnification added to the point size of each style for printing.
-void	ScEditor.SetPrintWrapMode(int mode)
- Set printing to line wrapped (SC_WRAP_WORD) or not line wrapped (SC_WRAP_NONE).
-void	ScEditor.SetProperty(string key, string value)
- Set up a value that may be used by a lexer for some optional feature.
-void	ScEditor.SetReadOnly(bool readOnly)
- Set to read only or read write.
-void	ScEditor.SetRectangularSelectionAnchor(position posAnchor)
-void	ScEditor.SetRectangularSelectionAnchorVirtualSpace(int space)
-void	ScEditor.SetRectangularSelectionCaret(position pos)
-void	ScEditor.SetRectangularSelectionCaretVirtualSpace(int space)
-void	ScEditor.SetRectangularSelectionModifier(int modifier)
-void	ScEditor.SetScrollWidth(int pixelWidth)
- Sets the document width assumed for scrolling.
-void	ScEditor.SetScrollWidthTracking(bool tracking)
- Sets whether the maximum width line displayed is used to set scroll width.
-void	ScEditor.SetSearchFlags(int flags)
- Set the search flags used by SearchInTarget.
-void	ScEditor.SetSelAlpha(int alpha)
- Set the alpha of the selection.
-void	ScEditor.SetSelEOLFilled(bool filled)
- Set the selection to have its end of line filled or not.
-void	ScEditor.SetSelectionEnd(position pos)
- Sets the position that ends the selection - this becomes the currentPosition.
-void	ScEditor.SetSelectionMode(int mode)
- Set the selection mode to stream (SC_SEL_STREAM) or rectangular (SC_SEL_RECTANGLE/SC_SEL_THIN) or by lines (SC_SEL_LINES).
-void	ScEditor.SetSelectionNAnchor(int selection, position posAnchor)
-void	ScEditor.SetSelectionNAnchorVirtualSpace(int selection, int space)
-void	ScEditor.SetSelectionNCaret(int selection, position pos)
-void	ScEditor.SetSelectionNCaretVirtualSpace(int selection, int space)
-void	ScEditor.SetSelectionNEnd(int selection, position pos)
- Sets the position that ends the selection - this becomes the currentPosition.
-void	ScEditor.SetSelectionNStart(int selection, position pos)
- Sets the position that starts the selection - this becomes the anchor.
-void	ScEditor.SetSelectionStart(position pos)
- Sets the position that starts the selection - this becomes the anchor.
-void	ScEditor.SetStatus(int statusCode)
- Change error status - 0 = OK.
-void	ScEditor.SetStyleBits(int bits)
- bits (default: 3). If a lexer requires more than 32 lexical states, then this is used to expand the possible states.
+int	ScEditor.GetFoldLevel(int line)
+ Retrieve the fold level of a line.
+int	ScEditor.GetLastChild(int line, int level)
+ Find the last child line of a header line.
+int	ScEditor.GetFoldParent(int line)
+ Find the parent line of a child line.
+void	ScEditor.ShowLines(int lineStart, int lineEnd)
+ Make a range of lines visible.
+void	ScEditor.HideLines(int lineStart, int lineEnd)
+ Make a range of lines invisible.
+bool	ScEditor.GetLineVisible(int line)
+ Is a line visible?
+void	ScEditor.SetFoldExpanded(int line, bool expanded)
+ Show the children of a header line.
+bool	ScEditor.GetFoldExpanded(int line)
+ Is a header line expanded?
+void	ScEditor.ToggleFold(int line)
+ Switch a header line between expanded and contracted.
+void	ScEditor.EnsureVisible(int line)
+ Ensure a particular line is visible by expanding any header line hiding it.
+void	ScEditor.SetFoldFlags(int flags)
+ Set some style options for folding.
+void	ScEditor.EnsureVisibleEnforcePolicy(int line)
+ Ensure a particular line is visible by expanding any header line hiding it. Use the currently set visibility policy to determine which range to display.
 void	ScEditor.SetTabIndents(bool tabIndents)
  Sets whether a tab pressed when caret is within indentation indents.
-void	ScEditor.SetTabWidth(int tabWidth)
- Change the visible size of a tab to be a multiple of the width of a space character.
-void	ScEditor.SetTargetEnd(position pos)
- Sets the position that ends the target which is used for updating the document without affecting the scroll position.
-void	ScEditor.SetTargetStart(position pos)
- Sets the position that starts the target which is used for updating the document without affecting the scroll position.
-void	ScEditor.SetTwoPhaseDraw(bool twoPhase)
- In twoPhaseDraw mode, drawing is performed in two phases, first the background and then the foreground. This avoids chopping off characters that overlap the next run.
-void	ScEditor.SetUndoCollection(bool collectUndo)
- Choose between collecting actions into the undo history and discarding them.
-void	ScEditor.SetUsePalette(bool usePalette)
- In palette mode, Scintilla uses the environment's palette calls to display more colours. This may lead to ugly displays.
-void	ScEditor.SetUseTabs(bool useTabs)
- Indentation will only use space characters if useTabs is false, otherwise it will use a combination of tabs and spaces.
-void	ScEditor.SetVScrollBar(bool show)
- Show or hide the vertical scroll bar.
-void	ScEditor.SetViewEOL(bool visible)
- Make the end of line characters visible or invisible.
-void	ScEditor.SetViewWS(int viewWS)
- Make white space characters invisible, always visible or visible outside indentation.
-void	ScEditor.SetVirtualSpaceOptions(int virtualSpaceOptions)
-void	ScEditor.SetWhitespaceChars(, string characters)
- Set the set of characters making up whitespace for when moving or selecting by word. Should be called after SetWordChars.
-void	ScEditor.SetWhitespaceSize(int size)
- Set the size of the dots used to mark space characters.
-void	ScEditor.SetWordChars(, string characters)
- Set the set of characters making up words for when moving or selecting by word. First sets defaults like SetCharsDefault.
-void	ScEditor.SetWrapIndentMode(int mode)
- Sets how wrapped sublines are placed. Default is fixed.
+bool	ScEditor.GetTabIndents()
+ Does a tab pressed when caret is within indentation indent?
+void	ScEditor.SetBackSpaceUnIndents(bool bsUnIndents)
+ Sets whether a backspace pressed when caret is within indentation unindents.
+bool	ScEditor.GetBackSpaceUnIndents()
+ Does a backspace pressed when caret is within indentation unindent?
+void	ScEditor.SetMouseDwellTime(int periodMilliseconds)
+ Sets the time the mouse must sit still to generate a mouse dwell event.
+int	ScEditor.GetMouseDwellTime()
+ Retrieve the time the mouse must sit still to generate a mouse dwell event.
+int	ScEditor.WordStartPosition(position pos, bool onlyWordCharacters)
+ Get position of start of word.
+int	ScEditor.WordEndPosition(position pos, bool onlyWordCharacters)
+ Get position of end of word.
 void	ScEditor.SetWrapMode(int mode)
  Sets whether text is word wrapped.
-void	ScEditor.SetWrapStartIndent(int indent)
- Set the start indent for wrapped lines.
+int	ScEditor.GetWrapMode()
+ Retrieve whether text is word wrapped.
 void	ScEditor.SetWrapVisualFlags(int wrapVisualFlags)
  Set the display mode of visual flags for wrapped lines.
+int	ScEditor.GetWrapVisualFlags()
+ Retrive the display mode of visual flags for wrapped lines.
 void	ScEditor.SetWrapVisualFlagsLocation(int wrapVisualFlagsLocation)
  Set the location of visual flags for wrapped lines.
-void	ScEditor.SetXOffset(int newOffset)
- Get and Set the xOffset (ie, horizonal scroll position).
+int	ScEditor.GetWrapVisualFlagsLocation()
+ Retrive the location of visual flags for wrapped lines.
+void	ScEditor.SetWrapStartIndent(int indent)
+ Set the start indent for wrapped lines.
+int	ScEditor.GetWrapStartIndent()
+ Retrive the start indent for wrapped lines.
+void	ScEditor.SetWrapIndentMode(int mode)
+ Sets how wrapped sublines are placed. Default is fixed.
+int	ScEditor.GetWrapIndentMode()
+ Retrieve how wrapped sublines are placed. Default is fixed.
+void	ScEditor.SetLayoutCache(int mode)
+ Sets the degree of caching of layout information.
+int	ScEditor.GetLayoutCache()
+ Retrieve the degree of caching of layout information.
+void	ScEditor.SetScrollWidth(int pixelWidth)
+ Sets the document width assumed for scrolling.
+int	ScEditor.GetScrollWidth()
+ Retrieve the document width assumed for scrolling.
+void	ScEditor.SetScrollWidthTracking(bool tracking)
+ Sets whether the maximum width line displayed is used to set scroll width.
+bool	ScEditor.GetScrollWidthTracking()
+ Retrieve whether the scroll width tracks wide lines.
+int	ScEditor.TextWidth(int style, string text)
+ NUL terminated text argument. Does not handle tab or control characters.
+void	ScEditor.SetEndAtLastLine(bool endAtLastLine)
+ the last line at the bottom of the view (default). Setting this to false allows scrolling one page below the last line.
+bool	ScEditor.GetEndAtLastLine()
+ Retrieve whether the maximum scroll position has the last line at the bottom of the view.
+int	ScEditor.TextHeight(int line)
+ Retrieve the height of a particular line of text in pixels.
+void	ScEditor.SetVScrollBar(bool show)
+ Show or hide the vertical scroll bar.
+bool	ScEditor.GetVScrollBar()
+ Is the vertical scroll bar visible?
+void	ScEditor.AppendText(int length, string text)
+ Append a string to the end of the document without changing the selection.
+bool	ScEditor.GetTwoPhaseDraw()
+ Is drawing done in two phases with backgrounds drawn before faoregrounds?
+void	ScEditor.SetTwoPhaseDraw(bool twoPhase)
+ In twoPhaseDraw mode, drawing is performed in two phases, first the background and then the foreground. This avoids chopping off characters that overlap the next run.
+void	ScEditor.SetFontQuality(int fontQuality)
+ Choose the quality level for text from the FontQuality enumeration.
+int	ScEditor.GetFontQuality()
+ Retrieve the quality level for text.
+void	ScEditor.SetFirstVisibleLine(int lineDisplay)
+ Scroll so that a display line is at the top of the display.
+void	ScEditor.SetMultiPaste(int multiPaste)
+ Change the effect of pasting when there are multiple selections.
+int	ScEditor.GetMultiPaste()
+ Retrieve the effect of pasting when there are multiple selections..
+string	ScEditor.GetTag(int tagNumber)
+ Retrieve the value of a tag from a regular expression search.
+void	ScEditor.TargetFromSelection()
+ Make the target range start and end be the same as the selection range start and end.
+void	ScEditor.LinesJoin()
+ Join the lines in the target.
+void	ScEditor.LinesSplit(int pixelWidth)
+ Split the lines in the target into lines that are less wide than pixelWidth where possible.
+void	ScEditor.SetFoldMarginColour(bool useSetting, colour back)
+ Set the colours used as a chequerboard pattern in the fold margin
+void	ScEditor.SetFoldMarginHiColour(bool useSetting, colour fore)
+void	ScEditor.LineDown()
+ Start of key messages Move caret down one line.
+void	ScEditor.LineDownExtend()
+ Move caret down one line extending selection to new caret position.
+void	ScEditor.LineUp()
+ Move caret up one line.
+void	ScEditor.LineUpExtend()
+ Move caret up one line extending selection to new caret position.
+void	ScEditor.CharLeft()
+ Move caret left one character.
+void	ScEditor.CharLeftExtend()
+ Move caret left one character extending selection to new caret position.
+void	ScEditor.CharRight()
+ Move caret right one character.
+void	ScEditor.CharRightExtend()
+ Move caret right one character extending selection to new caret position.
+void	ScEditor.WordLeft()
+ Move caret left one word.
+void	ScEditor.WordLeftExtend()
+ Move caret left one word extending selection to new caret position.
+void	ScEditor.WordRight()
+ Move caret right one word.
+void	ScEditor.WordRightExtend()
+ Move caret right one word extending selection to new caret position.
+void	ScEditor.Home()
+ Move caret to first position on line.
+void	ScEditor.HomeExtend()
+ Move caret to first position on line extending selection to new caret position.
+void	ScEditor.LineEnd()
+ Move caret to last position on line.
+void	ScEditor.LineEndExtend()
+ Move caret to last position on line extending selection to new caret position.
+void	ScEditor.DocumentStart()
+ Move caret to first position in document.
+void	ScEditor.DocumentStartExtend()
+ Move caret to first position in document extending selection to new caret position.
+void	ScEditor.DocumentEnd()
+ Move caret to last position in document.
+void	ScEditor.DocumentEndExtend()
+ Move caret to last position in document extending selection to new caret position.
+void	ScEditor.PageUp()
+ Move caret one page up.
+void	ScEditor.PageUpExtend()
+ Move caret one page up extending selection to new caret position.
+void	ScEditor.PageDown()
+ Move caret one page down.
+void	ScEditor.PageDownExtend()
+ Move caret one page down extending selection to new caret position.
+void	ScEditor.EditToggleOvertype()
+ Switch from insert to overtype mode or the reverse.
+void	ScEditor.Cancel()
+ Cancel any modes such as call tip or auto-completion list display.
+void	ScEditor.DeleteBack()
+ Delete the selection or if no selection, the character before the caret.
+void	ScEditor.Tab()
+ If selection is empty or all on one line replace the selection with a tab character. If more than one line selected, indent the lines.
+void	ScEditor.BackTab()
+ Dedent the selected lines.
+void	ScEditor.NewLine()
+ Insert a new line, may use a CRLF, CR or LF depending on EOL mode.
+void	ScEditor.FormFeed()
+ Insert a Form Feed character.
+void	ScEditor.VCHome()
+ Move caret to before first visible character on line. If already there move to first character on line.
+void	ScEditor.VCHomeExtend()
+ Like VCHome but extending selection to new caret position.
+void	ScEditor.ZoomIn()
+ Magnify the displayed text by increasing the sizes by 1 point.
+void	ScEditor.ZoomOut()
+ Make the displayed text smaller by decreasing the sizes by 1 point.
+void	ScEditor.DelWordLeft()
+ Delete the word to the left of the caret.
+void	ScEditor.DelWordRight()
+ Delete the word to the right of the caret.
+void	ScEditor.DelWordRightEnd()
+ Delete the word to the right of the caret, but not the trailing non-word characters.
+void	ScEditor.LineCut()
+ Cut the line containing the caret.
+void	ScEditor.LineDelete()
+ Delete the line containing the caret.
+void	ScEditor.LineTranspose()
+ Switch the current line with the previous.
+void	ScEditor.LineDuplicate()
+ Duplicate the current line.
+void	ScEditor.LowerCase()
+ Transform the selection to lower case.
+void	ScEditor.UpperCase()
+ Transform the selection to upper case.
+void	ScEditor.LineScrollDown()
+ Scroll the document down, keeping the caret visible.
+void	ScEditor.LineScrollUp()
+ Scroll the document up, keeping the caret visible.
+void	ScEditor.DeleteBackNotLine()
+ Delete the selection or if no selection, the character before the caret. Will not delete the character before at the start of a line.
+void	ScEditor.HomeDisplay()
+ Move caret to first position on display line.
+void	ScEditor.HomeDisplayExtend()
+ Move caret to first position on display line extending selection to new caret position.
+void	ScEditor.LineEndDisplay()
+ Move caret to last position on display line.
+void	ScEditor.LineEndDisplayExtend()
+ Move caret to last position on display line extending selection to new caret position.
+void	ScEditor.HomeWrap()
+void	ScEditor.HomeWrapExtend()
+void	ScEditor.LineEndWrap()
+void	ScEditor.LineEndWrapExtend()
+void	ScEditor.VCHomeWrap()
+void	ScEditor.VCHomeWrapExtend()
+void	ScEditor.LineCopy()
+ Copy the line containing the caret.
+void	ScEditor.MoveCaretInsideView()
+ Move the caret inside current view if it's not there already.
+int	ScEditor.LineLength(int line)
+ How many characters are on a line, including end of line characters?
+void	ScEditor.BraceHighlight(position pos1, position pos2)
+ Highlight the characters at two positions.
+void	ScEditor.BraceBadLight(position pos)
+ Highlight the character at a position indicating there is no matching brace.
+pos	ScEditor.BraceMatch(position pos)
+ Find the position of a matching brace or INVALID_POSITION if no match.
+bool	ScEditor.GetViewEOL()
+ Are the end of line characters visible?
+void	ScEditor.SetViewEOL(bool visible)
+ Make the end of line characters visible or invisible.
+int	ScEditor.GetDocPointer()
+ Retrieve a pointer to the document object.
+void	ScEditor.SetDocPointer(, int pointer)
+ Change the document object used.
+void	ScEditor.SetModEventMask(int mask)
+ Set which document modification events are sent to the container.
+int	ScEditor.GetEdgeColumn()
+ Retrieve the column number which text should be kept within.
+void	ScEditor.SetEdgeColumn(int column)
+ Set the column number of the edge. If text goes past the edge then it is highlighted.
+int	ScEditor.GetEdgeMode()
+ Retrieve the edge highlight mode.
+void	ScEditor.SetEdgeMode(int mode)
+ The edge may be displayed by a line (EDGE_LINE) or by highlighting text that goes beyond it (EDGE_BACKGROUND) or not displayed at all (EDGE_NONE).
+colour	ScEditor.GetEdgeColour()
+ Retrieve the colour used in edge indication.
+void	ScEditor.SetEdgeColour(colour edgeColour)
+ Change the colour used in edge indication.
+void	ScEditor.SearchAnchor()
+ Sets the current caret position to be the search anchor.
+int	ScEditor.SearchNext(int flags, string text)
+ Find some text starting at the search anchor. Does not ensure the selection is visible.
+int	ScEditor.SearchPrev(int flags, string text)
+ Find some text starting at the search anchor and moving backwards. Does not ensure the selection is visible.
+int	ScEditor.GetLinesOnScreen()
+ Retrieves the number of lines completely visible.
+void	ScEditor.UsePopUp(bool allowPopUp)
+ Set whether a pop up menu is displayed automatically when the user presses the wrong mouse button.
+bool	ScEditor.GetSelectionIsRectangle()
+ Is the selection rectangular? The alternative is the more common stream selection.
 void	ScEditor.SetZoom(int zoom)
  Set the zoom level. This number of points is added to the size of all fonts. It may be positive to magnify or negative to reduce.
-void	ScEditor.SetStyleBack(int style, colour back)
- Set the background colour of a style.
-void	ScEditor.SetStyleBold(int style, bool bold)
- Set a style to be bold or not.
-void	ScEditor.SetStyleCase(int style, int caseForce)
- Set a style to be mixed case, or to force upper or lower case.
-void	ScEditor.SetStyleChangeable(int style, bool changeable)
- Set a style to be changeable or not (read only). Experimental feature, currently buggy.
-void	ScEditor.SetStyleCharacter(int style, int characterSet)
- Set the character set of the font in a style.
-void	ScEditor.SetStyleEOLFilled(int style, bool filled)
- Set a style to have its end of line filled or not.
-void	ScEditor.SetStyleFont(int style, string fontName)
- Set the font of a style.
-void	ScEditor.SetStyleFore(int style, colour fore)
- Set the foreground colour of a style.
-void	ScEditor.SetStyleHotSpot(int style, bool hotspot)
- Set a style to be a hotspot or not.
-void	ScEditor.SetStyleItalic(int style, bool italic)
- Set a style to be italic or not.
-void	ScEditor.SetStyleSize(int style, int sizePoints)
- Set the size of characters of a style.
-void	ScEditor.SetStyleUnderline(int style, bool underline)
- Set a style to be underlined or not.
-void	ScEditor.SetStyleVisible(int style, bool visible)
- Set a style to be visible or not.
+int	ScEditor.GetZoom()
+ Retrieve the zoom level.
+int	ScEditor.CreateDocument()
+ Create a new document object. Starts with reference count of 1 and not selected into editor.
+void	ScEditor.AddRefDocument(, int doc)
+ Extend life of document.
+void	ScEditor.ReleaseDocument(, int doc)
+ Release a reference to the document, deleting document if it fades to black.
+int	ScEditor.GetModEventMask()
+ Get which document modification events are sent to the container.
+void	ScEditor.SetFocus(bool focus)
+ Change internal focus flag.
+bool	ScEditor.GetFocus()
+ Get internal focus flag.
+void	ScEditor.SetStatus(int statusCode)
+ Change error status - 0 = OK.
+int	ScEditor.GetStatus()
+ Get error status.
+void	ScEditor.SetMouseDownCaptures(bool captures)
+ Set whether the mouse is captured when its button is pressed.
+bool	ScEditor.GetMouseDownCaptures()
+ Get whether mouse gets captured.
+void	ScEditor.SetCursor(int cursorType)
+ Sets the cursor to one of the SC_CURSOR* values.
+int	ScEditor.GetCursor()
+ Get cursor type.
+void	ScEditor.SetControlCharSymbol(int symbol)
+ Change the way control characters are displayed: If symbol is < 32, keep the drawn way, else, use the given character.
+int	ScEditor.GetControlCharSymbol()
+ Get the way control characters are displayed.
+void	ScEditor.WordPartLeft()
+ Move to the previous change in capitalisation.
+void	ScEditor.WordPartLeftExtend()
+ Move to the previous change in capitalisation extending selection to new caret position.
+void	ScEditor.WordPartRight()
+ Move to the change next in capitalisation.
+void	ScEditor.WordPartRightExtend()
+ Move to the next change in capitalisation extending selection to new caret position.
+void	ScEditor.SetVisiblePolicy(int visiblePolicy, int visibleSlop)
+ Set the way the display area is determined when a particular line is to be moved to by Find, FindNext, GotoLine, etc.
+void	ScEditor.DelLineLeft()
+ Delete back from the current position to the start of the line.
+void	ScEditor.DelLineRight()
+ Delete forwards from the current position to the end of the line.
+void	ScEditor.SetXOffset(int newOffset)
+ Get and Set the xOffset (ie, horizonal scroll position).
+int	ScEditor.GetXOffset()
+void	ScEditor.ChooseCaretX()
+ Set the last x chosen value to be the caret x position.
+void	ScEditor.GrabFocus()
+ Set the focus to this Scintilla widget.
+void	ScEditor.SetXCaretPolicy(int caretPolicy, int caretSlop)
+ Set the way the caret is kept visible when going sideway. The exclusion zone is given in pixels.
+void	ScEditor.SetYCaretPolicy(int caretPolicy, int caretSlop)
+ Set the way the line the caret is on is kept visible. The exclusion zone is given in lines.
+void	ScEditor.SetPrintWrapMode(int mode)
+ Set printing to line wrapped (SC_WRAP_WORD) or not line wrapped (SC_WRAP_NONE).
+int	ScEditor.GetPrintWrapMode()
+ Is printing line wrapped?
+void	ScEditor.SetHotspotActiveFore(bool useSetting, colour fore)
+ Set a fore colour for active hotspots.
+colour	ScEditor.GetHotspotActiveFore()
+ Get the fore colour for active hotspots.
+void	ScEditor.SetHotspotActiveBack(bool useSetting, colour back)
+ Set a back colour for active hotspots.
+colour	ScEditor.GetHotspotActiveBack()
+ Get the back colour for active hotspots.
+void	ScEditor.SetHotspotActiveUnderline(bool underline)
+ Enable / Disable underlining active hotspots.
+bool	ScEditor.GetHotspotActiveUnderline()
+ Get whether underlining for active hotspots.
+void	ScEditor.SetHotspotSingleLine(bool singleLine)
+ Limit hotspots to single line so hotspots on two lines don't merge.
+bool	ScEditor.GetHotspotSingleLine()
+ Get the HotspotSingleLine property
+void	ScEditor.ParaDown()
+ Move caret between paragraphs (delimited by empty lines).
+void	ScEditor.ParaDownExtend()
+void	ScEditor.ParaUp()
+void	ScEditor.ParaUpExtend()
+pos	ScEditor.PositionBefore(position pos)
+ Given a valid document position, return the previous position taking code page into account. Returns 0 if passed 0.
+pos	ScEditor.PositionAfter(position pos)
+ Given a valid document position, return the next position taking code page into account. Maximum value returned is the last position in the document.
+void	ScEditor.CopyRange(position start, position end)
+ Copy a range of text to the clipboard. Positions are clipped into the document.
+void	ScEditor.CopyText(int length, string text)
+ Copy argument text to the clipboard.
+void	ScEditor.SetSelectionMode(int mode)
+ Set the selection mode to stream (SC_SEL_STREAM) or rectangular (SC_SEL_RECTANGLE/SC_SEL_THIN) or by lines (SC_SEL_LINES).
+int	ScEditor.GetSelectionMode()
+ Get the mode of the current selection.
+pos	ScEditor.GetLineSelStartPosition(int line)
+ Retrieve the position of the start of the selection at the given line (INVALID_POSITION if no selection on this line).
+pos	ScEditor.GetLineSelEndPosition(int line)
+ Retrieve the position of the end of the selection at the given line (INVALID_POSITION if no selection on this line).
+void	ScEditor.LineDownRectExtend()
+ RectExtended rectangular selection moves Move caret down one line, extending rectangular selection to new caret position.
+void	ScEditor.LineUpRectExtend()
+ Move caret up one line, extending rectangular selection to new caret position.
+void	ScEditor.CharLeftRectExtend()
+ Move caret left one character, extending rectangular selection to new caret position.
+void	ScEditor.CharRightRectExtend()
+ Move caret right one character, extending rectangular selection to new caret position.
+void	ScEditor.HomeRectExtend()
+ Move caret to first position on line, extending rectangular selection to new caret position.
+void	ScEditor.VCHomeRectExtend()
+ If already there move to first character on line. In either case, extend rectangular selection to new caret position.
+void	ScEditor.LineEndRectExtend()
+ Move caret to last position on line, extending rectangular selection to new caret position.
+void	ScEditor.PageUpRectExtend()
+ Move caret one page up, extending rectangular selection to new caret position.
+void	ScEditor.PageDownRectExtend()
+ Move caret one page down, extending rectangular selection to new caret position.
+void	ScEditor.StutteredPageUp()
+ Move caret to top of page, or one page up if already at top of page.
+void	ScEditor.StutteredPageUpExtend()
+ Move caret to top of page, or one page up if already at top of page, extending selection to new caret position.
+void	ScEditor.StutteredPageDown()
+ Move caret to bottom of page, or one page down if already at bottom of page.
+void	ScEditor.StutteredPageDownExtend()
+ Move caret to bottom of page, or one page down if already at bottom of page, extending selection to new caret position.
+void	ScEditor.WordLeftEnd()
+ Move caret left one word, position cursor at end of word.
+void	ScEditor.WordLeftEndExtend()
+ Move caret left one word, position cursor at end of word, extending selection to new caret position.
+void	ScEditor.WordRightEnd()
+ Move caret right one word, position cursor at end of word.
+void	ScEditor.WordRightEndExtend()
+ Move caret right one word, position cursor at end of word, extending selection to new caret position.
+void	ScEditor.SetWhitespaceChars(, string characters)
+ Set the set of characters making up whitespace for when moving or selecting by word. Should be called after SetWordChars.
+void	ScEditor.SetCharsDefault()
+ Reset the set of characters for whitespace and word characters to the defaults.
+int	ScEditor.AutoCGetCurrent()
+ Get currently selected item position in the auto-completion list
+string	ScEditor.AutoCGetCurrentText()
+ Get currently selected item text in the auto-completion list Returns the length of the item text
+void	ScEditor.Allocate(int bytes)
+ Enlarge the document to a particular size of text bytes.
+string	ScEditor.TargetAsUTF8()
+ Returns the target converted to UTF8. Return the length in bytes.
+void	ScEditor.SetLengthForEncode(int bytes)
+ Set the length of the utf8 argument for calling EncodedFromUTF8. Set to -1 and the string will be measured to the first nul.
+string	ScEditor.EncodedFromUTF8(string utf8)
+ Return the length of the result in bytes. On error return 0.
+int	ScEditor.FindColumn(int line, int column)
+ Find the position of a column on a line taking into account tabs and multi-byte characters. If beyond end of line, return line end position.
+int	ScEditor.GetCaretSticky()
+ Can the caret preferred x position only be changed by explicit movement commands?
+void	ScEditor.SetCaretSticky(int useCaretStickyBehaviour)
+ Stop the caret preferred x position changing when the user types.
+void	ScEditor.ToggleCaretSticky()
+ Switch between sticky and non-sticky: meant to be bound to a key.
+void	ScEditor.SetPasteConvertEndings(bool convert)
+ Enable/Disable convert-on-paste for line endings
+bool	ScEditor.GetPasteConvertEndings()
+ Get convert-on-paste setting
+void	ScEditor.SelectionDuplicate()
+ Duplicate the selection. If selection empty duplicate the line containing the caret.
+void	ScEditor.SetCaretLineBackAlpha(int alpha)
+ Set background alpha of the caret line.
+int	ScEditor.GetCaretLineBackAlpha()
+ Get the background alpha of the caret line.
+void	ScEditor.SetCaretStyle(int caretStyle)
+ Set the style of the caret to be drawn.
+int	ScEditor.GetCaretStyle()
+ Returns the current style of the caret.
+void	ScEditor.SetIndicatorCurrent(int indicator)
+ Set the indicator used for IndicatorFillRange and IndicatorClearRange
+int	ScEditor.GetIndicatorCurrent()
+ Get the current indicator
+void	ScEditor.SetIndicatorValue(int value)
+ Set the value used for IndicatorFillRange
+int	ScEditor.GetIndicatorValue()
+ Get the current indicator vaue
+void	ScEditor.IndicatorFillRange(int position, int fillLength)
+ Turn a indicator on over a range.
+void	ScEditor.IndicatorClearRange(int position, int clearLength)
+ Turn a indicator off over a range.
+int	ScEditor.IndicatorAllOnFor(int position)
+ Are any indicators present at position?
+int	ScEditor.IndicatorValueAt(int indicator, int position)
+ What value does a particular indicator have at at a position?
+int	ScEditor.IndicatorStart(int indicator, int position)
+ Where does a particular indicator start?
+int	ScEditor.IndicatorEnd(int indicator, int position)
+ Where does a particular indicator end?
+void	ScEditor.SetPositionCache(int size)
+ Set number of entries in position cache
+int	ScEditor.GetPositionCache()
+ How many entries are allocated to the position cache?
+void	ScEditor.CopyAllowLine()
+ Copy the selection, if selection empty copy the line with the caret
+int	ScEditor.GetCharacterPointer()
+ Compact the document buffer and return a read-only pointer to the characters in the document.
+void	ScEditor.SetKeysUnicode(bool keysUnicode)
+ Always interpret keyboard input as Unicode
+bool	ScEditor.GetKeysUnicode()
+ Are keys always interpreted as Unicode?
+void	ScEditor.SetIndicAlpha(int indicator, int alpha)
+ Set the alpha fill colour of the given indicator.
+int	ScEditor.GetIndicAlpha(int indicator)
+ Get the alpha fill colour of the given indicator.
+void	ScEditor.SetExtraAscent(int extraAscent)
+ Set extra ascent for each line
+int	ScEditor.GetExtraAscent()
+ Get extra ascent for each line
+void	ScEditor.SetExtraDescent(int extraDescent)
+ Set extra descent for each line
+int	ScEditor.GetExtraDescent()
+ Get extra descent for each line
+int	ScEditor.MarkerSymbolDefined(int markerNumber)
+ Which symbol was defined for markerNumber with MarkerDefine
+void	ScEditor.MarginSetText(int line, string text)
+ Set the text in the text margin for a line
+string	ScEditor.MarginGetText(int line)
+ Get the text in the text margin for a line
+void	ScEditor.SetMarginStyle(int line, int style)
+ Set the style number for the text margin for a line
+int	ScEditor.GetMarginStyle(int line)
+ Get the style number for the text margin for a line
+void	ScEditor.MarginSetStyles(int line, string styles)
+ Set the style in the text margin for a line
+string	ScEditor.MarginGetStyles(int line)
+ Get the styles in the text margin for a line
+void	ScEditor.MarginTextClearAll()
+ Clear the margin text on all lines
+void	ScEditor.SetMarginStyleOffset(int style)
+ Get the start of the range of style numbers used for margin text
+int	ScEditor.GetMarginStyleOffset()
+ Get the start of the range of style numbers used for margin text
+void	ScEditor.AnnotationSetText(int line, string text)
+ Set the annotation text for a line
+string	ScEditor.AnnotationGetText(int line)
+ Get the annotation text for a line
+void	ScEditor.SetAnnotationStyle(int line, int style)
+ Set the style number for the annotations for a line
+int	ScEditor.GetAnnotationStyle(int line)
+ Get the style number for the annotations for a line
+void	ScEditor.AnnotationSetStyles(int line, string styles)
+ Set the annotation styles for a line
+string	ScEditor.AnnotationGetStyles(int line)
+ Get the annotation styles for a line
+int	ScEditor.GetAnnotationLines(int line)
+ Get the number of annotation lines for a line
+void	ScEditor.AnnotationClearAll()
+ Clear the annotations from all lines
+void	ScEditor.SetAnnotationVisible(int visible)
+ Set the visibility for the annotations for a view
+int	ScEditor.GetAnnotationVisible()
+ Get the visibility for the annotations for a view
+void	ScEditor.SetAnnotationStyleOffset(int style)
+ Get the start of the range of style numbers used for annotations
+int	ScEditor.GetAnnotationStyleOffset()
+ Get the start of the range of style numbers used for annotations
+void	ScEditor.AddUndoAction(int token, int flags)
+ Add a container action to the undo stack
+pos	ScEditor.CharPositionFromPoint(int x, int y)
+ Find the position of a character from a point within the window.
+pos	ScEditor.CharPositionFromPointClose(int x, int y)
+ Find the position of a character from a point within the window. Return INVALID_POSITION if not close to text.
+void	ScEditor.SetMultipleSelection(bool multipleSelection)
+ Set whether multiple selections can be made
+bool	ScEditor.GetMultipleSelection()
+ Whether multiple selections can be made
+void	ScEditor.SetAdditionalSelectionTyping(bool additionalSelectionTyping)
+ Set whether typing can be performed into multiple selections
+bool	ScEditor.GetAdditionalSelectionTyping()
+ Whether typing can be performed into multiple selections
+void	ScEditor.SetAdditionalCaretsBlink(bool additionalCaretsBlink)
+ Set whether additional carets will blink
+bool	ScEditor.GetAdditionalCaretsBlink()
+ Whether additional carets will blink
+void	ScEditor.SetAdditionalCaretsVisible(bool additionalCaretsBlink)
+ Set whether additional carets are visible
+bool	ScEditor.GetAdditionalCaretsVisible()
+ Whether additional carets are visible
+int	ScEditor.GetSelections()
+ How many selections are there?
+void	ScEditor.ClearSelections()
+ Clear selections to a single empty stream selection
+int	ScEditor.SetSelection(int caret,int anchor)
+ Set a simple selection
+int	ScEditor.AddSelection(int caret,int anchor)
+ Add a selection
+void	ScEditor.SetMainSelection(int selection)
+ Set the main selection
+int	ScEditor.GetMainSelection()
+ Which selection is the main selection
+void	ScEditor.SetSelectionNCaret(int selection, position pos)
+pos	ScEditor.GetSelectionNCaret(int selection)
+void	ScEditor.SetSelectionNAnchor(int selection, position posAnchor)
+pos	ScEditor.GetSelectionNAnchor(int selection)
+void	ScEditor.SetSelectionNCaretVirtualSpace(int selection, int space)
+int	ScEditor.GetSelectionNCaretVirtualSpace(int selection)
+void	ScEditor.SetSelectionNAnchorVirtualSpace(int selection, int space)
+int	ScEditor.GetSelectionNAnchorVirtualSpace(int selection)
+void	ScEditor.SetSelectionNStart(int selection, position pos)
+ Sets the position that starts the selection - this becomes the anchor.
+pos	ScEditor.GetSelectionNStart(int selection)
+ Returns the position at the start of the selection.
+void	ScEditor.SetSelectionNEnd(int selection, position pos)
+ Sets the position that ends the selection - this becomes the currentPosition.
+pos	ScEditor.GetSelectionNEnd(int selection)
+ Returns the position at the end of the selection.
+void	ScEditor.SetRectangularSelectionCaret(position pos)
+pos	ScEditor.GetRectangularSelectionCaret()
+void	ScEditor.SetRectangularSelectionAnchor(position posAnchor)
+pos	ScEditor.GetRectangularSelectionAnchor()
+void	ScEditor.SetRectangularSelectionCaretVirtualSpace(int space)
+int	ScEditor.GetRectangularSelectionCaretVirtualSpace()
+void	ScEditor.SetRectangularSelectionAnchorVirtualSpace(int space)
+int	ScEditor.GetRectangularSelectionAnchorVirtualSpace()
+void	ScEditor.SetVirtualSpaceOptions(int virtualSpaceOptions)
+int	ScEditor.GetVirtualSpaceOptions()
+void	ScEditor.SetRectangularSelectionModifier(int modifier)
+int	ScEditor.GetRectangularSelectionModifier()
+ Get the modifier key used for rectangular selection.
+void	ScEditor.SetAdditionalSelFore(colour fore)
+ Set the foreground colour of additional selections. Must have previously called SetSelFore with non-zero first argument for this to have an effect.
+void	ScEditor.SetAdditionalSelBack(colour back)
+ Set the background colour of additional selections. Must have previously called SetSelBack with non-zero first argument for this to have an effect.
+void	ScEditor.SetAdditionalSelAlpha(int alpha)
+ Set the alpha of the selection.
+int	ScEditor.GetAdditionalSelAlpha()
+ Get the alpha of the selection.
+void	ScEditor.SetAdditionalCaretFore(colour fore)
+ Set the foreground colour of additional carets.
+colour	ScEditor.GetAdditionalCaretFore()
+ Get the foreground colour of additional carets.
+void	ScEditor.RotateSelection()
+ Set the main selection to the next selection.
+void	ScEditor.SwapMainAnchorCaret()
+ Swap that caret and anchor of the main selection.
+int	ScEditor.ChangeLexerState(position start, position end)
+ Indicate that the internal state of a lexer has changed over a range and therefore there may be a need to redraw.
+int	ScEditor.ContractedFoldNext(int lineStart)
+ Find the next line at or after lineStart that is a contracted fold header line. Return -1 when no more lines.
+void	ScEditor.VerticalCentreCaret()
+ Centre current line in window.
+void	ScEditor.StartRecord()
+ Start notifying the container of all key presses and commands.
+void	ScEditor.StopRecord()
+ Stop notifying the container of all key presses and commands.
+void	ScEditor.SetLexer(int lexer)
+ Set the lexing language of the document.
+int	ScEditor.GetLexer()
+ Retrieve the lexing language of the document.
+void	ScEditor.Colourise(position start, position end)
+ Colourise a segment of the document using the current lexing language.
+void	ScEditor.SetProperty(string key, string value)
+ Set up a value that may be used by a lexer for some optional feature.
+void	ScEditor.SetKeyWords(int keywordSet, string keyWords)
+ Set up the key words used by the lexer.
+void	ScEditor.SetLexerLanguage(, string language)
+ Set the lexing language of the document based on string name.
+void	ScEditor.LoadLexerLibrary(, string path)
+ Load a lexer library (dll / so).
+string	ScEditor.GetProperty(string key)
+ Retrieve a "property" value previously set with SetProperty.
+string	ScEditor.GetPropertyExpanded(string key)
+ Retrieve a "property" value previously set with SetProperty, with "$()" variable replacement on returned buffer.
+int	ScEditor.GetPropertyInt(string key)
+ Retrieve a "property" value previously set with SetProperty, interpreted as an int AFTER any "$()" variable replacement.
+int	ScEditor.GetStyleBitsNeeded()
+ Retrieve the number of bits the current lexer needs for styling.
+string	ScEditor.GetLexerLanguage()
+ Retrieve the name of the lexer. Return the length of the text.
+int	ScEditor.PrivateLexerCall(int operation, int pointer)
+ For private communication between an application and a known lexer.
+string	ScEditor.PropertyNames()
+ Retrieve a '\n' separated list of properties understood by the current lexer.
+int	ScEditor.PropertyType(string name)
+ Retrieve the type of a property.
+string	ScEditor.DescribeProperty(string name)
+ Describe a property.
+string	ScEditor.DescribeKeyWordSets()
+ Retrieve a '\n' separated list of descriptions of the keyword sets understood by the current lexer.

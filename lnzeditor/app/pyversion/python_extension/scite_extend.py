@@ -1,15 +1,88 @@
 
+# SciTE Python Extension
+# Ben Fisher, 2011
+
 import CScite
 from CScite import ScEditor, ScOutput, ScApp
 import exceptions
+import sys
+
+echoAll = False
+CurrentPane = None
+
+def testFailOnIncorrectArgs():
+	expectThrow( (lambda: ScApp._specialatt), '', exceptions.AttributeError)
+	expectThrow( (lambda: ScApp.nonExist()), 'Could not find command')
+	expectThrow( (lambda: ScApp.nonExist(1)), 'takes no arguments', exceptions.TypeError )
+	expectThrow( (lambda: ScApp.NON_EXIST), 'Could not find constant')
+	expectThrow( (lambda: ScApp.NON_EXIST(1)), 'Could not find constant')
+	
+	
+	expectThrow( (lambda:CurrentPane.MarkerAdd(1,1,1)), 'wrong#args')
+	expectThrow( (lambda:CurrentPane.CanRedo(None)), 'wrong#args')
+	expectThrow( (lambda:CurrentPane.CanRedo(0)), 'expected int')
+	
+
+
+#things that basically have to be manual
+def basicTests():
+	ScEditor.ClearAll(); ScOutput.ClearAll()
+	ScEditor.Write('a');ScEditor.Write('bc')
+	ScApp.Trace('d');ScApp.Trace('ef')
+	ScApp.MsgBox( 'Not an error.\nManual sanity check:\n editor="abc"\n output="def"\n\nThanks')
+	
+	
+	ScEditor.ClearAll(); ScOutput.ClearAll()
+	SetStdout(ScEditor)
+	expectEqual(ScOutput.GetAllText(), '')
+	ScApp.Trace("a")
+	ScApp.Trace("b")
+	ScApp.Trace("c")
+	expectEqual(ScOutput.GetAllText(), 'abc')
+	
+	ScEditor.ClearAll(); ScOutput.ClearAll()
+	SetStdout(ScOutput)
+	ScApp.OpenFile('pythonsetup.py')
+	ScApp.MsgBox( 'Opened.')
+	ScApp.Close()
+	ScApp.MsgBox( 'Closed.')
+	
+	
+	
+
+def autoTestApp():
+	testFailOnIncorrectArgs()
+	#~ basicTests()
+	#~ ScOutput.ClearAll()
+	#~ expectEqual(getAllText(ScOutput), ''); ScOutput.ClearAll()
+	#~ ScApp.Trace("trace")
+	#~ ScApp.Trace("trace")
+	#~ expectEqual(getAllText(ScEditor), 'tracetrace'); ScOutput.ClearAll()
+	
+	
+
+def manualTestApp():
+	ScApp.MsgBox( 'Message box')
+	pass
+
+
+def manualTestPane(pane):
+	expectThrow( (lambda:objPane.MarkerAdd(1,1,1)), 'wrong#args')
+	expectThrow( (lambda:objPane.CanRedo(None)), 'wrong#args')
+	expectThrow( (lambda:objPane.CanRedo(0)), 'expected int')
+	
+	pane.MarkerAdd(2,2)
+
 
 
 def testSciteCallsApp(nTest):
 	if nTest==1:
-		ScApp.Trace( 'trace')
-		ScApp.Trace( 'trace')
-		# result should be tracetrace with no whitespace between
-		ScApp.MsgBox( 'mbox')
+		autoTestApp()
+		
+		#~ ScApp.Trace( 'trace')
+		#~ ScApp.Trace( 'trace')
+		#~ # result should be tracetrace with no whitespace between
+		#~ ScApp.MsgBox( 'mbox')
 		
 	if nTest==2:
 		ScApp.OpenFile('c:\\nps.txt')
@@ -65,7 +138,7 @@ def testSciteCallsPane(nTest, objPane):
 	if nTest==2:
 		objPane.Append('0123456789')
 		objPane.Remove(6,8)
-		objPane.Insert(2, 'aaa')
+		objPane.Insert('aaa',2)
 		
 	if nTest==3:
 		s = objPane.Textrange(2,4)
@@ -82,7 +155,7 @@ def testSciteCallsPaneFn(nTest, objPane):
 		expectThrow( (lambda:objPane.XXX()), 'noattribute', AttributeError)
 		expectThrow( (lambda:objPane.fnNothing()), 'not find fn')
 		expectThrow( (lambda:objPane.fn()), 'not find fn')
-		expectThrow( (lambda:objPane.fnClearAll(1)), 'wrong#args')
+		expectThrow( (lambda:objPane.ClearAll(1)), 'wrong#args')
 		expectThrow( (lambda:objPane.fnSetWhitespaceBack(1,1,1)), 'wrong#args')
 		expectThrow( (lambda:objPane.fnAppendText('a','b','c','d')), 'wrong#args')
 		expectThrow( (lambda:objPane.fnAppendText('a','a')), 'int expected')
@@ -103,8 +176,39 @@ def testSciteCallsPaneFn(nTest, objPane):
 		n = objPane.GetLineCount(); print 'GetLinecount', n
 		expectThrow( (lambda:objPane.SetLineCount(4)), 'prop can\'t be set')
 		expectThrow( (lambda:objPane.GetWhitespaceChars()), 'prop can\'t be get')
-		print objPane.GetLineCount(55) #errror - succeeds
-		#~ expectThrow( (lambda:objPane.GetLineCount('a')), 'prop can\'t be set')
+		expectThrow( (lambda:objPane.GetLineCount('a')), 'prop does not take params')
+		expectThrow( (lambda:objPane.GetLineCount(1)), 'prop does not take params')
+		expectThrow( (lambda:objPane.GetCharAt()), 'prop needs param')
+		expectThrow( (lambda:objPane.GetCharAt('a')), 'Int expected')
+		expectThrow( (lambda:objPane.SetStyleBold('a')), 'Bool expected')
+		expectThrow( (lambda:objPane.SetStyleBold(True)), 'prop needs param')
+		expectThrow( (lambda:objPane.SetViewEOL(1)), 'Bool expected')
+		expectThrow( (lambda:objPane.SetViewEOL(True, 45)), 'prop does not take params')
+		
+		n = objPane.GetCharAt(1); print 'GetCharAt(1)', n, chr(n)
+		n = objPane.GetCaretWidth(); print 'GetCaretWidth', n
+		n = objPane.GetCurrentPos(); print 'GetCurrentPos', n
+		nStyle = objPane.GetStyleAt(1); print 'GetStyleAt 1', nStyle
+		n = objPane.GetStyleBold(1); print 'GetStyleBold 1', n
+		n = objPane.GetViewEOL(); print 'GetViewEOL 1', n
+		
+		nBefore = objPane.GetUseTabs();
+		objPane.SetUseTabs(not nBefore)
+		n = objPane.GetUseTabs(); print 'GetUseTabs was',nBefore, 'is now', n
+		
+		objPane.SetCaretWidth(3); assert(objPane.GetCaretWidth() == 3)
+		
+		
+		nBefore = objPane.GetViewEOL();
+		objPane.SetViewEOL(not nBefore)
+		n = objPane.GetViewEOL(); print 'GetViewEOL was',nBefore, 'is now', n
+		nBefore = objPane.GetStyleBold(nStyle);
+		objPane.SetStyleBold(nStyle, not nBefore)
+		n = objPane.GetStyleBold(nStyle); print 'GetStyleBold was',nBefore, 'is now', n
+		
+		objPane.SetStyleSize(nStyle, objPane.GetStyleSize(nStyle)+1)
+		#~ objPane.SetStyleFore(11, 0x00ff0000)
+		objPane.SetStyleBold(11, True)
 		
 		
 	if nTest==2:
@@ -117,7 +221,7 @@ def testSciteCallsPaneFn(nTest, objPane):
 		objPane.fnGotoLine #void,  {iface_int, iface_void}},
 		objPane.fnSetWhitespaceBack # iface_void, {iface_bool, iface_colour}},
 		objPane.fnAppendText #iface_void, {iface_length, iface_string}},
-		objPane.fnClearAll # iface_void, {iface_void, iface_void}}
+		objPane.ClearAll # iface_void, {iface_void, iface_void}}
 		
 		objPane.fnCopyText(len('foo'), 'foods')
 		s = objPane.fnGetLine(2); print 'fnGetLine(2)', s
@@ -133,7 +237,14 @@ def testSciteCallsPaneFn(nTest, objPane):
 		objPane.fnSetWhitespaceBack(True, 0x00ff0000) #first turn on view whitespace
 		objPane.fnAppendText(len('_append_'), '_append_')
 		
-
+	if nTest == 4:
+		#moved to its own test. if you call this and then throw an exception,
+		#the key event still sent to Scite, and it ends up clearing much of your text.
+		objPane.SetCurrentPos(1); assert(objPane.GetCurrentPos() == 1)
+	
+	
+	
+	
 #~ def testSciteCallsApp(nTest):
 	#~ if nTest==0:
 	#~ if nTest==1:
@@ -146,34 +257,34 @@ def testSciteCallsPaneFn(nTest, objPane):
 
 
 def OnStart():
-	print 'See OnStart'
+	if echoAll: print 'See OnStart'
 
 def OnOpen(sFilename):
-	print 'See OnOpen'
+	if echoAll: print 'See OnOpen'
 	pass
 
 def OnClose(sFilename):
-	print 'See OnClose'
+	if echoAll: print 'See OnClose'
 	pass
 	
 def OnSwitchFile(sFilename):
-	print 'See OnSwitchFile'
+	if echoAll: print 'See OnSwitchFile'
 	pass
 	
 def OnBeforeSave(sFilename):
-	print 'See OnBeforeSave'
+	if echoAll: print 'See OnBeforeSave'
 	pass
 	
 def OnSave(sFilename):
-	print 'See OnSave'
+	if echoAll: print 'See OnSave'
 	pass
 	
 def OnSavePointReached():
-	print 'See OnSavePointReached'
+	if echoAll: print 'See OnSavePointReached'
 	pass
 	
 def OnSavePointLeft():
-	print 'See OnSavePointLeft'
+	if echoAll: print 'See OnSavePointLeft'
 	pass
 
 testLevel = 1
@@ -183,12 +294,12 @@ def OnKey( keycode, fShift, fCtrl, fAlt):
 		return True
 	
 	if fCtrl and not fShift and not fAlt:
-		ScOutput.fnClearAll()
+		ScOutput.ClearAll()
 		print 'setting testlevel to '+str(keycode-ord('0'))
 		testLevel = keycode-ord('0')
 		return False
 	elif not fCtrl and not fShift and not fAlt:
-		ScOutput.fnClearAll()
+		#~ ScOutput.ClearAll()
 		nTest = keycode-ord('0')
 		if testLevel == 1: testSciteCallsApp(nTest)
 		if testLevel == 2: testSciteCallsAppFn(nTest)
@@ -205,34 +316,72 @@ def OnChar(nChar):
 	pass
 
 def OnDoubleClick():
-	print 'See OnDoubleClick'
+	if echoAll: print 'See OnDoubleClick'
 	pass
-
 	
 def OnMarginClick():
-	print 'See OnMarginClick'
+	ScEditor.Write( 'hi')
+	if echoAll: print 'See OnMarginClick'
 	pass
 
-def OnTipStart(pos, word):
-	print 'See OnTipStart'
+def OnDwellStart(nPos, sWord):
+	if echoAll: print 'See OnDwellStart'
 	pass
 
-def OnTipEnd():
-	print 'See OnTipEnd'
+def OnDwellEnd():
+	if echoAll: print 'See OnDwellEnd'
 	pass
 
-def OnUserListSelection(n,sFilename):
-	print 'See OnUserListSelection'
+def OnUserListSelection(nType, sSelection):
+	if echoAll: print 'See OnUserListSelection'
 	pass
 
 def expectThrow(fn, sExpectedError, TypeException=exceptions.RuntimeError):
 	try:
 		fn()
 	except TypeException,e:
-		print 'Pass:',sExpectedError, ':', str(e).split('\n')[-1]
+		sError = str(e).split('\n')[-1]
+		if sExpectedError.lower() in sError.lower():
+			print 'Pass:',sExpectedError, ' == ', sError
+		elif TypeException==True:
+			print 'Pass:',' ', sError
+		else:
+			print 'Fail: expected msg',sExpectedError,'got',sError
 	else:
-		print 'Fail: expected to throw '+sExpectedError
+		print 'Fail: expected to throw! '+sExpectedError
+
+def expectEqual(v, vExpected):
+	if v != vExpected:
+		print 'fail: Expected '+str(vExpected) + ' but got '+str(v)
+		raise 'stop'
+	else:
+		print 'pass: '+str(vExpected) + ' == '+str(v)
+
+def expectNotEqual(v, vExpected):
+	if v == vExpected:
+		print 'fail: Expected '+str(vExpected) + ' not to equal '+str(v)
+		raise 'stop'
+	else:
+		print 'pass: '+str(vExpected) + ' != '+str(v)
 
 
-
+class PrintToEditor():
+	def __init__(self): pass
+	def write(self, s): ScEditor.Write(s)
+	def close(self): pass
+def SetStdout(paneObject):
+	if paneObject==ScEditor:
+		sys.stdout = sys.stdoutEdit
+	else:
+		sys.stdout = sys.stdoutOut
+sys.stdoutOut = sys.stdout
+sys.stdoutEdit = PrintToEditor()
+def printclear():
+	if sys.stdout == sys.stdoutEdit:
+		ScEditor.ClearAll()
+	else:
+		ScOutput.ClearAll()
+	
+	
+	
 
