@@ -250,7 +250,7 @@ bool PythonExtension::_runCallbackArgs(const char* szNameOfFunction, PyObject* p
 		return false;
 	}
 	/* bubble event up by default, unless they explicitly return false. */
-	if (PyBool_Check(pResult) && pResult == Py_False)
+	if (PyBool_Check(((PyObject*)pResult)) && pResult == Py_False)
 		return true; // do not bubble up event
 	else
 		return false; // bubble up event
@@ -647,12 +647,12 @@ bool pullPythonArgument(IFaceType type, CPyObjWeak pyObjNext, intptr_t* param)
 			*param = (intptr_t) PyInt_AsLong(pyObjNext);
 			break;
 		case iface_bool:
-			if (!PyBool_Check(pyObjNext)) { PyErr_SetString(PyExc_RuntimeError,"Bool expected."); return false; }
+			if (!PyBool_Check((PyObject*) pyObjNext)) { PyErr_SetString(PyExc_RuntimeError,"Bool expected."); return false; }
 			*param = (pyObjNext == Py_True) ? 1 : 0;
 			break;
 		case iface_string:
 		case iface_cells:
-			if (!PyString_Check(pyObjNext)) { PyErr_SetString(PyExc_RuntimeError,"String expected."); return false; }
+			if (!PyString_Check((PyObject*) pyObjNext)) { PyErr_SetString(PyExc_RuntimeError,"String expected."); return false; }
 			*param = (intptr_t) PyString_AsString(pyObjNext);
 			break;
 		case iface_textrange:
