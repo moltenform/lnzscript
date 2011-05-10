@@ -7,8 +7,29 @@ import CScite
 import exceptions
 
 class CScintillaPane():
+	#Custom helpers
+	def Write(self, txt, pos=-1):
+		if pos==-1: pos = self.GetCurrentPos()
+		CScite.pane_Insert(self.nPane,pos, txt)
+		self.GotoPos(pos+len(txt))
+	def GetAllText(self):
+		return self.Textrange(0, self.GetLength())
+		
+	# overrides to make it simpler for callers.
+	def GetCurLine(self):
+		nLine = self.LineFromPosition(self.GetCurrentPos())
+		return self.GetLine(nLine)
+	def CopyText(self, s): return CScite.pane_ScintillaFn(self.nPane, 'CopyText', (len(s),s))
+	def SetText(self, s): return CScite.pane_ScintillaFn(self.nPane, 'SetText', (None, s))
+	def AutoCStops(self, s): return CScite.pane_ScintillaFn(self.nPane, 'AutoCStops', (None, s))
+	def AutoCSelect(self, s): return CScite.pane_ScintillaFn(self.nPane, 'AutoCSelect', (None, s))
+	def ReplaceSel(self, s): return CScite.pane_ScintillaFn(self.nPane, 'ReplaceSel', (None, s))
+	def SetLexerLanguage(self, s): return CScite.pane_ScintillaFn(self.nPane, 'SetLexerLanguage', (None, s))
+	def LoadLexerLibrary(self, s): return CScite.pane_ScintillaFn(self.nPane, 'LoadLexerLibrary', (None, s))
+
+	# pane methods
 	def Append(self, txt): return CScite.pane_Append(self.nPane, txt)
-	def Insert(self, npos, txt): return CScite.pane_Insert(self.nPane,npos, txt)
+	def InsertText(self, txt, pos): return CScite.pane_Insert(self.nPane,pos, txt)
 	def Remove(self, npos1, npos2): return CScite.pane_Remove(self.nPane, npos1, npos2)
 	def Textrange(self, n1, n2): return CScite.pane_Textrange(self.nPane, n1, n2)
 	# CScite.pane_ScintillaFn(self.nPane, s, *args)  (see __getattr__)
@@ -28,15 +49,20 @@ class CScintillaPane():
 		if sprop.startswith('_'):
 			#if looking for a special method, don't try to do anything.
 			raise exceptions.AttributeError
-		elif sprop.startswith('fn'):
-			sprop = sprop[2:]
-			return (lambda *args: CScite.pane_ScintillaFn(self.nPane, sprop, args))
 		elif sprop.startswith('Get'):
-			sprop = sprop[3:]
-			return (lambda param=None: CScite.pane_ScintillaGet(self.nPane, sprop, param))
+			if sprop in CScite._dictIsScintillaFnNotGetter:
+				return (lambda *args: CScite.pane_ScintillaFn(self.nPane, sprop, args))
+			else:
+				sprop = sprop[3:]
+				return (lambda param=None: CScite.pane_ScintillaGet(self.nPane, sprop, param))
 		elif sprop.startswith('Set'):
-			sprop = sprop[3:]
-			return (lambda a1, a2=None: CScite.pane_ScintillaSet(self.nPane, sprop, a1, a2))
+			if sprop in CScite._dictIsScintillaFnNotSetter:
+				return (lambda *args: CScite.pane_ScintillaFn(self.nPane, sprop, args))
+			else:
+				sprop = sprop[3:]
+				return (lambda a1, a2=None: CScite.pane_ScintillaSet(self.nPane, sprop, a1, a2))
+		else:
+			return (lambda *args: CScite.pane_ScintillaFn(self.nPane, sprop, args))
 		raise exceptions.AttributeError
 	
 	def MakeKeymod(self, keycode, fShift=False, fCtrl=False, fAlt=False):
@@ -46,6 +72,16 @@ class CScintillaPane():
 		if fCtrl: modifiers |= CScite.ScApp.SCMOD_CTRL
 		if fAlt: modifiers |= CScite.ScApp.SCMOD_ALT
 		return keycode | (modifiers << 16)
+	def MakeColor(self, red, green, blue):
+		assert 0<=red<=255
+		assert 0<=green<=255
+		assert 0<=blue<=255
+		return red + (green << 8) + (blue << 16)
+	def GetColor(self, val):
+		red = val & 0x000000ff
+		green = (val & 0x0000ff00) >> 8
+		blue = (val & 0x000ff0000) >> 16
+		return (red, green, blue)
 	
 
 class CSciteApp():
@@ -59,17 +95,25 @@ class CSciteApp():
 	# CScite.app_SciteCommand(self.nPane, s, *args)  (see __getattr__)
 	# CScite.app_GetConstant(self.nPane, s, *args)  (see __getattr__)
 	
-	def __getattr__(self, sprop):
-		if sprop.startswith('_'):
+	def __getattr__(self, s):
+		if s.startswith('_'):
 			#if looking for a special method, don't try to do anything.
 			raise exceptions.AttributeError
-		elif sprop.startswith('fn'):
-			sprop = sprop[2:]
-			return (lambda: CScite.app_SciteCommand(sprop))
-		elif sprop.upper() == sprop and '_' in sprop:
-			return CScite.app_GetConstant(sprop)
+		elif s.upper() == s and '_' in s:
+			return CScite.app_GetConstant(s)
 		else:
-			raise exceptions.AttributeError
+			return (lambda: CScite.app_SciteCommand(s))
+
+# some methods start with "get" but are actually a "function". user shouldn't care about this implementation detail
+CScite._dictIsScintillaFnNotGetter = {
+"GetCurLine":1, "GetHotspotActiveBack":1, "GetHotspotActiveFore":1, "GetLastChild":1, "GetLexerLanguage":1, "GetLine":1, "GetLineSelEndPosition":1, "GetLineSelStartPosition":1, "GetProperty":1, "GetPropertyExpanded":1, "GetSelText":1, "GetStyledText":1, "GetTag":1, "GetText":1, "GetTextRange":1 }
+CScite._dictIsScintillaFnNotSetter = {
+"SetCharsDefault":1, "SetFoldFlags":1, "SetFoldMarginColour":1, "SetFoldMarginHiColour":1, "SetHotspotActiveBack":1, "SetHotspotActiveFore":1, "SetLengthForEncode":1, "SetLexerLanguage":1, "SetSavePoint":1, "SetSel":1, "SetSelBack":1, "SetSelFore":1, "SetSelection":1, "SetStyling":1, "SetStylingEx":1, "SetText":1, "SetVisiblePolicy":1, "SetWhitespaceBack":1, "SetWhitespaceFore":1, "SetXCaretPolicy":1, "SetYCaretPolicy":1 }
+
+CScite._dictOverride = { 
+#~ 'GetTextRange': (lambda *args: 'Use ScEditor.Textrange instead of GetTextRange.'),
+} 
+
 
 CScite.ScEditor = CScintillaPane(0)
 CScite.ScOutput = CScintillaPane(1)

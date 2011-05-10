@@ -1,8 +1,10 @@
-
 # SciTE Python Extension
 # Ben Fisher, 2011
 
 from CScite import ScEditor, ScOutput, ScApp
+
+def callFromCmd():
+	ScApp.MsgBox('Called from cmd')
 
 echoEvents = False
 
@@ -17,6 +19,7 @@ def OnClose(sFilename):
 
 def OnMarginClick():
 	ScEditor.Write('hi') # example of how to call a method on the ScEditor object
+	print 'hi'
 	if echoEvents: print 'See OnMarginClick'
 
 def OnSwitchFile(sFilename):
@@ -51,7 +54,14 @@ def OnUserListSelection(nType, sSelection):
 	if echoEvents: print 'See OnUserListSelection', nType, sSelection
 
 def OnKey(keycode, fShift, fCtrl, fAlt):
-	import scite_extend_tests
+	import exceptions
+	try:
+		import scite_extend_tests
+	except exceptions.ImportError, e:
+		if str(e) == 'No module named scite_extend_tests':
+			return None
+		else:
+			raise
 	return scite_extend_tests.RunTestSet(keycode, fShift, fCtrl, fAlt)
 
 

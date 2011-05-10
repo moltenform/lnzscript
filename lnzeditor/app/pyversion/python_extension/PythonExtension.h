@@ -37,6 +37,8 @@ int FindFriendlyNamedIDMConstant(const char *name);
 inline bool getPaneFromInt(int nPane, ExtensionAPI::Pane* outPane);
 bool pullPythonArgument(IFaceType type, CPyObjWeak pyObjNext, intptr_t* param);
 bool pushPythonArgument(IFaceType type, intptr_t param, PyObject** pyValueOut /* caller must incref this! */);
+void trace(const char *szText1, const char *szText2=NULL);
+void trace(const char *szText1, const char *szText2, int n);
 
 class PythonExtension : public Extension
 {

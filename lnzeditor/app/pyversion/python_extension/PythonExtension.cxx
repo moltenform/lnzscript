@@ -1,10 +1,11 @@
-// SciTE Python Extension (Preview)
+// SciTE Python Extension
 // Ben Fisher, 2011
 
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
+#include "Scite.h"
 #include "Scintilla.h"
 #include "Extender.h"
 #include "SString.h"
@@ -18,12 +19,6 @@
 	#pragma warning(disable: 4996) // unsafe calls (deprecated stdio)
 #endif
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <stdexcept>
-
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -33,29 +28,13 @@ static bool fPythonInitialized = false;
 static inline bool FInitialized() { return fPythonInitialized; }
 static ExtensionAPI *_host = NULL;
 
-void trace(const char *szText1, const char *szText2=NULL)
-{
-	if (!_host) return;
-	if (szText1) _host->Trace(szText1);
-	if (szText2) _host->Trace(szText2); 
-}
-void trace(const char *szText1, const char *szText2, int n)
-{
-	trace(szText1, szText2);
-	char buf[256] = {0};
-	int count = snprintf(buf, sizeof(buf), "%d", n);
-	if (count > sizeof(buf) || count<0) return;
-	_host->Trace(buf);
-}
-
-
 PythonExtension::PythonExtension() {}
 PythonExtension::~PythonExtension() {}
 void PythonExtension::InitializePython()
 {
 	if (!FInitialized())
 	{
-		Py_NoSiteFlag = 1; //don't try to 'import site'
+		Py_NoSiteFlag = 1; // tell python not to try to 'import site'
 		Py_Initialize();
 		SetupPythonNamespace();
 		fPythonInitialized = true;
@@ -76,6 +55,21 @@ bool PythonExtension::Initialise(ExtensionAPI *host)
 	{
 		InitializePython();
 		_runCallback("OnStart", 0, NULL);
+#if FALSE
+		{
+			// binary search requires items to be sorted, verify that they are sorted
+			for (unsigned int i=0; i<PythonExtension::lengthfriendlyconstants-1; i++)
+			{
+				const char* name1 = PythonExtension::friendlyconstants[i].name;
+				const char* name2 = PythonExtension::friendlyconstants[i+1].name;
+				if (strcmp(name1, name2) != -1)
+				{
+					trace("\nWarning-unsorted-");
+					trace(name1, name2);
+				}
+			}
+		}
+#endif
 	}
 	return true;
 }
@@ -84,7 +78,10 @@ bool PythonExtension::OnExecute(const char *s)
 	InitializePython();
 	int nResult = PyRun_SimpleString(s);
 	if (nResult == 0) { return true; }
-	else { PyErr_Print(); return false; }
+	else { 
+		PyErr_Print(); 
+		return true; //used to be false, looked weird
+		}
 }
 bool PythonExtension::Finalise()
 {
@@ -127,7 +124,7 @@ bool PythonExtension::writeError(const char *szError, const char *szError2)
 {
 	trace(">Python Error:", szError); trace(" ", szError2); trace("\n"); return true;
 }
-void PythonExtension::writeLog(const char *szText) { if (false) trace(szText, "\n"); } 
+void PythonExtension::writeLog(const char *szText) { /* if (false) trace(szText, "\n"); */ } 
 
 
 //////////////////////////////////////////// callbacks //////////////////////////////////////////////////
@@ -228,7 +225,7 @@ bool PythonExtension::_runCallback(const char* szNameOfFunction, int nArgs, cons
 	}
 }
 bool PythonExtension::_runCallbackArgs(const char* szNameOfFunction, PyObject* pArgsBorrowed)
-{	
+{
 	CPyObjStrong pName = PyString_FromString(c_szExtensionModName);
 	if (!pName) { return writeError("Unexpected error: could not form string."); }
 	CPyObjStrong pModule = PyImport_Import(pName);
@@ -271,7 +268,7 @@ PyObject* pyfun_MessageBox(PyObject* self, PyObject* pArgs)
 	char* szLogStr = NULL; /* we don't own this. */
 	if (!PyArg_ParseTuple(pArgs, "s", &szLogStr)) return NULL;
 #ifdef _WIN32
-	MessageBoxA(NULL, szLogStr, NULL , 0);
+	MessageBoxA(NULL, szLogStr, "SciTEPython", 0);
 #endif
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -426,6 +423,9 @@ PyObject* pyfun_pane_SendScintillaFn(PyObject* self, PyObject* pArgs)
 	size_t nArgCount = PyTuple_GET_SIZE((PyObject*) pSciArgs);
 	size_t nArgsExpected = isStringResult ? ((func.paramType[0] != iface_void) ? 1 : 0) :
 		((func.paramType[1] != iface_void) ? 2 : ((func.paramType[0] != iface_void) ? 1 : 0));
+	if (strcmp(szCmd, "GetCurLine")==0)
+	{	nArgsExpected = 0; func.paramType[0] = iface_void; func.paramType[1] = iface_void; }
+	
 	if (nArgCount != nArgsExpected) { PyErr_SetString(PyExc_RuntimeError,"Wrong # of args"); return false; }
 	
 	if (func.paramType[0] != iface_void)
@@ -441,7 +441,7 @@ PyObject* pyfun_pane_SendScintillaFn(PyObject* self, PyObject* pArgs)
 	else if (isStringResult) { // allocate space for the result
 		size_t spaceNeeded = _host->Send(pane, func.value, wParam, NULL);
 		if (strcmp(szCmd, "GetCurLine")==0) // the first param of getCurLine is useless
-			wParam = spaceNeeded;
+			wParam = spaceNeeded + 1; //not sure if correct
 		//trace("", "allocating", spaceNeeded);
 		lParam = (intptr_t) new char[spaceNeeded+1];
 		for (unsigned i=0; i<spaceNeeded+1; i++) ((char*)lParam)[i] = 0;
@@ -695,7 +695,6 @@ int FindFriendlyNamedIDMConstant(const char *name) {
 	do {
 		int idx = (lo+hi)/2;
 		int cmp = strcmp(name, PythonExtension::friendlyconstants[idx].name);
-
 		if (cmp > 0) {
 			lo = idx + 1;
 		} else if (cmp < 0) {
@@ -707,7 +706,22 @@ int FindFriendlyNamedIDMConstant(const char *name) {
 	return -1;
 }
 
-#include "Scite.h"
+void trace(const char *szText1, const char *szText2/* =NULL */)
+{
+	if (!_host) return;
+	if (szText1) _host->Trace(szText1);
+	if (szText2) _host->Trace(szText2); 
+}
+void trace(const char *szText1, const char *szText2, int n)
+{
+	trace(szText1, szText2);
+	char buf[256] = {0};
+	int count = snprintf(buf, sizeof(buf), "%d", n);
+	if (count > sizeof(buf) || count<0) return;
+	_host->Trace(buf);
+}
+
+
 static IFaceConstant rgFriendlyNamedIDMConstants[] = {
 {"Abbrev",IDM_ABBREV},
 {"About",IDM_ABOUT},
@@ -731,8 +745,8 @@ static IFaceConstant rgFriendlyNamedIDMConstants[] = {
 {"Complete",IDM_COMPLETE},
 {"CompleteWord",IDM_COMPLETEWORD},
 {"Copy",IDM_COPY},
-{"Copyasrtf",IDM_COPYASRTF},
-{"Copypath",IDM_COPYPATH},
+{"CopyAsrtf",IDM_COPYASRTF},
+{"CopyPath",IDM_COPYPATH},
 {"Cut",IDM_CUT},
 {"DirectionDown",IDM_DIRECTIONDOWN},
 {"DirectionUp",IDM_DIRECTIONUP},
@@ -762,48 +776,48 @@ static IFaceConstant rgFriendlyNamedIDMConstants[] = {
 {"Go",IDM_GO},
 {"Goto",IDM_GOTO},
 {"Help",IDM_HELP},
-{"Help_scite",IDM_HELP_SCITE},
+{"HelpScite",IDM_HELP_SCITE},
 {"Import",IDM_IMPORT},
-{"Incsearch",IDM_INCSEARCH},
+{"IncSearch",IDM_INCSEARCH},
 {"InsAbbrev",IDM_INS_ABBREV},
 {"Join",IDM_JOIN},
 {"Language",IDM_LANGUAGE},
 {"LineNumberMargin",IDM_LINENUMBERMARGIN},
-{"Loadsession",IDM_LOADSESSION},
-{"Lwrcase",IDM_LWRCASE},
-{"Macrolist",IDM_MACROLIST},
-{"Macroplay",IDM_MACROPLAY},
-{"Macrorecord",IDM_MACRORECORD},
-{"Macrostoprecord",IDM_MACROSTOPRECORD},
-{"Macro_sep",IDM_MACRO_SEP},
-{"Matchbrace",IDM_MATCHBRACE},
-{"Matchcase",IDM_MATCHCASE},
-{"Monofont",IDM_MONOFONT},
-{"Movetableft",IDM_MOVETABLEFT},
-{"Movetabright",IDM_MOVETABRIGHT},
-{"Mrufile",IDM_MRUFILE},
-{"Mru_sep",IDM_MRU_SEP},
+{"LoadSession",IDM_LOADSESSION},
+{"LwrCase",IDM_LWRCASE},
+{"MacroList",IDM_MACROLIST},
+{"MacroPlay",IDM_MACROPLAY},
+{"MacroRecord",IDM_MACRORECORD},
+{"MacroSep",IDM_MACRO_SEP},
+{"MacroStoprecord",IDM_MACROSTOPRECORD},
+{"MatchBrace",IDM_MATCHBRACE},
+{"MatchCase",IDM_MATCHCASE},
+{"MonoFont",IDM_MONOFONT},
+{"MoveTableft",IDM_MOVETABLEFT},
+{"MoveTabright",IDM_MOVETABRIGHT},
+{"MruFile",IDM_MRUFILE},
+{"MruSep",IDM_MRU_SEP},
 {"New",IDM_NEW},
-{"Nextfile",IDM_NEXTFILE},
-{"Nextfilestack",IDM_NEXTFILESTACK},
-{"Nextmatchppc",IDM_NEXTMATCHPPC},
-{"Nextmsg",IDM_NEXTMSG},
-{"Ontop",IDM_ONTOP},
+{"NextFile",IDM_NEXTFILE},
+{"NextFilestack",IDM_NEXTFILESTACK},
+{"NextMatchppc",IDM_NEXTMATCHPPC},
+{"NextMsg",IDM_NEXTMSG},
+{"OnTop",IDM_ONTOP},
 {"Open",IDM_OPEN},
-{"Openabbrevproperties",IDM_OPENABBREVPROPERTIES},
-{"Opendirectoryproperties",IDM_OPENDIRECTORYPROPERTIES},
-{"Openfileshere",IDM_OPENFILESHERE},
-{"Openglobalproperties",IDM_OPENGLOBALPROPERTIES},
-{"Openlocalproperties",IDM_OPENLOCALPROPERTIES},
-{"Openluaexternalfile",IDM_OPENLUAEXTERNALFILE},
-{"Openselected",IDM_OPENSELECTED},
-{"Openuserproperties",IDM_OPENUSERPROPERTIES},
+{"OpenAbbrevproperties",IDM_OPENABBREVPROPERTIES},
+{"OpenDirectoryproperties",IDM_OPENDIRECTORYPROPERTIES},
+{"OpenFileshere",IDM_OPENFILESHERE},
+{"OpenGlobalproperties",IDM_OPENGLOBALPROPERTIES},
+{"OpenLocalproperties",IDM_OPENLOCALPROPERTIES},
+{"OpenLuaexternalfile",IDM_OPENLUAEXTERNALFILE},
+{"OpenSelected",IDM_OPENSELECTED},
+{"OpenUserproperties",IDM_OPENUSERPROPERTIES},
 {"Paste",IDM_PASTE},
-{"Pasteanddown",IDM_PASTEANDDOWN},
-{"Prevfile",IDM_PREVFILE},
-{"Prevfilestack",IDM_PREVFILESTACK},
-{"Prevmatchppc",IDM_PREVMATCHPPC},
-{"Prevmsg",IDM_PREVMSG},
+{"PasteAnddown",IDM_PASTEANDDOWN},
+{"PrevFile",IDM_PREVFILE},
+{"PrevFlestack",IDM_PREVFILESTACK},
+{"PrevMatchppc",IDM_PREVMATCHPPC},
+{"PrevMsg",IDM_PREVMSG},
 {"Print",IDM_PRINT},
 {"PrintSetup",IDM_PRINTSETUP},
 {"Quit",IDM_QUIT},
@@ -812,22 +826,22 @@ static IFaceConstant rgFriendlyNamedIDMConstants[] = {
 {"Regexp",IDM_REGEXP},
 {"Replace",IDM_REPLACE},
 {"Revert",IDM_REVERT},
-{"Runwin",IDM_RUNWIN},
+{"RunWin",IDM_RUNWIN},
 {"Save",IDM_SAVE},
-{"Saveacopy",IDM_SAVEACOPY},
-{"Saveall",IDM_SAVEALL},
-{"Saveas",IDM_SAVEAS},
-{"Saveashtml",IDM_SAVEASHTML},
-{"Saveaspdf",IDM_SAVEASPDF},
-{"Saveasrtf",IDM_SAVEASRTF},
-{"Saveastex",IDM_SAVEASTEX},
-{"Saveasxml",IDM_SAVEASXML},
+{"SaveAcopy",IDM_SAVEACOPY},
+{"SaveAll",IDM_SAVEALL},
+{"SaveAs",IDM_SAVEAS},
+{"SaveAshtml",IDM_SAVEASHTML},
+{"SaveAspdf",IDM_SAVEASPDF},
+{"SaveAsrtf",IDM_SAVEASRTF},
+{"SaveAstex",IDM_SAVEASTEX},
+{"SaveAsxml",IDM_SAVEASXML},
 {"SaveSession",IDM_SAVESESSION},
+{"SelMargin",IDM_SELMARGIN},  //apparently caps first.
 {"SelectAll",IDM_SELECTALL},
 {"SelectToBrace",IDM_SELECTTOBRACE},
 {"SelectToNextmatchppc",IDM_SELECTTONEXTMATCHPPC},
 {"SelectToPrevmatchppc",IDM_SELECTTOPREVMATCHPPC},
-{"SelMargin",IDM_SELMARGIN},
 {"ShowCalltip",IDM_SHOWCALLTIP},
 {"Split",IDM_SPLIT},
 {"SplitVertical",IDM_SPLITVERTICAL},
@@ -835,28 +849,28 @@ static IFaceConstant rgFriendlyNamedIDMConstants[] = {
 {"StatusWin",IDM_STATUSWIN},
 {"StopExecute",IDM_STOPEXECUTE},
 {"StreamComment",IDM_STREAM_COMMENT},
-{"Switchpane",IDM_SWITCHPANE},
-{"Tabsize",IDM_TABSIZE},
-{"Tabwin",IDM_TABWIN},
-{"ToggleOutput",IDM_TOGGLEOUTPUT},
-{"ToggleParameters",IDM_TOGGLEPARAMETERS},
+{"SwitchPane",IDM_SWITCHPANE},
+{"TabSize",IDM_TABSIZE},
+{"TabWin",IDM_TABWIN},
 {"ToggleFoldAll",IDM_TOGGLE_FOLDALL},
 {"ToggleFoldRecursive",IDM_TOGGLE_FOLDRECURSIVE},
+{"ToggleOutput",IDM_TOGGLEOUTPUT},
+{"ToggleParameters",IDM_TOGGLEPARAMETERS},
+{"ToolWin",IDM_TOOLWIN}, //apparently caps first.
 {"Tools",IDM_TOOLS},
-{"Toolwin",IDM_TOOLWIN},
 {"Undo",IDM_UNDO},
 {"Unslash",IDM_UNSLASH},
-{"Uprcase",IDM_UPRCASE},
+{"UprCase",IDM_UPRCASE},
 {"ViewEol",IDM_VIEWEOL},
 {"ViewGuides",IDM_VIEWGUIDES},
 {"ViewSpace",IDM_VIEWSPACE},
 {"ViewStatusbar",IDM_VIEWSTATUSBAR},
 {"ViewTabbar",IDM_VIEWTABBAR},
 {"ViewToolbar",IDM_VIEWTOOLBAR},
-{"Wholeword",IDM_WHOLEWORD},
+{"WholeWord",IDM_WHOLEWORD},
 {"Wrap",IDM_WRAP},
-{"Wraparound",IDM_WRAPAROUND},
-{"Wrapoutput",IDM_WRAPOUTPUT},
+{"WrapAround",IDM_WRAPAROUND},
+{"WrapOutput",IDM_WRAPOUTPUT},
 };
 const IFaceConstant * const PythonExtension::friendlyconstants = rgFriendlyNamedIDMConstants;
 const size_t PythonExtension::lengthfriendlyconstants = _countof(rgFriendlyNamedIDMConstants);
