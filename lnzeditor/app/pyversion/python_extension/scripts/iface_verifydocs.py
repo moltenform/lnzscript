@@ -21,6 +21,15 @@ def getIfacetablecxx(targettable, prefix):
 	f.close()
 	return out
 
+def parseArgs(entry):
+	out = []
+	out.append('iface_'+entry.returntype)
+	arg1, arg2 = entry.args.replace('(','').replace(')','').split(',')[0:2]
+	arg1 = arg1.strip(); arg2 = arg2.strip()
+	out.append('iface_void' if not arg1 else 'iface_'+arg1.split()[0])
+	out.append('iface_void' if not arg2 else 'iface_'+arg2.split()[0])
+	return out
+
 def go(target, targettable,modifyEntries = False):
 	
 	out = iface_get(target, fSort=False)
@@ -44,7 +53,15 @@ def go(target, targettable,modifyEntries = False):
 			#correct it
 			print 'INCORRECT (should be fn), ',entry.name,entry.type
 			if modifyEntries: entry.type = 'fun'
-			
+		
+		ifaceargs = parseArgs(entry)
+		if spl[2].strip()=='iface_length': spl[2]='iface_int'
+		if spl[3].strip()=='iface_length': spl[3]='iface_int'
+		if spl[4].strip()=='iface_length': spl[4]='iface_int'
+		expectEqual(ifaceargs[0], spl[2].strip(),spl)
+		expectEqual(ifaceargs[1], spl[3].strip(),spl)
+		expectEqual(ifaceargs[2], spl[4].strip(),spl)
+		
 		entry.found = True
 		
 		
@@ -86,6 +103,12 @@ def go(target, targettable,modifyEntries = False):
 			if name!=entry.name:
 				print 'INCORRECT: name %s should be %s'%(entry.name, name)
 				if modifyEntries: entry.name = name
+			#verify args
+			ifaceargs = parseArgs(entry)
+			
+			expectEqual( ifaceargs[2], 'iface_void') #other param null
+			expectEqual(ifaceargs[0], spl[3].strip(),spl) #value is value
+			expectEqual(ifaceargs[1], spl[4].strip(),spl)
 			
 			entry.found = True
 			
@@ -96,6 +119,7 @@ def go(target, targettable,modifyEntries = False):
 			if name not in dictiface:
 				if pname in ('CallTipUseStyle') :
 					entry = dictiface[pname]
+					
 				else:
 					for k in hackPrefix:
 						if k in name:
@@ -116,7 +140,16 @@ def go(target, targettable,modifyEntries = False):
 			if name!=entry.name:
 				print 'INCORRECT: name %s should be %s'%(entry.name, name)
 				if modifyEntries: entry.name = name
-				
+			
+			#verify args
+			ifaceargs = parseArgs(entry)
+			expectEqual(ifaceargs[0], 'iface_void',spl) #setters should return void
+			if ifaceargs[2]=='iface_void':
+				expectEqual(ifaceargs[1], spl[3].strip(),spl)
+			else:
+				expectEqual(ifaceargs[1], spl[4].strip(),spl)
+				expectEqual(ifaceargs[2], spl[3].strip(),spl)
+
 			entry.found = True
 		
 		
@@ -129,7 +162,26 @@ def go(target, targettable,modifyEntries = False):
 	print 'done', len(out)
 	
 	return out #returns the modified entries. has corrections.
-	
+
+def expectEqual(v, vExpected, sContext=None):
+	if v != vExpected:
+		if sContext: print sContext
+		print 'fail: Expected '+str(v) + ' but got '+str(vExpected)
+		#~ raise 'stop'
+	else:
+		pass
+		#~ print 'pass: '+str(v) + ' == '+str(vExpected)
+
+def expectNotEqual(v, vExpected, sContext=None):
+	if v == vExpected:
+		if sContext: print sContext
+		print 'fail: Expected '+str(v) + ' not to equal '+str(vExpected)
+		#~ raise 'stop'
+	else:
+		pass
+		#~ print 'pass: '+str(v) + ' != '+str(vExpected)
+
+
 if __name__=='__main__':
 	target = r'C:\Users\bfisher\Desktop\scite1\1newer1\scintilla_include\Scintilla.iface'
 	targettable = r'C:\Users\bfisher\Desktop\scite1\1newer1\src\ifacetable.cxx'

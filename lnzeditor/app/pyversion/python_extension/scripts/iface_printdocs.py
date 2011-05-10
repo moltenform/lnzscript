@@ -1,22 +1,7 @@
 
-import sys
-import iface_verifydocs
-
-class PrintToFile():
-	def __init__(self, fname):
-		self.f=open(fname,'w')
-	def write(self, string):
-		self.f.write(string)
-	def close(self):
-		self.f.close()
-
 from iface_get import iface_get
 
-def go(starget, starget2, targettable):
-	stdoutStd = sys.stdout
-	stdoutFile = PrintToFile('docs_out.txt')
-	
-	sys.stdout = stdoutFile
+def go(starget, starget2):
 	print '''
 # Constants, from IFaceTable.cxx
 ScApp.SCFIND_WHOLEWORD
@@ -51,7 +36,7 @@ ScApp.UpdateStatusBar(bUpdateSlowData)
 	assert isStart
 	for part in out:
 		#~ print 'void\tScApp.fn'+part+'()'
-		print 'ScApp.'+part+'()'
+		print 'ScApp.fn'+part+'()'
 	f.close()
 	
 	print '''
@@ -64,20 +49,34 @@ ScEditor.FindText(s,n1=0,n2=-1,wholeWord=False,matchCase=False,regExp=False, nFl
 
 	'''
 	
-	sys.stdout = stdoutStd
+	out = iface_get(target)
 	
-	out = iface_verifydocs.go(target, targettable,modifyEntries = True)
-	sys.stdout = stdoutFile
 	
+	okPrefix = {'Annotation':1, 'AutoC':1, 'Indic':1, 'Margin':1, 'Style':1, 'CallTip':1}
 	for o in out:
-		#~ if o.name=='AddRefDocument': continue ???
+		if o.name=='AddRefDocument': continue
+		sname = 'fn'+o.name if o.type=='fun' else o.name
+		
+		# I see what they mean by putting Annotation, AutoC together... though..
 		
 		if o.type == 'get':
-			assert o.name.startswith('Get')			
+			if not o.name.startswith('Get'):
+				if o.name.split('Get')[0] in okPrefix:
+					sname = 'Get' + o.name.replace('Get', '')
+				elif o.name=='LinesOnScreen': sname = 'Get' + o.name
+				elif o.name=='SelectionIsRectangle': sname = 'Get' + o.name
+				else:
+					print 'fail: '+o.name
+					return
 		if o.type == 'set':
-			assert o.name.startswith('Set')
+			if not o.name.startswith('Set'):
+				if o.name.split('Set')[0] in okPrefix:
+					sname = 'Set' + o.name.replace('Set', '')
+				elif o.name=='CallTipUseStyle': sname = 'Set' + o.name
+				else:
+					print 'fail: '+o.name
+					return
 		
-		sname = o.name
 		if 'stringresult' not in o.args:
 			rettype=o.returntype.replace('position','pos')
 			print rettype + '\tScEditor.'+sname + o.args.replace(',)',')')
@@ -85,21 +84,18 @@ ScEditor.FindText(s,n1=0,n2=-1,wholeWord=False,matchCase=False,regExp=False, nFl
 			assert o.returntype=='int'
 			sargs = o.args.split(',')[0] + ')'
 			
-			print 'string' + '\tScEditor.'+ sname+ sargs
+			print 'string' + '\tScEditor.'+sname + sargs
 		
 		if o.docs: print o.docs.replace('#','')
 	
+	# now the scapp ones
 	
-	
-	stdoutFile.close()
 
 
 #~ target = r'C:\pydev\hackscite\scintilla\include\Scintilla.iface'
 #~ target2 = r'C:\pydev\hackscite\scite\src\pythonextension.cxx'
 target = r'C:\Users\bfisher\Desktop\scite1\1newer1\scintilla_include\Scintilla.iface'
 target2 = r'C:\Users\bfisher\Desktop\scite1\1newer1\src\pythonextension.cxx'
-targettable = r'C:\Users\bfisher\Desktop\scite1\1newer1\src\ifacetable.cxx'
-go(target, target2,targettable)
-
+go(target, target2)
 
 
