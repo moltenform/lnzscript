@@ -1,0 +1,5 @@
+Log of changes
+
+1) Python extension
+2) Look for properties in bin/properties
+3) change default global properties
