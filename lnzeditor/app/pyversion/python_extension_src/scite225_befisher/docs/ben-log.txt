@@ -1,0 +1,322 @@
+
+SciTE Python Extension
+Ben Fisher, 2011
+
+Overview
+-------------------
+You can now write plugins and scripts in Python to customize SciTE. 
+You have access to the powerful standard library of Python.
+
+Usage
+-------------------
+If you open the global options file, you will see a command for 'Python run script'.
+When you run this command (from the Tools menu or by pressing Ctrl+Alt+k),
+a sample Python script will run.
+
+Modify this sample script by editing 'callFromCmd' in scite_extend.py.
+You can call one of the many functions documented in scite_extend_doc.txt.
+scite_extend.py also shows the callbacks that will be run. You can also put code here.
+
+Release notes
+-------------------
+gcc makefile not updated. gtk directory not updated
+
+Known issues:
+	ScApp.Fullscreen()
+	ScEditor.GetStyleAt()
+	ScEditor.AssignCmdKey()
+	ScApp.Tools() #not sure of effect
+	ScApp.ToolWin() #not sure of effect
+	
+	The following are untested
+	void	ScEditor.SetWordChars(, string characters)
+	void	ScEditor.SetAutoCFillUps(, string characterSet)
+	void	ScEditor.SetMarginLeft(, int pixelWidth)
+	void	ScEditor.SetMarginRight(, int pixelWidth)
+	int	ScEditor.PointXFromPosition(, position pos)
+	int	ScEditor.PointYFromPosition(, position pos)
+	void	ScEditor.SetWhitespaceChars(, string characters)
+
+
+If you close app when MessageBox is open, app will crash
+
+Certain methods can read past end of file. This is a limitation of Scintilla.
+
+
+
+
+
+GetLexerLanguage is this correct????????
+returns 'cp' instead of 'cpp' should debug.
+
+release notes:
+can read past file.
+known issue: 
+
+=======
+Most common:
+	print 'display in log'
+	ScApp.Copy()
+	ScApp.Paste()
+	ScEditor.Write()
+	ScEditor.SetSelection()
+	ScEditor.GetSelText()
+	ScEditor.GetAllText()
+
+====release notes: SEEM BROKEN?=====
+CurrentPane.AssignCmdKey(ScEditor.MakeKeymod(ord('u'), fCtrl=True), 2004 )
+#~ nStyle = CurrentPane.GetStyleAt(2) #broken??
+
+used to broken but now fixexd: GetCurLine, GetText
+should disable GetTextRange. well it's not documented now
+
+
+=========
+todo: test multiple selections
+
+
+look for in docs: somefn(,otherparam)
+look for in docs: int length
+
+SetMarginLeft looks broken. need to think about that.
+
+
+todo: provide SetBufferToX? to go to 1st buffer, etc
+{"WordChars", 0, 2077, iface_string, iface_void}, //incorrect! ?? ? 
+file:///C:/Users/bfisher/Desktop/scite1/all0/scite225/scintilla/doc/ScintillaDoc.html
+
+in buffers.
+
+search for (, 
+we don't support set void SetMarginRight=2157(, int pixelWidth) very well !
+
+
+Ideas on how to expose Scintilla things to scite.
+todo: textrange can be beyond length of doc!!!!!!!!!!!!! also getline and such. not sure how to prevent :(
+todo: pyojects could use getsingletone or something instead of using global _host
+done: expose the SciTEBase::PerformOne. make sure. they are.
+todo: match objects?
+	notexposed: sendeditor , cf_scite_constname
+
+
+
+// Note: if you set the error string, you HAVE to return null not Py_none, otherwise python gets in a weird state!
+
+I was thinking of adding them all as constants. However, this requires overhead on booting of adding all of these things to the dictionary.
+More memory used, longer boot time undesired.
+Better idea: use the Binary search to locate what to see
+binary search requires only 7 compares for looking up 500 entries
+
+=============================================================
+
+
+bool pullPythonArgument(CPyObjWeak pySciteArgs, int& nArgPython, IFaceType type, intptr_t* param)
+{
+	if (type == iface_void)
+		return true;
+	if (nArgPython == PyTuple_GET_SIZE((PyObject*) pySciteArgs))
+	{ PyErr_SetString(PyExc_RuntimeError,"Not enough args"); return false; }
+	nArgPython++;
+	CPyObjWeak pyObjNext = PyTuple_GetItem(pySciteArgs, nArgPython);
+	
+	switch(type) {
+		case iface_int:
+		case iface_length:
+		case iface_position:
+		case iface_colour:
+		case iface_keymod:  //keymods: was going to make this in c++, but AssignCmdKey / ClearCmdKey only ones using this... see py's makeKeyMod
+			if (!PyLong_Check(pyObjNext)) { PyErr_SetString(PyExc_RuntimeError,"Int expected."); return false; }
+			*param = (intptr_t) PyLong_AsLong(pyObjNext);
+			break;
+		case iface_bool:
+			if (!PyBool_Check(pyObjNext)) { PyErr_SetString(PyExc_RuntimeError,"Bool expected."); return false; }
+			*param = (pyObjNext == Py_True) ? 1 : 0;
+			break;
+		case iface_string:
+		case iface_cells:
+			if (!PyString_Check(pyObjNext)) { PyErr_SetString(PyExc_RuntimeError,"String expected."); return false; }
+			*param = (intptr_t) PyString_AsString(pyObjNext);
+			break;
+		case iface_textrange:
+			PyErr_SetString(PyExc_RuntimeError,"raw textrange unsupported, but you can use CScite.Editor.Textrange(s,e)");  return false;
+			break;
+		default: {  PyErr_SetString(PyExc_RuntimeError,"Unexpected: unknown scintilla type."); return false; }
+	}
+	return true;
+}
+
+bool fResult = pullPythonArgument( pSciArgs, /*&*/ nArgPython, func.paramType[0], &wParam);
+	if (!fResult)  {	Py_INCREF(Py_None); return Py_None; }
+	if (!isStringResult)
+	{
+		fResult = pullPythonArgument( pSciArgs, /*&*/ nArgPython, func.paramType[1], &lParam);
+		if (!fResult)  {	Py_INCREF(Py_None); return Py_None; }
+	}
+
+=============================================================
+
+const int FlagConstant = 1<<27;
+const int FlagProperty = 1<<28;
+const int FlagFunction = 1<<29;
+
+
+	//add functions!
+	//see ifacetable.cxx
+	for (int i = 0; i < IFaceTable::functionCount; ++i) {
+		func = IFaceTable::functions[i];
+		std::string sName("f");
+		sName += func.name;
+		int nValue = i | FlagFunction;
+		int ret = PyModule_AddIntConstant(pInitMod, sName, nValue);
+		if (ret!=0) { displayError("Unexpected: could not add name", sName); return;}
+	}
+	
+	for (int propIdx = 0; propIdx < IFaceTable::propertyCount; ++propIdx) {
+		func = IFaceTable::properties[i];
+		std::string sName("p");
+		sName += func.name;
+		int nValue = i | FlagProperty;
+		int ret = PyModule_AddIntConstant(pInitMod, sName, nValue);
+		if (ret!=0) { displayError("Unexpected: could not add name", sName); return;}
+	}
+	
+	for (int i = 0; i < IFaceTable::functionCount; ++i) {
+		func = IFaceTable::functions[i];
+		std::string sName("c");
+		sName += func.name;
+		int nValue = i | FlagFunction;
+		int ret = PyModule_AddIntConstant(pInitMod, sName, nValue);
+		if (ret!=0) { displayError("Unexpected: could not add name", sName); return;}
+	}
+	
+
+This would have worked - look up the constant and use the flag to see what to call.
+=============================================================
+
+older one:
+PyObject* pyfun_pane_SendScintilla(PyObject* self, PyObject* pArgs)
+{
+	// send things to scintilla.
+	// do the keymod conversion in Python: 
+	//~ int keycode = static_cast<int>(luaL_checknumber(L, arg++)) & 0xFFFF;
+	//~ int modifiers = static_cast<int>(luaL_checknumber(L, arg++)) & (SCMOD_SHIFT|SCMOD_CTRL|SCMOD_ALT);
+	// params[i] = keycode | (modifiers<<16);
+	// now there is a 1-1 conversion between python and scintilla
+	
+	// input is: pyfun_pane_SendScintilla( 1, SCICUT, (46, 75))
+	ExtensionAPI::Pane pane;
+	int nPane=-1, nScintillaCmd =0;
+	PyObject* pSciArgs; //borrowed reference, so ok.
+	if (!PyArg_ParseTuple(pArgs, "iiO", &nPane, &nScintillaCmd, &pSciArgs)) return NULL;
+	if (!GetPaneFromInt(nPane, &pane)) { PyErr_SetString(PyExc_RuntimeError,"Invalid pane, must be 0 or 1."); return NULL;}
+	
+	// look up in iface table
+	IFaceFunction func = { "", 0, iface_void, {iface_void, iface_void} };
+	for (int funcIdx = 0; funcIdx < IFaceTable::functionCount; ++funcIdx) {
+		if (IFaceTable::functions[funcIdx].value == nScintillaCmd) {
+			func = IFaceTable::functions[funcIdx];
+			break;
+		}
+	}
+	if (func.value == 0) {
+		for (int propIdx = 0; propIdx < IFaceTable::propertyCount; ++propIdx) {
+			if (IFaceTable::properties[propIdx].getter == nScintillaCmd) {
+				func = IFaceTable::properties[propIdx].GetterFunction();
+				break;
+			} else if (IFaceTable::properties[propIdx].setter == nScintillaCmd) {
+				func = IFaceTable::properties[propIdx].SetterFunction();
+				break;
+			}
+		}
+	}
+	if (func.value == 0) {
+		PyErr_SetString(PyExc_RuntimeError,"No such scintilla function."); return NULL;
+	}
+	if (!IFaceFunctionIsScriptable(func)) {
+		PyErr_SetString(PyExc_RuntimeError,"scintilla function is not scriptable."); return NULL;
+	}
+	
+	
+	//~ long params[2] = {0,0};
+		
+	//~ Py_ssize_t pyArgsSize = PyTuple_GET_SIZE(pArgs);
+	//~ if (pyArgsSize != loopParamCount) return NULL;
+	//~ for (int i=0; i<loopParamCount; ++i) {
+		//~ CPyObjWeak objAt = PyTuple_GetItem(pArgs, i);
+		//~ if (func.paramType[i] == iface_string) {
+			
+			//~ char* szResult = PyString_AsString(objAt); //we do NOT own this pointer, we cannot free it.
+			//~ if (!szResult) return NULL;
+			//~ // ?
+			//~ params[i] = reinterpret_cast<long>(s ? s : "");
+		//~ } else if (func.paramType[i] == iface_bool) {
+			//~ if (objAt != Py_False && objAt != Py_True) return NULL;
+			
+			//~ params[i] = lua_toboolean(L, arg++);
+		//~ } else if (func.paramType[i] == iface_keymod || IFaceTypeIsNumeric(func.paramType[i])) {
+			//~ params[i] = static_cast<long>(luaL_checknumber(L, arg++));
+		//~ }
+	//~ }
+	
+	
+	//~ char* szText = NULL; /* we do NOT own this pointer, we cannot free it. */
+	//~ int nPane = -1, nPos=-1; ExtensionAPI::Pane pane;
+	//~ if (!PyArg_ParseTuple(pArgs, "iis", &nPane, &nPos, &szText)) return NULL;
+	//~ if (nPos<0) return NULL;
+	//~ if (!GetPaneFromInt(nPane, &pane)) { PyErr_SetString(PyExc_RuntimeError,"Invalid pane, must be 0 or 1."); return NULL;}
+	//~ _host->Insert(pane,nPos, szText);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+
+
+scite:
+don't add all of the functions at once.
+just do a binary search for that name
+that's only 7 compares for 512 itesm. not bad.
+
+internal: 
+Scite._sendScintilla(nPane=0,type=Function|PropSet|PropGet,name='SetKey',(args1,arg2,arg3))
+
+exposed:
+Scite.Editor.SetKey(arg1, arg2, arg3)
+
+class ScintillaPaneBase():
+	nPane = -1
+	def __init__(self, nPane):
+		self.nPane = nPane
+	def __getattr__(self, sprop):
+		if sprop.startswith('fun'):
+			sprop = 
+			eType=Function
+		elif sprop.startswith('get'):
+			eType=PropGet
+		elif sprop.startswith('
+	def Insert(self, txt):
+		Scite.pane_insert(self.nPane, txt)
+
+Scite.Editor = ScintillaPaneBase(0)
+Scite.Output = ScintillaPaneBase(1)
+
+class SciteGetConstant():
+	def __getattr__(self, constname):
+		return Scite._getconstant(constname)
+Scite.Constants = SciteGetConstant()
+
+
+
+SciTE Plugins
+-----------
+Install by placing them in plugins directory.
+
+
+Important:
+Customize menu
+Customize hotkeys
+
+not clear between what is a set and what is a get...
+
+
+maybe should look up all?
+that guarentees wasted 

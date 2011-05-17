@@ -1,0 +1,5 @@
+
+Many thanks to Remi Gillig for sharing his Ruby extension, which was a useful resource. 
+
+
+remigillig@gmail.com 
