@@ -2,7 +2,6 @@
 # SciTE Python Extension
 # Ben Fisher, 2011
 
-print 'Loading Python extension.'
 import CScite
 import exceptions
 

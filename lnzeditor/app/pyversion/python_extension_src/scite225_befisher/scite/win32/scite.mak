@@ -54,7 +54,7 @@ CXXFLAGS=$(CXXFLAGS) $(CXXNDEBUG)
 CCFLAGS=$(CCFLAGS) $(CXXNDEBUG)
 !ENDIF
 
-INCLUDEDIRS=-I../../scintilla/include -I../../scintilla/win32 -I../src
+INCLUDEDIRS=-I../../../scite225/scintilla/include -I../../../scite225/scintilla/win32 -I../src
 
 OBJS=\
 	SciTEBase.obj \
@@ -78,7 +78,7 @@ OBJS=\
 	UniqueInstance.obj \
 	WinMutex.obj
 
-LEXLIB=..\..\scintilla\win32\Lexers.lib
+LEXLIB=..\..\..\scite225\scintilla\win32\Lexers.lib
 
 OBJSSTATIC=\
 	SciTEBase.obj \
@@ -101,39 +101,39 @@ OBJSSTATIC=\
 	GUIWin.obj \
 	UniqueInstance.obj \
 	WinMutex.obj \
-	..\..\scintilla\win32\Accessor.obj \
-	..\..\scintilla\win32\AutoComplete.obj \
-	..\..\scintilla\win32\CallTip.obj \
-	..\..\scintilla\win32\Catalogue.obj \
-	..\..\scintilla\win32\CellBuffer.obj \
-	..\..\scintilla\win32\ContractionState.obj \
-	..\..\scintilla\win32\CharClassify.obj \
-	..\..\scintilla\win32\CharacterSet.obj \
-	..\..\scintilla\win32\Decoration.obj \
-	..\..\scintilla\win32\Document.obj \
-	..\..\scintilla\win32\Editor.obj \
-	..\..\scintilla\win32\ExternalLexer.obj \
-	..\..\scintilla\win32\Indicator.obj \
-	..\..\scintilla\win32\KeyMap.obj \
-	..\..\scintilla\win32\LexerBase.obj \
-	..\..\scintilla\win32\LexerModule.obj \
-	..\..\scintilla\win32\LexerSimple.obj \
-	..\..\scintilla\win32\LineMarker.obj \
-	..\..\scintilla\win32\PerLine.obj \
-	..\..\scintilla\win32\PlatWin.obj \
-	..\..\scintilla\win32\PositionCache.obj \
-	..\..\scintilla\win32\PropSetSimple.obj \
-	..\..\scintilla\win32\RESearch.obj \
-	..\..\scintilla\win32\RunStyles.obj \
-	..\..\scintilla\win32\ScintillaBaseL.obj \
-	..\..\scintilla\win32\ScintillaWinL.obj \
-	..\..\scintilla\win32\Selection.obj \
-	..\..\scintilla\win32\Style.obj \
-	..\..\scintilla\win32\StyleContext.obj \
-	..\..\scintilla\win32\UniConversion.obj \
-	..\..\scintilla\win32\ViewStyle.obj \
-	..\..\scintilla\win32\WordList.obj \
-	..\..\scintilla\win32\XPM.obj
+	..\..\..\scite225\scintilla\win32\Accessor.obj \
+	..\..\..\scite225\scintilla\win32\AutoComplete.obj \
+	..\..\..\scite225\scintilla\win32\CallTip.obj \
+	..\..\..\scite225\scintilla\win32\Catalogue.obj \
+	..\..\..\scite225\scintilla\win32\CellBuffer.obj \
+	..\..\..\scite225\scintilla\win32\ContractionState.obj \
+	..\..\..\scite225\scintilla\win32\CharClassify.obj \
+	..\..\..\scite225\scintilla\win32\CharacterSet.obj \
+	..\..\..\scite225\scintilla\win32\Decoration.obj \
+	..\..\..\scite225\scintilla\win32\Document.obj \
+	..\..\..\scite225\scintilla\win32\Editor.obj \
+	..\..\..\scite225\scintilla\win32\ExternalLexer.obj \
+	..\..\..\scite225\scintilla\win32\Indicator.obj \
+	..\..\..\scite225\scintilla\win32\KeyMap.obj \
+	..\..\..\scite225\scintilla\win32\LexerBase.obj \
+	..\..\..\scite225\scintilla\win32\LexerModule.obj \
+	..\..\..\scite225\scintilla\win32\LexerSimple.obj \
+	..\..\..\scite225\scintilla\win32\LineMarker.obj \
+	..\..\..\scite225\scintilla\win32\PerLine.obj \
+	..\..\..\scite225\scintilla\win32\PlatWin.obj \
+	..\..\..\scite225\scintilla\win32\PositionCache.obj \
+	..\..\..\scite225\scintilla\win32\PropSetSimple.obj \
+	..\..\..\scite225\scintilla\win32\RESearch.obj \
+	..\..\..\scite225\scintilla\win32\RunStyles.obj \
+	..\..\..\scite225\scintilla\win32\ScintillaBaseL.obj \
+	..\..\..\scite225\scintilla\win32\ScintillaWinL.obj \
+	..\..\..\scite225\scintilla\win32\Selection.obj \
+	..\..\..\scite225\scintilla\win32\Style.obj \
+	..\..\..\scite225\scintilla\win32\StyleContext.obj \
+	..\..\..\scite225\scintilla\win32\UniConversion.obj \
+	..\..\..\scite225\scintilla\win32\ViewStyle.obj \
+	..\..\..\scite225\scintilla\win32\WordList.obj \
+	..\..\..\scite225\scintilla\win32\XPM.obj
 
 
 !IFNDEF NO_PYTHON 
@@ -214,11 +214,11 @@ clean:
 #del /q $(DIR_BIN)\*.exe *.o *.obj $(DIR_BIN)\*.dll *.res *.map $(DIR_BIN)\*.exp $(DIR_BIN)\*.lib $(DIR_BIN)\*.pdb
 #keep exes and dlls
 
-$(DIR_BIN)\Scintilla.dll: ..\..\scintilla\bin\Scintilla.dll
-	copy ..\..\scintilla\bin\Scintilla.dll $@
+$(DIR_BIN)\Scintilla.dll: ..\..\..\scite225\scintilla\bin\Scintilla.dll
+	copy ..\..\..\scite225\scintilla\bin\Scintilla.dll $@
 
-$(DIR_BIN)\SciLexer.dll: ..\..\scintilla\bin\SciLexer.dll
-	copy ..\..\scintilla\bin\SciLexer.dll $@
+$(DIR_BIN)\SciLexer.dll: ..\..\..\scite225\scintilla\bin\SciLexer.dll
+	copy ..\..\..\scite225\scintilla\bin\SciLexer.dll $@
 
 $(DIR_BIN)\SciTEGlobal.properties: ..\src\SciTEGlobal.properties
 	copy ..\src\SciTEGlobal.properties $@
@@ -235,7 +235,7 @@ $(DIR_BIN)\abbrev.properties: ..\src\abbrev.properties
 	grep -v -h "^[#]" $(PROPS) >..\src\Embedded.properties
 
 # A custom rule for .obj files built by scintilla:
-..\..\scintilla\win32\PlatWin.obj: 	..\..\scintilla\win32\PlatWin.cxx
+..\..\..\scite225\scintilla\win32\PlatWin.obj: 	..\..\..\scite225\scintilla\win32\PlatWin.cxx
 	@echo You must run the Scintilla makefile to build $*.obj
 	@exit 255
 
@@ -270,7 +270,7 @@ Sc1.obj: SciTEWin.cxx
 # Dependencies
 DirectorExtension.obj: \
 	DirectorExtension.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -285,12 +285,12 @@ DirectorExtension.obj: \
 	../src/SciTEBase.h
 GUIWin.obj: \
 	GUIWin.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h
 SciTEWin.obj: \
 	SciTEWin.cxx \
 	SciTEWin.h \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -313,7 +313,7 @@ SciTEWin.obj: \
 Sc1.obj: \
 	SciTEWin.cxx \
 	SciTEWin.h \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -336,7 +336,7 @@ Sc1.obj: \
 SciTEWinBar.obj: \
 	SciTEWinBar.cxx \
 	SciTEWin.h \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -354,7 +354,7 @@ SciTEWinBar.obj: \
 SciTEWinDlg.obj: \
 	SciTEWinDlg.cxx \
 	SciTEWin.h \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -371,13 +371,13 @@ SciTEWinDlg.obj: \
 	UniqueInstance.h
 SingleThreadExtension.obj: \
 	SingleThreadExtension.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	SingleThreadExtension.h \
 	../src/Extender.h
 UniqueInstance.obj: \
 	UniqueInstance.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	SciTEWin.h \
 	../src/SString.h \
@@ -398,7 +398,7 @@ WinMutex.obj: \
 	../src/Mutex.h
 Exporters.obj: \
 	../src/Exporters.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -413,13 +413,13 @@ Exporters.obj: \
 	../src/SciTEBase.h
 FilePath.obj: \
 	../src/FilePath.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/FilePath.h
 JobQueue.obj: \
 	../src/JobQueue.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/SString.h \
 	../src/FilePath.h \
 	../src/SciTE.h \
@@ -427,21 +427,21 @@ JobQueue.obj: \
 	../src/JobQueue.h
 MultiplexExtension.obj: \
 	../src/MultiplexExtension.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/MultiplexExtension.h \
 	../src/Extender.h
 PropSetFile.obj: \
 	../src/PropSetFile.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/FilePath.h \
 	../src/PropSetFile.h
 SciTEBase.obj: \
 	../src/SciTEBase.cxx \
-	../../scintilla/include/Scintilla.h \
-	../../scintilla/include/SciLexer.h \
+	../../../scite225/scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/SciLexer.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -456,8 +456,8 @@ SciTEBase.obj: \
 	../src/SciTEBase.h
 SciTEBuffers.obj: \
 	../src/SciTEBuffers.cxx \
-	../../scintilla/include/Scintilla.h \
-	../../scintilla/include/SciLexer.h \
+	../../../scite225/scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/SciLexer.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -472,7 +472,7 @@ SciTEBuffers.obj: \
 	../src/SciTEBase.h
 SciTEIO.obj: \
 	../src/SciTEIO.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -488,8 +488,8 @@ SciTEIO.obj: \
 	../src/Utf8_16.h
 SciTEProps.obj: \
 	../src/SciTEProps.cxx \
-	../../scintilla/include/Scintilla.h \
-	../../scintilla/include/SciLexer.h \
+	../../../scite225/scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/SciLexer.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StringHelpers.h \
@@ -509,7 +509,7 @@ StringList.obj: \
 	../src/StringList.h
 StyleWriter.obj: \
 	../src/StyleWriter.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/StyleWriter.h
 Utf8_16.obj: \
@@ -525,7 +525,7 @@ PythonExtension.obj: \
 !IFDEF INCLUDE_LUA
 LuaExtension.obj: \
 	../src/LuaExtension.cxx \
-	../../scintilla/include/Scintilla.h \
+	../../../scite225/scintilla/include/Scintilla.h \
 	../src/GUI.h \
 	../src/SString.h \
 	../src/StyleWriter.h \

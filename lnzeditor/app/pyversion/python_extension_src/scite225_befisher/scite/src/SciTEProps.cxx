@@ -114,8 +114,8 @@ void SciTEBase::SetLanguageMenu() {
 	}
 }
 
-const GUI::gui_char propLocalFileName[] = GUI_TEXT("SciTE.properties");
-const GUI::gui_char propDirectoryFileName[] = GUI_TEXT("SciTEDirectory.properties");
+const GUI::gui_char propLocalFileName[] = GUI_TEXT("SciTE.properties"); //relative to current dir
+const GUI::gui_char propDirectoryFileName[] = GUI_TEXT("SciTEDirectory.properties"); //relative to current or any parent dir
 
 /**
 Read global and user properties files.
@@ -1397,7 +1397,7 @@ GUI::gui_string SciTEBase::LocaliseMessage(const char *s, const GUI::gui_char *p
 
 void SciTEBase::ReadLocalization() {
 	localiser.Clear();
-	GUI::gui_string title = GUI_TEXT("locale.properties");
+	GUI::gui_string title = GUI_TEXT("properties\\locale.properties");
 	SString localeProps = props.GetExpanded("locale.properties");
 	if (localeProps.length()) {
 		title = GUI::StringFromUTF8(localeProps.c_str());

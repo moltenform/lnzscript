@@ -12,3 +12,6 @@ Also, in the python directory, extract the archive in order to
 have a python/includes
 and 
 python/libs directory.
+
+In the past the .properties were in src dir. Now they reside here.
+

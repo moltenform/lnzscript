@@ -71,10 +71,10 @@
 const GUI::gui_char propUserFileName[] = GUI_TEXT(".SciTEUser.properties");
 #else
 // Windows
-const GUI::gui_char propUserFileName[] = GUI_TEXT("SciTEUser.properties");
+const GUI::gui_char propUserFileName[] = GUI_TEXT("properties\\SciTEUser.properties");
 #endif
-const GUI::gui_char propGlobalFileName[] = GUI_TEXT("SciTEGlobal.properties");
-const GUI::gui_char propAbbrevFileName[] = GUI_TEXT("abbrev.properties");
+const GUI::gui_char propGlobalFileName[] = GUI_TEXT("properties\\SciTEGlobal.properties");
+const GUI::gui_char propAbbrevFileName[] = GUI_TEXT("properties\\abbrev.properties");
 
 #define PROPERTIES_EXTENSION	".properties"
 
