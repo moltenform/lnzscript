@@ -43,9 +43,9 @@
 #include "DirectorExtension.h"
 #endif
 
-#ifndef NO_LUA
+#ifndef NO_PYTHON
 #include "SingleThreadExtension.h"
-#include "LuaExtension.h"
+#include "PythonExtension.h"
 #endif
 
 #endif
@@ -3361,9 +3361,9 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 	MultiplexExtension multiExtender;
 	Extension *extender = &multiExtender;
 
-#ifndef NO_LUA
-	SingleThreadExtension luaAdapter(LuaExtension::Instance());
-	multiExtender.RegisterExtension(luaAdapter);
+#ifndef NO_PYTHON
+	SingleThreadExtension pythonAdapter(PythonExtension::Instance());
+	multiExtender.RegisterExtension(pythonAdapter);
 #endif
 
 #ifndef NO_FILER

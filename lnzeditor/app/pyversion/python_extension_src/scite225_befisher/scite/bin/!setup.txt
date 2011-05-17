@@ -1,0 +1,14 @@
+From the releases directory,
+copy into this directory the files
+
+
+         348,160 msvcr71.dll
+       2,117,632 python25.dll
+         922,589 python25.zip
+          86,016 _ctypes.pyd
+          53,248 _socket.pyd
+
+Also, in the python directory, extract the archive in order to
+have a python/includes
+and 
+python/libs directory.
