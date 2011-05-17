@@ -102,6 +102,19 @@ class CSciteApp():
 			return CScite.app_GetConstant(s)
 		else:
 			return (lambda: CScite.app_SciteCommand(s))
+	
+	def GetFilePath(self):
+		return self.GetProperty('FilePath')
+	def GetFileName(self):
+		return self.GetProperty('FileNameExt')
+	def GetLanguage(self):
+		return self.GetProperty('Language')
+	def GetCurrentWord(self):
+		return self.GetProperty('CurrentWord')
+	def GetSciteDirectory(self):
+		return self.GetProperty('SciteDefaultHome')
+	def GetSciteUserDirectory(self):
+		return self.GetProperty('SciteUserHome')
 
 # some methods start with "get" but are actually a "function". user shouldn't care about this implementation detail
 CScite._dictIsScintillaFnNotGetter = {
