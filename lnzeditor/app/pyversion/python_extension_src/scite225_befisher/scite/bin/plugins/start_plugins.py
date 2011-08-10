@@ -102,6 +102,19 @@ def numericReplace():
 	ScEditor.EndUndoAction()
 
 
+def DoCiInterfaces():
+	ssel = ScEditor.GetSelText()
+	if not ssel.startswith('I') or ' ' in ssel:
+		print 'expected to start with I, like IFileStoreFile'
+		return
+	srep = 'CIPtr<%s> spi%s;'%(ssel, ssel[1:])
+	
+	ScEditor.BeginUndoAction()
+	ScEditor.Clear()
+	ScEditor.InsertText(srep, ScEditor.GetCurrentPos())
+	ScEditor.SetAnchor(ScEditor.GetCurrentPos() + len(srep))
+	#don't use Write. we want it all selected
+	ScEditor.EndUndoAction()
 
 #then: faster search/replae
 #grab onto selectionns
