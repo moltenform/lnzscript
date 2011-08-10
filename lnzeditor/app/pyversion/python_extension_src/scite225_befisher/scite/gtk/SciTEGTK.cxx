@@ -433,7 +433,7 @@ protected:
 	GtkWidget *TranslatedLabel(const char *original);
 	virtual void FindIncrement();
 	void FindInFilesResponse(int responseID);
-	virtual void FindInFiles();
+	virtual void FindInFiles(bool bStartNow);
 	virtual void Replace();
 	void FindReplaceResponse(int responseID);
 	virtual void FindReplace(bool replace);
@@ -1890,7 +1890,12 @@ void SciTEGTK::FindInFilesResponse(int responseID) {
 	}
 }
 
-void SciTEGTK::FindInFiles() {
+void SciTEGTK::FindInFiles(bool bStartNow) {
+	if (bStartNow)
+	{
+		FindInFilesCmd();
+		return;
+	}
 	dlgFindInFiles.SetSearcher(this);
 
 	SelectionIntoFind();

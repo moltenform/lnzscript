@@ -110,7 +110,7 @@ def test_0_2():
 	ScApp.MsgBox( 'Closed.')
 	
 	toggles = ((ScApp.SelMargin, 'SelMargin'),(ScApp.ToggleOutput, 'ToggleOutput'),
-		(ScApp.ToggleParameters, 'ToggleParameters'),(ScApp.Find, 'Find'),(ScApp.FindInFiles, 'FindInFiles'))
+		(ScApp.ToggleParameters, 'ToggleParameters'),(ScApp.Find, 'Find'),(ScApp.FindInFilesDialog, 'FindInFilesDialog'))
 	for fn, name in toggles:
 		fn(); ScApp.MsgBox( 'Starting '+name)
 		fn(); ScApp.MsgBox( 'Stopping '+name)

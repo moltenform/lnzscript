@@ -587,7 +587,7 @@ protected:
 	int FindNext(bool reverseDirection, bool showWarnings = true);
 	virtual void FindIncrement() = 0;
 	int IncrementSearchMode();
-	virtual void FindInFiles() = 0;
+	virtual void FindInFiles(bool bStartNow) = 0;
 	virtual void Replace() = 0;
 	void ReplaceOnce();
 	int DoReplaceAll(bool inSelection); // returns number of replacements or negative value if error

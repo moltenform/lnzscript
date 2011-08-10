@@ -3467,7 +3467,10 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 		break;
 
 	case IDM_FINDINFILES:
-		FindInFiles();
+		FindInFiles(false);
+		break;
+	case IDM_FINDINFILESSTART:
+		FindInFiles(true);
 		break;
 
 	case IDM_REPLACE:

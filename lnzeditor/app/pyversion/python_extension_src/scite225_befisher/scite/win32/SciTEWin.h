@@ -422,14 +422,14 @@ protected:
 	BOOL ReplaceMessage(HWND hDlg, UINT message, WPARAM wParam);
 	static BOOL CALLBACK ReplaceDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	virtual void UIClosed();
-	void PerformGrep();
+	void PerformGrep(bool bStartNow);
 	void FillCombos(Dialog &dlg);
 	BOOL GrepMessage(HWND hDlg, UINT message, WPARAM wParam);
 	static BOOL CALLBACK GrepDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	virtual void FindIncrement();
 	bool FindReplaceAdvanced();
 	virtual void Find();
-	virtual void FindInFiles();
+	virtual void FindInFiles(bool bStartNow);
 	virtual void Replace();
 	virtual void FindReplace(bool replace);
 	virtual void DestroyFindReplace();

@@ -1080,7 +1080,7 @@ static int __stdcall BrowseCallbackProc(HWND hwnd, UINT uMsg, LPARAM, LPARAM pDa
 	return 0;
 }
 
-void SciTEWin::PerformGrep() {
+void SciTEWin::PerformGrep(bool bStartNow) {
 	SelectionIntoProperties();
 
 	SString findInput;
@@ -1090,14 +1090,21 @@ void SciTEWin::PerformGrep() {
 		flags += jobHasInput;
 	}
 
+	bool bActualWholeWord = wholeWord;
+	if (bStartNow)
+		bActualWholeWord = props.Get("find.filesnow.wholeword").length() > 0;
+	bool bActualMatchCase = matchCase;
+	if (bStartNow)
+		bActualMatchCase = props.Get("find.filesnow.matchcase").length() > 0;
+	
 	SString findCommand = props.GetNewExpand("find.command");
 	if (findCommand == "") {
 		// Call InternalGrep in a new thread
 		// searchParams is "(w|~)(c|~)(d|~)(b|~)\0files\0text"
 		// A "w" indicates whole word, "c" case sensitive, "d" dot directories, "b" binary files
 		SString searchParams;
-		searchParams.append(wholeWord ? "w" : "~");
-		searchParams.append(matchCase ? "c" : "~");
+		searchParams.append(bActualWholeWord ? "w" : "~");
+		searchParams.append(bActualMatchCase ? "c" : "~");
 		searchParams.append(props.GetInt("find.in.dot") ? "d" : "~");
 		searchParams.append(props.GetInt("find.in.binary") ? "b" : "~");
 		searchParams.append("\0", 1);
@@ -1110,8 +1117,11 @@ void SciTEWin::PerformGrep() {
 			   props.Get("find.directory"),
 			   jobCLI, findInput, flags);
 	}
-	if (jobQueue.commandCurrent > 0) {
-		Execute();
+	if (!bStartNow) // if this is run when ftartNow is true, the command will run several times.
+	{
+		if (jobQueue.commandCurrent > 0) {
+			Execute();
+		}
 	}
 }
 
@@ -1171,7 +1181,7 @@ BOOL SciTEWin::GrepMessage(HWND hDlg, UINT message, WPARAM wParam) {
 
 			FillCombos(dlg);
 
-			PerformGrep();
+			PerformGrep(false);
 			if (props.GetInt("find.in.files.close.on.find", 1)) {
 				::EndDialog(hDlg, IDOK);
 				wFindInFiles.Destroy();
@@ -1240,7 +1250,12 @@ BOOL CALLBACK SciTEWin::GrepDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 	return Caller(hDlg, message, lParam)->GrepMessage(hDlg, message, wParam);
 }
 
-void SciTEWin::FindInFiles() {
+void SciTEWin::FindInFiles(bool bStartNow) {
+	if (bStartNow)
+	{
+		PerformGrep(true);
+		return;
+	}
 	if (wFindInFiles.Created())
 		return;
 	SelectionIntoFind();
