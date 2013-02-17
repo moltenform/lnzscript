@@ -234,54 +234,47 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_04_intro.html">Introduction</a></td>
-<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
-<td><a href="lnz_04_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_04_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="lnz_04_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="reference/lnz_04_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_04_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_04_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_01_intro.html">Introduction</a></td>
+<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em">Download</a></td>
+<td><a href="lnz_01_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_01_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_01_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_01_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="lnz_01_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_01_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="introduction">
 <h1 class="title">Introduction</h1>
 <div class="section">
 <h1><a id="what-is-launchorz" name="what-is-launchorz">What is Launchorz?</a></h1>
-<p>The goal of the Launchorz project is to provide powerful Win32 automation tools - automating repetitive tasks in any program you use.</p>
-<p>LnzScript, the language used by Launchorz, can be thought of as JavaScript with new built-in functions. LnzScript differs from the traditional use of JavaScript - it does not run in a web browser and can interact with the filesystem. However, standard JavaScript code and idioms can still be used, including prototype-based classes.</p>
+<p>The goal of the Launchorz project is to provide powerful Win32 automation tools - automating repetitive tasks.</p>
+<p>LnzScript is the language used by Launchorz. It is a version of JavaScript with many additional libraries. LnzScript differs from the traditional use of JavaScript - it won't be run in a web browser,  and can interact with the filesystem. However, standard JavaScript code and idioms can still be used, including prototype-based classes.</p>
 <dl class="docutils">
 <dt>Example of what Launchorz can do:</dt>
-<dd><p class="first">In the editor, type</p>
-<pre class="literal-block">
+<dd><p class="first">In a file called <tt class="docutils literal"><span class="pre">test.js</span></tt>,</p>
+<pre class="last literal-block">
 Process.open('notepad.exe')
 Time.sleep(500);
 Keyboard.send('hello!')
 Dialog.askYesNo('Question','Did you expect this to happen?');
 </pre>
-<p>and choose Go from the Run menu.</p>
-<p class="last">(Alternatively, from the command line, you can run a script by typing <tt class="docutils literal"><span class="pre">lnzscript.exe</span> <span class="pre">/f</span> <span class="pre">myscript.js</span></tt> .)</p>
 </dd>
 </dl>
-<p>LnzScript's dedicated code editor, with tooltips and autocomplete, makes it easy to write and run scripts.</p>
-</div>
-<div class="section">
-<h1><a id="why-is-it-useful" name="why-is-it-useful">Why is it useful?</a></h1>
-<p>Automation saves time by freeing you from repetitive tasks. The majority of programs do not have built-in ways to be customized or scripted. However, LnzScript will work with nearly any program - you just tell it which keystrokes to press. It can be used for testing GUI applications, automating a common task, or writing an administrative script.</p>
-<p>One example scenario: you have a large Visual Studio solution and need to change the C++ projects from Multi-byte character set to Unicode. The examples page shows how you could write a script to automate this without going through every project manually.</p>
+<p>Now run <tt class="docutils literal"><span class="pre">lnzscript</span> /f <span class="pre">test.js</span></tt>, and watch what happens!</p>
 </div>
 <div class="section">
 <h1><a id="why-launchorz" name="why-launchorz">Why Launchorz?</a></h1>
-<p>There are existing tools for Windows automation. One popular choice is AutoIt, and another is AutoHotKey.  Launchorz has an overlap of functionality with these tools, and exists for a similar purpose.</p>
-<p>The most important difference is that this project's LnzScript is based on Javascript: a true language comfortable for those familiar with programming. AutoIt and AutoHotKey use a minimal BASIC-like language which, although it may be easier for beginners, is not suitable for non-trivial scripts. The minimal languages with their lack of structures like objects or standard array syntax feel more like a list of instructions than a complete language. JavaScript's C-style syntax, on the other hand, is familiar to those who have worked languages such as  C++ or Java, and there is no need for distasteful labels, Goto, While, or Wend. The built-in array [] and object {} data types are very useful. Also, by being based on JavaScript, there can be re-use of algorithms. (For instance, many JavaScript code examples exist online).</p>
-<p>I would also claim that Launchorz is more extensible than AutoIt or AutoHotKey. It is not simple to add new functions to these projects, but in LnzScript, one can use the &quot;include&quot; function to import a code module which can have its own private functions and variables. Modules can also expose prototype classes, for object-oriented programming. This allows for more structure, avoiding name conflicts, and maintainability of larger projects.</p>
-<p>Finally, much effort is put into designing the LnzScript API. The provided functions are organized, and aim to be self-explanatory rather than using cryptic abbreviations. LnzScript functions reside in namespaces and will not interfere with your code.</p>
-<p>Also, there are further plans for Launchorz beyond LnzScript. Expect to see a documentation browser, quick access to Launchorz from the keyboard, and more.</p>
+<p>There are existing tools for Windows automation. One popular choice is AutoIt, and another strong project is AutoHotKey.  LnzScript has an overlap of functionality with these tools, and exists for a very similar purpose.</p>
+<p>The most important difference is that LnzScript is a true, comfortable language for those familiar with programming. AutoIt and AutoHotKey use a minimal BASIC-like language, which although may be easier for beginners, is not suitable for non-trivial functions. LnzScript has the feel of a more complete language rather than a list of instructions for a one-time use script. The C-style syntax is familiar to those who have worked languages such as  C++ or Java, and there is no need for labels and GOTO statements. The built-in array [] and object {} data types are very useful. Also, by being based on JavaScript (Ecma-262), there can be greater code re-use of algorithms. (For example, many JavaScript code examples exist online).</p>
+<p>I would also claim that Launchorz is more extensible than AutoIt or AutoHotKey. It is not simple for a developer to add new functionality to these projects. In LnzScript, one can use the &quot;include&quot; function to import a code module. These modules can have private variables (declared with var) and prototype-based classes. This prevents name collisions and allows for information hiding.</p>
+<p>Finally, much effort is put into designing the LnzScript API. The provided functions are organized, and aim to be self-explanatory without using any cryptic abbreviations. LnzScript functions reside in static classes, and will not interfere with your code.</p>
+<p>Also, there are further plans for Launchorz beyond LnzScript. Expect to see a dedicated script editor, quick access to Launchorz from the keyboard, and more.</p>
 <!-- (commented out) WSH is another option, provided by Microsoft. JavaScript as well as other active scripting languages are available. However, it is not very well documented, is not simple to use for automation, and some users disable it due to security concerns. -->
 </div>
 <div class="section">
 <h1><a id="current-implementation" name="current-implementation">Current Implementation</a></h1>
 <p>Versions of Windows prior to XP are not officially supported.</p>
-<p>LnzScript functions are currently implemented by a combination of code using win32 api, AutoItX dll, Qt Toolkit by Trolltech, and nircmd by nirsoft. The language is interpreted by Qt's QtScript module, an implementation of Ecma-262. The implementation may change in the future, but I am crediting what makes this project possible.</p>
+<p>The details here may change, and are not necessarily important to users, but I am crediting what makes this project possible. LnzScript functions are currently provided by a combination of the Qt Toolkit by Trolltech, nircmd by nirsoft, the AutoItX dll, and the Windows api. The language is interpreted by Qt's QtScript module, an implementation of Ecma-262.</p>
 </div>
 </div>
 </body>
