@@ -234,40 +234,33 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_01_intro.html">Introduction</a></td>
-<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em">Download</a></td>
-<td><a href="lnz_01_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_01_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_01_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_01_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="lnz_01_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_01_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_02_intro.html">Introduction</a></td>
+<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
+<td><a href="lnz_02_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_02_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="lnz_02_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_03_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_02_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_02_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="overview">
 <h1 class="title">Overview</h1>
 <div class="section">
 <h1><a id="getting-started" name="getting-started">Getting Started</a></h1>
-<p>Download from <a class="reference" href="http://code.google.com/p/launchorz/downloads/list">Google Code</a>.</p>
-<p>There are currently two distributions: &quot;command line&quot; and &quot;form&quot;. The command-line is recommended, but if you have never used a command-line interface (cmd.exe), the &quot;form&quot; interface is provided. There is not yet an installer, and so the .zip file must be uncompressed to a folder of your choice.</p>
-<p>If you choose the command-line interface:</p>
+<p>Download the latest version from <a class="reference" href="http://code.google.com/p/launchorz/downloads/list">Google Code</a>.</p>
 <ul class="simple">
-<li>Unzip the .zip file to a folder, possibly in Program Files.</li>
-<li>Run lnzscript.exe.</li>
-<li>You should see a LnzScript prompt. Type print('hello') and see if it works.</li>
-<li>Open notepad or a code editor and create a file called 'test.js', containing print('hello')</li>
-<li>Save this file into the directory.</li>
-<li>Open cmd.exe (the command prompt) and cd into the directory.</li>
-<li>From cmd.exe, inside the directory, type lnzscript.exe /f test.js</li>
-<li>From now on, you can use both of these ways (interactive or script-based) to run LnzScript code.</li>
+<li>Unzip the .zip file to someplace on your computer, possibly in Program Files.</li>
+<li>Open the <tt class="docutils literal"><span class="pre">editor</span></tt> folder and run <tt class="docutils literal"><span class="pre">lnzeditor.exe</span></tt>. This is a code editor specifically for the Launchorz project.</li>
+<li>Begin typing a script, such as <tt class="docutils literal"><span class="pre">Mouse.move(1,1);</span> <span class="pre">alert('hello');</span></tt>.</li>
+<li>Choose run script from the Run menu (or press F5) to run.</li>
 </ul>
-<p>If you choose the form interface:</p>
+<p>A few things to note:</p>
 <ul class="simple">
-<li>Unzip the .zip file to a folder, possibly in Program Files.</li>
-<li>Run lnzscriptform.exe and you should see a window with two text boxes.</li>
-<li>Type &quot;print('hello')&quot; into the upper box and click Go.</li>
-<li>The lower box should respond with the text hello.</li>
-<li>You can run scripts by typing text into the top box, and running it by pressing Go.</li>
+<li>The output pane to the right contains the results of the script. The output of the <tt class="docutils literal"><span class="pre">print</span></tt> function will go here.</li>
+<li>Notice the autocomplete and tooltip documentation (which can be disabled in Options-&gt;js options).</li>
+<li>A currently-running script can sometimes be stopped with Ctrl+. or Run-&gt;Stop Script.</li>
 </ul>
+<p>After playing with &quot;The Basics&quot; below, I recommend watching the screencasts on the &quot;examples&quot; page <a class="reference" href="lnz_02_examples.html">here</a> .</p>
 </div>
 <div class="section">
 <h1><a id="the-basics" name="the-basics">The Basics</a></h1>
@@ -292,11 +285,13 @@ Keyboard.send('&lt;Control&gt;s'); //simulates the keystroke,opening Save dialog
 </pre>
 <p>Files</p>
 <pre class="literal-block">
-// note that you can use / in paths. If you use \, it must be escaped.
-// these are equivalent:
+// new syntax for referring to files:
+var s = File.readFile(&#64;'c:\dir\myfile.txt')
+
+// Otherwise, the \ must be escaped.
 var s = File.readFile('c:\\dir\\myfile.txt')
-var s = File.readFile('c:/dir/myfile.txt')
-var arFiles = File.dirListFiles('c:/dir', 'name'); //array of files in the folder sorted by name
+
+var arFiles = File.dirListFiles(&#64;'c:\', 'name'); //returns array of files in the folder sorted by name
 </pre>
 <p>Controls - this type of thing is useful</p>
 <pre class="literal-block">
@@ -307,14 +302,26 @@ Keyboard.send('1');
 Keyboard.send('{ENTER}');
 Time.sleep(1500);
 Control.setText('Calculator','403','1337'); //puts text into control id 403.
+// watch the screencasts for more information.
 </pre>
 <p>Misc. self-explanatory stuff</p>
 <pre class="literal-block">
 Sound.mute()
 Window.minimizeAll()
-Screen.saveScreenshot('c:/shot.png', false)
+Screen.saveScreenshot(&#64;'c:\shot.png', false)
 Process.systemShutdown()
 </pre>
+<p>Demo</p>
+<pre class="literal-block">
+// It's an actual language.
+function moveCursor(x, y) { Mouse.move(x,y, true, 1); }
+for (var i=0; i&lt;500; i++)
+        moveCursor(i*2, Math.sin((i/50.0)*6)*300);
+</pre>
+</div>
+<div class="section">
+<h1><a id="from-the-command-line" name="from-the-command-line">From the Command Line</a></h1>
+<p>LnzScript can also be run from the command line using the program &quot;lnzscript.exe&quot;. Running      <tt class="docutils literal"><span class="pre">lnzscript.exe</span> <span class="pre">/f</span> <span class="pre">&quot;name</span> <span class="pre">of</span> <span class="pre">script.js&quot;</span></tt> will execute a script. Also, running lnzscript.exe without arguments will start an interactive mode where commands can be typed one at a time.</p>
 </div>
 </div>
 </body>

@@ -234,29 +234,25 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_01_intro.html">Introduction</a></td>
-<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em">Download</a></td>
-<td><a href="lnz_01_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_01_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_01_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_01_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="lnz_01_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_01_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_02_intro.html">Introduction</a></td>
+<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
+<td><a href="lnz_02_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_02_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="lnz_02_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_03_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_02_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_02_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="contribute">
 <h1 class="title">Contribute</h1>
-<p>Launchorz is an open source project licensed under the GPL. (That means that if you have a good idea, post it as an enhancement on the project page, optionally including a diff). It is a new project, and help is appreciated. To become a member of the project, e-mail me (Ben) or leave a comment on my <a class="reference" href="http://halfhourhacks.blogspot.com">blog</a>.</p>
+<p>Launchorz is an open source project licensed under the GPL. If you have a good idea, post it as an enhancement on the project page, optionally with a diff. If you notice a bug, please file a report. It is a new project, and help is appreciated. To become a member of the project, send e-mail or leave a comment on this <a class="reference" href="http://halfhourhacks.blogspot.com">blog</a>.</p>
 <div class="section">
 <h1><a id="try-it" name="try-it">Try it!</a></h1>
 <p>You can help by simply using the software. If you notice that something does not work as expected, or documentation is incorrect, you can use the project page to post an issue. <a class="reference" href="http://code.google.com/p/launchorz/issues/list">Issues list</a>. Or give feedback via e-mail, blog, or anything.</p>
 </div>
 <div class="section">
 <h1><a id="writing-test-cases" name="writing-test-cases">Writing test cases</a></h1>
-<p>If you decide to join development, this is a great way to help the project and to play with things. Unit tests reside in /lnzscript/script/test/, but there are currently only a few written. A small test framework keeps track of which methods have no tests, and the eventual goal is to have tests for the entire api.</p>
-</div>
-<div class="section">
-<h1><a id="writing-documentation" name="writing-documentation">Writing documentation</a></h1>
-<p>At this point in time, some details are not set in stone, and so I am holding off on a full-fledged documentation effort. I still feel that documentation is important.</p>
+<p>If you decide to join development, this is a great way to help the project and to play with things. Unit tests reside in /lnzscript/script/test/. A small test framework keeps track of which methods have no tests; the eventual goal being to have tests for the entire api.</p>
 <div class="section">
 <h2><a id="technical-details" name="technical-details">Technical details</a></h2>
 </div>
@@ -287,15 +283,17 @@ p.sidebar-subtitle {
 <p>The functions are implemented with a mixture of the Windows api, Qt, AutoItX, and Nirsoft's Nircmd. At a future date, code from the AutoHotKey project may be incorporated.</p>
 </div>
 <div class="section">
-<h1><a id="structure" name="structure">Structure</a></h1>
-<p>The structure of the code is somewhat unique, but is convenient. The implementations are in /lnzscript/provide_script/source, but note that the .cpp files are not compiled directly. The .cpp files here contain significant metadata in the comments (any line beginning with /// should be considered a directive), and are processed by a Python script to create the real .cpp file. This is done for several reasons:</p>
+<h1><a id="internal-structure" name="internal-structure">Internal Structure</a></h1>
+<p>If you downloaded the Launchorz source, this explanation may help.</p>
+<p>The implementations of functions are in /lnzscript/provide_script/source, but note that the .cpp files are not compiled directly. The .cpp files here contain significant metadata in the comments (any line beginning with /// is considered a directive), and are processed by a Python script to create the real .cpp file. This is done for several reasons:</p>
 <ul class="simple">
 <li>Inline documentation</li>
-<li>Argument checking. QtScript function calls are not &quot;type-checked&quot;, but by providing metadata about the types expected, the Python script will automatically generate checks that the incoming arguments are valid.</li>
-<li>Flexibility. To change the way in which something is done, one just changes the Python script or the .cpp.template file instead of countless C++ functions.</li>
+<li>Argument checking. QtScript function calls are not type-checked, but by providing metadata about the types expected, the Python script will automatically generate checks that the incoming arguments are valid.</li>
+<li>Flexibility. To change the way in which something is done, one just changes the .cpp.template file or the Python script instead of all of the C++ functions.</li>
+<li>Documentation generation. A Python script creates a .xml file from the source.</li>
 </ul>
 <p>In more detail, every &quot;exposed-*.cpp&quot; file in source is processed, and cpp code is generated. This code is placed into one of the .cpp.template files to create the final .cpp output.</p>
-<p>On a much smaller scale, a similar step occurs for JavaScript. The JavaScript libraries are in /lnzscript/script/provide , and a Python script at build time consolidates them to a single std.js file in the output directory.</p>
+<p>On a smaller scale, a similar step occurs for the JavaScript library. The JavaScript files are in /lnzscript/script/provide , and a Python script at build time consolidates them to a single std.js file in the output directory.</p>
 </div>
 </div>
 </body>

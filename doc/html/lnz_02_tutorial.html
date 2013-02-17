@@ -234,43 +234,43 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_01_intro.html">Introduction</a></td>
-<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em">Download</a></td>
-<td><a href="lnz_01_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_01_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_01_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_01_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="lnz_01_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_01_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_02_intro.html">Introduction</a></td>
+<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
+<td><a href="lnz_02_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_02_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="lnz_02_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_03_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_02_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_02_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="tutorial">
 <h1 class="title">Tutorial</h1>
-<p>This section of the documentation contains more-detailed information about certain functions. I would recommend having the Reference open as well while reading this.</p>
+<p>This section of the documentation contains more-detailed information about certain functions. (The Reference contains a complete list of what is available). Some screencasts can be found on the &quot;examples&quot; page <a class="reference" href="lnz_02_examples.html">here</a> .</p>
 <div class="section">
-<h1><a id="script-basics" name="script-basics">Script Basics</a></h1>
-<p>Typically, one will write a script and save it in a .js or .jsz file. Then, <tt class="docutils literal"><span class="pre">lnzscript</span> <span class="pre">/f</span> <span class="pre">name_of_file.jsz</span></tt> will run the script. A good code editor, such as Scite, is recommended, but Notepad can work also. (although in the near future Launchorz will come with its own script editor). The built in print() function can be used to print information, and should be used for troubleshooting.</p>
-<p>One of the cool things about LnzScript is that you can include other code. Use the include() function to include another script file. See Scripts - Advanced  for more information.</p>
+<h1><a id="scripts" name="scripts">Scripts</a></h1>
+<p>This is a full-fledged programming language, with loops, functions, and objects. The built in print() function can be used to print a value, sometimes useful for troubleshooting. The include() function will run the contents of another script file. See Scripts - Advanced for more information.</p>
 </div>
 <div class="section">
 <h1><a id="time" name="time">Time</a></h1>
-<p>Time.sleep() is used very frequently in scripts. It is used to pause the script, usually to wait for something to happen. For example, you cannot open a program and instantaneously interact with it - you must give the program time to load! Time.sleep(500) waits for half of a second and is a reasonable value.</p>
+<p>Time.sleep() is used very frequently in scripts. It is used to pause the script, usually to wait for something to happen. You cannot open a program and instantaneously interact with it - you must give the program time to load! Time.sleep(500) waits for half of a second and is typically a reasonable value.</p>
 </div>
 <div class="section">
 <h1><a id="process" name="process">Process</a></h1>
-<p>One key part of automation is opening a program. This act is seemingly simple, but there are actually many options involved. Do you want the script to wait until the program is closed? Do you want to run a cmd.exe command like <tt class="docutils literal"><span class="pre">dir</span></tt>? Here is an overview of the ways to start another program:</p>
+<p>One key part of automation is opening a program. This would seem to be simple, but there are actually choices involved. Do you want the script to wait until the program is closed? Do you want to read from the command-line? Here are some ways to start another program:</p>
 <ul class="simple">
-<li>Process.open  -opens the program and DOESN'T wait for it to close</li>
-<li>Process.runAndWait    -opens the program and waits for it to close</li>
-<li>Process.runAndRead    -opens the program, reads stdout, and waits for it to close</li>
-<li>Process.runCmdLine    -runs command line like copy, del, rm, and waits for it to close</li>
-<li>Process.openFile      -open a file or URL with default program, doesn't wait for close.</li>
+<li>Process.open  - opens the program and <em>doesn't</em> wait for it to close</li>
+<li>Process.runAndWait    - opens the program and waits for it to close</li>
+<li>Process.runAndRead    - opens the program, reads stdout, and waits for it to close</li>
+<li>Process.runCmdLine    - runs command line like copy, del, rm, and waits for it to close</li>
+<li>Process.openFile      - open a file or URL with default program, doesn't wait for close</li>
 </ul>
-<p>For Windows executables, you won't need the entire path. In other words, you can just type Process.open('calc.exe') or Process.open('notepad').</p>
+<p>For programs that are in the Windows directory, you won't need the entire path. In other words, you can just type Process.open('calc.exe') or Process.open('notepad').</p>
 </div>
 <div class="section">
 <h1><a id="mouse" name="mouse">Mouse</a></h1>
 <p>It's pretty fun to be able to type <tt class="docutils literal"><span class="pre">Mouse.move(1,1)</span></tt> and watch the cursor move. LnzScript can also simulate mouse clicks, drags, and scroll-wheel.</p>
-<p>However, the problem with using the mouse is that it recquires coordinates, and this can always be somewhat fragile. What if the window is in a different place from what you expected? It is better to use Keyboard or direct Control where possible.</p>
+<p>However, the problem with using the mouse is that it recquires coordinates, and this can always be somewhat fragile. What if the window is in a different place from what you expected? It is recommended to use Keyboard or direct Control where possible.</p>
+<p>Note that Keyboard.send('&lt;Shift&gt;{F10}') can be used to simulate right-clicking on something that has focus.</p>
 </div>
 <div class="section">
 <h1><a id="keyboard" name="keyboard">Keyboard</a></h1>
@@ -279,16 +279,15 @@ p.sidebar-subtitle {
 </div>
 <div class="section">
 <h1><a id="window" name="window">Window</a></h1>
-<p>There are ways to interact with a window. Note in the reference that many of these functions take a first parameter &quot;string window&quot;. This is misleading - when the parameter is called &quot;string window&quot; other types than a string are accepted.</p>
-<p>For example, let's say you just opened a Notepad window. Here are the possible ways to refer to a window:</p>
+<p>There are ways to interact with a window. In the reference, many of these functions take a first parameter &quot;string window&quot;. Here is what is meant by this. You just opened Calculator, maybe with Process.open('calc.exe'), and you want to close the window. Here are the possible ways to refer to the window:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">'Untitled'</span></tt>                        Match title starting with Untitled</li>
-<li><tt class="docutils literal"><span class="pre">''</span></tt>                                Empty string - currently active window</li>
-<li><tt class="docutils literal"><span class="pre">'&quot;Untitled</span> <span class="pre">-</span> <span class="pre">Notepad&quot;'</span></tt>            Match exact string</li>
-<li><tt class="docutils literal"><span class="pre">'%Untitled%'</span></tt>                      Match windows with part of string</li>
-<li><tt class="docutils literal"><span class="pre">{'title':'Untitled</span> <span class="pre">-</span> <span class="pre">Notepad',</span> <span class="pre">'class':'Notepad',</span> <span class="pre">'instance':1}</span></tt>   Pass an object. Specifies more things.</li>
+<li><tt class="docutils literal"><span class="pre">Window.close('')</span></tt>          Close the currently active window (when given empty string '')</li>
+<li><tt class="docutils literal"><span class="pre">Window.close('Calc')</span></tt>                      Close a window whose title starts with &quot;Calc&quot;</li>
+<li><tt class="docutils literal"><span class="pre">Window.close('&quot;Calculator&quot;')</span></tt>              Close a window whose title is exactly &quot;Calculator&quot;</li>
+<li><tt class="docutils literal"><span class="pre">Window.close('%ulator%')</span></tt>                  Close any one window with title containing &quot;ulator&quot;</li>
+<li><tt class="docutils literal"><span class="pre">Window.close({'title':'Calculator',</span> <span class="pre">'class':'SciCalc',</span> <span class="pre">'instance':2})</span></tt>     Close the 2nd instance of an open Calculator with the title &quot;Calculator&quot;</li>
 </ul>
-<p>Note that in the last example an object (a bit like a Perl hash / Python dictionary) was passed.</p>
+<p>Note that in the last example an object (like a Python dict or Perl hash) was passed, not a string.</p>
 </div>
 <div class="section">
 <h1><a id="controls" name="controls">Controls</a></h1>
@@ -298,7 +297,8 @@ p.sidebar-subtitle {
 </div>
 <div class="section">
 <h1><a id="file" name="file">File</a></h1>
-<p>There are many functions in this namespace, but they should be self-explanatory. Note that File.readFile() and File.writeFile() are not intended for binary data. They will work well for text files, though.</p>
+<p>There are many functions in this namespace, but they should be self-explanatory. Note that File.readFile() and File.writeFile() are not intended for binary data, and the file cannot be larger than available memory.</p>
+<p>When referring to a file path, one should use special string literals beginning with the &#64; symbol, as in the example <tt class="docutils literal"><span class="pre">var</span> <span class="pre">s</span> <span class="pre">=</span> <span class="pre">File.readFile(&#64;'c:\dir\myfile.txt')</span></tt>. Otherwise, all backslashes in the string will have to be doubled.</p>
 </div>
 <div class="section">
 <h1><a id="dialog" name="dialog">Dialog</a></h1>
@@ -306,11 +306,11 @@ p.sidebar-subtitle {
 </div>
 <div class="section">
 <h1><a id="scripts-advanced" name="scripts-advanced">Scripts - Advanced</a></h1>
-<p>One of the cool things about LnzScript is that you can include other code. Use the include() function to include another script file. Name collisions are avoided as much as possible by the concept of &quot;private&quot; scope. To declare a variable private to a script file, use &quot;var&quot;. To declare a function private, declare it with <tt class="docutils literal"><span class="pre">function</span> <span class="pre">foo(x,y)</span> <span class="pre">{</span> <span class="pre">return</span> <span class="pre">x+y</span> <span class="pre">}</span></tt>. To expose a function as public, use the syntax <tt class="docutils literal"><span class="pre">foo</span> <span class="pre">=</span> <span class="pre">function(x,y)</span> <span class="pre">{</span> <span class="pre">return</span> <span class="pre">x+y</span> <span class="pre">}</span></tt> Similar to Python, one can use the special value __name__ to find out if the currently running script is &quot;main&quot; (i.e. was the one specified by lnzscript /f name_of_file.jsz). In this way, a module can contain test code that is not run when it is included.</p>
-<p>You can associate the extension .jsz with lnzscript.exe, so that you can double-click a script to run it. (In the future an installer may do this automatically). It is recommended to associate with lnzscript.exe /fconfirm &quot;%1&quot;, because using /fconfirm with ask for confirmation before running the script.</p>
+<p>There are two special variables. The variable called <tt class="docutils literal"><span class="pre">argv</span></tt> is an array containing command-line parameters. The variable <tt class="docutils literal"><span class="pre">__name__</span></tt> contains either  &quot;included&quot; if the current script was included or &quot;main&quot; otherwise.</p>
+<p>LnzScript code can include another file with the include() function. It is recommended to avoid name collisions by following these suggestions: To declare a variable private to a script file, use &quot;var&quot;. To declare a function private, declare it with <tt class="docutils literal"><span class="pre">function</span> <span class="pre">foo(x,y)</span> <span class="pre">{</span> <span class="pre">return</span> <span class="pre">x+y</span> <span class="pre">}</span></tt>. To expose a function as public, use the syntax <tt class="docutils literal"><span class="pre">foo</span> <span class="pre">=</span> <span class="pre">function(x,y)</span> <span class="pre">{</span> <span class="pre">return</span> <span class="pre">x+y</span> <span class="pre">}</span></tt> In this way functions from one file will not be accidently overwritten. Similar to Python, one can use the special variable called <tt class="docutils literal"><span class="pre">__name__</span></tt> to find out if the currently running script is &quot;main&quot; (i.e. was the one specified by lnzscript /f name_of_file.js). In this way, a module can contain test code that is not run when it is included.</p>
+<p>For more advanced scripts, use the statement <tt class="docutils literal"><span class="pre">include('&lt;std&gt;')</span></tt> to import a code library. Currently, this library provides prototype methods such as .startsWith() / .endsWith() for strings, prototype methods such as .max() and .min() for arrays, and printarr(a) for printing arrays. These are documented in the Reference under String and Array.</p>
+<p>You can associate the extension .js with lnzscript.exe, so that you can double-click a script to run it. It is recommended to associate with lnzscript.exe /fconfirm &quot;%1&quot;. This will ask for confirmation before running the script.</p>
 <p>Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object oriented JavaScript.</p>
-<p>In a script that has non-trivial code, a standard JavaScript library is provided.
-The library is not included by default, and the special expression <tt class="docutils literal"><span class="pre">include('&lt;std&gt;')</span></tt> is used to import it. Currently, this library provides .endsWith, printarr(a) for printing arrays, prototype methods such as startsWith or endsWith for strings, and prototype methods such as max() and min() for arrays. These can be seen in the file std.js.</p>
 </div>
 </div>
 </body>

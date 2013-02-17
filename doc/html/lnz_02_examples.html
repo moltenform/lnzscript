@@ -234,18 +234,74 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_01_intro.html">Introduction</a></td>
-<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em">Download</a></td>
-<td><a href="lnz_01_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_01_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_01_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_01_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="lnz_01_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_01_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_02_intro.html">Introduction</a></td>
+<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
+<td><a href="lnz_02_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_02_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="lnz_02_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_03_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_02_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_02_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="examples">
 <h1 class="title">Examples</h1>
-<p>There currently aren't examples posted. You can try some of the short scripts listed in the <a class="reference" href="lnz_01_overview.html">overview</a>.</p>
+<p>Here are screencasts showing how LnzScript works.</p>
+<p><a class="reference" href="http://jamon.ben.googlepages.com/movlnz_02_screencast_basics.htm">Video 1, Basics</a></p>
+<blockquote>
+<p>Covers:</p>
+<ul class="simple">
+<li>Writing simple scripts</li>
+<li>Dialogs</li>
+<li>Opening and sending keypresses to a process</li>
+</ul>
+<p>Summary:</p>
+<ul class="simple">
+<li>When referring to a filepath, one must type 'c:\\myfile.txt' and not 'c:\myfile.txt'</li>
+<li>Keyboard.send can be used to simulate both typing and Control- keyboard shortcuts</li>
+</ul>
+</blockquote>
+<p><a class="reference" href="http://jamon.ben.googlepages.com/movlnz_02_screencast_fftabs.htm">Video 2, Opening Firefox Tabs</a></p>
+<blockquote>
+<p>Covers:</p>
+<ul class="simple">
+<li>Example of a useful script</li>
+<li>Generating a shortcut to a script</li>
+</ul>
+<p>Summary:</p>
+<ul class="simple">
+<li>Time.sleep is important to wait for the program to be ready.</li>
+<li>Window.maximize, Window.move, and Window.resize can be used</li>
+<li>File.getPathSpecial() can be used to get the Desktop folder among others.</li>
+<li>File.writeFile can be used to create a text file.</li>
+</ul>
+</blockquote>
+<p><a class="reference" href="http://jamon.ben.googlepages.com/movlnz_02_screencast_vstudio.htm">Video 3, Visual studio</a></p>
+<blockquote>
+This is a real-life example. In Visual Studio, let's say you have a large C++ solution with many projects. You'd like to change all of the projects from Multi-byte character set to Unicode. Instead of clicking through all of the settings, you can write a script to loop through all projects and change the setting for you. The specific code will only work for vs 2003, but the process of writing the script is generalizable.</blockquote>
+<p><a class="reference" href="http://jamon.ben.googlepages.com/movlnz_02_screencast_controls.htm">Video 4, Controls</a></p>
+<blockquote>
+<p>Covers:</p>
+<ul class="simple">
+<li>Direct interaction with controls on a form</li>
+<li>Using a Window Info tool to find control ids</li>
+<li>Getting / setting text of control, simulating clicking on a control</li>
+</ul>
+<p>Summary:</p>
+<ul class="simple">
+<li>Open &quot;Window Info&quot; from the Tools menu to open the Window Info tool</li>
+<li>When the tool is open, it will display information about the control currently under the cursor</li>
+<li>The &quot;ClassNN&quot; or &quot;id&quot; of the control can both be used to refer to a control.</li>
+</ul>
+</blockquote>
+<p>Video 5, Useful Clipboard Interaction</p>
+<blockquote>
+<p>(Coming soon)</p>
+<ul class="simple">
+<li>Getting and setting clipboard text</li>
+<li>More advanced Javascript, &lt;std&gt; library</li>
+<li>Creating a code module.</li>
+</ul>
+</blockquote>
 </div>
 </body>
 </html>

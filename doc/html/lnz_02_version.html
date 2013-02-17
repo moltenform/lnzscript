@@ -234,23 +234,35 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_01_intro.html">Introduction</a></td>
-<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em">Download</a></td>
-<td><a href="lnz_01_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_01_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_01_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_01_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="lnz_01_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_01_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_02_intro.html">Introduction</a></td>
+<td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
+<td><a href="lnz_02_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_02_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="lnz_02_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="http://students.olin.edu/2010/bfisher/lnz_script/lnz_03_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_02_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_02_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="versioning">
 <h1 class="title">Versioning</h1>
 <div class="section">
 <h1><a id="current-release" name="current-release">Current Release</a></h1>
-<p>The current release is 0.1.</p>
-</div>
-<div class="section">
-<h1><a id="changes-since-previous-version" name="changes-since-previous-version">Changes since previous version</a></h1>
+<p>The current release is 0.3.</p>
+<p>Additions in 0.3</p>
+<ul class="simple">
+<li>&#64;'c:\myfile.txt' string literals</li>
+<li>Code editor has Documentation viewer</li>
+<li>Dialog.input() and prompt() functions</li>
+<li>In editor, clicking on error will take you to location.</li>
+</ul>
+<p>Additions in 0.2</p>
+<ul class="simple">
+<li>LnzScite code editor</li>
+<li>Several new functions added</li>
+<li>Dialogs such as file, color. Special directories.</li>
+<li>More use of AutoItX dll</li>
+</ul>
+<p>Additions in 0.1b</p>
 <ul class="simple">
 <li>Scripts can use __name__ to see if they were included or run directly.</li>
 <li>Addition of standard JavaScript library</li>
@@ -258,27 +270,54 @@ p.sidebar-subtitle {
 </ul>
 </div>
 <div class="section">
+<h1><a id="licenses" name="licenses">Licenses</a></h1>
+<p>The Launchorz project is under the GPL v2 license.</p>
+<pre class="literal-block">
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+</pre>
+<pre class="literal-block">
+License for Scintilla and SciTE
+
+Copyright 1998-2003 by Neil Hodgson &lt;neilh&#64;scintilla.org&gt;
+
+All Rights Reserved
+
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation.
+
+NEIL HODGSON DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS, IN NO EVENT SHALL NEIL HODGSON BE LIABLE FOR ANY
+SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+OR PERFORMANCE OF THIS SOFTWARE.
+</pre>
+<p>Also refer to the nircmd and autoItx licenses, which come are in the /licenses folder.</p>
+</div>
+<div class="section">
 <h1><a id="future-plans" name="future-plans">Future plans</a></h1>
-<ul>
-<li><p class="first">Addition of several commands</p>
-<blockquote>
 <ul class="simple">
-<li>Control panels</li>
-<li>Special folders</li>
-<li>More dialogs</li>
-</ul>
-</blockquote>
-</li>
-<li><p class="first">Script editor</p>
-</li>
-<li><p class="first">The Launchor</p>
-</li>
-<li><p class="first">Installer</p>
-</li>
-<li><p class="first">Ftp Library? Http? Database of scripts?</p>
-</li>
-<li><p class="first">64 bit version</p>
-</li>
+<li>Installer</li>
+<li>Launchor</li>
+<li>Urls and Zip file support (under development)</li>
+<li>Pre-Windows XP support is not planned</li>
 </ul>
 <div class="section">
 <h2><a id="about-this-documentation" name="about-this-documentation">About this documentation</a></h2>
