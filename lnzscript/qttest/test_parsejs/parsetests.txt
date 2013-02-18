@@ -69,5 +69,33 @@ ou\t "of" 'comment' 'w\\w\\w'
 'in a string " and \' @' string \ended\ there.
 ~
 'in a string " and \' @' string \ended\ there.
+~~
+the '\\' should not break @'string'
+~
+the '\\' should not break 'string'
+~~
+the "\\" should not break @'string'
+~
+the "\\" should not break 'string'
+~~
+test '\\ok some \' inter \' esting \' "n'   "\\ok some \" inter \" esting \' 'n" @'w \' atch"" c\"ases is'
+~
+test '\\ok some \' inter \' esting \' "n'   "\\ok some \" inter \" esting \' 'n" @'w \' atch"" c\"ases is'
+~~
+a@'' @' ' @' ' @' ' @' ' @' ' @' ' @' ' @' '
+~
+a'' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' '
+~~
+replace('n:\\src', @'\\share\src')
+~
+replace('n:\\src', '\\\\share\\src')
+~~
+replace('n:\\src\\', @'\\share\src')
+~
+replace('n:\\src\\', '\\\\share\\src')
+~~
+replace(@'n:\\src\\', @'\\share\src')
+~
+replace('n:\\\\src\\\\', '\\\\share\\src')
 
 
