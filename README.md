@@ -10,7 +10,7 @@ Process.open('notepad.exe')
 Time.sleep(500);
 Keyboard.send('typing some text into the program...')
 if (Dialog.askYesNo('Question','Do you wish to continue?')==Dialog.YES)
-    Keyboard.send('<Control>s') // bring up Save dialog
+    Keyboard.send('&lt;Control&gt;s') // bring up Save dialog
 </pre>
 
 You can script macros for frequently performed actions, write quick one-off scripts in the editor,
