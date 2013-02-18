@@ -198,7 +198,7 @@
 ///Function:Control.sendText
 ///Arguments:string window, string strControl, string strKeySequence, bool bRaw
 ///Returns:bool bSuccess
-///Doc:Send simulated keystrokes to a control (even if the window is not active). The string can include <Shift>, <Control> or <Cntrl>, as well as many others: {SPACE}, {ENTER}, {BACKSPACE}, {DELETE} (see Keyboard.send). <Alt> or <Win>, and other characters may not work equivalently to Keyboard.send.
+///Doc:Send simulated keystrokes to a control (even if the window is not active). The string can include <Shift>, <Control>, <Ctrl>, <Alt>, as well as many others: {SPACE}, {ENTER}, {BACKSPACE}, {DELETE} (see Keyboard.send). <Alt> or <Win>, and other characters may not work equivalently to Keyboard.send.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS

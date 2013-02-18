@@ -35,7 +35,7 @@ namespace launchorz_functions
 	QString util_AU3KeyboardCommandsReplacement(QString strKeySequence)
 	{
 		strKeySequence.replace("+","{+}",Qt::CaseSensitive); strKeySequence.replace("!","{!}",Qt::CaseSensitive); strKeySequence.replace("#","{#}",Qt::CaseSensitive); strKeySequence.replace("^","{^}",Qt::CaseSensitive);
-		strKeySequence.replace("<Alt>","!",Qt::CaseInsensitive); strKeySequence.replace("<Shift>","+",Qt::CaseInsensitive); strKeySequence.replace("<Control>","^",Qt::CaseInsensitive); strKeySequence.replace("<Cntrl>","^",Qt::CaseInsensitive); strKeySequence.replace("<Win>","#",Qt::CaseInsensitive);
+		strKeySequence.replace("<Alt>","!",Qt::CaseInsensitive); strKeySequence.replace("<Shift>","+",Qt::CaseInsensitive); strKeySequence.replace("<Control>","^",Qt::CaseInsensitive); strKeySequence.replace("<Cntrl>","^",Qt::CaseInsensitive); strKeySequence.replace("<Ctrl>","^",Qt::CaseInsensitive); strKeySequence.replace("<Win>","#",Qt::CaseInsensitive);
 		return strKeySequence;
 	}
 	QScriptValue util_QListToScriptArray(QScriptEngine *eng, QList<QString>& results)
