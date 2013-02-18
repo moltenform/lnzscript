@@ -234,14 +234,14 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_02_intro.html">Introduction</a></td>
+<td><a href="lnz_04_intro.html">Introduction</a></td>
 <td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
-<td><a href="lnz_02_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_02_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="lnz_02_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="reference/lnz_03_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_02_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_02_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_04_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_04_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="lnz_04_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="reference/lnz_04_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_04_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_04_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="overview">
 <h1 class="title">Overview</h1>
@@ -249,9 +249,8 @@ p.sidebar-subtitle {
 <h1><a id="getting-started" name="getting-started">Getting Started</a></h1>
 <p>Download the latest version from <a class="reference" href="http://code.google.com/p/launchorz/downloads/list">Google Code</a>.</p>
 <ul class="simple">
-<li>Unzip the .zip file to someplace on your computer, possibly in Program Files.</li>
-<li>Open the <tt class="docutils literal"><span class="pre">editor</span></tt> folder and run <tt class="docutils literal"><span class="pre">lnzeditor.exe</span></tt>. This is a code editor specifically for the Launchorz project.</li>
-<li>Begin typing a script, such as <tt class="docutils literal"><span class="pre">Mouse.move(1,1);</span> <span class="pre">alert('hello');</span></tt>.</li>
+<li>Run the installer. It will open the lnz editor after installing.</li>
+<li>In the editor, begin typing a script, such as <tt class="docutils literal"><span class="pre">Mouse.move(1,1);</span> <span class="pre">alert('hello');</span></tt>.</li>
 <li>Choose run script from the Run menu (or press F5) to run.</li>
 </ul>
 <p>A few things to note:</p>
@@ -291,7 +290,7 @@ var s = File.readFile(&#64;'c:\dir\myfile.txt')
 // Otherwise, the \ must be escaped.
 var s = File.readFile('c:\\dir\\myfile.txt')
 
-var arFiles = File.dirListFiles(&#64;'c:\', 'name'); //returns array of files in the folder sorted by name
+var arFiles = File.dirListFiles(&#64;'c:\', '*', 'name'); //returns array of files in the folder sorted by name
 </pre>
 <p>Controls - this type of thing is useful</p>
 <pre class="literal-block">
@@ -302,6 +301,7 @@ Keyboard.send('1');
 Keyboard.send('{ENTER}');
 Time.sleep(1500);
 Control.setText('Calculator','403','1337'); //puts text into control id 403.
+// one can find control ids with a window info tool, from the Tools menu
 // watch the screencasts for more information.
 </pre>
 <p>Misc. self-explanatory stuff</p>

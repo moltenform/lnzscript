@@ -234,14 +234,14 @@ p.sidebar-subtitle {
 
 <table style="border: 1px solid black">
 <tr>
-<td><a href="lnz_02_intro.html">Introduction</a></td>
+<td><a href="lnz_04_intro.html">Introduction</a></td>
 <td><a href="http://code.google.com/p/launchorz/"  style="margin-left:1em" target="_new">Download</a></td>
-<td><a href="lnz_02_overview.html" style="margin-left:1em">Overview</a></td>
-<td><a href="lnz_02_tutorial.html" style="margin-left:1em">Tutorial</a></td>
-<td><a href="lnz_02_examples.html" style="margin-left:1em">Examples</a></td>
-<td><a href="reference/lnz_03_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
-<td><a href="lnz_02_contribute.html" style="margin-left:1em">Contribute</a></td>
-<td><a href="lnz_02_version.html" style="margin-left:1em">Version</a></td>
+<td><a href="lnz_04_overview.html" style="margin-left:1em">Overview</a></td>
+<td><a href="lnz_04_tutorial.html" style="margin-left:1em">Tutorial</a></td>
+<td><a href="lnz_04_examples.html" style="margin-left:1em">Examples</a></td>
+<td><a href="reference/lnz_04_documentation.xml" style="margin-left:1em" target="_new">Reference</a></td>
+<td><a href="lnz_04_contribute.html" style="margin-left:1em">Contribute</a></td>
+<td><a href="lnz_04_version.html" style="margin-left:1em">Version</a></td>
 </tr>
 </table><div class="document" id="tutorial">
 <h1 class="title">Tutorial</h1>
@@ -309,8 +309,8 @@ p.sidebar-subtitle {
 <p>There are two special variables. The variable called <tt class="docutils literal"><span class="pre">argv</span></tt> is an array containing command-line parameters. The variable <tt class="docutils literal"><span class="pre">__name__</span></tt> contains either  &quot;included&quot; if the current script was included or &quot;main&quot; otherwise.</p>
 <p>LnzScript code can include another file with the include() function. It is recommended to avoid name collisions by following these suggestions: To declare a variable private to a script file, use &quot;var&quot;. To declare a function private, declare it with <tt class="docutils literal"><span class="pre">function</span> <span class="pre">foo(x,y)</span> <span class="pre">{</span> <span class="pre">return</span> <span class="pre">x+y</span> <span class="pre">}</span></tt>. To expose a function as public, use the syntax <tt class="docutils literal"><span class="pre">foo</span> <span class="pre">=</span> <span class="pre">function(x,y)</span> <span class="pre">{</span> <span class="pre">return</span> <span class="pre">x+y</span> <span class="pre">}</span></tt> In this way functions from one file will not be accidently overwritten. Similar to Python, one can use the special variable called <tt class="docutils literal"><span class="pre">__name__</span></tt> to find out if the currently running script is &quot;main&quot; (i.e. was the one specified by lnzscript /f name_of_file.js). In this way, a module can contain test code that is not run when it is included.</p>
 <p>For more advanced scripts, use the statement <tt class="docutils literal"><span class="pre">include('&lt;std&gt;')</span></tt> to import a code library. Currently, this library provides prototype methods such as .startsWith() / .endsWith() for strings, prototype methods such as .max() and .min() for arrays, and printarr(a) for printing arrays. These are documented in the Reference under String and Array.</p>
-<p>You can associate the extension .js with lnzscript.exe, so that you can double-click a script to run it. It is recommended to associate with lnzscript.exe /fconfirm &quot;%1&quot;. This will ask for confirmation before running the script.</p>
-<p>Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object oriented JavaScript.</p>
+<p>Scripts with the extension .jsz are associated with lnzscript.exe, so that you can double-click a script to run it. One can also drag and drop a file into a script, and the filename will be in argv[1].</p>
+<p>Because LnzScript is JavaScript, in order to write an object-oriented program, one uses prototype-based inheritance. This is described online many places as seen by a Google search for object-oriented JavaScript.</p>
 </div>
 </div>
 </body>
