@@ -86,7 +86,7 @@
 
 
 ///Function:String.contains
-///Arguments:string smallerString
+///Arguments:string strSmallerString
 ///Returns:bool bContains
 ///Doc:Tests if string contains a certain substring. Use include('<std>') to import this function.
 ///Implementation:Javascript
@@ -94,7 +94,7 @@
 {}
 
 ///Function:String.startsWith
-///Arguments:string smallerString
+///Arguments:string strSmallerString
 ///Returns:bool bStartsWith
 ///Doc:Tests if string starts with a certain substring. Use include('<std>') to import this function.
 ///Implementation:Javascript
@@ -102,7 +102,7 @@
 {}
 
 ///Function:String.endsWith
-///Arguments:string smallerString
+///Arguments:string strSmallerString
 ///Returns:bool bEndsWith
 ///Doc:Tests if string ends with a certain substring. Use include('<std>') to import this function.
 ///Implementation:Javascript

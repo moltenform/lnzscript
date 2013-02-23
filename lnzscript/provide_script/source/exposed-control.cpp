@@ -23,13 +23,13 @@
 
 
 ///Function:Control.click
-///Arguments:string window, string strControl, string strButton="left", int nClicks=1, int x=INTDEFAULT, int y=INTDEFAULT
-///Returns:bool bSuccess
+///Arguments:string window, string strControl, string strBtn="left", int nClicks=1, int x=INTDEFAULT, int y=INTDEFAULT
+///Returns:
 ///Doc:Send simulated mouse click to control. Optionally specify button, number of clicks, or position of click (defaulting to center). Specify a control in one of three ways: ClassName (e.g. "Button", or "Button3" for the third Button control), Text (e.g. "OK" or "&Next" for a button with the text Next, with underlined N), or Control ID (e.g. 350, can be found with tools like Window Info Tool / spy). 
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	long res = AU3_ControlClick(QStrToCStr(window), QStrToCStr(strText),QStrToCStr(strControl), QStrToCStr(strButton), nClicks, x, y);
+	long res = AU3_ControlClick(QStrToCStr(window), QStrToCStr(strText),QStrToCStr(strControl), QStrToCStr(strBtn), nClicks, x, y);
 	return util_LongToBool(res);
 }
 
@@ -79,7 +79,7 @@
 // }
 
 ///Function:Control.sendCommandListview
-///Arguments:string window, string strControl, string strCommand, string strArgument="", string strArgument2=""
+///Arguments:string window, string strCtrl, string strCmd, string strArg="", string strArg2=""
 ///Returns:string strResult
 ///Doc:Sends a command to a ListView32 control. All indices are 0 based (first item referenced by 0 and so on). Some commands take two arguments. In a "Details" view, the "item" is the "row" and the "subitem" is the "column". Commands include: [[br]]"DeSelect", From [, To] 	Deselects one or more items. [[br]]"FindItem", "string to find" [, SubItem] 	Returns the item index of the string. Returns -1 if the string is not found. [[br]]"GetItemCount" 	Returns the number of list items. [[br]]"GetSelected" [, option]	Returns a string containing the item index of selected items. If option=0 (default) only the first selected item is returned. If option=1 then all the selected items are returned delimited by |, e.g: "0|3|4|10". If no items are selected a blank "" string is returned. [[br]]"GetSelectedCount" 	Returns the number of items that are selected. [[br]]"GetSubItemCount" 	Returns the number of subitems. [[br]]"GetText", Item, SubItem 	Returns the text of a given item/subitem. [[br]]"IsSelected", Item 	Returns 1 if the item is selected, otherwise returns 0. [[br]]"Select", From [, To] 	Selects one or more items. [[br]]"SelectAll" 		Selects all items. [[br]]"SelectClear" 	Clears the selection of all items. [[br]]"SelectInvert" 	Inverts the current selection. [[br]]"ViewChange", "view" 	Changes the current view. Valid views are "list", "details", "smallicons", "largeicons".
 ///Example: Control.sendCommandListview("C:\\Program Files","SysListView321","Select", "2", "5");
@@ -87,7 +87,7 @@
 {
 	CHECK_ARGS
 	char buf[BUFSIZE];
-	AU3_ControlListView(QStrToCStr(window), QStrToCStr(strText),QStrToCStr(strControl), QStrToCStr(strCommand),QStrToCStr(strArgument), QStrToCStr(strArgument2),buf, BUFSIZE);
+	AU3_ControlListView(QStrToCStr(window), QStrToCStr(strText),QStrToCStr(strCtrl), QStrToCStr(strCmd),QStrToCStr(strArg), QStrToCStr(strArg2),buf, BUFSIZE);
 	if (AU3_error()!=0) return eng->nullValue(); //if error ocurred
 	else if (strcmp(buf, "0")==0) return QScriptValue(eng, 0); //If result is "0", return 0. This way conditionals should make more sense.
 	else return QScriptValue(eng, QString(buf));
@@ -196,16 +196,16 @@
 }
 
 ///Function:Control.sendText
-///Arguments:string window, string strControl, string strKeySequence, bool bRaw
+///Arguments:string window, string strControl, string strKeys, bool bRaw
 ///Returns:bool bSuccess
 ///Doc:Send simulated keystrokes to a control (even if the window is not active). The string can include <Shift>, <Control>, <Ctrl>, <Alt>, as well as many others: {SPACE}, {ENTER}, {BACKSPACE}, {DELETE} (see Keyboard.send). <Alt> or <Win>, and other characters may not work equivalently to Keyboard.send.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
 	
-	strKeySequence = util_AU3KeyboardCommandsReplacement(strKeySequence);
+	strKeys = util_AU3KeyboardCommandsReplacement(strKeys);
 	int nMode = (bRaw) ? 1 : 0;
-	long res = AU3_ControlSend(QStrToCStr(window), QStrToCStr(strText),QStrToCStr(strControl), QStrToCStr(strKeySequence), nMode);
+	long res = AU3_ControlSend(QStrToCStr(window), QStrToCStr(strText),QStrToCStr(strControl), QStrToCStr(strKeys), nMode);
 	return util_LongToBool(res);
 }
 

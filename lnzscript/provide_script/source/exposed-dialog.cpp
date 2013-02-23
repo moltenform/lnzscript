@@ -59,7 +59,7 @@
 }
 ///Function:Dialog.askYesNoCancel
 ///Arguments:string strTitle, string strText
-///Returns:Dialog.YES, Dialog.NO, Dialog.CANCEL
+///Returns:Dialog.YES;Dialog.NO;Dialog.CANCEL
 ///Doc:Display simple message box on the screen, with options for yes, no, cancel.
 ///Implementation:c++_winext
 ///Example:var res = Dialog.askYesNoCancel("Warning","Replace existing file?"); if (res==Dialog.YES) doSomething(); else if (res==Dialog.NO) doSomethingElse(); else doCancel();
@@ -104,8 +104,8 @@
 }
 
 ///Function:Dialog.openFile
-///Arguments:string strFiletype="*", bool bMultiple=false, string strStartDirectory="."
-///Returns:string strFile or array arFiles
+///Arguments:string strFiletype="*", bool bMult=false, string strStartDir="."
+///Returns:string strFile
 ///Doc:Opens standard Open File dialog. Provide type in format such as 'bmp', NOT '*.bmp'. If not multiple, returns string of filepath or false on cancel or timeout. If multiple, returns an array of strings: if the user chooses one file, ar[0] is the entire filepath and file name. if the user chooses > one file, ar[0] is the directory, and ar[1] to the rest are only the file names.
 ///Implementation:c++_winext
 {
@@ -113,11 +113,11 @@
 	if (strFiletype.contains("*.", Qt::CaseSensitive)) return ctx->throwError("Dialog.openFile(): Provide type in format 'bmp', NOT '*.bmp'.");
 	
 	QStringList args; 
-	args << "file" << (bMultiple ? "openmult" : "open") << strFiletype << strStartDirectory;
+	args << "file" << (bMult ? "openmult" : "open") << strFiletype << strStartDir;
 	QString strOutput = util_externalCmdStdout(G_WinCommonDialog, args);
 	if (!strOutput.size()) return QScriptValue(eng, false);
 	
-	if (bMultiple)
+	if (bMult)
 	{
 		QStringList list = strOutput.split("\n", QString::KeepEmptyParts);
 		return util_QListToScriptArray(eng, list);
@@ -127,7 +127,7 @@
 }
 
 ///Function:Dialog.saveFile
-///Arguments:string strFiletype="*", string strStartDirectory="."
+///Arguments:string strFiletype="*", string strStartDir="."
 ///Returns:string strFile
 ///Doc:Opens standard Save File dialog. Provide type in format such as 'bmp', NOT '*.bmp'. Returns string of filepath or false on cancel or timeout.
 ///Implementation:c++_winext
@@ -136,7 +136,7 @@
 	if (strFiletype.contains("*.", Qt::CaseSensitive)) return ctx->throwError("Dialog.saveFile(): Provide type in format 'bmp', NOT '*.bmp'.");
 	
 	QStringList args; 
-	args << "file" << "save" << strFiletype <<  strStartDirectory;
+	args << "file" << "save" << strFiletype <<  strStartDir;
 	QString strOutput = util_externalCmdStdout(G_WinCommonDialog, args);
 	if (!strOutput.size()) return QScriptValue(eng, false);
 	return QScriptValue(eng, strOutput);

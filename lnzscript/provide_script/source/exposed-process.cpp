@@ -1,13 +1,13 @@
 
 ///Function:Process.open
-///Arguments:string strExecutable, string strWorkingDirectory="", int nFlag=1
+///Arguments:string strExecutable, string strWorkingDir="", int nFlag=1
 ///Returns:int nPID
 ///Doc:Opens external program. After running the requested program the script continues (this is asynchronous). To pause execution of the script until the spawned program has finished use Process.runAndWait. Optionally pass a flag such as Window.HIDE, Window.SHOW, Window.MINIMIZE, Window.MAXIMIZE, or Window.RESTORE. Returns the PID of process or null upon failure.
 ///Implementation:c++_au3
 {
 	// Seems analogous to QProcess::start 
 	CHECK_ARGS
-	long nRes = AU3_Run(QStrToCStr(strExecutable), QStrToCStr(strWorkingDirectory),nFlag);
+	long nRes = AU3_Run(QStrToCStr(strExecutable), QStrToCStr(strWorkingDir),nFlag);
 	if (AU3_error()!=1)
 		return QScriptValue(eng, (int) nRes);
 	else
@@ -16,14 +16,14 @@
 
 
 ///Function:Process.openFile
-///Arguments:string strFileOrUrlOrProgram, string strWorkingDirectory=""
+///Arguments:string strFileOrUrlOrProgram, string strWorkingDir=""
 ///Returns:
 ///Doc:Opens file, URL, or program with Windows shell (usually opens file in the default editor). After running the requested program the script continues (this is asynchronous).
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
 	QProcess objProcess;
-	if (strWorkingDirectory != "") objProcess.setWorkingDirectory(strWorkingDirectory);
+	if (strWorkingDir != "") objProcess.setWorkingDirectory(strWorkingDir);
 	
 	QString strExecutable = "cmd.exe /c start \"" + strFileOrUrlOrProgram + "\"";
 	objProcess.start(strExecutable);
@@ -32,14 +32,14 @@
 }
 
 ///Function:Process.runAndWait
-///Arguments:string strExecutable, string strWorkingDirectory="", int nFlag=1
+///Arguments:string strExe, string strWorkingDir="", int nFlag=1
 ///Returns:int nExitCode
 ///Doc:Opens external program. The script pauses until the program has closed. Optionally pass a flag such as Window.HIDE, Window.MINIMIZE, or Window.MAXIMIZE. Returns the exit code, or null upon failure.
 ///Implementation:c++_au3
 {
 	// Seems analogous to QProcess::execute 
 	CHECK_ARGS
-	long nRes = AU3_RunWait(QStrToCStr(strExecutable), QStrToCStr(strWorkingDirectory),nFlag);
+	long nRes = AU3_RunWait(QStrToCStr(strExe), QStrToCStr(strWorkingDir),nFlag);
 	if (AU3_error()!=1)
 		return QScriptValue(eng, (int) nRes);
 	else
@@ -47,7 +47,7 @@
 }
 
 ///Function:Process.runAndRead
-///Arguments:string strExecutable, string strWorkingDirectory="", int nTimeoutMilliseconds=30000
+///Arguments:string strExe, string strWorkingDir="", int nTimeoutMs=30000
 ///Returns:string strOutput
 ///Doc:Opens external program and reads its output from stdout. The script pauses until the program has closed. Throws exception if program cannot be found, and if process times out. 
 ///Implementation:c++_qt
@@ -55,20 +55,20 @@
 	// to run shell, use Process.runAndRead('cmd.exe /c dir')
 	CHECK_ARGS
 	QProcess objProcess;
-	if (strWorkingDirectory != "") objProcess.setWorkingDirectory(strWorkingDirectory);
-	objProcess.start(strExecutable);
+	if (strWorkingDir != "") objProcess.setWorkingDirectory(strWorkingDir);
+	objProcess.start(strExe);
 	
 	int nError = objProcess.error();
 	if (nError ==0) return ctx->throwError("Process.runAndRead(): process failed to start. Either the invoked program is missing, or you may have insufficient permissions.");
 	// error of 5 seems to mean ok. Other values at http://doc.trolltech.com/4.4/qprocess.html#ProcessError-enum
 	
-	bool bTimeout = objProcess.waitForFinished(nTimeoutMilliseconds);
+	bool bTimeout = objProcess.waitForFinished(nTimeoutMs);
 	if (!bTimeout) return ctx->throwError("Process.runAndRead(): process timed out.");
 	QString strOutput( objProcess.readAllStandardOutput());
 	return QScriptValue(eng, strOutput);
 }
 ///Function:Process.runCmdLine
-///Arguments:string strCommandLineCommand, string strWorkingDirectory=""
+///Arguments:string strCommandLineCommand, string strWorkingDir=""
 ///Returns:
 ///Doc:Execute command line command, in the style of the command prompt cmd.exe. As in the command prompt, you must use quotes if a file or directory has spaces in the name.
 ///Example: Process.runCmdLine('mkdir "c:\\program files\\myfolder"');
@@ -76,7 +76,7 @@
 {
 	CHECK_ARGS
 	QProcess objProcess;
-	if (strWorkingDirectory != "") objProcess.setWorkingDirectory(strWorkingDirectory);
+	if (strWorkingDir != "") objProcess.setWorkingDirectory(strWorkingDir);
 	
 	QString strExecutable = "cmd.exe /c " + strCommandLineCommand;
 	objProcess.start(strExecutable);

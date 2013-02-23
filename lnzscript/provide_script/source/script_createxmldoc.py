@@ -103,6 +103,7 @@ def createDoc():
 				i+=1
 				if function.functionname.startswith('_'): continue #this is an undocumented function; don't include it.
 				function.args = function.args.replace('INTDEFAULT','default')
+				function.args = function.args.replace('string window','string strWindow')
 				
 				if function.instanceMethod==True: sInstanceParam = ' instance="true" '
 				else: sInstanceParam = ''

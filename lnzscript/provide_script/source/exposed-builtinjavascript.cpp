@@ -16,7 +16,7 @@
 {}
 ///Function:(Global).parseFloat
 ///Arguments:string strDigits
-///Returns:double fResult
+///Returns:fResult
 ///Doc:The parseFloat function turns a string representation of a floating-point number into a number.
 ///Implementation:Javascript
 {}
@@ -34,13 +34,13 @@
 {}
 ///Function:(Global).isNaN
 ///Arguments:number input
-///Returns:bool isNotANumber
+///Returns:bool bIsNotANumber
 ///Doc:Returns true if the input is the value NaN, and false otherwise.
 ///Implementation:Javascript
 {}
 ///Function:(Global).isFinite
 ///Arguments:number input
-///Returns:bool isFinite
+///Returns:bool bIsFinite
 ///Doc:Returns false if the input is NaN, positive infinity, or negative infinity. Returns true otherwise.
 ///Implementation:Javascript
 {}
@@ -49,7 +49,7 @@
 ///Function:Array.concat
 ///Arguments:array ar2
 ///Returns:array arCombined
-///Doc:Returns an array consisting of the elements of the original array followed by elements of the second arraty. (Combines two arrays).
+///Doc:Returns an array consisting of the elements of the original array followed by elements of the second array. (Combines two arrays).
 ///Implementation:Javascript
 ///InstanceMethod:true
 {}
@@ -82,7 +82,7 @@
 ///InstanceMethod:true
 {}
 ///Function:Array.join
-///Arguments:string seperator
+///Arguments:string strSeperator
 ///Returns:string strJoined
 ///Doc:Combines an array of strings into one long string, delimited by seperator.
 ///Implementation:Javascript
@@ -255,111 +255,111 @@
 ///Implementation:Javascript
 {}
 ///Function:Math.acos
-///Arguments:double input
-///Returns:double arcCosine
+///Arguments:input
+///Returns:arcCosine
 ///Doc:Compute arccosine.
 ///Implementation:Javascript
 {}
 ///Function:Math.asin
-///Arguments:double input
-///Returns:double arcSine
+///Arguments:input
+///Returns:arcSine
 ///Doc:Compute arcsine.
 ///Implementation:Javascript
 {}
 ///Function:Math.atan
-///Arguments:double input
-///Returns:double arcTan
+///Arguments:input
+///Returns:arcTan
 ///Doc:Compute arctangent.
 ///Implementation:Javascript
 {}
 ///Function:Math.atan2
-///Arguments:double y, double x
-///Returns:double angleInRadians
+///Arguments:y, x
+///Returns:angleInRadians
 ///Doc:Computes the angle in radians from the origin to the point (x,y).
 ///Implementation:Javascript
 {}
 ///Function:Math.ceil
-///Arguments:double input
+///Arguments:input
 ///Returns:int nOutput
-///Doc:Rounds double up to next integer.
+///Doc:Rounds up to next integer.
 ///Implementation:Javascript
 {}
 ///Function:Math.cos
-///Arguments:double input
-///Returns:double fcos
+///Arguments:input
+///Returns:fcos
 ///Doc:Compute cosine.
 ///Implementation:Javascript
 {}
 ///Function:Math.exp
-///Arguments:double input
-///Returns:double exp
+///Arguments:input
+///Returns:exp
 ///Doc:Compute e to the (argument) power.
 ///Implementation:Javascript
 {}
 ///Function:Math.floor
-///Arguments:double input
+///Arguments:input
 ///Returns:int nOutput
-///Doc:Rounds double down to an integer.
+///Doc:Rounds down to an integer.
 ///Implementation:Javascript
 {}
 ///Function:Math.log
-///Arguments:double input
-///Returns:double naturalLog
+///Arguments:input
+///Returns:naturalLog
 ///Doc:Compute natural (base e) logarithm. To use another base, use Math.log(x)/Math.log(base)
 ///Implementation:Javascript
 {}
 ///Function:Math.max
-///Arguments:double a, double b
-///Returns:double max
+///Arguments:a, b
+///Returns:max
 ///Doc:Returns larger of the arguments.
 ///Implementation:Javascript
 {}
 ///Function:Math.min
-///Arguments:double a, double b
-///Returns:double min
+///Arguments:a, b
+///Returns:min
 ///Doc:Returns smaller of the arguments.
 ///Implementation:Javascript
 {}
 ///Function:Math.pow
-///Arguments:double x, double power
-///Returns:double result
+///Arguments:x, power
+///Returns:result
 ///Doc:Returns x raised to a power.
 ///Implementation:Javascript
 {}
 ///Function:Math.random
 ///Arguments:
-///Returns:double fRandom
-///Doc:Returns pseudo-random double between 0 and 1. The value is greater than or equal to 0 and less than 1.
+///Returns:fRandom
+///Doc:Returns pseudo-random between 0 and 1. The value is greater than or equal to 0 and less than 1.
 ///Implementation:Javascript
 {}
 ///Function:Math.round
-///Arguments:double input
+///Arguments:input
 ///Returns:int nOutput
-///Doc:Rounds double to the closest integer. Also, if input is 3.5, rounds up to 4, and so on.
+///Doc:Rounds to the closest integer. Also, if input is 3.5, rounds up to 4, and so on.
 ///Implementation:Javascript
 {}
 ///Function:Math.sin
-///Arguments:double input
-///Returns:double fsin
+///Arguments:input
+///Returns:fsin
 ///Doc:Compute sine.
 ///Implementation:Javascript
 {}
 ///Function:Math.sqrt
-///Arguments:double input
-///Returns:double sqrt
+///Arguments:input
+///Returns:sqrt
 ///Doc:Compute square root.
 ///Implementation:Javascript
 {}
 ///Function:Math.tan
-///Arguments:double input
-///Returns:double ftan
+///Arguments:input
+///Returns:ftan
 ///Doc:Compute tangent.
 ///Implementation:Javascript
 {}
 //================{}
 ///Function:Date. new Date
-///Arguments:int nYear, int nMonth, [int nDate, [int nHours, [int nMinutes, [int nSeconds]]]]
-///Returns:date dateOutput
+///Arguments:int nYear, int nMonth, [int nDate, [int nHrs, [int nMins, [int nSec]]]]
+///Returns:date objDate
 ///Doc:Construct Date object
 ///Implementation:Javascript
 {}
@@ -371,7 +371,7 @@
 ///Implementation:Javascript
 {}
 ///Function:Date.UTC
-///Arguments:int nYear, int nMonth, [int nDate, [int nHours, [int nMinutes, [int nSeconds]]]]
+///Arguments:int nYear, int nMonth, [int nDate, [int nHrs, [int nMins, [int nSec]]]]
 ///Returns:int nUtc
 ///Doc:Calculate utc (coordinated universal time)
 ///Implementation:Javascript

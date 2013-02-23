@@ -39,9 +39,9 @@
 }
 
 ///Function:File.writeFile
-///Arguments:string strFile, string strContents,bool bAppend=false, bool bTextMode=true
+///Arguments:string strFile, string strText, bool bAppend=false, bool bTextMode=true
 ///Returns:
-///Doc:Write text to a file. (Not recommended for binary files). Throws exception if file is not writeable. If bTextMode is true, \r\n characters on Windows are converted to \n
+///Doc:Write text to a file. (Not recommended for binary files). Throws exception if file is not writeable. If bTextMode is true, newline characters are converted according to platform.
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
@@ -51,7 +51,7 @@
 	try
 	{
 		bool bResult = file.open(flags); if (!bResult) return ctx->throwError("File.writeFile() could not open file for write.");
-		qint64 nBytesWritten = file.write(QStrToCStr(strContents)); if (nBytesWritten==-1) return ctx->throwError("File.writeFile() write failed.");
+		qint64 nBytesWritten = file.write(QStrToCStr(strText)); if (nBytesWritten==-1) return ctx->throwError("File.writeFile() write failed.");
 	} catch (...) { file.close();  return ctx->throwError("File.writeFile() unknown error!"); }
 	file.close();
 	return QScriptValue(eng, true); 
@@ -194,18 +194,18 @@
 	return QScriptValue(eng, objDir.count()-2);
 }
 ///Function:File.dirListFiles
-///Arguments:string strDirectory, string strFileTypesPattern="*", string strSortBy="Unsorted"
-///Returns:array arFilenames
+///Arguments:string strDir, string strTypes="*", string strSortBy="Unsorted"
+///Returns:arFiles
 ///Doc:Returns array of filenames inside folder. Provide a pattern like '*.txt' to only include .txt files. By default unsorted, but provide a flag such as 'unsorted', 'name','time','size','type'. Includes files marked as hidden, but not those marked as system.
 ///Example:var arFiles = File.dirListFiles('c:\\','*','size'); print('biggest files in c:'); arFiles.reverse(); for(var i=0;i<arFiles.length;i++) print(arFiles[i]);
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
-	QDir objDir(strDirectory); 
+	QDir objDir(strDir); 
 	if (! objDir.exists()) return ctx->throwError("File.dirListFiles(). No directory found with that name.");
 	QStringList filters;
-	if (!strFileTypesPattern.isEmpty() && strFileTypesPattern!="*") {
-		filters << strFileTypesPattern;
+	if (!strTypes.isEmpty() && strTypes!="*") {
+		filters << strTypes;
 		objDir.setNameFilters(filters);
 	}
 	
@@ -213,14 +213,14 @@
 	return util_ListDirectoryEntries(ctx, eng, objDir, strSortBy);
 }
 ///Function:File.dirListSubdirs
-///Arguments:string strDirectory, string strSortBy="Unsorted"
-///Returns:array arSubdirectories
+///Arguments:string strDir, string strSortBy="Unsorted"
+///Returns:arDirs
 ///Doc:Returns array of folder names that are subfolders of the folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','type'. Includes files marked as hidden, but not those marked as system.
 ///Example:var arFolders = File.dirListSubdirs('c:\\','name'); print('subfolders in c:'); for(var i=0;i<arFolders.length;i++) print(arFolders[i]);
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
-	QDir objDir(strDirectory); 
+	QDir objDir(strDir); 
 	if (! objDir.exists()) return ctx->throwError("File.dirListSubdirs(). No directory found with that name.");
 	
 	objDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden); // and QDir::Drives ?
@@ -408,31 +408,31 @@
 // Here are the Au3 ones:
 
 ///Function:File.driveMapAdd
-///Arguments:string strDevice, string strRemoteShare, bool bShowAuthenticationDialog=false, string strUser="", string strPassword=""
-///Returns:bool bSuccess
+///Arguments:string strDevice, string strRemoteShare, bool bAuthDialog=0, string strUser="", string strPass=""
+///Returns:bool bR
 ///Doc:Maps a network drive. strDevice is the device to map, for example "O:" or "LPT1:", or "" which makes a connection that is not mapped to a specific drive, or "*" to select an unused drive letter. strRemoteShare, in form "\\server\share". strUser, in form "username" or "domain\username"
 ///Example: File.driveMapAdd("K:","\\\\myserver\\folder")
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[SMALLBUFSIZE];
-	long nFlags = (bShowAuthenticationDialog) ? 0+8 : 0;
-	AU3_DriveMapAdd(QStrToCStr(strDevice),QStrToCStr(strRemoteShare), nFlags, QStrToCStr(strUser), QStrToCStr(strPassword),buf, SMALLBUFSIZE);
+	long nFlags = (bAuthDialog) ? 0+8 : 0;
+	AU3_DriveMapAdd(QStrToCStr(strDevice),QStrToCStr(strRemoteShare), nFlags, QStrToCStr(strUser), QStrToCStr(strPass),buf, SMALLBUFSIZE);
 	// disregard string result... there's not an easy way to return it...
 	if (AU3_error()==0) return QScriptValue(eng, true); //no error
 	else return QScriptValue(eng, false); //an error
 }
 
 ///Function:File.driveMapAddPersistant
-///Arguments:string strDevice, string strRemoteShare, bool bShowAuthenticationDialog=false, string strUser="", string strPassword=""
-///Returns:bool bSuccess
+///Arguments:string strDevice, string strRemoteShare, bool bAuthDialog=0, string strUser="", string strPass=""
+///Returns:bool bR
 ///Doc:Maps a network drive. strDevice is the device to map, for example "O:" or "LPT1:", or "" which makes a connection that is not mapped to a specific drive, or "*" to select an unused drive letter. strRemoteShare, in form "\\server\share". strUser, in form "username" or "domain\username"
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
 	char buf[SMALLBUFSIZE];
-	long nFlags = (bShowAuthenticationDialog) ? 1+8 : 1;
-	AU3_DriveMapAdd(QStrToCStr(strDevice),QStrToCStr(strRemoteShare), nFlags, QStrToCStr(strUser), QStrToCStr(strPassword),buf, SMALLBUFSIZE);
+	long nFlags = (bAuthDialog) ? 1+8 : 1;
+	AU3_DriveMapAdd(QStrToCStr(strDevice),QStrToCStr(strRemoteShare), nFlags, QStrToCStr(strUser), QStrToCStr(strPass),buf, SMALLBUFSIZE);
 	// disregard string result... there's not an easy way to return it...
 	if (AU3_error()==0) return QScriptValue(eng, true); //no error
 	else return QScriptValue(eng, false); //an error
@@ -530,15 +530,15 @@
 }
 
 ///Function:File.pathSplit
-///Arguments:string path
-///Returns:array pathAndFile
+///Arguments:string strPath
+///Returns:[string strPath, string strFile]
 ///Doc: (Write include('<std>') to import this function.) Splits a directory into two parts. 1) the path, and 2) the filename. For example, 'c:\docs\foo\test.txt' to ['c:\docs\foo\', 'test.txt']
 ///Implementation:Javascript
 {}
 
 ///Function:File.pathJoin
-///Arguments:string path, string filename
-///Returns:string sCompletePath
+///Arguments:string strPath, string strFilename
+///Returns:string strCompletePath
 ///Doc: (Write include('<std>') to import this function.) Combines a directory and filename to create a path. For example, File.pathJoin('c:\docs\foo\', 'test.txt') becomes 'c:\docs\foo\test.txt'
 ///Implementation:Javascript
 {}

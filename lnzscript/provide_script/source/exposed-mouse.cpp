@@ -1,37 +1,37 @@
 
 ///Function:Mouse.click
-///Arguments:int x=INTDEFAULT, int y=INTDEFAULT, bool bRelativeCoords=false, string strButton="left", int nSpeed=-1
+///Arguments:int x=INTDEFAULT, int y=INTDEFAULT, bool bRelativeCds=false, string strBtn="left", int nSpeed=-1
 ///Returns:
-///Doc:Moves cursor to x, y and sends simulated mouse click. If x and y are not specified sends mouseclick at current mouse position. If you specify bRelativeCoords to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
+///Doc:Moves cursor to x, y and sends simulated mouse click. If x and y are not specified sends mouseclick at current mouse position. If you specify bRelativeCds to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	util_SetAU3MouseRelativeCoords(bRelativeCoords);
-	AU3_MouseClick(QStrToCStr(strButton),x,y,1,nSpeed);
+	util_SetAU3MouseRelativeCoords(bRelativeCds);
+	AU3_MouseClick(QStrToCStr(strBtn),x,y,1,nSpeed);
 	return eng->nullValue();
 }
 
 ///Function:Mouse.doubleClick
-///Arguments:int x=INTDEFAULT, int y=INTDEFAULT, bool bRelativeCoords=false, string strButton="left", int nSpeed=-1
+///Arguments:int x=INTDEFAULT, int y=INTDEFAULT, bool bRelativeCds=false, string strBtn="left", int nSpeed=-1
 ///Returns:
-///Doc:Moves cursor to x, y and sends simulated mouse double-click. If x and y are not specified sends clicks at current mouse position. If you specify bRelativeCoords to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
+///Doc:Moves cursor to x, y and sends simulated mouse double-click. If x and y are not specified sends clicks at current mouse position. If you specify bRelativeCds to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	util_SetAU3MouseRelativeCoords(bRelativeCoords);
-	AU3_MouseClick(QStrToCStr(strButton),x,y,2,nSpeed);
+	util_SetAU3MouseRelativeCoords(bRelativeCds);
+	AU3_MouseClick(QStrToCStr(strBtn),x,y,2,nSpeed);
 	return eng->nullValue();
 }
 
 ///Function:Mouse.drag
-///Arguments:int x1, int y1, int x2, int y2, bool bRelativeCoords=false, string strButton="left", int nSpeed=-1
+///Arguments:int x1, int y1, int x2, int y2, bool bRelativeCds=false, string strBtn="left", int nSpeed=-1
 ///Returns:
-///Doc:Perform a mouse click and drag operation. If x and y are not specified sends mouseclick at current mouse position. If you specify bRelativeCoords to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
+///Doc:Perform a mouse click and drag operation. If x and y are not specified sends mouseclick at current mouse position. If you specify bRelativeCds to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	util_SetAU3MouseRelativeCoords(bRelativeCoords);
-	AU3_MouseClickDrag(QStrToCStr(strButton),x1,y1,x2,y2,nSpeed);
+	util_SetAU3MouseRelativeCoords(bRelativeCds);
+	AU3_MouseClickDrag(QStrToCStr(strBtn),x1,y1,x2,y2,nSpeed);
 	return eng->nullValue();
 }
 
@@ -59,36 +59,36 @@
 }
 
 ///Function:Mouse.move
-///Arguments:int x, int y, bool bRelativeCoords=false, int nSpeed=10
+///Arguments:int x, int y, bool bRelativeCds=false, int nSpeed=10
 ///Returns:
-///Doc:Moves the cursor. If you specify bRelativeCoords to be true, moves the cursor relative to its current position. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
+///Doc:Moves the cursor. If you specify bRelativeCds to be true, moves the cursor relative to its current position. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	util_SetAU3MouseRelativeCoords(bRelativeCoords);
+	util_SetAU3MouseRelativeCoords(bRelativeCds);
 	AU3_MouseMove(x,y,nSpeed);
 	return eng->nullValue();
 }
 
 ///Function:Mouse.mouseDown
-///Arguments:string strButton="left"
+///Arguments:string strBtn="left"
 ///Returns:
 ///Doc:Simulate mouseDown. For every mouseDown there should eventually be a corresponding mouseUp.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	AU3_MouseDown(QStrToCStr(strButton));
+	AU3_MouseDown(QStrToCStr(strBtn));
 	return eng->nullValue();
 }
 
 ///Function:Mouse.mouseUp
-///Arguments:string strButton="left"
+///Arguments:string strBtn="left"
 ///Returns:
 ///Doc:Simulate mouseUp. For every mouseDown there should eventually be a corresponding mouseUp.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	AU3_MouseUp(QStrToCStr(strButton));
+	AU3_MouseUp(QStrToCStr(strBtn));
 	return eng->nullValue();
 }
 
