@@ -1,0 +1,10 @@
+
+debug/
+release/
+
+#these are created by Qt from lnzconsole.pro
+Makefile
+Makefile.Debug
+Makefile.Release
+object_script.lnzconsole.Debug
+object_script.lnzconsole.Release

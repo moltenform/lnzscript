@@ -20,7 +20,7 @@ class ProvideScript
 public:
 	ProvideScript();
 	StringResult EvalScript(QString filename);
-	StringResult EvalString(QString code, QString optionalFileName=0);
+	StringResult EvalString(QString code, QString optionalFileName="");
 	
 	void addArgv(int argc, char *argv[]);
 
