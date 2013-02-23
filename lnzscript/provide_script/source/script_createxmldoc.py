@@ -102,6 +102,7 @@ def createDoc():
 			for function in sorted(namespace.functions, key=operator.attrgetter('functionname')):
 				i+=1
 				if function.functionname.startswith('_'): continue #this is an undocumented function; don't include it.
+				function.args = function.args.replace('INTDEFAULT','default')
 				
 				if function.instanceMethod==True: sInstanceParam = ' instance="true" '
 				else: sInstanceParam = ''

@@ -257,19 +257,19 @@
 ///Function:Math.acos
 ///Arguments:double input
 ///Returns:double arcCosine
-///Doc:Compute arc cosine.
+///Doc:Compute arccosine.
 ///Implementation:Javascript
 {}
 ///Function:Math.asin
 ///Arguments:double input
 ///Returns:double arcSine
-///Doc:Compute arc sine.
+///Doc:Compute arcsine.
 ///Implementation:Javascript
 {}
 ///Function:Math.atan
 ///Arguments:double input
 ///Returns:double arcTan
-///Doc:Compute arc tangent.
+///Doc:Compute arctangent.
 ///Implementation:Javascript
 {}
 ///Function:Math.atan2
@@ -280,7 +280,7 @@
 {}
 ///Function:Math.ceil
 ///Arguments:double input
-///Returns:int output
+///Returns:int nOutput
 ///Doc:Rounds double up to next integer.
 ///Implementation:Javascript
 {}
@@ -298,7 +298,7 @@
 {}
 ///Function:Math.floor
 ///Arguments:double input
-///Returns:int output
+///Returns:int nOutput
 ///Doc:Rounds double down to an integer.
 ///Implementation:Javascript
 {}
@@ -334,7 +334,7 @@
 {}
 ///Function:Math.round
 ///Arguments:double input
-///Returns:int output
+///Returns:int nOutput
 ///Doc:Rounds double to the closest integer. Also, if input is 3.5, rounds up to 4, and so on.
 ///Implementation:Javascript
 {}
@@ -357,8 +357,8 @@
 ///Implementation:Javascript
 {}
 //================{}
-///Function:Date.(constructor)
-///Arguments:int year, int month, [int date, [int hours, [int minutes, [int seconds]]]]
+///Function:Date. new Date
+///Arguments:int nYear, int nMonth, [int nDate, [int nHours, [int nMinutes, [int nSeconds]]]]
 ///Returns:date dateOutput
 ///Doc:Construct Date object
 ///Implementation:Javascript
@@ -371,7 +371,7 @@
 ///Implementation:Javascript
 {}
 ///Function:Date.UTC
-///Arguments:int year, int month, [int date, [int hours, [int minutes, [int seconds]]]]
+///Arguments:int nYear, int nMonth, [int nDate, [int nHours, [int nMinutes, [int nSeconds]]]]
 ///Returns:int nUtc
 ///Doc:Calculate utc (coordinated universal time)
 ///Implementation:Javascript
@@ -403,7 +403,7 @@
 ///Implementation:Javascript
 {}
 ///Function:Date.setFullYear
-///Arguments:int year
+///Arguments:int nYear
 ///Returns:
 ///Doc:Set year of date.  See specification for more Date methods such as setMonth, setSeconds...
 ///Implementation:Javascript
@@ -415,14 +415,14 @@
 ///Implementation:Javascript
 {}
 ///Function:Date.setMilliseconds
-///Arguments:int ms
+///Arguments:int nMilliseconds
 ///Returns:
 ///Doc:Returns milliseconds. See specification for more Date methods such as getMonth, getSeconds...
 ///Implementation:Javascript
 {}
 //========================
 
-///Function:RegExp.(constructor)
+///Function:RegExp. new RegExp
 ///Arguments:string strPattern, string strFlags=""
 ///Returns:RegExp re
 ///Doc:Creates RegExp object. Alternatively use the syntax /pattern/g instead of new RegExp('pattern','g'); Flags can include g (global), i (ignoreCase), m (multiline, anchors match at lines)

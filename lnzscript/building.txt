@@ -33,10 +33,10 @@ previous release of LnzScript.
 
 
 ==documentation.xml===
-lnzscript_html_doc/buildxmldoc.bat
+/doc/buildxmldoc.bat
 creates documentation.xml
 
-	documentation.xml and viewdoc.xsl -> lnzscript_html_doc/html, for documentation.
+	documentation.xml and viewdoc.xsl -> /doc/html, for documentation.
 	lnzeditor\app\configuration\build_api_file\build.bat
 		uses documentation.xml to produce lnzscript.api
 	lnzdoc.xml used by docviewer.exe, if in same directory

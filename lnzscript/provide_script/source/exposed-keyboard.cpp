@@ -51,24 +51,24 @@
 }
 
 ///Function:Keyboard.setKeyDelay
-///Arguments:int keyDelay
+///Arguments:int nKeyDelay
 ///Returns:
 ///Doc:Alters the the length of the brief pause in between sent keystrokes. Time in milliseconds to pause (default=5). Sometimes a value of 0 does not work; use 1 instead.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	AU3_AutoItSetOption("SendKeyDelay", keyDelay);
+	AU3_AutoItSetOption("SendKeyDelay", nKeyDelay);
 	return eng->nullValue();
 }
 
 ///Function:Keyboard.setKeyDownDuration
-///Arguments:int keyDownDuration
+///Arguments:int nKeyDownDuration
 ///Returns:
 ///Doc:Alters the length of time a key is held down before released during a keystroke. For applications that take a while to register keypresses (and many games) you may need to raise this value from the default. Time in milliseconds to pause (default=1).
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	AU3_AutoItSetOption("SendKeyDownDelay", keyDownDuration);
+	AU3_AutoItSetOption("SendKeyDownDelay", nKeyDownDuration);
 	return eng->nullValue();
 }
 

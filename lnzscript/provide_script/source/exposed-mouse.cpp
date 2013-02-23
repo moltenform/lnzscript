@@ -37,7 +37,7 @@
 
 ///Function:Mouse.getCursor
 ///Arguments:
-///Returns:int cursorId
+///Returns:int nCursorId
 ///Doc: Returns a cursor ID Number:[[br]]    0 = UNKNOWN (this includes pointing and grabbing hand icons)[[br]]    1 = APPSTARTING[[br]]    2 = ARROW[[br]]    3 = CROSS[[br]]    4 = HELP[[br]]    5 = IBEAM[[br]]    6 = ICON[[br]]    7 = NO[[br]]    8 = SIZE[[br]]    9 = SIZEALL[[br]]  10 = SIZENESW[[br]]  11 = SIZENS[[br]]  12 = SIZENWSE[[br]]  13 = SIZEWE[[br]]  14 = UPARROW[[br]]  15 = WAIT
 ///Implementation:c++_au3
 {
@@ -59,14 +59,14 @@
 }
 
 ///Function:Mouse.move
-///Arguments:int x, int y, bool bRelativeCoords=false, int speed=10
+///Arguments:int x, int y, bool bRelativeCoords=false, int nSpeed=10
 ///Returns:
 ///Doc:Moves the cursor. If you specify bRelativeCoords to be true, moves the cursor relative to its current position. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
 	util_SetAU3MouseRelativeCoords(bRelativeCoords);
-	AU3_MouseMove(x,y,speed);
+	AU3_MouseMove(x,y,nSpeed);
 	return eng->nullValue();
 }
 

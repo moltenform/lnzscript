@@ -302,13 +302,13 @@
 	long res = AU3_WinSetState(QStrToCStr(window), QStrToCStr(strText), SW_RESTORE); return util_LongToBool(res);
 }
 ///Function:Window.setState
-///Arguments:string window, int flag
+///Arguments:string window, int nFlag
 ///Returns:bool bSucess
 ///Doc:Set state of a window (e.g. maximized, minimized). Pass a flag such as WindowStyle.hide, WindowStyle.show, WindowStyle.minimize, WindowStyle.maximize, or WindowStyle.restore.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	long res = AU3_WinSetState(QStrToCStr(window), QStrToCStr(strText), flag); return util_LongToBool(res);
+	long res = AU3_WinSetState(QStrToCStr(window), QStrToCStr(strText), nFlag); return util_LongToBool(res);
 }
 ///Function:Window.setTitle
 ///Arguments:string window, string strTitle
