@@ -6,7 +6,8 @@
 ///Function:Window.activate
 ///Arguments:string window
 ///Returns:bool bSucess
-///Doc:Activates (gives focus to) a window.
+///Doc:Activates (gives focus to) a window. You can use the WindowInfo tool to determine the class name of a window.
+///Example:Note: sWindow can be one of:[[br]][[br]]Window.activate('') -  -  -  -  -  -  - Currently active window.[[br]]Window.activate('Calc') -  -  -  -  - Window whose title starts with "Calc"[[br]]Window.activate('"Calculator"') - Window whose title is exactly "Calculator"[[br]]Window.activate('%ulator%') -  -  - Window with title containing "ulator" [[br]]Window.activate(object) -  -  -  -  - Instance of open "SciCalc" class with title "Calculator",[[br]]object = {title:'Calculator', class:'SciCalc'}
 ///Implementation:c++_au3
 {
 	CHECK_ARGS

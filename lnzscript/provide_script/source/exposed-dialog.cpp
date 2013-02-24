@@ -4,7 +4,7 @@
 ///Arguments:string strText, int x=INTDEFAULT, int y=INTDEFAULT
 ///Returns:
 ///Doc:Creates a tooltip anywhere on the screen. If the x and y coordinates are omitted, the tip is placed near the mouse cursor. If the coords would cause the tooltip to run off screen, it is repositioned to visible. Tooltip appears until it is cleared, until script terminates, or sometimes until it is clicked upon. You may use a linefeed character to create multi-line tooltips.
-///Example: Dialog.toolTip("That's cool"); Time.sleep(500); Dialog.toolTip("");
+///Example: Dialog.toolTip("That's cool");[[br]] Time.sleep(500);[[br]] Dialog.toolTip("");
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
@@ -52,7 +52,7 @@
 ///Returns:Dialog.YES or Dialog.NO
 ///Doc:Display simple message box on the screen, with options for yes and no.
 ///Implementation:c++_winext
-///Example:var res = Dialog.askYesNo("Status","Continue?"); if (res==Dialog.YES) doSomething(); else doSomethingElse();
+///Example:var res = Dialog.askYesNo("Status","Continue?");[[br]] if (res==Dialog.YES) doSomething();[[br]] else doSomethingElse();
 {
 	CHECK_ARGS
 	return R_WinCommonDialog("simple", "yesno", strTitle, strText);
@@ -62,7 +62,7 @@
 ///Returns:Dialog.YES;Dialog.NO;Dialog.CANCEL
 ///Doc:Display simple message box on the screen, with options for yes, no, cancel.
 ///Implementation:c++_winext
-///Example:var res = Dialog.askYesNoCancel("Warning","Replace existing file?"); if (res==Dialog.YES) doSomething(); else if (res==Dialog.NO) doSomethingElse(); else doCancel();
+///Example:var res = Dialog.askYesNoCancel("Warning","Replace existing file?");[[br]]if (res==Dialog.YES) doSomething();[[br]]else if (res==Dialog.NO) doSomethingElse();[[br]]else doCancel();
 {
 	CHECK_ARGS
 	return R_WinCommonDialog("simple", "yesnocancel", strTitle, strText);
@@ -73,7 +73,7 @@
 ///Returns:Dialog.OK or Dialog.CANCEL
 ///Doc:Display simple message box on the screen, with options for ok and cancel.
 ///Implementation:c++_winext
-///Example:var res = Dialog.askOkCancel("Status","Continue?"); if (res==Dialog.OK) doSomething(); else doSomethingElse();
+///Example:var res = Dialog.askOkCancel("Status","Continue?");[[br]] if (res==Dialog.OK) doSomething();[[br]] else doSomethingElse();
 {
 	CHECK_ARGS
 	return R_WinCommonDialog("simple", "okcancel", strTitle, strText);

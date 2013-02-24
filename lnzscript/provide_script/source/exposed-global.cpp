@@ -121,7 +121,7 @@
 ///Arguments:
 ///Returns:timer objTimer
 ///Doc:Use include('<std>') to import this function. Creates a timer object that can be used for timing a script. Call the check() method on the timer to see how many milliseconds have passed after the object was created.
-///Example:var timer = Time.createTimer(); for (var i=0; i<30000; i++); print('number of ms:'+timer.check());
+///Example:include('<std>'); [[br]]var timer = Time.createTimer();[[br]] for (var i=0; i<30000; i++); print('number of ms:'+timer.check());
 ///Implementation:Javascript
 {}
 
@@ -130,7 +130,7 @@
 ///Arguments:string strSearch, string strReplace
 ///Returns:bool bSuccess
 ///Doc:Rename strings in filenames. Use include('<std>') to import this. Rename does the following: for each file in the current directory (File.cd()), replace in the filename. Doesn't rename subdirectories. If a file cannot be renamed, throws an exception and leaves other filenames unchanged.
-///Example:File.cd(@'c:\mydir'); Rename.rename('.htm', '.html');
+///Example:include('<std>'); [[br]]File.cd(@'c:\mydir'); [[br]]Rename.rename('.htm', '.html');
 ///Implementation:Javascript
 {}
 
@@ -145,7 +145,7 @@
 ///Arguments:function fnRename, string strSorted='name'
 ///Returns:bool bSuccess
 ///Doc:Rename filenames. Use include('<std>') to import this. Provide a function that accepts a string and returns a string, the new name. Doesn't rename subdirectories. You can specify a sort order, which is useful when your function has state; this could be used to rename a set of files to 001, 002, 003... based on modification date. If a file cannot be renamed, throws an exception and leaves other filenames unchanged.
-///Example:File.cd(@'c:\mydir'); function myRename(s) {return 'new'+s;} Rename.rename(myRename);
+///Example:include('<std>'); [[br]]File.cd(@'c:\mydir');[[br]] function myRename(s) {return 'new'+s;}[[br]] Rename.rename(myRename);
 ///Implementation:Javascript
 {}
 

@@ -2,7 +2,7 @@
 ///Function:Mouse.click
 ///Arguments:int x=INTDEFAULT, int y=INTDEFAULT, bool bRelativeCds=false, string strBtn="left", int nSpeed=-1
 ///Returns:
-///Doc:Moves cursor to x, y and sends simulated mouse click. If x and y are not specified sends mouseclick at current mouse position. If you specify bRelativeCds to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.
+///Doc:Moves cursor to x, y and sends simulated mouse click. If x and y are not specified sends mouseclick at current mouse position. If you specify bRelativeCds to be true, moves the cursor relative to window. You can pass the speed to move the mouse in the range 1 (fastest) to 100 (slowest). A speed of 0 will move the mouse instantly. Default speed is 10.[[br]][[br]]Note that Keyboard.send('<Shift>{F10}') will simulate right-clicking on the focused item.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS

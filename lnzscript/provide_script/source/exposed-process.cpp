@@ -1,17 +1,29 @@
 
 ///Function:Process.open
-///Arguments:string strExecutable, string strWorkingDir="", int nFlag=1
+///Arguments:string strExe, bool bPauseUntilItCloses=false, string strWorkingDir="", int nFlag=1
 ///Returns:int nPID
-///Doc:Opens external program. After running the requested program the script continues (this is asynchronous). To pause execution of the script until the spawned program has finished use Process.runAndWait. Optionally pass a flag such as Window.HIDE, Window.SHOW, Window.MINIMIZE, Window.MAXIMIZE, or Window.RESTORE. Returns the PID of process or null upon failure.
+///Doc:Opens external program. Optionally pass a flag such as Window.HIDE, Window.SHOW, Window.MINIMIZE, Window.MAXIMIZE, or Window.RESTORE. Returns the PID of process or null upon failure.
 ///Implementation:c++_au3
 {
-	// Seems analogous to QProcess::start 
 	CHECK_ARGS
-	long nRes = AU3_Run(QStrToCStr(strExecutable), QStrToCStr(strWorkingDir),nFlag);
-	if (AU3_error()!=1)
-		return QScriptValue(eng, (int) nRes);
+	if (bPauseUntilItCloses) 
+	{
+		// Seems analogous to QProcess::execute 
+		long nRes = AU3_RunWait(QStrToCStr(strExe), QStrToCStr(strWorkingDir),nFlag);
+		if (AU3_error()!=1)
+			return QScriptValue(eng, (int) nRes);
+		else
+			return eng->nullValue();
+	}
 	else
-		return eng->nullValue();
+	{
+		// Seems analogous to QProcess::start
+		long nRes = AU3_Run(QStrToCStr(strExecutable), QStrToCStr(strWorkingDir),nFlag);
+		if (AU3_error()!=1)
+			return QScriptValue(eng, (int) nRes);
+		else
+			return eng->nullValue();
+	}
 }
 
 
@@ -29,21 +41,6 @@
 	objProcess.start(strExecutable);
 	objProcess.waitForFinished(); //the cmd.exe should spawn off what we opened, so this won't actually block.
 	return eng->nullValue();
-}
-
-///Function:Process.runAndWait
-///Arguments:string strExe, string strWorkingDir="", int nFlag=1
-///Returns:int nExitCode
-///Doc:Opens external program. The script pauses until the program has closed. Optionally pass a flag such as Window.HIDE, Window.MINIMIZE, or Window.MAXIMIZE. Returns the exit code, or null upon failure.
-///Implementation:c++_au3
-{
-	// Seems analogous to QProcess::execute 
-	CHECK_ARGS
-	long nRes = AU3_RunWait(QStrToCStr(strExe), QStrToCStr(strWorkingDir),nFlag);
-	if (AU3_error()!=1)
-		return QScriptValue(eng, (int) nRes);
-	else
-		return eng->nullValue();
 }
 
 ///Function:Process.runAndRead
@@ -70,7 +67,7 @@
 ///Function:Process.runCmdLine
 ///Arguments:string strCommandLineCommand, string strWorkingDir=""
 ///Returns:
-///Doc:Execute command line command, in the style of the command prompt cmd.exe. As in the command prompt, you must use quotes if a file or directory has spaces in the name.
+///Doc:Execute command line command, in the style of the command prompt cmd.exe. Waits until command completes. You must use quotes if a file or directory has spaces in the name.
 ///Example: Process.runCmdLine('mkdir "c:\\program files\\myfolder"');
 ///Implementation:c++_qt
 {
@@ -84,74 +81,60 @@
 	return eng->nullValue();
 }
 
-// see also: nircmd closeprocess , killprocess
 
 ///Function:Process.close
-///Arguments:string strExecutableName
+///Arguments:string strExe
 ///Returns:
-///Doc:Close a process. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". If multiple processes have the same name, the one with the highest PID is terminated--regardless of how recently the process was spawned. PID is the unique number which identifies a Process. A PID is returned by the ProcessExists or Run commands.
+///Doc:Close a process. Names are executables without the full path, e.g., "notepad.exe". If multiple processes have the same name, the one closed is not necessarily the recently opened one.
+///Example:Process.close('notepad.exe'); [[br]]Process.close('1356'); //close process id 1356
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	AU3_ProcessClose(QStrToCStr(strExecutableName));
+	AU3_ProcessClose(QStrToCStr(strExe));
 	return eng->nullValue();
 }
 
-///Function:Process.closePID
-///Arguments:int nPID
-///Returns:
-///Doc:Close a process. PID is the unique number which identifies a Process. A PID is returned by the ProcessExists or Run commands.
-///Implementation:c++_au3
-{
-	CHECK_ARGS
-	// Kind of undocumented, but here goes...
-	QString strPid;
-	strPid.sprintf("%d", nPID);
-	AU3_ProcessClose(QStrToCStr(strPid));
-	return eng->nullValue();	
-}
-
 ///Function:Process.exists
-///Arguments:string strExecutableName
+///Arguments:string strExe
 ///Returns:int nPID
-///Doc:Checks to see if a process is running. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". Returns the PID of the process, or 0 if process does not exist.
+///Doc:Checks to see if a process is running e.g., "notepad.exe". Returns the PID of the process, or 0 if process does not exist.
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	long res = AU3_ProcessExists(QStrToCStr(strExecutableName));
+	long res = AU3_ProcessExists(QStrToCStr(strExe));
 	return QScriptValue(eng, (int) res);	
 }
 
 ///Function:Process.setPriority
-///Arguments:string strExecutableName, int nPriorityLevel
+///Arguments:string strExe, int nPriorityLevel
 ///Returns:bool bSuccess
 ///Doc:Changes the priority of a process. 0=Idle/Low, 4=High, 5=Realtime (use with caution). Levels 1 and 3 not supported on Win95/98/ME.  Returns false upon failure. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". 
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	long nRes = AU3_ProcessSetPriority(QStrToCStr(strExecutableName),nPriorityLevel);
+	long nRes = AU3_ProcessSetPriority(QStrToCStr(strExe),nPriorityLevel);
 	return util_LongToBool(nRes);
 }
 
 ///Function:Process.waitUntilOpen
-///Arguments:string strExecutableName, int nTimeout=0
+///Arguments:string strExe, int nTimeout=0
 ///Returns:bool bSuccess
 ///Doc:Wait until process is open. Optional parameter nTimeout specifies how long to wait (default is to wait indefinitely). Returns false if timed out. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". 
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	long nRes = AU3_ProcessWait(QStrToCStr(strExecutableName), nTimeout);
+	long nRes = AU3_ProcessWait(QStrToCStr(strExe), nTimeout);
 	return util_LongToBool(nRes);
 }
 
 ///Function:Process.waitUntilClosed
-///Arguments:string strExecutableName, int nTimeout=0
+///Arguments:string strExe, int nTimeout=0
 ///Returns:bool bSuccess
 ///Doc:Wait until process is closed. Optional parameter nTimeout specifies how long to wait (default is to wait indefinitely). Returns false if timed out. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe". 
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
-	long nRes = AU3_ProcessWaitClose(QStrToCStr(strExecutableName), nTimeout);
+	long nRes = AU3_ProcessWaitClose(QStrToCStr(strExe), nTimeout);
 	return util_LongToBool(nRes);
 }
 
@@ -259,31 +242,31 @@
 ///Function:Process.systemRefreshExplorer
 ///Arguments:
 ///Returns:
-///Doc:Initiate a general refersh for Windows Explorer. This refresh command can be useful if you make a change in the Registry related to the shell file types (For example, if you change the icon of .gif extensio).
+///Doc:Initiate a general refresh for Windows Explorer. This refresh command can be useful if you make a change in the Registry related to the shell file types (For example, if you change the icon of .gif extensio).
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
 	return R_Nircmd("shellrefresh");
 }
 
-///Function:Process.memoryDump
-///Arguments:string strExecutableName, string strOutputFilename, int nStartAddress=0x00010000, int nBytesToRead=0x00002000, int nBytesPerLine=32, bool bIncludeHex=true, bool bIncludeAscii=true
-///Returns:bool bStatus
-///Doc:Saves memory dump of process to a file. Reads memory from a process and formats it in plain text. (Probably won't work in 64-bit mode). By default reads around 8k. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe".
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	QString strNircmdCommand;
-	// Note that we escape quotes in the input (important)
-	QStringList args;
-	args << "memdump" << strExecutableName << strOutputFilename;
-	args << IntToQStr(nBytesPerLine) <<  IntToQStr(nBytesToRead) << IntToQStr(nStartAddress);
+//~ ///Function:Process.memoryDump
+//~ ///Arguments:string strExe, string strOutputFilename, int nStartAddress=0x00010000, int nBytesToRead=0x00002000, int nBytesPerLine=32, bool bIncludeHex=true, bool bIncludeAscii=true
+//~ ///Returns:bool bStatus
+//~ ///Doc:Saves memory dump of process to a file. Reads memory from a process and formats it in plain text. (Probably won't work in 64-bit mode). By default reads around 8k. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe".
+//~ ///Implementation:c++_nircmd
+//~ {
+	//~ CHECK_ARGS
+	//~ QString strNircmdCommand;
+	//~ // Note that we escape quotes in the input (important)
+	//~ QStringList args;
+	//~ args << "memdump" << strExe << strOutputFilename;
+	//~ args << IntToQStr(nBytesPerLine) <<  IntToQStr(nBytesToRead) << IntToQStr(nStartAddress);
 	
-	if (!bIncludeHex) args << "nohex";
-	if (!bIncludeAscii) args << "noascii";
+	//~ if (!bIncludeHex) args << "nohex";
+	//~ if (!bIncludeAscii) args << "noascii";
 	
-	return util_externalCmdDefault(G_Nircmd, ctx, eng, args);
-}
+	//~ return util_externalCmdDefault(G_Nircmd, ctx, eng, args);
+//~ }
 
 ///Function:Process.setServiceStartup
 ///Arguments:string strServiceName, string strStartupType

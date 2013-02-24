@@ -43,7 +43,7 @@
 ///Arguments:int nVolumeUnits, string strComponent="master"
 ///Returns:bool bStatus
 ///Doc:Increase or decrease system volume. Units are in 1/100ths of maximum volume. Defaults to setting master volume, also specify one of the following: master, waveout, synth, cd, microphone, phone, aux, line, headphones, wavein
-///Example: Sound.changeVolume(-10); //get quieter Sound.changeVolume(10); //get louder
+///Example: Sound.changeVolume(-10); //get quieter[[br]]Sound.changeVolume(10); //get louder
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS

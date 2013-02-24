@@ -114,7 +114,8 @@ showDiv( aObjNs[0].id );
 			<xsl:value-of select="doc"/>
 			<xsl:if test="example != ''">
 				<span><xsl:attribute name="onclick">shex('ex_<xsl:value-of select="../@name" />_<xsl:value-of select="@name" />');</xsl:attribute> Example. </span>
-				<span class="spanexample" style="display:none">
+				<span class="spanexample">
+					<xsl:if test="not(starts-with(example,'Note:'))"><xsl:attribute name="style">display:none</xsl:attribute></xsl:if>
 					<xsl:attribute name="id">ex_<xsl:value-of select="../@name" />_<xsl:value-of select="@name" /></xsl:attribute>
 					<br/><br/>
 				<xsl:value-of select="example"/></span> 

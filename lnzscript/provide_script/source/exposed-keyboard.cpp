@@ -3,7 +3,7 @@
 ///Arguments:string strKeySequence
 ///Returns:
 ///Doc:Sends simulated keystrokes to the active window. The string can include <Alt>, <Control> or <Cntrl>, <Shift>, and <Win> as well as many others: {SPACE}, {ENTER}, {BACKSPACE}, {DELETE}, {UP}, {DOWN}, {LEFT}, {RIGHT}, {HOME}, {END}, {ESCAPE}, {INSERT}, {PGUP}, {PGDN}, {F1}-{F12}, {TAB}, {PRINTSCREEN}, {LWIN}, {RWIN}, {NUMLOCK on}, {CAPSLOCK off}, {SCROLLLOCK toggle}, {BREAK}, {PAUSE}, {NUMPAD0}, {NUMPADMULT}, {NUMPADADD}, {NUMPADSUB}, {NUMPADDIV}, {NUMPADDOT}, {NUMPADENTER}, {APPSKEY}, {LALT}, {RALT}, {LCTRL}, {RCTRL}, {LSHIFT}, {RSHIFT}, {SLEEP}, {ALTDOWN}, {SHIFTDOWN}, {CTRLDOWN}, {LWINDOWN}, {RWINDOWN}, {ASC nnnn}, {BROWSER_BACK}, {BROWSER_FORWARD}, {BROWSER_REFRESH}, {BROWSER_STOP}, {BROWSER_SEARCH}, {BROWSER_FAVORITES}, {BROWSER_HOME}, {VOLUME_MUTE}, {VOLUME_DOWN}, {VOLUME_UP}. Send {{} or {}} to send literal brace characters.
-///Example:Process.open('notepad.exe'); Keyboard.send('hello'); Keyboard.send('<Control>s'); Keyboard.send('{UP}{DOWN}{TAB}{ENTER}'); Keyboard.send('<Control><Shift>f');
+///Example:Process.open('notepad.exe');[[br]]Keyboard.send('hello');[[br]]Keyboard.send('<Control>s');[[br]]Keyboard.send('{UP}{DOWN}{TAB}{ENTER}'); Keyboard.send('<Control><Shift>f');
 ///Implementation:c++_au3
 {
 	CHECK_ARGS

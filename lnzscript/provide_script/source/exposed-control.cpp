@@ -4,7 +4,6 @@
 ///Returns:
 ///Doc:Allows you to interact with standard dialog-boxes and message-boxes of Windows. Use "" for exe name, window to refer to current dialog. Button names include yes, no, ok, cancel, retry, ignore, close, help, or provide an ID. Won't always work for non-standard dialog-boxes.
 ///Implementation:c++_nircmd
-///Example: Control.dialogSetText('explorer.exe','run',12298,'notepad'); /*type in notepad in run dialog*/ Control.dialogClickButton('explorer.exe','run','ok');//click ok
 {
 	CHECK_ARGS
 	return R_Nircmd("dlg", strExecutableName, strWindowTitle, "click", strButtonNameOrId);
@@ -15,7 +14,7 @@
 ///Returns:
 ///Doc:Allows you to enter text into standard dialog-boxes and message-boxes of Windows. Use "" for exe name, window to refer to current dialog. Won't always work for non-standard dialog-boxes.
 ///Implementation:c++_nircmd
-///Example: Control.dialogSetText('explorer.exe','run',12298,'notepad.exe'); /*type in notepad in run dialog*/ Control.dialogClickButton('explorer.exe','run','ok');//click ok
+///Example: Control.dialogSetText('explorer.exe','run',12298,'notepad.exe'); /*type in notepad in run dialog*/[[br]] Control.dialogClickButton('explorer.exe','run','ok');//click ok
 {
 	CHECK_ARGS
 	return R_Nircmd("dlg", strExecutableName, strWindowTitle, "settext", strFieldId, strText);
@@ -25,7 +24,7 @@
 ///Function:Control.click
 ///Arguments:string window, string strControl, string strBtn="left", int nClicks=1, int x=INTDEFAULT, int y=INTDEFAULT
 ///Returns:
-///Doc:Send simulated mouse click to control. Optionally specify button, number of clicks, or position of click (defaulting to center). Specify a control in one of three ways: ClassName (e.g. "Button", or "Button3" for the third Button control), Text (e.g. "OK" or "&Next" for a button with the text Next, with underlined N), or Control ID (e.g. 350, can be found with tools like Window Info Tool / spy). 
+///Doc:There are many ways to simulate clicking a button on a dialog. Using pixel coordinates is somewhat fragile, even when specifying coordinates relative to the current window. It's best to use a keyboard shortcut if possible.Otherwise, one of these Control methods can be used.[[br]][[br]]First, use the WindowInfo or WinExplorer.exe tool to find the ID and/or class of the control (button, text field, etc.).[[br]][[br]]Now in your script you can use either the ClassName, Text, or Control ID as the "sControl" parameter. Use sWindow="" for the current window, or refer to Window.activate documentation for more options.[[br]][[br]]Control.click sends a simulated mouse click to a control. Optionally specify button, number of clicks, or position of click (defaulting to center). Specify a control in one of three ways: ClassName (e.g. "Button", or "Button3" for the third Button control), Text (e.g. "OK" or "&Next" for a button with the text Next, with underlined N), or Control ID (e.g. 350, can be found with tools like Window Info Tool / spy). 
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
@@ -51,7 +50,7 @@
 ///Arguments:string window, string strControl, string strCommand, string strArgument=""
 ///Returns:string strResult
 ///Doc:Send command to a control. Result is returned as a string, unless the value is 0 in which case it is returned as the integer 0.  strArgument is an additional argument to send to the control. Common commands include: [[br]]"IsVisible" 	Returns 1 if visible, 0 otherwise [[br]]"IsEnabled" 	Returns 1 if enabled, 0 otherwise [[br]]"ShowDropDown" 	Drops a ComboBox [[br]]"HideDropDown" 	Undrops a ComboBox [[br]]"AddString", 'string' Adds a string to the end in a ListBox or ComboBox [[br]]"DelString", occurrence Deletes a string according to occurrence in a ListBox or ComboBox [[br]]"FindString", 'string' Returns occurrence ref of the exact string in a ListBox or ComboBox [[br]]"SetCurrentSelection", occurrence Sets selection to occurrence ref in a ListBox or ComboBox [[br]]"SelectString", 'string' Sets selection according to string in a ListBox or ComboBox [[br]]"IsChecked" 	Returns 1 if Button is checked, 0 otherwise [[br]]"Check" 	Checks radio or check Button [[br]]"UnCheck" 	Unchecks radio or check Button [[br]]"GetCurrentLine" 	Returns the line # where the caret is in an Edit [[br]]"GetCurrentCol" 	Returns the column # where the caret is in an Edit [[br]]"GetCurrentSelection" 	Returns name of the currently selected item in a ListBox or ComboBox [[br]]"GetLineCount" 	Returns # of lines in an Edit [[br]]"GetLine", line# Returns text at line # passed of an Edit [[br]]"GetSelected" 	Returns selected text of an Edit [[br]]"EditPaste", 'string' Pastes the 'string' at the Edit's caret position [[br]]"CurrentTab" 	Returns the current Tab shown of a SysTabControl32 [[br]]"TabRight" 	Moves to the next tab to the right of a SysTabControl32 [[br]]"TabLeft" 	Moves to the next tab to the left of a SysTabControl32.
-///Example: if (Control.sendCommand("Untitled", "Button2", "IsChecked")) print ('it is checked'); print('contents of line 3 are:'+Control.sendCommand("Untitled","Edit1", "GetLine", "3"));
+///Example: if (Control.sendCommand("Untitled", "Button2", "IsChecked")) print ('it is checked');[[br]] print('contents of line 3 are:'+Control.sendCommand("Untitled","Edit1", "GetLine", "3"));
 ///Implementation:c++_au3
 {
 	CHECK_ARGS
@@ -67,7 +66,7 @@
 // ///Arguments:string window, string strControl, string strCommand, string strArgument=""
 // ///Returns:string strResult
 // ///Doc:Sends a command to a TreeView32 control. Use #0 or "nodename" to refer to a node. Commands include: [[br]]"Check", "item" 	Checks an item if supported. [[br]]"Collapse", "item" 	Collapses an item to hide its children. [[br]]"Exists", "item" 	Returns 1 if an item exists, otherwise 0. [[br]]"Expand", "item" 	Expands an item to show its children. [[br]]"GetItemCount", "item" 	Returns the number of children for a selected item. [[br]]"GetSelected" 	[, UseIndex] Returns the item reference of the current selection using the text reference of the item (or index reference if UseIndex is set to 1). [[br]]"GetText", "item" 	Returns the text of an item. [[br]]"IsChecked" 	Returns the state of an item. 1:checked, 0:unchecked, -1:not a checkbox. [[br]]"Select", "item" 	Selects an item. [[br]]"Uncheck", "item" 	Unchecks an item if supported. 
-// ///Example: Control.sendCommandTreeview("MyFolder","TreeView321", "Expand", "#0"); //expands first child. Control.sendCommandTreeview("MyFolder","TreeView321", "Select", "abc|#2"); //Selects the third subnode of the node labeled "abc".
+// ///Example: Control.sendCommandTreeview("MyFolder","TreeView321", "Expand", "#0"); //expands first child.[[br]] Control.sendCommandTreeview("MyFolder","TreeView321", "Select", "abc|#2"); //Selects the third subnode of the node labeled "abc".
 // {
 // 	CHECK_ARGS
 // 	char buf[BUFSIZE];

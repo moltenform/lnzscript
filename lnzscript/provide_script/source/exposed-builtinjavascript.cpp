@@ -137,7 +137,7 @@
 ///Arguments:string strSearch, int nPosition=0
 ///Returns:int nIndex
 ///Doc:Searches for strSearch inside the string, and returns the index at which it is found. If the string is not found, -1 is returned. Provide a position to specify an index to start searching at.
-///Example: var s = "what is the difference"; if (s.indexOf('the')!=-1) print('the sentence contained "the"');
+///Example: var s = "what is the difference";[[br]] if (s.indexOf('the')!=-1) print('the sentence contained "the"');
 ///Implementation:Javascript
 ///InstanceMethod:true
 {}
@@ -249,8 +249,8 @@
 //================
 
 ///Function:Math.abs
-///Arguments:number input
-///Returns:number absInput
+///Arguments:input
+///Returns:abs
 ///Doc:Returns the absolute value of its argument (same magnitude but positive sign).
 ///Implementation:Javascript
 {}
@@ -433,7 +433,7 @@
 ///Returns:array arResults
 ///Doc:Performs regex match on string, and returns an array of results. The first element of the array is the found string, and the remaining are captured subgroups.
 ///Implementation:Javascript
-///Example:var re=/(\d+),(\d+)/; var a = re.exec('12-2456'); //item 1 is 12, item 2 is 2456
+///Example:var re=/(\d+),(\d+)/;[[br]] var a = re.exec('12-2456'); //item 1 is 12, item 2 is 2456
 ///InstanceMethod:true
 {}
 

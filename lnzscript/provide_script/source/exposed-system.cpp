@@ -77,7 +77,7 @@
 ///Function:System.openControlPanel
 ///Arguments:ControlPanel panelOption
 ///Returns:
-///Doc: Opens a control panel, i.e System.openControlPanel(ControlPanel.Display). Type "ControlPanel." in the editor and see autocomplete. Also, use System.openControlPanel(ControlPanelXp.Display) and so on for backwards compat. ControlPanel contains: Keyboard[[br]]Mouse[[br]]Joystick[[br]]Multimedia[[br]]InternetOptions[[br]]AddRemove[[br]]Regional[[br]]Time[[br]]System[[br]]Display[[br]]Accessibility[[br]]Network[[br]]Power[[br]]Accounts[[br]]SecurityCenter[[br]]Firewall[[br]]Wireless[[br]]Taskbar[[br]]FolderOptions[[br]]DeviceManager[[br]]Updates
+///Doc: Opens a control panel, i.e System.openControlPanel(ControlPanel.Display). Type "ControlPanel." in the editor and see autocomplete. Also, use System.openControlPanel(ControlPanelXp.Display) and so on for backwards compat. ControlPanel contains: Keyboard[[br]]Mouse[[br]]Joystick[[br]]Multimedia[[br]]InternetOptions[[br]]AddRemove[[br]]Regional[[br]]Time[[br]]System[[br]]Display[[br]]Accessibility[[br]]Network[[br]]Power[[br]]Accounts[[br]]SecurityCenter[[br]]Firewall[[br]]Wireless[[br]]Taskbar[[br]]FolderOptions[[br]]DeviceManager[[br]]Updates[[br]]
 ///Example: System.openControlPanel(ControlPanel.Display);
 ///Implementation:c++_winext
 {

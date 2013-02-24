@@ -197,7 +197,7 @@
 ///Arguments:string strDir, string strTypes="*", string strSortBy="Unsorted"
 ///Returns:arFiles
 ///Doc:Returns array of filenames inside folder. Provide a pattern like '*.txt' to only include .txt files. By default unsorted, but provide a flag such as 'unsorted', 'name','time','size','type'. Includes files marked as hidden, but not those marked as system.
-///Example:var arFiles = File.dirListFiles('c:\\','*','size'); print('biggest files in c:'); arFiles.reverse(); for(var i=0;i<arFiles.length;i++) print(arFiles[i]);
+///Example:var arFiles = File.dirListFiles('c:\\','*','size');[[br]] print('biggest files in c:');[[br]] arFiles.reverse();[[br]] for(var i=0;i<arFiles.length;i++) print(arFiles[i]);
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
@@ -216,7 +216,7 @@
 ///Arguments:string strDir, string strSortBy="Unsorted"
 ///Returns:arDirs
 ///Doc:Returns array of folder names that are subfolders of the folder. By default unsorted, but provide a flag such as 'unsorted', 'name','time','type'. Includes files marked as hidden, but not those marked as system.
-///Example:var arFolders = File.dirListSubdirs('c:\\','name'); print('subfolders in c:'); for(var i=0;i<arFolders.length;i++) print(arFolders[i]);
+///Example:var arFolders = File.dirListSubdirs('c:\\','name');[[br]] print('subfolders in c:');[[br]] for(var i=0;i<arFolders.length;i++) print(arFolders[i]);
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
@@ -563,7 +563,7 @@
 ///Arguments:string strSource, string strDestination, bool bSilent=false
 ///Returns:bool bStatus
 ///Doc:Copy an entire directory to another location. One can also copy many files, specifying '*.txt' to copy all text files in the current directory. May sometimes display a window.
-///Example:File.copyMany('c:\\temp\\folder1','c:\\othertemp\\folder1'); /* copies entire folder. */ File.copyMany('c:\\temp\\*.*','d:\\destination');
+///Example:File.copyMany('c:\\temp\\folder1','c:\\othertemp\\folder1'); /* copies entire folder. */[[br]] File.copyMany('c:\\temp\\*.*','d:\\destination');
 ///Implementation:c++_nircmd
 {
 	CHECK_ARGS
