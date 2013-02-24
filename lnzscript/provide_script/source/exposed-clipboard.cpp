@@ -36,11 +36,15 @@
 //~ ///Implementation:c++_nir-cmd
 
 
-//~ ///Function:nirdisabledwant_Clipboard.saveImage
-//~ ///Arguments:string strImageFilename
-//~ ///Returns:bool bStatus
-//~ ///Doc:If there is an image in the clipboard, save image to a file. The following file formats are supported: .bmp, .gif, .jpg, .png, .tiff.
-//~ ///Implementation:c++_nir-cmd
+///Function:Clipboard.saveImage
+///Arguments:string strImageFilename
+///Returns:bool bStatus
+///Doc:If there is an image in the clipboard, save image to a file. The following file formats are supported: .bmp, .gif, .jpg, .png, .tiff.
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	return R_WinCommonGdi("clipboard", strImageFilename);
+}
 
 
 

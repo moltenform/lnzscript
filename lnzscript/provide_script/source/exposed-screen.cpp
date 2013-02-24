@@ -38,20 +38,29 @@
 	return eng->nullValue();
 }
 
-//~ ///Function:nirdisabledwant_Screen.saveScreenshot
-//~ ///Arguments:string strImageFilename, bool bFullScreen=false
-//~ ///Returns:bool bStatus
-//~ ///Doc:Save screenshot to an image file. Defaults to screenshot of the active window, specify true to take screenshot of full screen. Image formats: .bmp, .gif, .png, .jpg, .tiff
-//~ ///Implementation:c++_nir-cmd
+///Function:Screen.saveScreenshot
+///Arguments:string strImageFilename, bool bFullScreen=false
+///Returns:bool bStatus
+///Doc:Save screenshot to an image file. Defaults to screenshot of the active window, specify true to take screenshot of full screen. Current implementation overwrites clipboard contents. Image formats: .bmp, .gif, .png, .jpg, .tiff
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	if (bFullScreen)
+		return R_WinCommonGdi("screenshot", strImageFilename, "/fullscreen");
+	else
+		return R_WinCommonGdi("screenshot", strImageFilename);
+}
 
 
-
-//~ ///Function:nirdisabledwant_Screen.convertImage
-//~ ///Arguments:string strImageFilename, string strNewImageName
-//~ ///Returns:bool bStatus
-//~ ///Doc:Convert image file from one format from another. Image formats: .bmp, .gif, .png, .jpg, .tiff
-//~ ///Implementation:c++_nir-cmd
-
+///Function:Screen.convertImage
+///Arguments:string strImageFilename, string strNewImageName
+///Returns:bool bStatus
+///Doc:Convert image file from one format from another. Image formats: .bmp, .gif, .png, .jpg, .tiff
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	return R_WinCommonGdi("convert", strImageFilename, strNewImageName);
+}
 
 //~ ///Function:nirdisabled_Screen.convertImages
 //~ ///Arguments:string strImagePattern, string strOutputPattern

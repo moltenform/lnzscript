@@ -1,6 +1,6 @@
 launchorz 0.4
 http://b3nf.com/codepages/lnz/
-http://code.google.com/p/launchorz/
+http://github.com/downpoured/lnzscript
 Powerful JavaScript libraries for Win32 automation
 by Ben Fisher
 =================
@@ -20,9 +20,9 @@ You could see some examples at http://code.google.com/p/launchorz/wiki/
 If you have a cool example, add it.
 
 Check out the source at
-http://launchorz.googlecode.com/svn/trunk
+http://github.com/downpoured/lnzscript
 Feel free to contribute patches if you come up with something interesting.
-Or, add an issue at http://code.google.com/p/launchorz/issues/list
+Or, add an issue.
 
 
 This program is free software; you can redistribute it and/or

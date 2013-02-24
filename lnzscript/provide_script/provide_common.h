@@ -45,10 +45,11 @@ namespace launchorz_functions
 	QString get_winapi_special_folder_path(QString strName);
 	QString get_winapi_windows_version();
 	
-
-	#define G_WinCommonDialog 2
+	const unsigned int G_WinCommonDialog=2;
+	const unsigned int G_WinCommonGdi=3;
 	
 	#define R_WinCommonDialog(...) (util_externalCmdDefault(G_WinCommonDialog,ctx,eng,__VA_ARGS__))
+	#define R_WinCommonGdi(...) (util_externalCmdDefault(G_WinCommonGdi,ctx,eng,__VA_ARGS__))
 	
 	//util_runExternalCommand still uses old method of util_external_escape, and Au3_run. Probably should move to QProcess sometime.
 	// Better to use QProcess QStringList args than this.

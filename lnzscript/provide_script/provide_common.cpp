@@ -91,12 +91,14 @@ namespace launchorz_functions
 		return (strResult.endsWith("\\")) ? strResult : strResult + "\\";
 	}
 	
-	QString util_wincommondlg_location;
+	QString util_wincommongdi_location, util_wincommondlg_location;
 	void util_commondialog_init()
 	{
 		QString strBaseDir = get_base_directory();
 		util_wincommondlg_location = strBaseDir + "WinCommonDialog.exe";
+		util_wincommongdi_location = strBaseDir + "WinCommonLnzImage.exe";
 		if (! QFileInfo(util_wincommondlg_location).exists()) { puts("Cannot find WinCommonDialog.exe. Place it in same directory as lnzscript.exe."); abort(); }
+		if (! QFileInfo(util_wincommongdi_location).exists()) { puts("Cannot find WinCommonLnzImage.exe. Place it in same directory as lnzscript.exe."); abort(); }
 	}
 	
 	// Note that our code assumes shell is cmd.exe, which should work for all Windows NT. For compatibilty with DOS-based os, could use %COMSPEC% env var
@@ -156,11 +158,17 @@ namespace launchorz_functions
 	{
 		QString strExecutable;
 		if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
+		else if ((program == G_WinCommonGdi)) strExecutable = util_wincommongdi_location;
 		else return ctx->throwError("Internal error. Bad external command.1");
 		
 		int nStatus = util_run_getstatus(strExecutable, astrArgs);
-		if ((program == G_WinCommonDialog))
+		if (program == G_WinCommonDialog)
 			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code.
+		else if (program == G_WinCommonGdi)
+		{
+			printf("dbg--status is %d\n", nStatus);
+			return QScriptValue(eng, nStatus == 0); // non-zero status indicates failure
+		}
 		else 
 			return ctx->throwError("Internal error. Bad external command.2");
 	}
@@ -170,6 +178,7 @@ namespace launchorz_functions
 	{
 		QString strExecutable;
 		if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
+		else if ((program == G_WinCommonGdi)) strExecutable = util_wincommongdi_location;
 		else return ""; //ctx->throwError("Internal error. Bad external command.1");
 		
 		QString strOutput = util_run_getstdout(strExecutable, astrArgs);

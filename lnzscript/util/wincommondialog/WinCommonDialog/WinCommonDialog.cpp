@@ -16,7 +16,7 @@
 const char * documentation = 
 "WinCommonDialog.exe, Ben Fisher 2008, GPL\n"
 "A wrapper over simple Windows dialogs, using return code to pass result.\n"
-"Part of Launchorz, http://code.google.com/p/launchorz/\n"
+"Part of Launchorz, http://github.com/downpoured/lnzscript/\n"
 "\n"
 "This is divided into 3 different functions. For more specific help, type:\n"
 "WinCommonDialog simple /?\n"
