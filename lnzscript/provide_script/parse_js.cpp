@@ -7,11 +7,23 @@
 
 // Transforms @'c:\directory' into 'c:\\directory'
 // Pass in the string as const so that [ ] is faster.
-QString processLiteralStrings(const QString& strInput)
+QString processLiteralStrings(const QString& strInputIn)
 {
-	if (! strInput.contains(QString("@")))
-		return strInput; //no @ in the string, so don't do anything
+	if (! strInputIn.contains(QString("@")))
+		return strInputIn; //no @ in the string, so don't do anything
 	
+	// overflows intentionally become space characters.
+	struct WrapString {
+		const QString* m_target; WrapString(const QString*target) : m_target(target) {}
+		int length() const { return m_target->length(); }
+		inline const QChar operator[](int i) const
+		{ 
+			if (i<0 || i>=length()) return ' ';
+			else return (*m_target)[i];
+		}
+	};
+	
+	WrapString strInput(&strInputIn);
 	QString strParsed;
 	strParsed.reserve( strInput.length() + 5); //allocate as much as the input + 5. Just an estimate, doesn't matter if we are over/under
 	int len = 0;
@@ -47,7 +59,7 @@ QString processLiteralStrings(const QString& strInput)
 				strParsed[len++] = BSLASH;
 			}
 			// 'this is \' one long string' , backslash escapes closing '
-			else if (strInput[i] == BSLASH && strInput[i+1] == SQUOTE && (i-1>=0) && strInput[i-1] != BSLASH && state == SINGLE_QUOTE) 
+			else if (strInput[i] == BSLASH && strInput[i+1] == SQUOTE && strInput[i-1] != BSLASH && state == SINGLE_QUOTE) 
 			{
 				//remain in the SINGLE_QUOTE state
 				strParsed[len++] = strInput[i];
@@ -55,7 +67,7 @@ QString processLiteralStrings(const QString& strInput)
 				strParsed[len++] = strInput[i];
 			}
 			// "this is \" one long string" , backslash escapes closing "
-			else if (strInput[i] == BSLASH && strInput[i+1] == DQUOTE && (i-1>=0) && strInput[i-1] != BSLASH && state == DOUBLE_QUOTE)
+			else if (strInput[i] == BSLASH && strInput[i+1] == DQUOTE && strInput[i-1] != BSLASH && state == DOUBLE_QUOTE)
 			{
 				//remain in the DOUBLE_QUOTE state
 				strParsed[len++] = strInput[i];

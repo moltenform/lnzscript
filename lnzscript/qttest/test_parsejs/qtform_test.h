@@ -1,9 +1,14 @@
 
-#include <QWidget>
-#include "ui_qtform_test_form.h"
+
+#include <QStringList>
+#include <QFile>
 
 #define IntToQStr(n) (QString("%1").arg(n))
 QString runTests();
+
+#ifndef LNZCONSOLEONLY
+#include <QWidget>
+#include "ui_qtform_test_form.h"
 
 class TestForm : public QWidget
 {
@@ -19,5 +24,5 @@ private:
     Ui::TestForm ui;
 
 };
-
+#endif
 

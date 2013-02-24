@@ -1,10 +1,14 @@
 
-#include <QtGui>
+
 #include "qtform_test.h"
 
-#include "parse_js.h"
+#include "..\..\provide_script\parse_js.h"
+#include "..\..\provide_script\parse_js.cpp"
 
 
+#ifndef LNZCONSOLEONLY
+
+#include <QtGui>
 
 TestForm::TestForm(QWidget *parent)
     : QWidget(parent)
@@ -22,9 +26,11 @@ void TestForm::on_btn_go()
 {
 	QString strIn = ui.txtInput->toPlainText();
 	
-	QString strProcessed = parseLiteralStrings(strIn);
+	QString strProcessed = processLiteralStrings(strIn);
 	ui.txtOutput->setPlainText(strProcessed);
 }
+
+#endif
 
 QString runTests()
 {
@@ -41,9 +47,13 @@ QString runTests()
 		if (astrTestParts.size() != 2) return "Malformed test " + IntToQStr(t) + " needs 2 parts: " + astrTests[t];
 		QString strInput = astrTestParts[0].trimmed();
 		QString strExpectedOutput = astrTestParts[1].trimmed();
-		QString strActualOutput = parseLiteralStrings(strInput);
-		if (strExpectedOutput != strActualOutput) 
-			return "Test failed " + IntToQStr(t) + " \nExpected:\t" + strExpectedOutput + "\nGot:\t"+strActualOutput;
+		QString strActualOutput = processLiteralStrings(strInput);
+		strExpectedOutput.replace(" ","`"); strActualOutput.replace(" ","`");
+		if (strExpectedOutput != strActualOutput) {
+			strExpectedOutput.replace("\r","\\r"); strExpectedOutput.replace("\n","\\n"); strExpectedOutput.replace("\t","\\t");
+			strActualOutput.replace("\r","\\r"); strActualOutput.replace("\n","\\n"); strActualOutput.replace("\t","\\t");
+			return "Test failed " + IntToQStr(t) + " \nExpected-"+IntToQStr(strExpectedOutput.length())+":  " + strExpectedOutput + "\nGot-"+IntToQStr(strActualOutput.length())+"     :  "+strActualOutput;
+		}
 	}
 	return "All " + IntToQStr(astrTests.size()) + " tests pass.";
 }

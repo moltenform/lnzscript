@@ -1,0 +1,11 @@
+
+debug/
+release/
+
+#these are created by Qt
+Makefile
+Makefile.Debug
+Makefile.Release
+ui_qtform_test_form.h
+
+

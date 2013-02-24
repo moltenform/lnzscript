@@ -44,6 +44,12 @@ do not \sub\ here!
 // in a comment @'
 do not \sub\ here!
 ~~
+// in a comment @'ab\c
+do not \sub\ /*here @'t\t' */!
+~
+// in a comment @'ab\c
+do not \sub\ /*here @'t\t' */!
+~~
 /* // in a block comment @'
 do not \sub\ here!
 @' or in \here\ */ or \here
@@ -62,9 +68,9 @@ ou\t "of" 'comment' @'w\w\w'
 // in comment ' @'
 ou\t "of" 'comment' 'w\\w\\w'
 ~~
-"in a string ' and \" @' still \part\ of the string' " 
+"in a string ' and \" @' still \part\ of the string' "
 ~
-"in a string ' and \" @' still \part\ of the string' " 
+"in a string ' and \" @' still \part\ of the string' "
 ~~
 'in a string " and \' @' string \ended\ there.
 ~
@@ -80,11 +86,35 @@ the "\\" should not break 'string'
 ~~
 test '\\ok some \' inter \' esting \' "n'   "\\ok some \" inter \" esting \' 'n" @'w \' atch"" c\"ases is'
 ~
-test '\\ok some \' inter \' esting \' "n'   "\\ok some \" inter \" esting \' 'n" @'w \' atch"" c\"ases is'
+test '\\ok some \' inter \' esting \' "n'   "\\ok some \" inter \" esting \' 'n" 'w \\' atch"" c\"ases is'
 ~~
 a@'' @' ' @' ' @' ' @' ' @' ' @' ' @' ' @' '
 ~
 a'' ' ' ' ' ' ' ' ' ' ' ' ' ' ' ' '
+~~
+test@
+~
+test@
+~~
+ok for now @'\
+~
+ok for now '\
+~~
+test@'\a
+~
+test'\\a
+~~
+test@'\'
+~
+test'\\'
+~~
+note the space, represented by backtick, ok @'
+~
+note the space, represented by backtick, ok '`
+~~
+many @' \ @' \
+~
+many ' \\ @' \
 ~~
 replace('n:\\src', @'\\share\src')
 ~
