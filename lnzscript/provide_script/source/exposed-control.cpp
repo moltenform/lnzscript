@@ -1,24 +1,19 @@
-// todo: add dlgany?
-///Function:Control.dialogClickButton
-///Arguments:string strExecutableName, string strWindowTitle, string strButtonNameOrId
-///Returns:
-///Doc:Allows you to interact with standard dialog-boxes and message-boxes of Windows. Use "" for exe name, window to refer to current dialog. Button names include yes, no, ok, cancel, retry, ignore, close, help, or provide an ID. Won't always work for non-standard dialog-boxes.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("dlg", strExecutableName, strWindowTitle, "click", strButtonNameOrId);
-}
-// todo: shouldn't take a string here, should take id as int.
-///Function:Control.dialogSetText
-///Arguments:string strExecutableName, string strWindowTitle, string strFieldId, string strText
-///Returns:
-///Doc:Allows you to enter text into standard dialog-boxes and message-boxes of Windows. Use "" for exe name, window to refer to current dialog. Won't always work for non-standard dialog-boxes.
-///Implementation:c++_nircmd
-///Example: Control.dialogSetText('explorer.exe','run',12298,'notepad.exe'); /*type in notepad in run dialog*/[[br]] Control.dialogClickButton('explorer.exe','run','ok');//click ok
-{
-	CHECK_ARGS
-	return R_Nircmd("dlg", strExecutableName, strWindowTitle, "settext", strFieldId, strText);
-}
+
+
+//~ ///Function:nirdisabled_Control.dialogClickButton
+//~ ///Arguments:string strExecutableName, string strWindowTitle, string strButtonNameOrId
+//~ ///Returns:
+//~ ///Doc:Allows you to interact with standard dialog-boxes and message-boxes of Windows. Use "" for exe name, window to refer to current dialog. Button names include yes, no, ok, cancel, retry, ignore, close, help, or provide an ID. Won't always work for non-standard dialog-boxes.
+//~ ///Implementation:c++_nir-cmd
+
+
+//~ ///Function:nirdisabled_Control.dialogSetText
+//~ ///Arguments:string strExecutableName, string strWindowTitle, string strFieldId, string strText
+//~ ///Returns:
+//~ ///Doc:Allows you to enter text into standard dialog-boxes and message-boxes of Windows. Use "" for exe name, window to refer to current dialog. Won't always work for non-standard dialog-boxes.
+//~ ///Implementation:c++_nir-cmd
+//~ ///Example: Control.dialogSetText('explorer.exe','run',12298,'notepad.exe'); /*type in notepad in run dialog*/[[br]] Control.dialogClickButton('explorer.exe','run','ok');//click ok
+
 
 
 ///Function:Control.click

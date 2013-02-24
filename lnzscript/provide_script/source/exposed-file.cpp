@@ -543,40 +543,43 @@
 ///Implementation:Javascript
 {}
 
-// Now the nircmd ones:
 
 ///Function:File.emptyRecycleBin
 ///Arguments:string strDrive=""
 ///Returns:bool bStatus
 ///Doc:Empty recycling bin. Optionally specify a drive, such as "c:"
 ///Example:Screen.convertImages('c:\\myfolder\\*.bmp','.png') //converts all .bmp images in the folder to .png.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (strDrive == "")
-		return R_Nircmd("emptybin"); // if without a parameter, empties all recycle bins
-	else
-		return R_Nircmd("emptybin", strDrive);
-}
+///Implementation:c++_nir-cmd
+
 
 ///Function:File.copyMany
-///Arguments:string strSource, string strDestination, bool bSilent=false
-///Returns:bool bStatus
+///Arguments:string strSource, string strDestination
+///Returns:
 ///Doc:Copy an entire directory to another location. One can also copy many files, specifying '*.txt' to copy all text files in the current directory. May sometimes display a window.
-///Example:File.copyMany('c:\\temp\\folder1','c:\\othertemp\\folder1'); /* copies entire folder. */[[br]] File.copyMany('c:\\temp\\*.*','d:\\destination');
-///Implementation:c++_nircmd
+///Example:File.copyMany('c:\\temp1\\folder1','c:\\temp2\\'); /* copies entire folder. */[[br]] File.copyMany('c:\\temp\\*.*','d:\\destination');
+///Implementation:c++_qt
 {
-	CHECK_ARGS
-	bool bDontCopySecurityAttributes=false;
-	bool bDontShowErrors=false;
-	bool bAnswerYesToQuestions=false;
-	const char* args[4]={0}; int nargs=0;
+	//~ CHECK_ARGS
+	//~ QStringList args;
+	//~ args.append(arg1);
+	//~ util_externalCmdDefault
+	
+	//~ QString strExecutable = "cmd.exe /c " + strCommandLineCommand;
+	//~ objProcess.start(strExecutable);
+	//~ objProcess.waitForFinished(); //the cmd.exe should spawn off what we opened.
+	return eng->nullValue();
+	
+	
+	//~ xcopy e:\existing e:\newcopy /s /e  /h
+//~ /q /y
 
-	if (bAnswerYesToQuestions) args[nargs++] ="yestoall";
-	if (bDontShowErrors) args[nargs++] ="noerrorui";
-	if (bSilent) args[nargs++] ="silent";
-	if (bDontCopySecurityAttributes) args[nargs++] ="nosecattr";
-	return R_Nircmd("shellcopy", strSource, strDestination, args[0], args[1], args[2], args[3]);
+	//~ const char* args[4]={0}; int nargs=0;
+
+	//~ if (bAnswerYesToQuestions) args[nargs++] ="yestoall";
+	//~ if (bDontShowErrors) args[nargs++] ="noerrorui";
+	//~ if (bSilent) args[nargs++] ="silent";
+	//~ if (bDontCopySecurityAttributes) args[nargs++] ="nosecattr";
+	//~ return R_Nirbcmd("shellcopy", strSource, strDestination, args[0], args[1], args[2], args[3]);
 }
 
 

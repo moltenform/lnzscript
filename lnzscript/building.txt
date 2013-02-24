@@ -29,7 +29,7 @@ run build.bat, which should do the rest for you. This runs Python scripts that c
 
 The easiest way to run this is to copy it into the directory of a 
 previous release of LnzScript.
-(This way, the binary will have all of its dependencies including qt dlls, wincommondialog.exe, nircmd.exe, mingw.dll and so on).
+(This way, the binary will have all of its dependencies including qt dlls, wincommondialog.exe, mingw.dll and so on).
 
 
 ==documentation.xml===

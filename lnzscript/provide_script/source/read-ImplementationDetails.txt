@@ -1,5 +1,5 @@
 Scripts are run by QtScript, which provides an EcmaScript implementation.
-Currently, the libraries are implemented by Qt, Au3, and Nircmd.
+Currently, the libraries are implemented by Qt and Au3.
 Qt is nice for more than QtScript - I use QStrings, and QFile/QDir/QProcess classes.
 
 How to work with Windows

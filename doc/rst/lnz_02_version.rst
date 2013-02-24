@@ -88,7 +88,7 @@ The Launchorz project is under the GPL v2 license.
 	TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE 
 	OR PERFORMANCE OF THIS SOFTWARE. 
 
-Also refer to the nircmd and autoItx licenses, which come are in the /licenses folder.
+Also refer to the autoItx licenses, which come are in the /licenses folder.
 
 Future plans
 ----------------------------------------------------

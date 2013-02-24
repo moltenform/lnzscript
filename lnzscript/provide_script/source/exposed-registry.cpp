@@ -1,13 +1,10 @@
 
-///Function:Registry.openRegedit
-///Arguments:string strKeyname, string strValuename
-///Returns:
-///Doc:Open regedit to the specified key and value.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("regedit", strKeyname, strValuename);
-}
+//~ ///Function:nirdisabled_Registry.openRegedit
+//~ ///Arguments:string strKeyname, string strValuename
+//~ ///Returns:
+//~ ///Doc:Open regedit to the specified key and value.
+//~ ///Implementation:c++_nir-cmd
+
 
 ///Function:Registry.deleteKey
 ///Arguments:string strKeyname

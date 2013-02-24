@@ -105,13 +105,11 @@ namespace launchorz_functions
 		return (strResult.endsWith("\\")) ? strResult : strResult + "\\";
 	}
 	
-	QString util_nircmd_location, util_wincommondlg_location;
-	void util_nircmd_init()
+	QString util_wincommondlg_location;
+	void util_commondialog_init()
 	{
 		QString strBaseDir = get_base_directory();
-		util_nircmd_location = strBaseDir + "nircmd.exe";
 		util_wincommondlg_location = strBaseDir + "WinCommonDialog.exe";
-		if (! QFileInfo(util_nircmd_location).exists()) { puts("Cannot find nircmd.exe. Place it in same directory as lnzscript.exe."); abort(); }
 		if (! QFileInfo(util_wincommondlg_location).exists()) { puts("Cannot find WinCommonDialog.exe. Place it in same directory as lnzscript.exe."); abort(); }
 	}
 	
@@ -156,15 +154,11 @@ namespace launchorz_functions
 	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QStringList& astrArgs)
 	{
 		QString strExecutable;
-		if ((program == G_Nircmd)) strExecutable = util_nircmd_location;
-		else if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
+		if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
 		else return ctx->throwError("Internal error. Bad external command.1");
 		
 		int nStatus = util_run_getstatus(strExecutable, astrArgs);
-		if ((program == G_Nircmd))
-			return (nStatus==0) ? QScriptValue(eng, true) : QScriptValue(eng, false); // "NirCmd returns a non-zero value on error."
-		
-		else if ((program == G_WinCommonDialog))
+		if ((program == G_WinCommonDialog))
 			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code.
 		
 		else return ctx->throwError("Internal error. Bad external command.2");
@@ -174,8 +168,7 @@ namespace launchorz_functions
 	QString util_externalCmdStdout(unsigned int program, const QStringList& astrArgs)
 	{
 		QString strExecutable;
-		if ((program == G_Nircmd)) strExecutable = util_nircmd_location;
-		else if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
+		if ((program == G_WinCommonDialog)) strExecutable = util_wincommondlg_location;
 		else return ""; //ctx->throwError("Internal error. Bad external command.1");
 		
 		QString strOutput = util_run_getstdout(strExecutable, astrArgs);
@@ -316,9 +309,9 @@ namespace launchorz_functions
 		else return "";
 		
 		// use windows api to get path.
-		TCHAR tbuffer[512];
+		TCHAR tbuffer[512]={0};
 		SHGetSpecialFolderPath(NULL, tbuffer, cslid, false);
-		char buffer[512];
+		char buffer[512]={0};
 		wcstombs(buffer, tbuffer, 512);
 		
 		return QString(buffer);

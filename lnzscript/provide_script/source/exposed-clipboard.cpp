@@ -29,24 +29,18 @@
 	return eng->nullValue();
 }
 
-///Function:Clipboard.clear
-///Arguments:
-///Returns:bool bStatus
-///Doc:Clear contents of the clipboard.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("clipboard", "clear");
-}
+//~ ///Function:nirdisabled_Clipboard.clear
+//~ ///Arguments:
+//~ ///Returns:bool bStatus
+//~ ///Doc:Clear contents of the clipboard.
+//~ ///Implementation:c++_nir-cmd
 
-///Function:Clipboard.saveImage
-///Arguments:string strImageFilename
-///Returns:bool bStatus
-///Doc:If there is an image in the clipboard, save image to a file. The following file formats are supported: .bmp, .gif, .jpg, .png, .tiff.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("clipboard", "saveimage", strImageFilename);
-}
+
+//~ ///Function:nirdisabledwant_Clipboard.saveImage
+//~ ///Arguments:string strImageFilename
+//~ ///Returns:bool bStatus
+//~ ///Doc:If there is an image in the clipboard, save image to a file. The following file formats are supported: .bmp, .gif, .jpg, .png, .tiff.
+//~ ///Implementation:c++_nir-cmd
+
 
 

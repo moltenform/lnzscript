@@ -1,7 +1,6 @@
 //Note that "string window" is not necessarily a string. It can also be an object. In CHECK_ARGS, string window is handled separately.
 // By typing in "string window" this automatically creates the variables QString window and QString strText !
 
-// See also: nircmd win 
 
 ///Function:Window.activate
 ///Arguments:string window

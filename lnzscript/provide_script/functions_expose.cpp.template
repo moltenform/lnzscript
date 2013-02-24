@@ -2,7 +2,6 @@
 
 #include "functions_au3.h" //for adding objects
 #include "functions_qt.h" //for adding objects
-#include "functions_nircmd.h" //for adding objects
 #include "functions_winext.h" //for adding objects
 
 

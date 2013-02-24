@@ -26,7 +26,6 @@
 	CHECK_ARGS
 	
 	return R_WinCommonDialog("simple", "info", strTitle, strText);
-	// Previously used nircmd: return R_Nircmd("infobox", strText, strTitle);
 }
 
 ///Function:Dialog.warning

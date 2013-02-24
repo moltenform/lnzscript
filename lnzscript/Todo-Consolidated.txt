@@ -94,7 +94,6 @@ Should address in next version 0.4.1?
 	print() itself  has a small buffer...
 	different return code if syntax error?
 	File.tray should be system.cdTray
-	unify between NirCmd / Au3 window and dialog commands
 	@"test" is green. intentional?
 	rename everything to .jsz rather than .js
 	

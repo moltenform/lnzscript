@@ -18,7 +18,7 @@
 	else
 	{
 		// Seems analogous to QProcess::start
-		long nRes = AU3_Run(QStrToCStr(strExecutable), QStrToCStr(strWorkingDir),nFlag);
+		long nRes = AU3_Run(QStrToCStr(strExe), QStrToCStr(strWorkingDir),nFlag);
 		if (AU3_error()!=1)
 			return QScriptValue(eng, (int) nRes);
 		else
@@ -152,8 +152,6 @@
 	return util_LongToBool(nRes);
 }
 
-// see also nircmd exitwin 
-
 ///Function:Process.systemLogoff
 ///Arguments:bool bForce=false
 ///Returns:bool bSuccess
@@ -182,114 +180,73 @@
 ///Arguments:
 ///Returns:
 ///Doc:Lock computer.
-///Implementation:c++_nircmd
+///Implementation:c++_au3
 {
 	CHECK_ARGS
-	// AU3_Send("#l", 0); // Send Windows - L, which by default locks computer. This works, but doesn't seem as robust.
-	return R_Nircmd("lockws");
+	AU3_Send("#l", 0); // Send Windows - L, which by default locks computer.
+	// used to use nir-cmd.
+	return eng->nullValue();
 }
 
-///Function:Process.systemMonitorOff
-///Arguments:bool bMonitorState
-///Returns:
-///Doc:Turn monitor off or on. Process.systemMonitorOff(false) to turn off. Process.systemMonitorOff(true) to turn on.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("monitor", (bMonitorState) ? "on" : "off");
-}
+//~ ///Function:nirdisabled_Process.systemMonitorOff
+//~ ///Arguments:bool bMonitorState
+//~ ///Returns:
+//~ ///Doc:Turn monitor off or on. Process.systemMonitorOff(false) to turn off. Process.systemMonitorOff(true) to turn on.
+//~ ///Implementation:c++_nir-cmd
 
-///Function:Process.systemScreensaver
-///Arguments:
-///Returns:
-///Doc:Starts the default screen saver. 
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("screensaver");
-}
 
-///Function:Process.systemStandby
-///Arguments:bool bForce=false
-///Returns:
-///Doc:Puts computer in "stand by" mode. Optionally specify true to "force", which may result in unsaved data being lost. 
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (bForce) return R_Nircmd("standby","force");
-	else return R_Nircmd("standby");
-}
-///Function:Process.systemHibernate
-///Arguments:bool bForce=false
-///Returns:bool bStatus
-///Doc:Puts computer in "hibernate" mode. Optionally specify true to "force", which may result in unsaved data being lost. 
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (bForce) return R_Nircmd("hibernate","force");
-	else return R_Nircmd("hibernate");
-}
+//~ ///Function:nirdisabled_Process.systemScreensaver
+//~ ///Arguments:
+//~ ///Returns:
+//~ ///Doc:Starts the default screen saver. 
+//~ ///Implementation:c++_nir-cmd
 
-///Function:Process.systemRefresh
-///Arguments:
-///Returns:
-///Doc:Initiate a general system refresh. You can use this command to refresh your system after changing your system settings in the Registry (e.g: changing desktop icons size, environment variables, and so on..)
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("sysrefresh"); //also "environment" - for refreshing the environment variables, "policy" - for policy settings, "intl" for locale settings.
-}
-///Function:Process.systemRefreshExplorer
-///Arguments:
-///Returns:
-///Doc:Initiate a general refresh for Windows Explorer. This refresh command can be useful if you make a change in the Registry related to the shell file types (For example, if you change the icon of .gif extensio).
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("shellrefresh");
-}
 
-//~ ///Function:Process.memoryDump
+//~ ///Function:nirdisabled_Process.systemStandby
+//~ ///Arguments:bool bForce=false
+//~ ///Returns:
+//~ ///Doc:Puts computer in "stand by" mode. Optionally specify true to "force", which may result in unsaved data being lost. 
+//~ ///Implementation:c++_nir-cmd
+
+
+//~ ///Function:nirdisabled_Process.systemHibernate
+//~ ///Arguments:bool bForce=false
+//~ ///Returns:bool bStatus
+//~ ///Doc:Puts computer in "hibernate" mode. Optionally specify true to "force", which may result in unsaved data being lost. 
+//~ ///Implementation:c++_nir-cmd
+
+
+//~ ///Function:nirdisabled_Process.systemRefresh
+//~ ///Arguments:
+//~ ///Returns:
+//~ ///Doc:Initiate a general system refresh. You can use this command to refresh your system after changing your system settings in the Registry (e.g: changing desktop icons size, environment variables, and so on..)
+//~ ///Implementation:c++_nirc-md
+
+
+//~ ///Function:nirdisabled_Process.systemRefreshExplorer
+//~ ///Arguments:
+//~ ///Returns:
+//~ ///Doc:Initiate a general refresh for Windows Explorer. This refresh command can be useful if you make a change in the Registry related to the shell file types (For example, if you change the icon of .gif extensio).
+//~ ///Implementation:c++_nir-cmd
+
+
+//~ ///Function:nirdisabled_Process.memoryDump
 //~ ///Arguments:string strExe, string strOutputFilename, int nStartAddress=0x00010000, int nBytesToRead=0x00002000, int nBytesPerLine=32, bool bIncludeHex=true, bool bIncludeAscii=true
 //~ ///Returns:bool bStatus
 //~ ///Doc:Saves memory dump of process to a file. Reads memory from a process and formats it in plain text. (Probably won't work in 64-bit mode). By default reads around 8k. Names are executables without the full path, e.g., "notepad.exe" or "winword.exe".
-//~ ///Implementation:c++_nircmd
-//~ {
-	//~ CHECK_ARGS
-	//~ QString strNircmdCommand;
-	//~ // Note that we escape quotes in the input (important)
-	//~ QStringList args;
-	//~ args << "memdump" << strExe << strOutputFilename;
-	//~ args << IntToQStr(nBytesPerLine) <<  IntToQStr(nBytesToRead) << IntToQStr(nStartAddress);
-	
-	//~ if (!bIncludeHex) args << "nohex";
-	//~ if (!bIncludeAscii) args << "noascii";
-	
-	//~ return util_externalCmdDefault(G_Nircmd, ctx, eng, args);
-//~ }
+//~ ///Implementation:c++_nir-cmd
 
-///Function:Process.setServiceStartup
-///Arguments:string strServiceName, string strStartupType
-///Returns:bool bStatus
-///Doc:Change startup type of a service or driver. Options are "auto","manual", "disabled", "boot" (for drivers), "system" (for drivers)
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (!(strStartupType == "auto" || strStartupType == "manual" || strStartupType == "disabled" || strStartupType == "boot" || strStartupType == "system"))
-		return ctx->throwError("Process.setServiceStartup() Invalid parameter, choose one of \"auto\",\"manual\", \"disabled\", \"boot\" \"system\"");
 
-	return R_Nircmd("service", strStartupType, strServiceName);
-}
-///Function:Process.setServiceStatus
-///Arguments:string strServiceName, string strAction
-///Returns:bool bStatus
-///Doc:Start or stop a service or driver. Actions are "start","stop", "restart", "pause", "continue".
-///Example:Process.setServiceStatus("MySql","restart"); //restart Mysql service
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (!(strAction == "start" || strAction == "stop" || strAction == "restart" || strAction == "pause" || strAction == "continue"))
-		return ctx->throwError("Process.setServiceStatus() Invalid action, choose one of \"start\",\"stop\", \"restart\", \"pause\", \"continue\".");
-	
-	return R_Nircmd("service", strAction, strServiceName);
-}
+//~ ///Function:nirdisabled_Process.setServiceStartup
+//~ ///Arguments:string strServiceName, string strStartupType
+//~ ///Returns:bool bStatus
+//~ ///Doc:Change startup type of a service or driver. Options are "auto","manual", "disabled", "boot" (for drivers), "system" (for drivers)
+//~ ///Implementation:c++_nir-cmd
+
+
+//~ ///Function:nirdisabledwant_Process.setServiceStatus
+//~ ///Arguments:string strServiceName, string strAction
+//~ ///Returns:bool bStatus
+//~ ///Doc:Start or stop a service or driver. Actions are "start","stop", "restart", "pause", "continue".
+//~ ///Example:Process.setServiceStatus("MySql","restart"); //restart Mysql service
+//~ ///Implementation:c++_nir-cmd

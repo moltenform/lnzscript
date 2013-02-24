@@ -45,10 +45,8 @@ namespace launchorz_functions
 	QString get_winapi_windows_version();
 	
 
-	#define G_Nircmd 1
 	#define G_WinCommonDialog 2
 	
-	#define R_Nircmd(...) (util_externalCmdDefault(G_Nircmd,ctx,eng,__VA_ARGS__))
 	#define R_WinCommonDialog(...) (util_externalCmdDefault(G_WinCommonDialog,ctx,eng,__VA_ARGS__))
 	
 	//util_runExternalCommand still uses old method of util_external_escape, and Au3_run. Probably should move to QProcess sometime.
@@ -56,9 +54,9 @@ namespace launchorz_functions
 	#define util_external_escape(s) (QString(s).replace("\"","\\\"",Qt::CaseInsensitive))
 	
 	
-	extern QString util_nircmd_location, util_wincommondlg_location; // implemented in provide_common.cpp. Declared extern to avoid "multiple definition of"
+	extern QString util_wincommondlg_location; // implemented in provide_common.cpp. Declared extern to avoid "multiple definition of"
 	QString get_base_directory();
-	void util_nircmd_init();
+	void util_commondialog_init();
 	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QString& arg1=0, const QString& arg2=0, const QString& arg3 =0, const QString& arg4 =0, const QString& arg5 =0, const QString& arg6 =0, const QString& arg7 =0);
 	QScriptValue util_externalCmdDefault(unsigned int program, QScriptContext *ctx, QScriptEngine *eng, const QStringList& astrArgs);
 	QString util_externalCmdStdout(unsigned int program, const QStringList& astrArgs);

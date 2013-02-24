@@ -20,7 +20,6 @@ def main():
 	objConnections = ConnectionToScriptOutputFile('functions_expose')
 	objCppAu3 = ImplementationOutputFile('functions_au3')
 	objCppQt = ImplementationOutputFile('functions_qt')
-	objCppNircmd = ImplementationOutputFile('functions_nircmd')
 	objCppWinext = ImplementationOutputFile('functions_winext')
 	for method in aMethods:
 		if method.implementation == 'c++_au3':
@@ -31,17 +30,16 @@ def main():
 			objCppQt.addHeader(method.renderHeader())
 			objCppQt.addCode( method.renderCode())
 			objConnections.addMethod(method)
-		elif method.implementation == 'c++_nircmd':
-			objCppNircmd.addHeader(method.renderHeader())
-			objCppNircmd.addCode( method.renderCode())
-			objConnections.addMethod(method)
 		elif method.implementation == 'c++_winext':
 			objCppWinext.addHeader(method.renderHeader())
 			objCppWinext.addCode( method.renderCode())
 			objConnections.addMethod(method)
+		elif method.implementation == 'Javascript':
+			pass
+		else:
+			assert False, 'unknown impl '+  method.implementation
 	
 	objCppQt.writeFile()
-	objCppNircmd.writeFile()
 	objCppAu3.writeFile()
 	objCppWinext.writeFile()
 	objConnections.writeFile()

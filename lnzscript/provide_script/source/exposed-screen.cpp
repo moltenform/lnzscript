@@ -38,51 +38,36 @@
 	return eng->nullValue();
 }
 
-///Function:Screen.saveScreenshot
-///Arguments:string strImageFilename, bool bFullScreen=false
-///Returns:bool bStatus
-///Doc:Save screenshot to an image file. Defaults to screenshot of the active window, specify true to take screenshot of full screen. Image formats: .bmp, .gif, .png, .jpg, .tiff
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	QString strNircmdCommand;
-	if (bFullScreen)
-		return R_Nircmd("savescreenshot", strImageFilename);
-	else
-		return R_Nircmd("savescreenshotwin", strImageFilename);
-}
+//~ ///Function:nirdisabledwant_Screen.saveScreenshot
+//~ ///Arguments:string strImageFilename, bool bFullScreen=false
+//~ ///Returns:bool bStatus
+//~ ///Doc:Save screenshot to an image file. Defaults to screenshot of the active window, specify true to take screenshot of full screen. Image formats: .bmp, .gif, .png, .jpg, .tiff
+//~ ///Implementation:c++_nir-cmd
 
-///Function:Screen.convertImage
-///Arguments:string strImageFilename, string strNewImageName
-///Returns:bool bStatus
-///Doc:Convert image file from one format from another. Image formats: .bmp, .gif, .png, .jpg, .tiff
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("convertimage",strImageFilename,strNewImageName );
-}
-///Function:Screen.convertImages
-///Arguments:string strImagePattern, string strOutputPattern
-///Returns:bool bStatus
-///Doc:Convert image files from one format from another. See example. strImagePattern is pattern like "*.bmp" or "a*.bmp". strOutputpattern is pattern like ".png". Image formats: .bmp, .gif, .png, .jpg, .tiff
-///Example:Screen.convertImages('c:\\myfolder\\*.bmp','.png') //converts all .bmp images in the folder to .png.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	return R_Nircmd("convertimages",strImagePattern,strOutputPattern );
-}
 
-///Function:Screen.setDisplayMode
-///Arguments:int nWidth, int nHeight, int nColorBits
-///Returns:bool bStatus
-///Doc:Changes display settings. nColorBits is the number of colors, for example 16-bit color or 24-bit color.
-///Example:Screen.displayMode(800,600,24); //set display to 800x600
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	QString strNircmdCommand;
-	return R_Nircmd("setdisplay", IntToQStr(nWidth),IntToQStr(nHeight), IntToQStr(nColorBits) );
-}
+
+//~ ///Function:nirdisabledwant_Screen.convertImage
+//~ ///Arguments:string strImageFilename, string strNewImageName
+//~ ///Returns:bool bStatus
+//~ ///Doc:Convert image file from one format from another. Image formats: .bmp, .gif, .png, .jpg, .tiff
+//~ ///Implementation:c++_nir-cmd
+
+
+//~ ///Function:nirdisabled_Screen.convertImages
+//~ ///Arguments:string strImagePattern, string strOutputPattern
+//~ ///Returns:bool bStatus
+//~ ///Doc:Convert image files from one format from another. See example. strImagePattern is pattern like "*.bmp" or "a*.bmp". strOutputpattern is pattern like ".png". Image formats: .bmp, .gif, .png, .jpg, .tiff
+//~ ///Example:Screen.convertImages('c:\\myfolder\\*.bmp','.png') //converts all .bmp images in the folder to .png.
+//~ ///Implementation:c++_nir-cmd
+
+
+//~ ///Function:nirdisabled_Screen.setDisplayMode
+//~ ///Arguments:int nWidth, int nHeight, int nColorBits
+//~ ///Returns:bool bStatus
+//~ ///Doc:Changes display settings. nColorBits is the number of colors, for example 16-bit color or 24-bit color.
+//~ ///Example:Screen.displayMode(800,600,24); //set display to 800x600
+//~ ///Implementation:c++_nir-cmd
+
 
 
 ///Function:Screen.searchPixelColor

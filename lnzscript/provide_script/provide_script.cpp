@@ -12,7 +12,7 @@ ProvideScript::ProvideScript()
 {
 	// constructor
 	launchorz_functions::util_au3init();
-	launchorz_functions::util_nircmd_init();
+	launchorz_functions::util_commondialog_init();
 	
 	// the engine was already created
 	// create objects

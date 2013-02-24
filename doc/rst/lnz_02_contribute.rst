@@ -34,7 +34,7 @@ How it works
 
 The project relies on QtScript. QtScript is a new class in the Qt toolkit that provides an Ecma-262 interpreter, and one can expose C++ functions to it. 
 
-The functions are implemented with a mixture of the Windows api, Qt, AutoItX, and Nirsoft's Nircmd. At a future date, code from the AutoHotKey project may be incorporated. 
+The functions are implemented with a mixture of the Windows api, Qt, and AutoItX. At a future date, code from the AutoHotKey project may be incorporated. 
 
 Internal Structure
 -----------------------

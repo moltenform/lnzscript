@@ -34,7 +34,7 @@ and write tests for your software's UI.
 * syntax where it is natural to organize code into functions, and not deal with Goto/While/Wend keywords. 
 * you can include shared modules with the built-in include() function.
 
-The implementation uses win32 api, AutoItX dll, Qt Toolkit, and nircmd. The language is interpreted by Qt's QtScript module. (ed. note: when I wrote this in 2008, I mentioned how different it was to use JavaScript out of a browser context... times have changed).
+The implementation uses win32 api, AutoItX dll, and Qt Toolkit. The language is interpreted by Qt's QtScript module. (ed. note: when I wrote this in 2008, I mentioned how different it was to use JavaScript out of a browser context... times have changed).
 
 To run scripts from hotkeys, just install [Clavier+](http://utilfr42.free.fr/util/Clavier.php?sLang=en) (a useful open source tool) and
 point it at your script.

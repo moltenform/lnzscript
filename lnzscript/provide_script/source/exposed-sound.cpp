@@ -1,15 +1,8 @@
-///Function:Sound.beep
-///Arguments:int nFrequency=-1, int nDurationMilliseconds=500
-///Returns:bool bStatus
-///Doc:Plays a beep. If no frequency is given, plays standard Windows beep sound.
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (nFrequency==-1)
-		return R_Nircmd("stdbeep");
-	else
-		return R_Nircmd("beep", IntToQStr(nFrequency),IntToQStr(nDurationMilliseconds));
-}
+//~ ///Function:nirdisabledwant_Sound.beep
+//~ ///Arguments:int nFrequency=-1, int nDurationMilliseconds=500
+//~ ///Returns:bool bStatus
+//~ ///Doc:Plays a beep. If no frequency is given, plays standard Windows beep sound.
+//~ ///Implementation:c++_nir-cmd
 
 ///Function:Sound.playSound
 ///Arguments:string strSoundFile="Default"
@@ -24,47 +17,25 @@
 	return R_WinCommonDialog("sound", strSoundFile);
 }
 
-///Function:Sound.setVolume
-///Arguments:int nPercentageVolume, string strComponent="master"
-///Returns:bool bStatus
-///Doc:Set system volume. Pass a percentage, where 0 is silent and 100 is maximum volume. Defaults to setting master volume, also specify one of the following: master, waveout, synth, cd, microphone, phone, aux, line, headphones, wavein
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (nPercentageVolume <0 || nPercentageVolume>100)
-		return ctx->throwError("Volume must be given as a percentage from 0 to 100.");
-	int nSoundLevel = (int) ((nPercentageVolume / 100.0) * 65535.0);
-	
-	QString strLevel; strLevel.sprintf("%d", nSoundLevel);
-	return R_Nircmd("setsysvolume", strLevel, strComponent);
-}
+//~ ///Function:nirdisabled_Sound.setVolume
+//~ ///Arguments:int nPercentageVolume, string strComponent="master"
+//~ ///Returns:bool bStatus
+//~ ///Doc:Set system volume. Pass a percentage, where 0 is silent and 100 is maximum volume. Defaults to setting master volume, also specify one of the following: master, waveout, synth, cd, microphone, phone, aux, line, headphones, wavein
+//~ ///Implementation:c++_nir-cmd
 
-///Function:Sound.changeVolume
-///Arguments:int nVolumeUnits, string strComponent="master"
-///Returns:bool bStatus
-///Doc:Increase or decrease system volume. Units are in 1/100ths of maximum volume. Defaults to setting master volume, also specify one of the following: master, waveout, synth, cd, microphone, phone, aux, line, headphones, wavein
-///Example: Sound.changeVolume(-10); //get quieter[[br]]Sound.changeVolume(10); //get louder
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (nVolumeUnits <-100 || nVolumeUnits>100)
-		return ctx->throwError("Units are in 1/100ths of maximum volume; must be in range -100 to 100");
-	int nSoundLevel = (int) ((nVolumeUnits / 100.0) * 65535.0);
-	
-	QString strLevel; strLevel.sprintf("%d", nSoundLevel);
-	return R_Nircmd("changesysvolume", strLevel, strComponent);
-}
+
+//~ ///Function:nirdisabled_Sound.changeVolume
+//~ ///Arguments:int nVolumeUnits, string strComponent="master"
+//~ ///Returns:bool bStatus
+//~ ///Doc:Increase or decrease system volume. Units are in 1/100ths of maximum volume. Defaults to setting master volume, also specify one of the following: master, waveout, synth, cd, microphone, phone, aux, line, headphones, wavein
+//~ ///Example: Sound.changeVolume(-10); //get quieter[[br]]Sound.changeVolume(10); //get louder
+//~ ///Implementation:c++_nir-cmd
+
 
 // consider: if called with no arguments, toggles setting? Would require special arg handling.
-///Function:Sound.mute
-///Arguments:bool bMuted, string strComponent="master"
-///Returns:bool bStatus
-///Doc:Mute or unmute the system volume. Defaults to setting master volume, also specify one of the following: master, waveout, synth, cd, microphone, phone, aux, line, headphones, wavein
-///Implementation:c++_nircmd
-{
-	CHECK_ARGS
-	if (bMuted)
-		return R_Nircmd("mutesysvolume", "1", strComponent);
-	else
-		return R_Nircmd("mutesysvolume", "0", strComponent);
-}
+//~ ///Function:nirdisabled_Sound.mute
+//~ ///Arguments:bool bMuted, string strComponent="master"
+//~ ///Returns:bool bStatus
+//~ ///Doc:Mute or unmute the system volume. Defaults to setting master volume, also specify one of the following: master, waveout, synth, cd, microphone, phone, aux, line, headphones, wavein
+//~ ///Implementation:c++_nir-cmd
+
