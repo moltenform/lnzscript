@@ -64,11 +64,37 @@
 	QString strOutput( objProcess.readAllStandardOutput());
 	return QScriptValue(eng, strOutput);
 }
+
 ///Function:Process.runCmdLine
+///Arguments:array arArguments
+///Returns:[int retcode, string strStdout]
+///Doc:Execute array of strings in the command line shell, in the style of the command prompt cmd.exe. Waits until command completes. You must use quotes if a file or directory has spaces in the name.
+///Example: Process.runCmdLineArguments(['mkdir', 'c:\\test\\myfolder']);
+///Implementation:Javascript
+
+///Function:Process._runCmdLine
+///Arguments:string strArguments
+///Returns:[int retcode, string strStdout]
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	QStringList list = strArguments.split("|||"); // JavaScript takes Process.runCmdLine and joins as |||
+	if (list.length()==0)
+		return ctx->throwError("Process.runCmdLine(): no args given.");
+	
+	int nExitCode=0;
+	QString strStdout = util_runCommandAndWait(list,&nExitCode);
+	QScriptValue ret = eng->newArray(2);
+	ret.setProperty(0, nExitCode);
+	ret.setProperty(1, strStdout);
+	return ret;
+}
+
+///Function:Process.runCmdLineString
 ///Arguments:string strCommandLineCommand, string strWorkingDir=""
 ///Returns:
 ///Doc:Execute command line command, in the style of the command prompt cmd.exe. Waits until command completes. You must use quotes if a file or directory has spaces in the name.
-///Example: Process.runCmdLine('mkdir "c:\\program files\\myfolder"');
+///Example: Process.runCmdLineString('mkdir "c:\\test\\myfolder"');
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
@@ -80,6 +106,7 @@
 	objProcess.waitForFinished(); //the cmd.exe should spawn off what we opened.
 	return eng->nullValue();
 }
+
 
 
 ///Function:Process.close
@@ -244,9 +271,24 @@
 //~ ///Implementation:c++_nir-cmd
 
 
-//~ ///Function:nirdisabledwant_Process.setServiceStatus
-//~ ///Arguments:string strServiceName, string strAction
-//~ ///Returns:bool bStatus
-//~ ///Doc:Start or stop a service or driver. Actions are "start","stop", "restart", "pause", "continue".
-//~ ///Example:Process.setServiceStatus("MySql","restart"); //restart Mysql service
-//~ ///Implementation:c++_nir-cmd
+///Function:Process.setServiceStatus
+///Arguments:string strServiceName, string strAction
+///Returns:bool bStatus
+///Doc:Start or stop a service or driver. Actions are "start","stop", "pause", "continue". Note some services cannot be stopped unless lnzscript is run as admin.
+///Example:Process.setServiceStatus("MySql","restart"); //restart Mysql service
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	QStringList args;
+	args << "net";
+	if (strAction=="start") args<<"start";
+	else if (strAction=="stop") args<<"stop";
+	else if (strAction=="pause") args<<"pause";
+	else if (strAction=="continue") args<<"continue";
+	else return ctx->throwError("Process.setServiceStatus() unknown action.");
+	args << strServiceName;
+	int nExitCode=0;
+	QString s = util_runCommandAndWait(args, &nExitCode);
+	return util_LongToBool(!nExitCode);
+}
+

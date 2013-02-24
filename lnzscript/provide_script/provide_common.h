@@ -41,6 +41,7 @@ namespace launchorz_functions
 	
 	#define util_runExternalCommand(s) (util_runExternalCommandWithEngine(eng,s))
 	QScriptValue util_runExternalCommandWithEngine(QScriptEngine *eng, QString strCmd);
+	QString util_runCommandAndWait(const QStringList& astrArgs, int* nExitCode);
 	QString get_winapi_special_folder_path(QString strName);
 	QString get_winapi_windows_version();
 	

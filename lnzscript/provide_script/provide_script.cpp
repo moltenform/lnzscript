@@ -30,6 +30,7 @@ ProvideScript::ProvideScript()
 	// add the alert function and confirm function.
 	engine.evaluate("alert = function(s){return Dialog.alert('LnzScript',s);}\n confirm = function(s){return Dialog.askYesNo('LnzScript',s)==Dialog.YES;}\n prompt=function(s){return Dialog.input('LnzScript',s)}\n");
 	engine.evaluate("if (Process && Internet && Process.openFile) { Internet.openUrl = Process.openFile;}\n");
+	engine.evaluate("if (Process && Process._runCmdLine) { Process.runCmdLine = function(a) { return Process._runCmdLine(a.join('|||')); } } \n");
 	
 	// add flag saying that we have not yet included standard JavaScript libraries
 	engine.globalObject().setProperty("__includedstd__", QScriptValue(&engine,false));

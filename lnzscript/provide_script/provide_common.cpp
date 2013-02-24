@@ -46,20 +46,6 @@ namespace launchorz_functions
 		return ar;
 	}
 	
-	QScriptValue util_runExternalCommandWithEngine(QScriptEngine *eng, QString strCmd)
-	{
-		// consider using Au3 for this... not sure what is best.
-		/* // this version is synchronous, probably not what people want.
-		QProcess objProcess;
-		objProcess.start(strCmd);
-		objProcess.waitForFinished();*/
-		
-		// Note, asynchronous
-		AU3_Run(QStrToCStr(strCmd), "",1); //returns pid, but not important
-		return QScriptValue(eng, (AU3_error()==0) ? true : false);
-	}
-	
-	
 	QString util_fixQtDirectorySlashes(QString s)
 	{
 		return s.replace("/", "\\");
@@ -125,7 +111,7 @@ namespace launchorz_functions
 		if (!bTimeout) return -1; // do not expect this to happen very often.
 		return (objProcess.exitCode());
 	}
-	static QString util_run_getstdout(const QString& strExec, const QStringList& astrArgs)
+	static QString util_run_getstdout(const QString& strExec, const QStringList& astrArgs, int* nExitCode=0)
 	{
 		QProcess objProcess;
 		objProcess.start(strExec, astrArgs);
@@ -133,7 +119,22 @@ namespace launchorz_functions
 		bool bTimeout = objProcess.waitForFinished(1000 * 60 * 30); // wait for 30 minutes
 		if (!bTimeout) return ""; // do not expect this to happen very often.
 		QString strOutput( objProcess.readAllStandardOutput());
+		if (nExitCode) *nExitCode = objProcess.exitCode();
 		return strOutput.replace("\r\n","\n").trimmed();
+	}
+	
+	QScriptValue util_runExternalCommandWithEngine(QScriptEngine *eng, QString strCmd)
+	{
+		// Note, asynchronous
+		AU3_Run(QStrToCStr(strCmd), "",1); //returns pid, but not important
+		return QScriptValue(eng, (AU3_error()==0) ? true : false);
+	}
+	
+	QString util_runCommandAndWait(const QStringList& astrArgs, int* nExitCode)
+	{
+		QStringList listnew(astrArgs);
+		listnew.insert(0, "/c");
+		return util_run_getstdout("cmd.exe", listnew, nExitCode);
 	}
 	
 	// "Default", i.e. doesn't capture stdout, returns appropriate status code
@@ -160,8 +161,8 @@ namespace launchorz_functions
 		int nStatus = util_run_getstatus(strExecutable, astrArgs);
 		if ((program == G_WinCommonDialog))
 			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code.
-		
-		else return ctx->throwError("Internal error. Bad external command.2");
+		else 
+			return ctx->throwError("Internal error. Bad external command.2");
 	}
 	
 	// "Custom", i.e. captures stdout and returns a string. If this returns "", this should be an exceptional case (User clicked cancel, or error occurred)

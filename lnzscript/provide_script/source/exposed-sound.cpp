@@ -1,8 +1,13 @@
-//~ ///Function:nirdisabledwant_Sound.beep
-//~ ///Arguments:int nFrequency=-1, int nDurationMilliseconds=500
-//~ ///Returns:bool bStatus
-//~ ///Doc:Plays a beep. If no frequency is given, plays standard Windows beep sound.
-//~ ///Implementation:c++_nir-cmd
+///Function:Sound.beep
+///Arguments:int nFrequency=300, int nDurationMilliseconds=250
+///Returns:bool bStatus
+///Doc:Plays a beep. If no frequency is given, plays standard Windows beep sound.
+///Implementation:c++_qt
+{
+	CHECK_ARGS
+	BOOL ret = ::Beep(nFrequency, nDurationMilliseconds);
+	return util_LongToBool(ret);
+}
 
 ///Function:Sound.playSound
 ///Arguments:string strSoundFile="Default"
@@ -12,8 +17,6 @@
 ///Implementation:c++_winext
 {
 	CHECK_ARGS
-	// this was moved to another program, which worked out great. Less messing with headers / libraries / unicode-ascii
-	// note this needs 2nd version of WinCommonDialog.exe
 	return R_WinCommonDialog("sound", strSoundFile);
 }
 

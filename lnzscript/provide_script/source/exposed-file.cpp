@@ -559,28 +559,18 @@
 ///Example:File.copyMany('c:\\temp1\\folder1','c:\\temp2\\'); /* copies entire folder. */[[br]] File.copyMany('c:\\temp\\*.*','d:\\destination');
 ///Implementation:c++_qt
 {
-	//~ CHECK_ARGS
-	//~ QStringList args;
-	//~ args.append(arg1);
-	//~ util_externalCmdDefault
-	
-	//~ QString strExecutable = "cmd.exe /c " + strCommandLineCommand;
-	//~ objProcess.start(strExecutable);
-	//~ objProcess.waitForFinished(); //the cmd.exe should spawn off what we opened.
-	return eng->nullValue();
-	
-	
-	//~ xcopy e:\existing e:\newcopy /s /e  /h
-//~ /q /y
-
-	//~ const char* args[4]={0}; int nargs=0;
-
-	//~ if (bAnswerYesToQuestions) args[nargs++] ="yestoall";
-	//~ if (bDontShowErrors) args[nargs++] ="noerrorui";
-	//~ if (bSilent) args[nargs++] ="silent";
-	//~ if (bDontCopySecurityAttributes) args[nargs++] ="nosecattr";
-	//~ return R_Nirbcmd("shellcopy", strSource, strDestination, args[0], args[1], args[2], args[3]);
+	CHECK_ARGS
+	QStringList args;
+	args << "xcopy" << strSource << strDestination;
+	args << "/s" << "/e" << "/h"; // copy recursively, include empty dirs, include hidden files
+	args << "/q" << "/y"; // suppress messages, suppress confirmation 
+	int nExitCode=0;
+	util_runCommandAndWait(args,&nExitCode);
+	return util_LongToBool(!nExitCode);
 }
+
+
+
 
 
 
