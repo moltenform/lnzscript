@@ -11,7 +11,7 @@ Rename,rename('.jpeg','.jpg');
 </code></pre>
 Rename.renamePreview can be used to see the results before renaming anything. 
 
-And, it's still good at automating tasks. I used it to access Webmail (for which there was not a 'remember me' option); much faster than typing in the fields every time. An old demo of LnzScript opening Firefox tabs <a href="http://www.b3nf.com/codepages/lnz/movlnz_02_screencast_fftabs.htm">here</a>.
+And, it's still good at automating tasks. I used it to access Webmail (for which there was not a 'remember me' option); much faster than typing in the fields every time. An old demo of LnzScript opening Firefox tabs <a href="http://downpoured.github.com/lnz/lnz_screencasts.html">here</a>.
 
 
 The installer associates script files so that you can run them by double-clicking. Just by using argv in a script, you can now drag and drop a file

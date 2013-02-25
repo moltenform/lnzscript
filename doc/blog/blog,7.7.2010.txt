@@ -1,5 +1,5 @@
 
-My <a href="http://b3nf.com/codepages/lnz/index.html">Launchorz</a> project makes it easy to automate repetitive tasks in Windows. 
+My <a href="http://downpoured.github.com/lnz/">Launchorz</a> project makes it easy to automate repetitive tasks in Windows. 
 Here are some of the scripts I've found to be the most useful.
 (Note that they are intended for Windows 7 and might not be compatible with something earlier.)
 <br/><br/>
@@ -95,7 +95,7 @@ if (sClipboard  &amp;&amp; sClipboard.contains('#'))
 I also have a clipboard replacement script that gives you 26 different clipboards, each recalled by a letter. 
 However, there exist many other clipboard-handling tools.
 <br/><br/>
-To learn more about Launchorz, you can watch some screencasts <a href="http://b3nf.com/codepages/lnz/lnz_02_examples.html">here</a>. 
+To learn more about Launchorz, you can watch some screencasts <a href="http://downpoured.github.com/lnz/lnz_screencasts.html">here</a>. 
 (It is similar to AutoIt, but has a full JavaScript language and namespaces).
 
 

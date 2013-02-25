@@ -69,8 +69,11 @@
 ///Arguments:array arArguments
 ///Returns:[int retcode, string strStdout]
 ///Doc:Execute array of strings in the command line shell, in the style of the command prompt cmd.exe. Waits until command completes. You must use quotes if a file or directory has spaces in the name.
-///Example: Process.runCmdLineArguments(['mkdir', 'c:\\test\\myfolder']);
+///Example: Process.runCmdLine(['mkdir', 'c:\\test\\myfolder']);
 ///Implementation:Javascript
+{
+	// see ProvideScript::ProvideScript. arArguments;
+}
 
 ///Function:Process._runCmdLine
 ///Arguments:string strArguments
@@ -94,7 +97,7 @@
 ///Arguments:string strCommandLineCommand, string strWorkingDir=""
 ///Returns:
 ///Doc:Execute command line command, in the style of the command prompt cmd.exe. Waits until command completes. You must use quotes if a file or directory has spaces in the name.
-///Example: Process.runCmdLineString('mkdir "c:\\test\\myfolder"');
+///Example: Process.runCmdLineString(@'mkdir c:\test\myfolder');
 ///Implementation:c++_qt
 {
 	CHECK_ARGS
