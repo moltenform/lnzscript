@@ -68,7 +68,7 @@ showDiv( aObjNs[0].id );
 <div class="container">
 
 <h1>LnzScript Reference</h1>
-
+<p>This is documentation for LnzScript 0.4. See the <a href="..\lnz\index.html">latest version</a> of LnzScript.</p>
 <div class="maintoplinks">
 <!-- Draw the top links -->
 <a name="anchor_top"></a>
