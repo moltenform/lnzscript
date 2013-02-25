@@ -1,0 +1,15 @@
+
+// Welcome to LnzScript!
+// press F5 to run this script
+print('hi')
+Process.open('notepad.exe')
+Time.sleep(500)
+Keyboard.send('hello!')
+Keyboard.send('<Ctrl>s')
+
+// also, you can try
+// var listFolders = File.dirListSubdirs(@'c:\program files')
+// print(listFolders.join('\n'))
+// press Ctrl+Q in the editor to comment-out a line.
+// you can run an Untitled script -- just hit F5.
+
