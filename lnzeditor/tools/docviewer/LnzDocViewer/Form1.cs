@@ -30,7 +30,7 @@ namespace LnzDocViewer
                     this.Text = "Python";
                     break;
                 case LanguageMode.Lnz:
-                    docurl = "http://www.b3nf.com/codepages/lnz/reference/lnz_03_documentation.xml";
+                    docurl = "https://moltenjs.com/page/lnzscript/doc/api/index.html#version_v0_50";
                     docObject = new DocumentationFromLnzXml("lnzdoc.xml");
                     this.Text = "LnzScript";
                     break;

@@ -1,5 +1,5 @@
 launchorz 0.5
-http://downpoured.github.com/lnz_05/
+https://github.com/moltenjs/lnzscript
 Easily automate Windows with JavaScript.
 
 by Ben Fisher
@@ -14,5 +14,5 @@ Choose run script from the Run menu (or press F5) to run.
 (Scripts can also be run from the command line using lnzscript.exe).
 
 Read the complete documentation at
-http://downpoured.github.com/lnz_05/
+https://github.com/moltenjs/lnzscript
 

@@ -1,13 +1,13 @@
 
 [Setup]
-AppId={{D0D53206-14DE-4124-AA15-B7E4A1B82A68}
+AppId={{E0D53206-14DE-4124-AA15-B7E4A1B82A68}
 AppName=LnzScript
 AppVersion=0.5
 AppVerName=LnzScript 0.5
 AppPublisher=Ben Fisher
-AppPublisherURL=http://downpoured.github.com/lnz/
-AppSupportURL=http://downpoured.github.com/lnz/
-AppUpdatesURL=http://downpoured.github.com/lnz/
+AppPublisherURL=https://github.com/moltenjs/lnzscript
+AppSupportURL=https://github.com/moltenjs/lnzscript
+AppUpdatesURL=https://github.com/moltenjs/lnzscript
 DefaultDirName={pf}\LnzScript 0.5
 DefaultGroupName=LnzScript
 AllowNoIcons=yes
@@ -22,7 +22,7 @@ Source: "x:\rc\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{group}\LnzScript Editor"; Filename: "{app}\editor\lnzeditor.exe"
-Name: "{group}\LnzScript Documentation"; Filename: "http://downpoured.github.com/lnz/"
+Name: "{group}\LnzScript Documentation"; Filename: "https://github.com/moltenjs/lnzscript"
 
 [Run]
 ; run right after installing

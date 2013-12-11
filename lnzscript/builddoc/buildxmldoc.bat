@@ -1,1 +1,1 @@
-c:\python27\pythonw ..\.\lnzscript\provide_script\source\script_createxmldoc.py ..\.\lnzscript\provide_script\source ..\..\..\doc
+c:\python27\pythonw ..\provide_script\source\script_createxmldoc.py ..\provide_script\source .

@@ -3,7 +3,7 @@ lnzscript
 
 LnzScript lets you automate Windows with JavaScript.
 
-![LnzScript demo screenshot](https://raw.githubusercontent.com/downpoured/lnzscript/master/shot.png "")
+![LnzScript demo screenshot](https://moltenjs.com/page/lnzscript/doc/screenshot.png "")
 
 You can script macros for frequently performed actions, write quick one-off scripts in the editor,
 and write tests for your software's UI.

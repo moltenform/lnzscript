@@ -10,7 +10,7 @@ using namespace Gdiplus;
 const char * documentation = 
 "WinCommonLnzImage.exe, Ben Fisher 2013, GPL\n"
 "Provide image capability to lnzscript. Does not overwrite existing files.\n"
-"Part of Launchorz, http://github.com/downpoured/lnzscript/\n"
+"Part of Launchorz, https://github.com/moltenjs/lnzscript/\n"
 "\n"
 "WinCommonLnzImage convert infile.bmp outfile.png\n"
 "WinCommonLnzImage screenshot outfile.png\n"

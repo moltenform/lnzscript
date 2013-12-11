@@ -461,11 +461,11 @@ namespace Lnzlaunch
         }
         private void mnuItemAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("LnzLaunch 0.1\r\n\r\nBen Fisher, 2009. GPLv3.\r\nhttp://b3nf.com/codepages/lnz/");
+            MessageBox.Show("LnzLaunch 0.1\r\n\r\nBen Fisher, 2009. GPLv3.\r\nhttps://github.com/moltenjs/lnzscript");
         }
         private void mnuItemHelp_Click(object sender, EventArgs e)
         {
-            Process.Start("http://b3nf.com/codepages/lnz/");
+            Process.Start("https://github.com/moltenjs/lnzscript");
         }
         private void mnuItemReload_Click(object sender, EventArgs e)
         {
