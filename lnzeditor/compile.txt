@@ -1,0 +1,66 @@
+
+The LnzEditor is a custom build of the SciTE code editor.
+
+Compiling LnzEditor
+------------------------------
+
+download the "Microsoft Visual C++ Compiler for Python 2.7"
+	VCForPython27.msi
+	freely available from
+	https://www.microsoft.com/en-us/download/details.aspx?id=44266
+	and is much lighter than visual studio.
+
+in an admin prompt, 
+	cd to where VCForPython27.msi was downloaded and run
+	msiexec /i VCForPython27.msi ALLUSERS=1
+	this will install to the directory
+	C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0
+	or
+	C:\Program Files\Common Files\Microsoft\Visual C++ for Python\9.0
+
+Build Scintilla
+	Open a command prompt and run the following, 
+	cd "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0"
+	"vcvarsall.bat"
+	cd "C:\path\to\lnzscript\lnzeditor\app\scintilla\win32"
+	run nmake -f scintilla.mak
+	
+Build SciTE
+	Open a command prompt and run the following,
+	cd "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0"
+	"vcvarsall.bat"
+	cd "C:\path\to\lnzscript\lnzeditor\app\scite\win32"
+	run nmake -f scite.mak
+	
+Run SciTE
+	cd "C:\path\to\lnzscript\lnzeditor\app\scite\bin"
+	"SciTE.exe"
+	then,
+	The file Scite.exe and SciLexer.dll are what are needed.
+	These files should be copied to the folder C:\path\to\lnzscript\lnzeditor\app\configuration\wscite\
+	SciTE.exe should be renamed to lnzeditor.exe
+	
+Build tools
+	to build these tools, one can use the free visual studio community edition
+	scite_msg is tool for other programs to communicate with Scite
+	one can rebuild other tools like docviewer, wincommondialog and wincommongdi
+
+To set up tooltips:
+	Run /lnzscript/lnzscript/builddoc/buildxmldoc.bat to generate documentation.xml
+	Go to lnzscript\lnzeditor\app\configuration\build_api_file
+	Run build.bat
+		(This should create the file lnzscript\lnzeditor\app\configuration\lnzscript.api)
+	Move this .api file into /lnzscript/lnzeditor/app/configuration/wscite/properties/
+	Now the tooltips will be up to date
+
+Old instructions using visual studio.net 2003:
+	install Vs .NET 2003; found to be the best because an exe built with this version of VS
+	can be run on other computers without first having to install a new mscvrt 
+	Open the "VS command prompt" (this puts compiler in the path, and defines environment variables)
+	Navigate to /lnzscript/lnzeditor/app/scintilla/win32/
+	Run nmake -f scintilla.mak
+	Navigate to /lnzscript/lnzeditor/app/scite/win32/
+	Run nmake -f scite.mak
+	Look for SciTE.exe in the bin folder.
+
+	
