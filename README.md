@@ -3,36 +3,36 @@ lnzscript
 
 LnzScript lets you automate Windows with JavaScript.
 
-![Process.open('notepad.exe'); Time.sleep(500); Keyboard.send('hello!'); Keyboard.send('<Ctrl>s');](http://downpoured.github.com/lnz/shot.png "")
+![LnzScript demo screenshot](https://raw.githubusercontent.com/downpoured/lnzscript/master/shot.png "")
 
 You can script macros for frequently performed actions, write quick one-off scripts in the editor,
 and write tests for your software's UI.
 
-[Download LnzScript 0.5](http://launchorz.googlecode.com/files/lnz_script_0.5.exe) , 2.4Mb
+Download [LnzScript.exe](#) (installer, 2.6Mb)
 
-[Complete API Reference](http://downpoured.github.com/lnz/documentation.xml)
+Download [LnzScript.zip](#) (portable edition, 3.3Mb)
 
-[Additional documentation](http://downpoured.github.com/lnz/)
+[Additional Examples](#) and [Tutorial Screencasts](#)
+
+[Complete API Reference](#)
+
 
 *features:*
 
 * 180+ available functions, documented and separated into namespaces
-* comes with a full editor + optional autocompletion
-* reads/writes/renames files, edits the registry, starts processes and reads their stdout 
-* simulates mouse+keyboard actions, and can send input to specific controls by id for better robustness.
-* access the clipboard, resize windows, and retrieve text from dialogs.
+* comes with a full editor + autocompletion
+* simulates mouse/keyboard actions for automating or UI testing 
+* send input to specific UI controls by id for better robustness
+* reads/writes/renames files, edits registry, starts processes and read stdout 
+* access the clipboard, resize windows, retrieve text from dialogs
 * and, it's all of this from JavaScript!
 
 *how is this different than AutoIt?*
 
-* the editor has interesting shortcuts, like executing unsaved scripts
-* the provided functions are organized into namespaces
-* syntax where it is natural to organize code into functions, and not deal with Goto/While/Wend keywords. 
-* you can include shared modules with the built-in include() function.
+* scripts can import other scripts with include(), to modularize code
+* uses JavaScript instead of Basic; no need to deal with "Goto/While/Wend" keywords
+* the code editor adds helpful features, like executing unsaved scripts
 
-Implemented with win32 api, AutoItX, QtScript, and Qt Toolkit. When I wrote this in 2008, JavaScript mostly ran in the browser, but times have changed.
+Implemented with win32 api, AutoItX, QtScript, and Qt Toolkit.
 
-To run scripts from hotkeys, just install [Clavier+](http://utilfr42.free.fr/util/Clavier.php?sLang=en) (a useful open source tool) and
-point it at your script.
-
-
+[Clavier+](http://utilfr42.free.fr/util/Clavier.php?sLang=en), another open source tool, can be used to make a global keyboard shortcut for a script.
