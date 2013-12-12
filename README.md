@@ -3,19 +3,17 @@ lnzscript
 
 LnzScript lets you automate Windows with JavaScript.
 
-![LnzScript demo screenshot](https://moltenjs.com/page/lnzscript/doc/screenshot.png "")
+<a href="#">![LnzScript demo screenshot](https://moltenjs.com/page/lnzscript/doc/screenshot.png "")</a>
 
-You can script macros for frequently performed actions, write quick one-off scripts in the editor,
-and write tests for your software's UI.
+Write a script to automate a repeated action in any program, or write tests for the UI you are working on.
 
-Download [LnzScript.exe](#) (installer, 2.6Mb)
+[LnzScript.exe](https://github.com/moltenjs/lnzscript/releases/download/v0.50/lnzscript_0.50.exe) (2.6MB)
 
-Download [LnzScript.zip](#) (portable edition, 3.3Mb)
+[LnzScript.zip](https://github.com/moltenjs/lnzscript/releases/download/v0.50/lnzscript_0.50.zip) (portable, 3.3MB)
 
-[Additional Examples](#) and [Tutorial Screencasts](#)
+See the [Tutorials](https://moltenjs.com/page/lnzscript/doc/tutorials.html) and [Complete API Reference](https://moltenjs.com/page/lnzscript/doc/api/index.html#version_v0_50)
 
-[Complete API Reference](#)
-
+<p>&nbsp;</p>
 
 *features:*
 
@@ -27,11 +25,11 @@ Download [LnzScript.zip](#) (portable edition, 3.3Mb)
 * access the clipboard, resize windows, retrieve text from dialogs
 * and, it's all of this from JavaScript!
 
-*how is this different than AutoIt?*
+*more:*
 
-* scripts can import other scripts with include(), to modularize code
-* uses JavaScript instead of Basic; no need to deal with "Goto/While/Wend" keywords
-* the code editor adds helpful features, like executing unsaved scripts
+* better than AutoIt, scripts can import other .js files with include()
+* better than AutoIt, no need to type clumsy Basic like "While/Wend/Goto"
+* in the built-in code editor, hit F5 to quickly run a script before even saving it to disk
 
 Implemented with win32 api, AutoItX, QtScript, and Qt Toolkit.
 
