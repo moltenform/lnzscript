@@ -33,7 +33,8 @@ function validate(strPath)
 		print('Failed:'+arspecialtest[i]); 
 		assert(false);
 	}
-}for(var i=0; i<arspecialtest.length;i++) { validate(File.getPathSpecial(arspecialtest[i])); }
+}
+for(var i=0; i<arspecialtest.length;i++) { validate(File.getPathSpecial(arspecialtest[i])); }
 assertFails(function(){File.getPathSpecial('sdfsd')});
 
 registerTest('File.getPathTemp');
