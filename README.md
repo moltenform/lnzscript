@@ -1,7 +1,3 @@
-lnzscript
-==========
-
-LnzScript lets you automate Windows with JavaScript.
 
 <a href="#">![LnzScript demo screenshot](https://moltenform.com/page/lnzscript/doc/screenshot.png "")</a>
 
