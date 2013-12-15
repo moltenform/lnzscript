@@ -3,15 +3,15 @@ lnzscript
 
 LnzScript lets you automate Windows with JavaScript.
 
-<a href="#">![LnzScript demo screenshot](https://moltenjs.com/page/lnzscript/doc/screenshot.png "")</a>
+<a href="#">![LnzScript demo screenshot](https://moltenform.com/page/lnzscript/doc/screenshot.png "")</a>
 
 Write a script to automate a repeated action in any program, or write tests for the UI you are working on.
 
-[LnzScript.exe](https://github.com/moltenjs/lnzscript/releases/download/v0.50/lnzscript_0.50.exe) (2.6MB)
+[LnzScript.exe](https://github.com/moltenform/lnzscript/releases/download/v0.50/lnzscript_0.50.exe) (2.6MB)
 
-[LnzScript.zip](https://github.com/moltenjs/lnzscript/releases/download/v0.50/lnzscript_0.50.zip) (portable, 3.3MB)
+[LnzScript.zip](https://github.com/moltenform/lnzscript/releases/download/v0.50/lnzscript_0.50.zip) (portable, 3.3MB)
 
-See the [Tutorials](https://moltenjs.com/page/lnzscript/doc/tutorials.html) and [Complete API Reference](https://moltenjs.com/page/lnzscript/doc/api/index.html#version_v0_50)
+See the [Tutorials](https://moltenform.com/page/lnzscript/doc/tutorials.html) and [Complete API Reference](https://moltenform.com/page/lnzscript/doc/api/index.html#version_v0_50)
 
 <p>&nbsp;</p>
 

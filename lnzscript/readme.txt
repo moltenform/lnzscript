@@ -1,12 +1,12 @@
 launchorz 0.5, by Ben Fisher
-https://github.com/moltenjs/lnzscript
+https://github.com/moltenform/lnzscript
 Easily automate Windows with JavaScript.
 
 =================
 
 To Get Started:
 Download the latest version from
-https://github.com/moltenjs/lnzscript
+https://github.com/moltenform/lnzscript
 and run the installer.
 
 Open the "Lnz Editor" from the Start menu. This is a code editor specifically for Lnzscript.
