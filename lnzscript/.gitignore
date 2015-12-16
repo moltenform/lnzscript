@@ -1,13 +1,12 @@
-
 debug/
 release/
 
 #these are created by Qt from lnzconsole.pro
-Makefile
-Makefile.Debug
-Makefile.Release
-object_script.lnzconsole.Debug
-object_script.lnzconsole.Release
+/Makefile
+/Makefile.Debug
+/Makefile.Release
+/object_script.lnzconsole.Debug
+/object_script.lnzconsole.Release
 
 # python
 *.py[cod]
@@ -18,17 +17,6 @@ object_script.lnzconsole.Release
 # Packages
 *.egg
 *.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
-lib
-lib64
 
 # Installer logs
 pip-log.txt
