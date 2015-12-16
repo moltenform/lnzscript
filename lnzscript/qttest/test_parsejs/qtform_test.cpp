@@ -11,7 +11,7 @@
 #include <QtGui>
 
 TestForm::TestForm(QWidget *parent)
-    : QWidget(parent)
+	: QWidget(parent)
 {
 	ui.setupUi(this);
 

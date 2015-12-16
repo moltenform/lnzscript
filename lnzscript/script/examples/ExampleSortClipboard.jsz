@@ -1,8 +1,8 @@
 var strClipboard = Clipboard.getText();
 if (strClipboard) 
 {
-  var arr = strClipboard.split('\r\n');
-  arr.sort();
-  var strResult = arr.join('\r\n');
-  Clipboard.setText(strResult);
+	var arr = strClipboard.split('\r\n');
+	arr.sort();
+	var strResult = arr.join('\r\n');
+	Clipboard.setText(strResult);
 }

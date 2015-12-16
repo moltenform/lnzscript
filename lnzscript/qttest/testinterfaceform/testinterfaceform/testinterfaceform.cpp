@@ -4,7 +4,7 @@
 #include "provide_script/print_function.h"
 
 TestInterfaceForm::TestInterfaceForm(QWidget *parent)
-    : QWidget(parent)
+	: QWidget(parent)
 {
 	ui.setupUi(this);
 

@@ -331,21 +331,21 @@ MatchObject.expand(template)
    Return the string obtained by doing backslash substitution on the template
    string *template*, as done by the :meth:`sub` method. 
 MatchObject.group()
-	Returns entire match
+    Returns entire match
 MatchObject.group(1)
-	Returns first subgroup match
+    Returns first subgroup match
 MatchObject.group('namedgroup')
-	Returns named subgroup match
+    Returns named subgroup match
 MatchObject.groups()
-	Returns tuple of subgroups
+    Returns tuple of subgroups
 MatchObject.groupdict()
-	Returns dict of named subgroups
+    Returns dict of named subgroups
 MatchObject.groups()
-	Returns tuple of subgroups
+    Returns tuple of subgroups
 MatchObject.span()
-	Returns (firstIndex, lastIndex) of match in string
+    Returns (firstIndex, lastIndex) of match in string
 MatchObject.span(1)
-	Returns (firstIndex, lastIndex) of first group match in string
+    Returns (firstIndex, lastIndex) of first group match in string
 MatchObject.pos
 MatchObject.endpos
 MatchObject.lastindex
@@ -427,7 +427,7 @@ MatchObject.string
       ['Words', ', ', 'words', ', ', 'words', '.', '']
       >>> re.split('\W+', 'Words, words, words.', 1)
       ['Words', 'words, words.']
-	...
+    ...
 .. method:: findall(string[, flags])
 
    Return all non-overlapping matches of *pattern* in *string*, as a list of

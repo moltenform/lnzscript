@@ -45,14 +45,14 @@ SciteBuffers.cxx
 	void SciTEBase::SetToolsMenu() {
 	
 Scite Base
-    menuFile = 0, menuEdit = 1, menuSearch = 2, menuView = 3,
-    menuTools = 4, menuOptions = 5, menuLanguage = 6, menuBuffers = 7,
-    menuHelp = 8
-    
+	menuFile = 0, menuEdit = 1, menuSearch = 2, menuView = 3,
+	menuTools = 4, menuOptions = 5, menuLanguage = 6, menuBuffers = 7,
+	menuHelp = 8
+	
 	menuFile = 0, menuEdit = 1, menuSearch = 2, menuRun = 3,
-    menuTools = 4, menuOptions = 5, 
-    menuHelp = 8
-    
+	menuTools = 4, menuOptions = 5, 
+	menuHelp = 8
+	
 note also 
 void SciTEBase::CheckMenus() {
 

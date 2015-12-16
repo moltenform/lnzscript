@@ -310,15 +310,15 @@ calendar in Dershowitz and Reingold's book "Calendrical Calculations", where
 it's the base calendar for all computations.
 
 calendar.day_name
-	An array that represents the days of the week in the current locale.
+    An array that represents the days of the week in the current locale.
 calendar.day_abbr
-	An array that represents the abbreviated days of the week in the current locale.
+    An array that represents the abbreviated days of the week in the current locale.
 calendar.month_name
-	An array that represents the months of the year in the current locale.  This
+    An array that represents the months of the year in the current locale.  This
    follows normal convention of January being month number 1, so it has a length of
    13 and  ``month_name[0]`` is the empty string.
 calendar.month_abbr
-	   An array that represents the abbreviated months of the year in the current
+       An array that represents the abbreviated months of the year in the current
    locale.  This follows normal convention of January being month number 1, so it
    has a length of 13 and  ``month_abbr[0]`` is the empty string.
 ===EndDoc======
@@ -893,11 +893,11 @@ a.tzinfo
    
 Class attributes:
 datetime.min
-	The earliest representable :class:`datetime`, ``datetime(MINYEAR, 1, 1,
-	tzinfo=None)``.
+    The earliest representable :class:`datetime`, ``datetime(MINYEAR, 1, 1,
+    tzinfo=None)``.
 datetime.max
-	The latest representable :class:`datetime`, ``datetime(MAXYEAR, 12, 31, 23, 59,
-	59, 999999, tzinfo=None)``.
+    The latest representable :class:`datetime`, ``datetime(MAXYEAR, 12, 31, 23, 59,
+    59, 999999, tzinfo=None)``.
 datetime.resolution
   The smallest possible difference between non-equal :class:`datetime` objects,
 ``timedelta(microseconds=1)``.

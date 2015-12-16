@@ -73,227 +73,227 @@
 
 // Contributor names are in UTF-8
 const char *contributors[] = {
-            "Atsuo Ishimoto",
-            "Mark Hammond",
-            "Francois Le Coguiec",
-            "Dale Nagata",
-            "Ralf Reinhardt",
-            "Philippe Lhoste",
-            "Andrew McKinlay",
-            "Stephan R. A. Deibel",
-            "Hans Eckardt",
-            "Vassili Bourdo",
-            "Maksim Lin",
-            "Robin Dunn",
-            "John Ehresman",
-            "Steffen Goeldner",
-            "Deepak S.",
-            "DevelopMentor http://www.develop.com",
-            "Yann Gaillard",
-            "Aubin Paul",
-            "Jason Diamond",
-            "Ahmad Baitalmal",
-            "Paul Winwood",
-            "Maxim Baranov",
+			"Atsuo Ishimoto",
+			"Mark Hammond",
+			"Francois Le Coguiec",
+			"Dale Nagata",
+			"Ralf Reinhardt",
+			"Philippe Lhoste",
+			"Andrew McKinlay",
+			"Stephan R. A. Deibel",
+			"Hans Eckardt",
+			"Vassili Bourdo",
+			"Maksim Lin",
+			"Robin Dunn",
+			"John Ehresman",
+			"Steffen Goeldner",
+			"Deepak S.",
+			"DevelopMentor http://www.develop.com",
+			"Yann Gaillard",
+			"Aubin Paul",
+			"Jason Diamond",
+			"Ahmad Baitalmal",
+			"Paul Winwood",
+			"Maxim Baranov",
 #if PLAT_GTK
-            "Icons Copyright(C) 1998 by Dean S. Jones",
-            "    http://jfa.javalobby.org/projects/icons/",
+			"Icons Copyright(C) 1998 by Dean S. Jones",
+			"    http://jfa.javalobby.org/projects/icons/",
 #endif
-            "Ragnar H\xc3\xb8jland",
-            "Christian Obrecht",
-            "Andreas Neukoetter",
-            "Adam Gates",
-            "Steve Lhomme",
-            "Ferdinand Prantl",
-            "Jan Dries",
-            "Markus Gritsch",
-            "Tahir Karaca",
-            "Ahmad Zawawi",
-            "Laurent le Tynevez",
-            "Walter Braeu",
-            "Ashley Cambrell",
-            "Garrett Serack",
-            "Holger Schmidt",
-            "ActiveState http://www.activestate.com",
-            "James Larcombe",
-            "Alexey Yutkin",
-            "Jan Hercek",
-            "Richard Pecl",
-            "Edward K. Ream",
-            "Valery Kondakoff",
-            "Sm\xc3\xa1ri McCarthy",
-            "Clemens Wyss",
-            "Simon Steele",
-            "Serge A. Baranov",
-            "Xavier Nodet",
-            "Willy Devaux",
-            "David Clain",
-            "Brendon Yenson",
-            "Vamsi Potluru http://www.baanboard.com",
-            "Praveen Ambekar",
-            "Alan Knowles",
-            "Kengo Jinno",
-            "Valentin Valchev",
-            "Marcos E. Wurzius",
-            "Martin Alderson",
-            "Robert Gustavsson",
-            "Jos\xc3\xa9 Fonseca",
-            "Holger Kiemes",
-            "Francis Irving",
-            "Scott Kirkwood",
-            "Brian Quinlan",
-            "Ubi",
-            "Michael R. Duerig",
-            "Deepak T",
-            "Don Paul Beletsky",
-            "Gerhard Kalab",
-            "Olivier Dagenais",
-            "Josh Wingstrom",
-            "Bruce Dodson",
-            "Sergey Koshcheyev",
-            "Chuan-jian Shen",
-            "Shane Caraveo",
-            "Alexander Scripnik",
-            "Ryan Christianson",
-            "Martin Steffensen",
-            "Jakub Vr\xc3\xa1na",
-            "The Black Horus",
-            "Bernd Kreuss",
-            "Thomas Lauer",
-            "Mike Lansdaal",
-            "Yukihiro Nakai",
-            "Jochen Tucht",
-            "Greg Smith",
-            "Steve Schoettler",
-            "Mauritius Thinnes",
-            "Darren Schroeder",
-            "Pedro Guerreiro",
-            "Steven te Brinke",
-            "Dan Petitt",
-            "Biswapesh Chattopadhyay",
-            "Kein-Hong Man",
-            "Patrizio Bekerle",
-            "Nigel Hathaway",
-            "Hrishikesh Desai",
-            "Sergey Puljajev",
-            "Mathias Rauen",
-            "Angelo Mandato http://www.spaceblue.com",
-            "Denis Sureau",
-            "Kaspar Schiess",
-            "Christoph H\xc3\xb6sler",
-            "Jo\xc3\xa3o Paulo F Farias",
-            "Ron Schofield",
-            "Stefan Wosnik",
-            "Marius Gheorghe",
-            "Naba Kumar",
-            "Sean O'Dell",
-            "Stefanos Togoulidis",
-            "Hans Hagen",
-            "Jim Cape",
-            "Roland Walter",
-            "Brian Mosher",
-            "Nicholas Nemtsev",
-            "Roy Wood",
-            "Peter-Henry Mander",
-            "Robert Boucher",
-            "Christoph Dalitz",
-            "April White",
-            "S. Umar",
-            "Trent Mick",
-            "Filip Yaghob",
-            "Avi Yegudin",
-            "Vivi Orunitia",
-            "Manfred Becker",
-            "Dimitris Keletsekis",
-            "Yuiga",
-            "Davide Scola",
-            "Jason Boggs",
-            "Reinhold Niesner",
-            "Jos van der Zande",
-            "Pescuma",
-            "Pavol Bosik",
-            "Johannes Schmid",
-            "Blair McGlashan",
-            "Mikael Hultgren",
-            "Florian Balmer",
-            "Hadar Raz",
-            "Herr Pfarrer",
-            "Ben Key",
-            "Gene Barry",
-            "Niki Spahiev",
-            "Carsten Sperber",
-            "Phil Reid",
-            "Iago Rubio",
-            "R\xc3\xa9gis Vaquette",
-            "Massimo Cor\xc3\xa0",
-            "Elias Pschernig",
-            "Chris Jones",
-            "Josiah Reynolds",
-            "Robert Roessler http://www.rftp.com",
-            "Steve Donovan",
-            "Jan Martin Pettersen",
-            "Sergey Philippov",
-            "Borujoa",
-            "Michael Owens",
-            "Franck Marcia",
-            "Massimo Maria Ghisalberti",
-            "Frank Wunderlich",
-            "Josepmaria Roca",
-            "Tobias Engvall",
-            "Suzumizaki Kimitaka",
-            "Michael Cartmell",
-            "Pascal Hurni",
-            "Andre",
-            "Randy Butler",
-            "Georg Ritter",
-            "Michael Goffioul",
-            "Ben Harper",
-            "Adam Strzelecki",
-            "Kamen Stanev",
-            "Steve Menard",
-            "Oliver Yeoh",
-            "Eric Promislow",
-            "Joseph Galbraith",
-            "Jeffrey Ren",
-            "Armel Asselin",
-            "Jim Pattee",
-            "Friedrich Vedder",
-            "Sebastian Pipping",
-            "Andre Arpin",
-            "Stanislav Maslovski",
-            "Martin Stone",
-            "Fabien Proriol",
-            "mimir",
-            "Nicola Civran",
-            "Snow",
-            "Mitchell Foral",
-            "Pieter Holtzhausen",
-            "Waldemar Augustyn",
-            "Jason Haslam",
-            "Sebastian Steinlechner",
-            "Chris Rickard",
-            "Rob McMullen",
-            "Stefan Schwendeler",
-            "Cristian Adam",
-            "Nicolas Chachereau",
-            "Istvan Szollosi",
-            "Xie Renhui",
-            "Enrico Tr\xc3\xb6ger",
-            "Todd Whiteman",
-            "Yuval Papish",
-            "instanton",
-            "Sergio Lucato",
-            "VladVRO",
-            "Dmitry Maslov",
-            "chupakabra",
-            "Juan Carlos Arevalo Baeza",
-            "Nick Treleaven",
-            "Stephen Stagg",
-            "Jean-Paul Iribarren",
-            "Tim Gerundt",
-            "Sam Harwell",
-            "Boris",
-        };
+			"Ragnar H\xc3\xb8jland",
+			"Christian Obrecht",
+			"Andreas Neukoetter",
+			"Adam Gates",
+			"Steve Lhomme",
+			"Ferdinand Prantl",
+			"Jan Dries",
+			"Markus Gritsch",
+			"Tahir Karaca",
+			"Ahmad Zawawi",
+			"Laurent le Tynevez",
+			"Walter Braeu",
+			"Ashley Cambrell",
+			"Garrett Serack",
+			"Holger Schmidt",
+			"ActiveState http://www.activestate.com",
+			"James Larcombe",
+			"Alexey Yutkin",
+			"Jan Hercek",
+			"Richard Pecl",
+			"Edward K. Ream",
+			"Valery Kondakoff",
+			"Sm\xc3\xa1ri McCarthy",
+			"Clemens Wyss",
+			"Simon Steele",
+			"Serge A. Baranov",
+			"Xavier Nodet",
+			"Willy Devaux",
+			"David Clain",
+			"Brendon Yenson",
+			"Vamsi Potluru http://www.baanboard.com",
+			"Praveen Ambekar",
+			"Alan Knowles",
+			"Kengo Jinno",
+			"Valentin Valchev",
+			"Marcos E. Wurzius",
+			"Martin Alderson",
+			"Robert Gustavsson",
+			"Jos\xc3\xa9 Fonseca",
+			"Holger Kiemes",
+			"Francis Irving",
+			"Scott Kirkwood",
+			"Brian Quinlan",
+			"Ubi",
+			"Michael R. Duerig",
+			"Deepak T",
+			"Don Paul Beletsky",
+			"Gerhard Kalab",
+			"Olivier Dagenais",
+			"Josh Wingstrom",
+			"Bruce Dodson",
+			"Sergey Koshcheyev",
+			"Chuan-jian Shen",
+			"Shane Caraveo",
+			"Alexander Scripnik",
+			"Ryan Christianson",
+			"Martin Steffensen",
+			"Jakub Vr\xc3\xa1na",
+			"The Black Horus",
+			"Bernd Kreuss",
+			"Thomas Lauer",
+			"Mike Lansdaal",
+			"Yukihiro Nakai",
+			"Jochen Tucht",
+			"Greg Smith",
+			"Steve Schoettler",
+			"Mauritius Thinnes",
+			"Darren Schroeder",
+			"Pedro Guerreiro",
+			"Steven te Brinke",
+			"Dan Petitt",
+			"Biswapesh Chattopadhyay",
+			"Kein-Hong Man",
+			"Patrizio Bekerle",
+			"Nigel Hathaway",
+			"Hrishikesh Desai",
+			"Sergey Puljajev",
+			"Mathias Rauen",
+			"Angelo Mandato http://www.spaceblue.com",
+			"Denis Sureau",
+			"Kaspar Schiess",
+			"Christoph H\xc3\xb6sler",
+			"Jo\xc3\xa3o Paulo F Farias",
+			"Ron Schofield",
+			"Stefan Wosnik",
+			"Marius Gheorghe",
+			"Naba Kumar",
+			"Sean O'Dell",
+			"Stefanos Togoulidis",
+			"Hans Hagen",
+			"Jim Cape",
+			"Roland Walter",
+			"Brian Mosher",
+			"Nicholas Nemtsev",
+			"Roy Wood",
+			"Peter-Henry Mander",
+			"Robert Boucher",
+			"Christoph Dalitz",
+			"April White",
+			"S. Umar",
+			"Trent Mick",
+			"Filip Yaghob",
+			"Avi Yegudin",
+			"Vivi Orunitia",
+			"Manfred Becker",
+			"Dimitris Keletsekis",
+			"Yuiga",
+			"Davide Scola",
+			"Jason Boggs",
+			"Reinhold Niesner",
+			"Jos van der Zande",
+			"Pescuma",
+			"Pavol Bosik",
+			"Johannes Schmid",
+			"Blair McGlashan",
+			"Mikael Hultgren",
+			"Florian Balmer",
+			"Hadar Raz",
+			"Herr Pfarrer",
+			"Ben Key",
+			"Gene Barry",
+			"Niki Spahiev",
+			"Carsten Sperber",
+			"Phil Reid",
+			"Iago Rubio",
+			"R\xc3\xa9gis Vaquette",
+			"Massimo Cor\xc3\xa0",
+			"Elias Pschernig",
+			"Chris Jones",
+			"Josiah Reynolds",
+			"Robert Roessler http://www.rftp.com",
+			"Steve Donovan",
+			"Jan Martin Pettersen",
+			"Sergey Philippov",
+			"Borujoa",
+			"Michael Owens",
+			"Franck Marcia",
+			"Massimo Maria Ghisalberti",
+			"Frank Wunderlich",
+			"Josepmaria Roca",
+			"Tobias Engvall",
+			"Suzumizaki Kimitaka",
+			"Michael Cartmell",
+			"Pascal Hurni",
+			"Andre",
+			"Randy Butler",
+			"Georg Ritter",
+			"Michael Goffioul",
+			"Ben Harper",
+			"Adam Strzelecki",
+			"Kamen Stanev",
+			"Steve Menard",
+			"Oliver Yeoh",
+			"Eric Promislow",
+			"Joseph Galbraith",
+			"Jeffrey Ren",
+			"Armel Asselin",
+			"Jim Pattee",
+			"Friedrich Vedder",
+			"Sebastian Pipping",
+			"Andre Arpin",
+			"Stanislav Maslovski",
+			"Martin Stone",
+			"Fabien Proriol",
+			"mimir",
+			"Nicola Civran",
+			"Snow",
+			"Mitchell Foral",
+			"Pieter Holtzhausen",
+			"Waldemar Augustyn",
+			"Jason Haslam",
+			"Sebastian Steinlechner",
+			"Chris Rickard",
+			"Rob McMullen",
+			"Stefan Schwendeler",
+			"Cristian Adam",
+			"Nicolas Chachereau",
+			"Istvan Szollosi",
+			"Xie Renhui",
+			"Enrico Tr\xc3\xb6ger",
+			"Todd Whiteman",
+			"Yuval Papish",
+			"instanton",
+			"Sergio Lucato",
+			"VladVRO",
+			"Dmitry Maslov",
+			"chupakabra",
+			"Juan Carlos Arevalo Baeza",
+			"Nick Treleaven",
+			"Stephen Stagg",
+			"Jean-Paul Iribarren",
+			"Tim Gerundt",
+			"Sam Harwell",
+			"Boris",
+		};
 
 // AddStyledText only called from About so static size buffer is OK
 void AddStyledText(WindowID hwnd, const char *s, int attr) {
@@ -304,7 +304,7 @@ void AddStyledText(WindowID hwnd, const char *s, int attr) {
 		buf[i*2 + 1] = static_cast<char>(attr);
 	}
 	Platform::SendScintillaPointer(hwnd, SCI_ADDSTYLEDTEXT,
-	        static_cast<int>(len*2), const_cast<char *>(buf));
+			static_cast<int>(len*2), const_cast<char *>(buf));
 }
 
 void SetAboutStyle(WindowID wsci, int style, ColourDesired fore) {
@@ -560,10 +560,10 @@ void SciTEBase::SetAboutMessage(WindowID wsci, const char *appTitle) {
 #if GTK_MAJOR_VERSION == 1
 		// On GTK+ 1.x, try a font set that may allow unicode display
 		Platform::SendScintilla(wsci, SCI_STYLESETFONT, STYLE_DEFAULT,
-		        reinterpret_cast<uptr_t>("misc-fixed-iso10646-1,*"));
+				reinterpret_cast<uptr_t>("misc-fixed-iso10646-1,*"));
 #else
 		Platform::SendScintilla(wsci, SCI_STYLESETFONT, STYLE_DEFAULT,
-		        reinterpret_cast<uptr_t>("!Serif"));
+				reinterpret_cast<uptr_t>("!Serif"));
 #endif
 		fontSize = 14;
 #endif
@@ -602,7 +602,7 @@ void SciTEBase::SetAboutMessage(WindowID wsci, const char *appTitle) {
 			StyleDefinition sd(fontBase.c_str());
 			if (sd.specified & StyleDefinition::sdFont) {
 				Platform::SendScintilla(wsci, SCI_STYLESETFONT, trsSty,
-				        reinterpret_cast<uptr_t>(sd.font.c_str()));
+						reinterpret_cast<uptr_t>(sd.font.c_str()));
 			}
 			if (sd.specified & StyleDefinition::sdSize) {
 				Platform::SendScintilla(wsci, SCI_STYLESETSIZE, trsSty, sd.size);
@@ -668,8 +668,8 @@ StyleAndWords SciTEBase::GetStyleAndWords(const char *base) {
 
 void SciTEBase::AssignKey(int key, int mods, int cmd) {
 	SendEditor(SCI_ASSIGNCMDKEY,
-	        Platform::LongFromTwoShorts(static_cast<short>(key),
-	                static_cast<short>(mods)), cmd);
+			Platform::LongFromTwoShorts(static_cast<short>(key),
+					static_cast<short>(mods)), cmd);
 }
 
 /**
@@ -719,20 +719,20 @@ SString SciTEBase::GetLine(int line) {
 	// Get needed buffer size
 	if (line < 0) {
 		len = Platform::SendScintilla(wEditor.GetID(),
-		        SCI_GETCURLINE, 0, 0);
+				SCI_GETCURLINE, 0, 0);
 	} else {
 		len = Platform::SendScintilla(wEditor.GetID(),
-		        SCI_GETLINE, line, 0);
+				SCI_GETLINE, line, 0);
 	}
 	// Allocate buffer
 	SBuffer text(len);
 	// And get the line
 	if (line < 0) {
 		Platform::SendScintillaPointer(wEditor.GetID(),
-		        SCI_GETCURLINE, len, text.ptr());
+				SCI_GETCURLINE, len, text.ptr());
 	} else {
 		Platform::SendScintillaPointer(wEditor.GetID(),
-		        SCI_GETLINE, line, text.ptr());
+				SCI_GETLINE, line, text.ptr());
 	}
 	return SString(text);
 }
@@ -788,10 +788,10 @@ int SciTEBase::IsLinePreprocessorCondition(char *line) {
  * Also set curLine to the line where one of these conditions is mmet.
  */
 bool SciTEBase::FindMatchingPreprocessorCondition(
-    int &curLine,   		///< Number of the line where to start the search
-    int direction,   		///< Direction of search: 1 = forward, -1 = backward
-    int condEnd1,   		///< First status of line for which the search is OK
-    int condEnd2) {		///< Second one
+	int &curLine,   		///< Number of the line where to start the search
+	int direction,   		///< Direction of search: 1 = forward, -1 = backward
+	int condEnd1,   		///< First status of line for which the search is OK
+	int condEnd2) {		///< Second one
 
 	bool isInside = false;
 	char line[800];	// No need for full line
@@ -825,9 +825,9 @@ bool SciTEBase::FindMatchingPreprocessorCondition(
 #pragma warn -aus
 #endif
 bool SciTEBase::FindMatchingPreprocCondPosition(
-    bool isForward,   		///< @c true if search forward
-    int &mppcAtCaret,   	///< Matching preproc. cond.: current position of caret
-    int &mppcMatch) {		///< Matching preproc. cond.: matching position
+	bool isForward,   		///< @c true if search forward
+	int &mppcAtCaret,   	///< Matching preproc. cond.: current position of caret
+	int &mppcMatch) {		///< Matching preproc. cond.: matching position
 
 	bool isInside = false;
 	int curLine;
@@ -912,12 +912,12 @@ bool SciTEBase::FindMatchingBracePosition(bool editor, int &braceAtCaret, int &b
 	}
 	// Priority goes to character before caret
 	if (charBefore && IsBrace(charBefore) &&
-	        ((styleBefore == bracesStyleCheck) || (!bracesStyle))) {
+			((styleBefore == bracesStyleCheck) || (!bracesStyle))) {
 		braceAtCaret = caretPos - 1;
 	}
 	bool colonMode = false;
 	if ((lexLanguage == SCLEX_PYTHON) &&
-	        (':' == charBefore) && (SCE_P_OPERATOR == styleBefore)) {
+			(':' == charBefore) && (SCE_P_OPERATOR == styleBefore)) {
 		braceAtCaret = caretPos - 1;
 		colonMode = true;
 	}
@@ -933,7 +933,7 @@ bool SciTEBase::FindMatchingBracePosition(bool editor, int &braceAtCaret, int &b
 				isAfter = false;
 			}
 			if ((lexLanguage == SCLEX_PYTHON) &&
-			        (':' == charAfter) && (SCE_P_OPERATOR == styleAfter)) {
+					(':' == charAfter) && (SCE_P_OPERATOR == styleAfter)) {
 				braceAtCaret = caretPos;
 				colonMode = true;
 			}
@@ -970,7 +970,7 @@ void SciTEBase::BraceMatch(bool editor) {
 		char chBrace = 0;
 		if (braceAtCaret >= 0)
 			chBrace = static_cast<char>(Platform::SendScintilla(
-			            win.GetID(), SCI_GETCHARAT, braceAtCaret, 0));
+						win.GetID(), SCI_GETCHARAT, braceAtCaret, 0));
 		Platform::SendScintilla(win.GetID(), SCI_BRACEHIGHLIGHT, braceAtCaret, braceOpposite);
 		int columnAtCaret = Platform::SendScintilla(win.GetID(), SCI_GETCOLUMN, braceAtCaret, 0);
 		int columnOpposite = Platform::SendScintilla(win.GetID(), SCI_GETCOLUMN, braceOpposite, 0);
@@ -1135,11 +1135,11 @@ SString SciTEBase::GetLine(Window &win, int line) {
 }
 
 SString SciTEBase::RangeExtendAndGrab(
-    Window &wCurrent,
-    int &selStart,
-    int &selEnd,
-    bool (SciTEBase::*ischarforsel)(char ch),	///< Function returning @c true if the given char. is part of the selection.
-    bool stripEol /*=true*/) {
+	Window &wCurrent,
+	int &selStart,
+	int &selEnd,
+	bool (SciTEBase::*ischarforsel)(char ch),	///< Function returning @c true if the given char. is part of the selection.
+	bool stripEol /*=true*/) {
 
 	if (selStart == selEnd && ischarforsel) {
 		// Empty range and have a function to extend it
@@ -1182,8 +1182,8 @@ SString SciTEBase::RangeExtendAndGrab(
  * to be CR and/or LF.
  */
 SString SciTEBase::SelectionExtend(
-    bool (SciTEBase::*ischarforsel)(char ch),	///< Function returning @c true if the given char. is part of the selection.
-    bool stripEol /*=true*/) {
+	bool (SciTEBase::*ischarforsel)(char ch),	///< Function returning @c true if the given char. is part of the selection.
+	bool stripEol /*=true*/) {
 
 	Window wCurrent;
 
@@ -1528,9 +1528,9 @@ int SciTEBase::FindNext(bool reverseDirection, bool showWarnings) {
 	}
 
 	int flags = (wholeWord ? SCFIND_WHOLEWORD : 0) |
-	        (matchCase ? SCFIND_MATCHCASE : 0) |
-	        (regExp ? SCFIND_REGEXP : 0) |
-	        (props.GetInt("find.replace.regexp.posix") ? SCFIND_POSIX : 0);
+			(matchCase ? SCFIND_MATCHCASE : 0) |
+			(regExp ? SCFIND_REGEXP : 0) |
+			(props.GetInt("find.replace.regexp.posix") ? SCFIND_POSIX : 0);
 
 	SendEditor(SCI_SETSEARCHFLAGS, flags);
 	int posFind = FindInTarget(findTarget.c_str(), lenFind, startPosition, endPosition);
@@ -1553,7 +1553,7 @@ int SciTEBase::FindNext(bool reverseDirection, bool showWarnings) {
 		if (showWarnings) {
 			WarnUser(warnNotFound);
 			FindMessageBox("Can not find the string '^0'.",
-			        &findWhat);
+					&findWhat);
 		}
 	} else {
 		havefound = true;
@@ -1622,9 +1622,9 @@ int SciTEBase::DoReplaceAll(bool inSelection) {
 	SString replaceTarget = EncodeString(replaceWhat);
 	int replaceLen = UnSlashAsNeeded(replaceTarget, unSlash, regExp);
 	int flags = (wholeWord ? SCFIND_WHOLEWORD : 0) |
-	        (matchCase ? SCFIND_MATCHCASE : 0) |
-	        (regExp ? SCFIND_REGEXP : 0) |
-	        (props.GetInt("find.replace.regexp.posix") ? SCFIND_POSIX : 0);
+			(matchCase ? SCFIND_MATCHCASE : 0) |
+			(regExp ? SCFIND_REGEXP : 0) |
+			(props.GetInt("find.replace.regexp.posix") ? SCFIND_POSIX : 0);
 	SendEditor(SCI_SETSEARCHFLAGS, flags);
 	int posFind = FindInTarget(findTarget.c_str(), findLen, startPosition, endPosition);
 	if ((findLen == 1) && regExp && (findTarget[0] == '^')) {
@@ -1647,7 +1647,7 @@ int SciTEBase::DoReplaceAll(bool inSelection) {
 				int startPos = SendEditor(SCI_GETLINESELSTARTPOSITION, line);
 				int endPos = SendEditor(SCI_GETLINESELENDPOSITION, line);
 				if (startPos == INVALID_POSITION ||	// No selection on this line (?)
-				        posFind < startPos || posFind + lenTarget > endPos) {
+						posFind < startPos || posFind + lenTarget > endPos) {
 					// Found target is totally or partly outside the rectangular selection
 					lastMatch = posFind + 1;
 					if (lastMatch >= endPosition) {
@@ -1706,15 +1706,15 @@ int SciTEBase::ReplaceAll(bool inSelection) {
 	UpdateStatusBar(false);
 	if (replacements == -1) {
 		FindMessageBox(
-		    inSelection ?
-		    "Find string must not be empty for 'Replace in Selection' command." :
-		    "Find string must not be empty for 'Replace All' command.");
+			inSelection ?
+			"Find string must not be empty for 'Replace in Selection' command." :
+			"Find string must not be empty for 'Replace All' command.");
 	} else if (replacements == -2) {
 		FindMessageBox(
-		    "Selection must not be empty for 'Replace in Selection' command.");
+			"Selection must not be empty for 'Replace in Selection' command.");
 	} else if (replacements == 0) {
 		FindMessageBox(
-		    "No replacements because string '^0' was not present.", &findWhat);
+			"No replacements because string '^0' was not present.", &findWhat);
 	}
 	return replacements;
 }
@@ -1727,7 +1727,7 @@ int SciTEBase::ReplaceInBuffers() {
 		replacements += DoReplaceAll(false);
 		if (i == 0 && replacements < 0) {
 			FindMessageBox(
-			    "Find string must not be empty for 'Replace in Buffers' command.");
+				"Find string must not be empty for 'Replace in Buffers' command.");
 			break;
 		}
 	}
@@ -1736,7 +1736,7 @@ int SciTEBase::ReplaceInBuffers() {
 	UpdateStatusBar(false);
 	if (replacements == 0) {
 		FindMessageBox(
-		    "No replacements because string '^0' was not present.", &findWhat);
+			"No replacements because string '^0' was not present.", &findWhat);
 	}
 	return replacements;
 }
@@ -1979,7 +1979,7 @@ void SciTEBase::FillFunctionDefinition(int pos /*= -1*/) {
 
 		// Should get current api definition
 		const char *word = apis.GetNearestWord(currentCallTipWord.c_str(), currentCallTipWord.length(),
-		        callTipIgnoreCase, calltipWordCharacters, currentCallTip);
+				callTipIgnoreCase, calltipWordCharacters, currentCallTip);
 		if (word) {
 			functionDefinition = word;
 			if (maxCallTips > 1) {
@@ -1990,14 +1990,14 @@ void SciTEBase::FillFunctionDefinition(int pos /*= -1*/) {
 				int posEndDef = functionDefinition.search(calltipEndDefinition.c_str());
 				if (maxCallTips > 1) {
 					if ((posEndDef > 1) &&
-					        ((posEndDef + calltipEndDefinition.length()) < functionDefinition.length())) {
+							((posEndDef + calltipEndDefinition.length()) < functionDefinition.length())) {
 						functionDefinition.insert(posEndDef + calltipEndDefinition.length(), "\n\002");
 					} else {
 						functionDefinition.append("\n\002");
 					}
 				} else {
 					if ((posEndDef > 1) &&
-					        ((posEndDef + calltipEndDefinition.length()) < functionDefinition.length())) {
+							((posEndDef + calltipEndDefinition.length()) < functionDefinition.length())) {
 						functionDefinition.insert(posEndDef + calltipEndDefinition.length(), "\n");
 					}
 				}
@@ -2042,7 +2042,7 @@ bool SciTEBase::StartCallTip() {
 
 	startCalltipWord = current - 1;
 	while (startCalltipWord > 0 &&
-	        calltipWordCharacters.contains(line[startCalltipWord - 1])) {
+			calltipWordCharacters.contains(line[startCalltipWord - 1])) {
 		startCalltipWord--;
 	}
 
@@ -2111,7 +2111,7 @@ void SciTEBase::EliminateDuplicateWords(char *words) {
 			secondLen = strlen(secondWord);
 
 		if (firstLen == secondLen &&
-		        !strncmp(firstWord, secondWord, firstLen)) {
+				!strncmp(firstWord, secondWord, firstLen)) {
 			strcpy(firstWord, secondWord);
 			firstSpace = strchr(firstWord, ' ');
 		} else {
@@ -2128,8 +2128,8 @@ bool SciTEBase::StartAutoComplete() {
 	int startword = current;
 
 	while ((startword > 0) &&
-	        (calltipWordCharacters.contains(line[startword - 1]) ||
-	         autoCompleteStartCharacters.contains(line[startword - 1]))) {
+			(calltipWordCharacters.contains(line[startword - 1]) ||
+			 autoCompleteStartCharacters.contains(line[startword - 1]))) {
 		startword--;
 	}
 
@@ -2466,7 +2466,7 @@ bool SciTEBase::StartBlockComment() {
 	SString comment = props.Get(base.c_str());
 	if (comment == "") { // user friendly error message box
 		SString error = LocaliseMessage(
-		            "Block comment variable '^0' is not defined in SciTE *.properties!", base.c_str());
+					"Block comment variable '^0' is not defined in SciTE *.properties!", base.c_str());
 		WindowMessageBox(wSciTE, error, MB_OK | MB_ICONWARNING);
 		return true;
 	}
@@ -2483,7 +2483,7 @@ bool SciTEBase::StartBlockComment() {
 	int firstSelLineStart = SendEditor(SCI_POSITIONFROMLINE, selStartLine);
 	// "caret return" is part of the last selected line
 	if ((lines > 0) &&
-	        (selectionEnd == SendEditor(SCI_POSITIONFROMLINE, selEndLine)))
+			(selectionEnd == SendEditor(SCI_POSITIONFROMLINE, selEndLine)))
 		selEndLine--;
 	SendEditor(SCI_BEGINUNDOACTION);
 	for (int i = selStartLine; i <= selEndLine; i++) {
@@ -2550,8 +2550,8 @@ bool SciTEBase::StartBoxComment() {
 	SString end_comment = props.Get(end_base.c_str());
 	if (start_comment == "" || middle_comment == "" || end_comment == "") {
 		SString error = LocaliseMessage(
-		            "Box comment variables '^0', '^1' and '^2' are not defined in SciTE *.properties!",
-		            start_base.c_str(), middle_base.c_str(), end_base.c_str());
+					"Box comment variables '^0', '^1' and '^2' are not defined in SciTE *.properties!",
+					start_base.c_str(), middle_base.c_str(), end_base.c_str());
 		WindowMessageBox(wSciTE, error, MB_OK | MB_ICONWARNING);
 		return true;
 	}
@@ -2675,8 +2675,8 @@ bool SciTEBase::StartStreamComment() {
 	SString end_comment = props.Get(end_base.c_str());
 	if (start_comment == "" || end_comment == "") {
 		SString error = LocaliseMessage(
-		            "Stream comment variables '^0' and '^1' are not defined in SciTE *.properties!",
-		            start_base.c_str(), end_base.c_str());
+					"Stream comment variables '^0' and '^1' are not defined in SciTE *.properties!",
+					start_base.c_str(), end_base.c_str());
 		WindowMessageBox(wSciTE, error, MB_OK | MB_ICONWARNING);
 		return true;
 	}
@@ -2745,7 +2745,7 @@ int SciTEBase::GetLineLength(int line) {
 
 int SciTEBase::GetCurrentLineNumber() {
 	return SendEditor(SCI_LINEFROMPOSITION,
-	        SendEditor(SCI_GETCURRENTPOS));
+			SendEditor(SCI_GETCURRENTPOS));
 }
 
 int SciTEBase::GetCurrentScrollPosition() {
@@ -2757,7 +2757,7 @@ int SciTEBase::GetCurrentScrollPosition() {
  * Set up properties for ReadOnly, EOLMode, BufferLength, NbOfLines, SelLength, SelHeight.
  */
 void SciTEBase::SetTextProperties(
-    PropSetFile &ps) {			///< Property set to update.
+	PropSetFile &ps) {			///< Property set to update.
 
 	const int TEMP_LEN = 100;
 	char temp[TEMP_LEN];
@@ -2795,7 +2795,7 @@ void SciTEBase::SetTextProperties(
 	} else if (selLastLine == selFirstLine) {
 		sprintf(temp, "%d", 1);
 	} else if ((SendEditor(SCI_GETCOLUMN, caretPos) == 0 && (selAnchor <= caretPos)) ||
-	        ((SendEditor( SCI_GETCOLUMN, selAnchor) == 0) && (selAnchor > caretPos ))) {
+			((SendEditor( SCI_GETCOLUMN, selAnchor) == 0) && (selAnchor > caretPos ))) {
 		sprintf(temp, "%d", selLastLine - selFirstLine);
 	} else {
 		sprintf(temp, "%d", selLastLine - selFirstLine + 1);
@@ -2811,9 +2811,9 @@ void SciTEBase::UpdateStatusBar(bool bUpdateSlowData) {
 		SetTextProperties(propsStatus);
 		int caretPos = SendEditor(SCI_GETCURRENTPOS);
 		propsStatus.SetInteger("LineNumber",
-		        SendEditor(SCI_LINEFROMPOSITION, caretPos) + 1);
+				SendEditor(SCI_LINEFROMPOSITION, caretPos) + 1);
 		propsStatus.SetInteger("ColumnNumber",
-		        SendEditor(SCI_GETCOLUMN, caretPos) + 1);
+				SendEditor(SCI_GETCOLUMN, caretPos) + 1);
 		propsStatus.Set("OverType", SendEditor(SCI_GETOVERTYPE) ? "OVR" : "INS");
 
 		char sbKey[32];
@@ -2977,14 +2977,14 @@ IndentationStatus SciTEBase::GetIndentState(int line) {
 	IndentationStatus indentState = isNone;
 	SString controlWords[20];
 	unsigned int parts = GetLinePartsInStyle(line, statementIndent.styleNumber,
-	        -1, controlWords, ELEMENTS(controlWords));
+			-1, controlWords, ELEMENTS(controlWords));
 	unsigned int i;
 	for (i = 0; i < parts; i++) {
 		if (includes(statementIndent, controlWords[i]))
 			indentState = isKeyWordStart;
 	}
 	parts = GetLinePartsInStyle(line, statementEnd.styleNumber,
-	        -1, controlWords, ELEMENTS(controlWords));
+			-1, controlWords, ELEMENTS(controlWords));
 	for (i = 0; i < parts; i++) {
 		if (includes(statementEnd, controlWords[i]))
 			indentState = isNone;
@@ -2992,7 +2992,7 @@ IndentationStatus SciTEBase::GetIndentState(int line) {
 	// Braces override keywords
 	SString controlStrings[20];
 	parts = GetLinePartsInStyle(line, blockEnd.styleNumber,
-	        -1, controlStrings, ELEMENTS(controlStrings));
+			-1, controlStrings, ELEMENTS(controlStrings));
 	for (unsigned int j = 0; j < parts; j++) {
 		if (includes(blockEnd, controlStrings[j]))
 			indentState = isBlockEnd;
@@ -3044,7 +3044,7 @@ void SciTEBase::MaintainIndentation(char ch) {
 	int indentAmount = 0;
 
 	if (((eolMode == SC_EOL_CRLF || eolMode == SC_EOL_LF) && ch == '\n') ||
-	        (eolMode == SC_EOL_CR && ch == '\r')) {
+			(eolMode == SC_EOL_CR && ch == '\r')) {
 		if (props.GetInt("indent.automatic")) {
 			while (lastLine >= 0 && GetLineLength(lastLine) == 0)
 				lastLine--;
@@ -3085,7 +3085,7 @@ void SciTEBase::AutomaticIndentation(char ch) {
 		if (!indentClosing && !blockEnd.IsSingleChar()) {	// Dedent previous line maybe
 			SString controlWords[1];
 			if (GetLinePartsInStyle(curLine - 1, blockEnd.styleNumber,
-			        -1, controlWords, ELEMENTS(controlWords))) {
+					-1, controlWords, ELEMENTS(controlWords))) {
 				if (includes(blockEnd, controlWords[0])) {
 					// Check if first keyword on line is an ender
 					SetLineIndentation(curLine - 1, IndentOfBlock(curLine - 2) - indentSize);
@@ -3204,7 +3204,7 @@ bool SciTEBase::HandleXml(char ch) {
 
 	// This may make sense only in certain languages
 	if (lexLanguage != SCLEX_HTML && lexLanguage != SCLEX_XML &&
-	        lexLanguage != SCLEX_ASP && lexLanguage != SCLEX_PHP) {
+			lexLanguage != SCLEX_ASP && lexLanguage != SCLEX_PHP) {
 		return false;
 	}
 
@@ -3877,7 +3877,7 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 			if (SaveIfUnsureForBuilt() != IDCANCEL) {
 				SelectionIntoProperties();
 				AddCommand(props.GetWild("command.compile.", FileNameExt().AsInternal()), "",
-				        SubsystemType("command.compile.subsystem."));
+						SubsystemType("command.compile.subsystem."));
 				if (jobQueue.commandCurrent > 0)
 					Execute();
 			}
@@ -3888,9 +3888,9 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 			if (SaveIfUnsureForBuilt() != IDCANCEL) {
 				SelectionIntoProperties();
 				AddCommand(
-				    props.GetWild("command.build.", FileNameExt().AsInternal()),
-				    props.GetNewExpand("command.build.directory.", FileNameExt().AsInternal()),
-				    SubsystemType("command.build.subsystem."));
+					props.GetWild("command.build.", FileNameExt().AsInternal()),
+					props.GetNewExpand("command.build.directory.", FileNameExt().AsInternal()),
+					SubsystemType("command.build.subsystem."));
 				if (jobQueue.commandCurrent > 0) {
 					jobQueue.isBuilding = true;
 					Execute();
@@ -4104,14 +4104,14 @@ void SciTEBase::MenuCommand(int cmdID, int source) {
 
 	default:
 		if ((cmdID >= bufferCmdID) &&
-		        (cmdID < bufferCmdID + buffers.size)) {
+				(cmdID < bufferCmdID + buffers.size)) {
 			SetDocumentAt(cmdID - bufferCmdID);
 			CheckReload();
 		} else if ((cmdID >= fileStackCmdID) &&
-		        (cmdID < fileStackCmdID + fileStackMax)) {
+				(cmdID < fileStackCmdID + fileStackMax)) {
 			StackMenu(cmdID - fileStackCmdID);
 		} else if (cmdID >= importCmdID &&
-		        (cmdID < importCmdID + importMax)) {
+				(cmdID < importCmdID + importMax)) {
 			ImportMenu(cmdID - importCmdID);
 		} else if (cmdID >= IDM_TOOLS && cmdID < IDM_TOOLS + toolMax) {
 			ToolsMenu(cmdID - IDM_TOOLS);
@@ -4150,7 +4150,7 @@ void SciTEBase::FoldChanged(int line, int levelNow, int levelPrev) {
 			Expand(line, true, false, 0, levelPrev);
 		}
 	} else if (!(levelNow & SC_FOLDLEVELWHITEFLAG) &&
-	        ((levelPrev & SC_FOLDLEVELNUMBERMASK) > (levelNow & SC_FOLDLEVELNUMBERMASK))) {
+			((levelPrev & SC_FOLDLEVELNUMBERMASK) > (levelNow & SC_FOLDLEVELNUMBERMASK))) {
 		// See if should still be hidden
 		int parentLine = SendEditor(SCI_GETFOLDPARENT, line);
 		if (parentLine < 0) {
@@ -4212,7 +4212,7 @@ void SciTEBase::FoldAll() {
 	for (int line = 0; line < maxLine; line++) {
 		int level = SendEditor(SCI_GETFOLDLEVEL, line);
 		if ((level & SC_FOLDLEVELHEADERFLAG) &&
-		        (SC_FOLDLEVELBASE == (level & SC_FOLDLEVELNUMBERMASK))) {
+				(SC_FOLDLEVELBASE == (level & SC_FOLDLEVELNUMBERMASK))) {
 			if (expanding) {
 				SendEditor(SCI_SETFOLDEXPANDED, line, 1);
 				Expand(line, true, false, 0, level);
@@ -4284,7 +4284,7 @@ void SciTEBase::NewLineInOutput() {
 	if (jobQueue.IsExecuting())
 		return;
 	int line = SendOutput(SCI_LINEFROMPOSITION,
-	        SendOutput(SCI_GETCURRENTPOS)) - 1;
+			SendOutput(SCI_GETCURRENTPOS)) - 1;
 	SString cmd = GetLine(wOutput, line);
 	if (cmd == ">") {
 		// Search output buffer for previous command
@@ -4327,7 +4327,7 @@ void SciTEBase::Notify(SCNotification *notification) {
 						styleStart = styler.StyleAt(endStyled - 1);
 					styler.SetCodePage(codePage);
 					extender->OnStyle(endStyled, notification->position - endStyled,
-					        styleStart, &styler);
+							styleStart, &styler);
 					styler.Flush();
 				}
 			}
@@ -4431,7 +4431,7 @@ void SciTEBase::Notify(SCNotification *notification) {
 
 		if (0 != (notification->modificationType & SC_MOD_CHANGEFOLD)) {
 			FoldChanged(notification->line,
-			        notification->foldLevelNow, notification->foldLevelPrev);
+					notification->foldLevelNow, notification->foldLevelPrev);
 		}
 		break;
 
@@ -4539,9 +4539,9 @@ void SciTEBase::CheckMenus() {
 	CheckAMenuItem(IDM_TOGGLEPARAMETERS, ParametersOpen());
 	CheckAMenuItem(IDM_MONOFONT, CurrentBuffer()->useMonoFont);
 	EnableAMenuItem(IDM_COMPILE, !jobQueue.IsExecuting() &&
-	        props.GetWild("command.compile.", FileNameExt().AsInternal()).size() != 0);
+			props.GetWild("command.compile.", FileNameExt().AsInternal()).size() != 0);
 	EnableAMenuItem(IDM_BUILD, !jobQueue.IsExecuting() &&
-	        props.GetWild("command.build.", FileNameExt().AsInternal()).size() != 0);
+			props.GetWild("command.build.", FileNameExt().AsInternal()).size() != 0);
 	//EnableAMenuItem(IDM_GO, !jobQueue.IsExecuting() &&
 	//        props.GetWild("command.go.", FileNameExt().AsInternal()).size() != 0);
 	
@@ -4665,8 +4665,8 @@ void SciTEBase::UIAvailable() {
  */
 static char AfterName(const char *s) {
 	while (*s && ((*s == '.') ||
-	        (*s >= 'a' && *s <= 'z') ||
-	        (*s >= 'A' && *s <= 'Z')))
+			(*s >= 'a' && *s <= 'z') ||
+			(*s >= 'A' && *s <= 'Z')))
 		s++;
 	return *s;
 }
@@ -5029,7 +5029,7 @@ void SciTEBase::LoadMRUAndSession(bool allowLoadSession) {
 		LoadRecentMenu();
 	}
 	if (allowLoadSession && props.GetInt("buffers") &&
-	        props.GetInt("save.session")) {
+			props.GetInt("save.session")) {
 		LoadSession("");
 	}
 }

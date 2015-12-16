@@ -5,8 +5,6 @@
 
 class MyInputDialog
 {
-	
-
 
 public:
 

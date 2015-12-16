@@ -29,51 +29,51 @@ const char * documentation =
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	if (argc<2) { puts(documentation); puts("\nNot enough arguments"); return ErrorResult; }
+    if (argc<2) { puts(documentation); puts("\nNot enough arguments"); return ErrorResult; }
 
-	_TCHAR* mode = get_argument(1, argc, argv);
-	if (stringequal(mode,_T("simple")))
-	{
-		return dialog_simple(argc - 1, &argv[1]); // Pass arguments except name of program
-	}
-	else if (stringequal(mode,_T("color")))
-	{
-		return dialog_color(argc - 1, &argv[1]);
-	}
-	else if (stringequal(mode,_T("file")))
-	{
-		return dialog_file(argc - 1, &argv[1]);
-	}
-	else if (stringequal(mode,_T("sound")))
-	{
-		return dialog_sound(argc - 1, &argv[1]);
-	}
-	else if (stringequal(mode,_T("text")))
-	{
-		return dialog_textinput(argc - 1, &argv[1]);
-	}
-	else
-	{
-		puts("Dialog type was not recognized. Run with no arguments to see doc.");
-		return ErrorResult;
-	}
+    _TCHAR* mode = get_argument(1, argc, argv);
+    if (stringequal(mode,_T("simple")))
+    {
+        return dialog_simple(argc - 1, &argv[1]); // Pass arguments except name of program
+    }
+    else if (stringequal(mode,_T("color")))
+    {
+        return dialog_color(argc - 1, &argv[1]);
+    }
+    else if (stringequal(mode,_T("file")))
+    {
+        return dialog_file(argc - 1, &argv[1]);
+    }
+    else if (stringequal(mode,_T("sound")))
+    {
+        return dialog_sound(argc - 1, &argv[1]);
+    }
+    else if (stringequal(mode,_T("text")))
+    {
+        return dialog_textinput(argc - 1, &argv[1]);
+    }
+    else
+    {
+        puts("Dialog type was not recognized. Run with no arguments to see doc.");
+        return ErrorResult;
+    }
 
-	return 0;
+    return 0;
 }
 
 bool stringequal(const _TCHAR* s1, const _TCHAR* s2)
 {
-	return (wcscmp(s1, s2) == 0);
+    return (wcscmp(s1, s2) == 0);
 }
 
 // Bounds-checking when retrieving argument. Checks if argument exists. If it doesn't quit program.
 _TCHAR* get_argument(int index, int argc, _TCHAR** argv)
 {
-	if (index >= argc)
-	{
-		puts("Not enough arguments. Run without any arguments to see doc.");
-		exit(ErrorResult);
-		return 0;
-	}
-	return argv[index];
+    if (index >= argc)
+    {
+        puts("Not enough arguments. Run without any arguments to see doc.");
+        exit(ErrorResult);
+        return 0;
+    }
+    return argv[index];
 }

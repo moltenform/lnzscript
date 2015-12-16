@@ -72,7 +72,7 @@
       class C:
           @classmethod
           def f(cls, arg1, arg2, ...): ...
-	  
+      
 .. function:: cmp(x, y)
 
    Compare the two objects *x* and *y* and return an integer according to the
@@ -1285,8 +1285,8 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
 
    Return ``True`` if *d* has a key *key*, else ``False``.
    if key in mydict:
-	print "in"
-	
+    print "in"
+    
 .. method:: dict.clear()
 
    Remove all items from the dictionary.

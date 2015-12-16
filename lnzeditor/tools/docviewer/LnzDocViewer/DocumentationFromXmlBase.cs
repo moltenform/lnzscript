@@ -9,8 +9,8 @@ namespace LnzDocViewer
 {
     //Section - TreeNode
     //Namespace - NodeDocNamespace
-        //Instance Methods - TreeNode
-        //Function - NodeDocLnzFunction
+    //Instance Methods - TreeNode
+    //Function - NodeDocLnzFunction
 
     public abstract class DocumentationFromXmlBase
     {
@@ -19,14 +19,14 @@ namespace LnzDocViewer
         protected string filename;
 
         public DocumentationFromXmlBase(string strFilenameIn)
-		{
+        {
             if (File.Exists(strFilenameIn)) this.filename = strFilenameIn;
             else if (File.Exists("..\\" + strFilenameIn)) this.filename = "..\\" + strFilenameIn;
             else if (File.Exists("..\\..\\" + strFilenameIn)) this.filename = "..\\..\\" + strFilenameIn;
             else { MessageBox.Show("Could not find file " + strFilenameIn); System.Environment.Exit(1); }//throw new Exception("Could not find file "+strFilenameIn);
 
             resetReader();
-		}
+        }
         protected void resetReader()
         {
             sr = new StreamReader(this.filename);

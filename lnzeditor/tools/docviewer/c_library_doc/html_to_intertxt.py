@@ -12,65 +12,65 @@ rename = re.compile(r'<a name="([^"]+)"></a>')
 retag = re.compile(r'<.*?>')
 
 def striptags(s):
-	return retag.sub('', s)
+    return retag.sub('', s)
 
 
 def main():
-	#~ alltext = open(target).read().replace('\r\n','\n').split('\n')
-	alltext = data.replace('\r\n','\n').split('\n')
-	
-	lastName = None
-	lastProto = None
-	lastDoc = None
-	lastProto=lastDoc = ''
-	currentMode = 'Proto'
-	
-	for line in alltext:
-		if line.startswith('<h2>'):
-			continue
-		m = rename.match(line)
-		if m:
-			strName = str(m.group(1))
-			#~ print 'Found',strName
-			
-			if lastName!=None:
-				process(lastName, lastProto, lastDoc)
-			
-			lastName = strName
-			lastProto=lastDoc = ''
-			currentMode = 'Proto'
-			continue
-			
-		if line.strip()=='Declaration:':
-			# well, it's probably in the proto mode already, but whatver
-			currentMode = 'Proto'
-		elif line.strip()=='Range:':
-			currentMode = 'No-op' #we don't care about the range, don't include it
-		elif currentMode=='Proto' and line.strip()=='<p>':
-			currentMode = 'Doc'
-		elif currentMode=='Proto' and line.strip()=='</b></code></blockquote>':
-			currentMode = 'Doc'
-		else:
-			if currentMode=='Proto': lastProto += line + '\n'
-			elif currentMode=='Doc': lastDoc += line + '\n'
-			else: continue #evidently not in a mode
-	
-	process(lastName, lastProto, lastDoc)
-		
+    #~ alltext = open(target).read().replace('\r\n','\n').split('\n')
+    alltext = data.replace('\r\n','\n').split('\n')
+    
+    lastName = None
+    lastProto = None
+    lastDoc = None
+    lastProto=lastDoc = ''
+    currentMode = 'Proto'
+    
+    for line in alltext:
+        if line.startswith('<h2>'):
+            continue
+        m = rename.match(line)
+        if m:
+            strName = str(m.group(1))
+            #~ print 'Found',strName
+            
+            if lastName!=None:
+                process(lastName, lastProto, lastDoc)
+            
+            lastName = strName
+            lastProto=lastDoc = ''
+            currentMode = 'Proto'
+            continue
+            
+        if line.strip()=='Declaration:':
+            # well, it's probably in the proto mode already, but whatver
+            currentMode = 'Proto'
+        elif line.strip()=='Range:':
+            currentMode = 'No-op' #we don't care about the range, don't include it
+        elif currentMode=='Proto' and line.strip()=='<p>':
+            currentMode = 'Doc'
+        elif currentMode=='Proto' and line.strip()=='</b></code></blockquote>':
+            currentMode = 'Doc'
+        else:
+            if currentMode=='Proto': lastProto += line + '\n'
+            elif currentMode=='Doc': lastDoc += line + '\n'
+            else: continue #evidently not in a mode
+    
+    process(lastName, lastProto, lastDoc)
+        
 def process(lastName, lastProto, lastDoc):
-	#strip the "<blockquote>" and all other tags
-	lastProto = striptags(lastProto).strip()
-	lastDoc = striptags(lastDoc).strip()
-	lastDoc = lastDoc.replace('\n     ','\n')
-	print '---'+lastName
-	print lastProto
-	print '---!header'
-	print headername
-	print '---!doc'
-	print lastDoc
-	print '---!end'
-	print
-		
+    #strip the "<blockquote>" and all other tags
+    lastProto = striptags(lastProto).strip()
+    lastDoc = striptags(lastDoc).strip()
+    lastDoc = lastDoc.replace('\n     ','\n')
+    print '---'+lastName
+    print lastProto
+    print '---!header'
+    print headername
+    print '---!doc'
+    print lastDoc
+    print '---!end'
+    print
+        
 # ([^ ]+) (.*)
 # ---:\1\r\nint \1(int character); \r\n---!doc\r\n\2\r\n---!end\r\n
 

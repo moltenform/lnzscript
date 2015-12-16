@@ -4,28 +4,28 @@ include('<std>');
 //Only tested on Windows 7. 
 
 getCurrentExplorerDirectory = function() {
-        var windowText =  Window.getText('');
-        windowText = windowText.replace(/\r\n/g,'\n');
-        if (windowText.startsWith('Address: '))
-        {
-                var dir = windowText.split('\n')[0].replace('Address: ','');
-                dir = fixSpecialFolders(dir);
-                return dir;
-        }
-        else
-        {
-                Dialog.alert('Error','No directory chosen; please open an Explorer window.');
-                return null;
-        }
+		var windowText =  Window.getText('');
+		windowText = windowText.replace(/\r\n/g,'\n');
+		if (windowText.startsWith('Address: '))
+		{
+				var dir = windowText.split('\n')[0].replace('Address: ','');
+				dir = fixSpecialFolders(dir);
+				return dir;
+		}
+		else
+		{
+				Dialog.alert('Error','No directory chosen; please open an Explorer window.');
+				return null;
+		}
 
 }
 
 fixSpecialFolders = function(s) {
-        if (s.startsWith('Libraries\\Documents'))
-                s = s.replace('Libraries\\Documents', File.getPathSpecial('My Documents'));
-        else if (s.startsWith('Libraries\\Pictures'))
-                s = s.replace('Libraries\\Pictures', File.getPathSpecial('My Pictures'));
-        else if (s.startsWith('Libraries\\'))
-                {Dialog.alert('Error',"Don't know where this Library exists."); s=null;}
-        return s;
+		if (s.startsWith('Libraries\\Documents'))
+				s = s.replace('Libraries\\Documents', File.getPathSpecial('My Documents'));
+		else if (s.startsWith('Libraries\\Pictures'))
+				s = s.replace('Libraries\\Pictures', File.getPathSpecial('My Pictures'));
+		else if (s.startsWith('Libraries\\'))
+				{Dialog.alert('Error',"Don't know where this Library exists."); s=null;}
+		return s;
 }

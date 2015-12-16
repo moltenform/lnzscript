@@ -4,4 +4,4 @@ Window.activate( {'class':'CabinetWClass'});
 Time.sleep(100);
 var strDir = getCurrentExplorerDirectory();
 if (strDir)
-  Process.openFile('cmd.exe', strDir);
+	Process.openFile('cmd.exe', strDir);

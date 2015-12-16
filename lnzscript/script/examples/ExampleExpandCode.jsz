@@ -1,15 +1,15 @@
 include('<std>');
 var sClipboard = Clipboard.getText();
 if (sClipboard  && sClipboard.contains('#'))
-{  
-  var sRep = Dialog.input('Replace', 'How many repetitions? n=0 to ?', '3');
-  if (isNumber(sRep))
-  {    
-    var sResult = '';
-    for (var i=0; i<sRep; i++)
-      sResult += sClipboard.replace(/#/g, i) + '\r\n';
-    Clipboard.setText(sResult);
-  }
+{
+	var sRep = Dialog.input('Replace', 'How many repetitions? n=0 to ?', '3');
+	if (isNumber(sRep))
+	{    
+		var sResult = '';
+		for (var i=0; i<sRep; i++)
+			sResult += sClipboard.replace(/#/g, i) + '\r\n';
+		Clipboard.setText(sResult);
+	}
 }
 
 /*

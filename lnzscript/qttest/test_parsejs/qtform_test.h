@@ -12,16 +12,16 @@ QString runTests();
 
 class TestForm : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    TestForm(QWidget *parent = 0);
+	TestForm(QWidget *parent = 0);
 
 public slots:
-    void on_btn_go();
+	void on_btn_go();
 
 private:
-    Ui::TestForm ui;
+	Ui::TestForm ui;
 
 };
 #endif

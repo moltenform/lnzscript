@@ -55,56 +55,56 @@ const char* documentation =
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	if (argc < 3)
-	{
-		puts(documentation);
-		return 1;
-	}
-	const char* strHwnd = argv[1];
-	const char* strAction = argv[2];
+    if (argc < 3)
+    {
+        puts(documentation);
+        return 1;
+    }
+    const char* strHwnd = argv[1];
+    const char* strAction = argv[2];
 
-	char *containsColon = strchr(strAction, ':');
-	if (! containsColon)
-	{
-		fputs("Invalid command. Should be in form close: or insert:hello", stderr);
-		return 1;
-	}
+    char *containsColon = strchr(strAction, ':');
+    if (! containsColon)
+    {
+        fputs("Invalid command. Should be in form close: or insert:hello", stderr);
+        return 1;
+    }
 
-	if (strcmp(strHwnd, "find")==0)
-	{
-		HWND results[30];
-		results[0] = 0;
-		EnumWindows(EnumWindowsProc,(LPARAM) results);
-		int nResults = size_of_array(results);
+    if (strcmp(strHwnd, "find")==0)
+    {
+        HWND results[30];
+        results[0] = 0;
+        EnumWindows(EnumWindowsProc,(LPARAM) results);
+        int nResults = size_of_array(results);
 
-		if (nResults == 0)
-		{
-			fputs("Could not find an open instance of SciTE", stderr);
-			return 1;
-		}
-		else 
-		{
-			//Pick the first instance of Scite found.
-			//Assumes backslashes have been added by the input
-			
-			SendToHandle(results[0], strAction);
-		}
-	}
-	else
-	{
-		// NOTE: not 64-bit safe. Is there a 64bit atoi?
-		long nHwnd = atol(strHwnd);
-		if (nHwnd==0 || nHwnd==LONG_MAX || nHwnd==LONG_MIN)
-		{
-			fputs("Invalid hwnd. Should be in decimal", stderr);
-			return 1;
-		}
-		HWND hwnd = (HWND) nHwnd;
+        if (nResults == 0)
+        {
+            fputs("Could not find an open instance of SciTE", stderr);
+            return 1;
+        }
+        else 
+        {
+            //Pick the first instance of Scite found.
+            //Assumes backslashes have been added by the input
+            
+            SendToHandle(results[0], strAction);
+        }
+    }
+    else
+    {
+        // NOTE: not 64-bit safe. Is there a 64bit atoi?
+        long nHwnd = atol(strHwnd);
+        if (nHwnd==0 || nHwnd==LONG_MAX || nHwnd==LONG_MIN)
+        {
+            fputs("Invalid hwnd. Should be in decimal", stderr);
+            return 1;
+        }
+        HWND hwnd = (HWND) nHwnd;
 
-		SendToHandle(hwnd, strAction);
-	}
+        SendToHandle(hwnd, strAction);
+    }
 
-	return 0;
+    return 0;
 }
 
 

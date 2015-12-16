@@ -1,12 +1,8 @@
 <job>
-   <script src="onload.js" language="javascript" />
-   <script language="javascript">
-   
-   
-  
-   
-   WScript.Echo('hello, wsh');
-   
-   
-   </script>
+<script src="onload.js" language="javascript" />
+<script language="javascript">
+
+WScript.Echo('hello, wsh');
+
+</script>
 </job>

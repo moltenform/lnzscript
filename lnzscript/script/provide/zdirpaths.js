@@ -27,7 +27,7 @@ File.pathJoin = function(path,b)
 	if (!b) return path
 	var b_wins=0
 	if (path == "")
-            b_wins = 1
+			b_wins = 1
 	else if (isabs(b))
 	{
 		

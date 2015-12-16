@@ -1,9 +1,9 @@
 var s ='';
 for (var i=32; i<128; i++)
 {
-  var si = (i<100)?' '+i : i.toString();
-  s+= si + '\t' + String.fromCharCode(i);
-  s+= '\r\n';
+	var si = (i<100)?' '+i : i.toString();
+	s+= si + '\t' + String.fromCharCode(i);
+	s+= '\r\n';
 }
 File.writeFile( File.getPathTemp()+'\\tmpascii.txt', s);
 Process.open('notepad.exe '+File.getPathTemp()+'\\tmpascii.txt');

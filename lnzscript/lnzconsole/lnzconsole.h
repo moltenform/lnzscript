@@ -6,7 +6,7 @@
 
 class LnzConsole
 {
-    
+	
 public:
 	LnzConsole();
 	void addArgv(int argc, char *argv[]);

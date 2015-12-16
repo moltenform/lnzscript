@@ -3,7 +3,7 @@
 #include "qtform_test.h"
 
 TestForm::TestForm(QWidget *parent)
-    : QWidget(parent)
+	: QWidget(parent)
 {
 	ui.setupUi(this);
 

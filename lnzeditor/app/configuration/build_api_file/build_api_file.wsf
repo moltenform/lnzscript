@@ -13,41 +13,41 @@
 
 function main()
 {
-	var xmldom, xsltdom;
-	try
-	{
-		xmldom = new ActiveXObject("MSXML2.DOMDocument.6.0");
-		xsltdom = new ActiveXObject("MSXML2.DOMDocument.6.0");
+    var xmldom, xsltdom;
+    try
+    {
+        xmldom = new ActiveXObject("MSXML2.DOMDocument.6.0");
+        xsltdom = new ActiveXObject("MSXML2.DOMDocument.6.0");
 
 
-		xmldom.validateOnParse = true;
-		xmldom.async = false;
-		// xmldom.loadXML('<object><name>apple</name><color>Red</color></object>');
-		xmldom.load('documentation.xml');
+        xmldom.validateOnParse = true;
+        xmldom.async = false;
+        // xmldom.loadXML('<object><name>apple</name><color>Red</color></object>');
+        xmldom.load('documentation.xml');
 
-		xsltdom.validateOnParse = true;
-		xsltdom.async = false;
-		xsltdom.load('transform.xml');
+        xsltdom.validateOnParse = true;
+        xsltdom.async = false;
+        xsltdom.load('transform.xml');
 
-		var output = xmldom.transformNode(xsltdom);
-		writeTextFile('..\\lnzscript.api',output);
-		
+        var output = xmldom.transformNode(xsltdom);
+        writeTextFile('..\\lnzscript.api',output);
+        
 
-	}
-	catch(err)
-	{
-		WScript.Echo("error");
-		WScript.Echo(err);
-		WScript.Echo(err.description);
-	}
+    }
+    catch(err)
+    {
+        WScript.Echo("error");
+        WScript.Echo(err);
+        WScript.Echo(err.description);
+    }
 }
 
 function writeTextFile(strPath, strContents)
 {
-	var fso = new ActiveXObject("Scripting.FileSystemObject");
-	var fout = fso.CreateTextFile(strPath);
-	fout.Write(strContents);
-	fout.Close();
+    var fso = new ActiveXObject("Scripting.FileSystemObject");
+    var fout = fso.CreateTextFile(strPath);
+    fout.Write(strContents);
+    fout.Close();
 }
 
 

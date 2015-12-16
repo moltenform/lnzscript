@@ -2,9 +2,9 @@ File.cd(@'C:/Users/inspy/Desktop/');
 var arFiles = File.dirListFiles('.', '*.url')
 for(var i=0; i<arFiles.length;i++)
 {
-  var pageName = arFiles[i].slice(0,-4)
-  var url = File.readFile(arFiles[i]).split('URL=')[1].split('\n')[0]
-  print(pageName)
-  print(url + '\n')  
+var pageName = arFiles[i].slice(0,-4)
+var url = File.readFile(arFiles[i]).split('URL=')[1].split('\n')[0]
+print(pageName)
+print(url + '\n')
 }
 

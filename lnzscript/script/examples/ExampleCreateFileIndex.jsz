@@ -4,8 +4,8 @@ Window.activate( {'class':'CabinetWClass'})
 Time.sleep(100);
 var strDir = getCurrentExplorerDirectory();
 if (strDir)
-  Process.open('cmd.exe /c tree /f /a > tree_files.txt', strDir);
-  
+	Process.open('cmd.exe /c tree /f /a > tree_files.txt', strDir);
+
 /*
 This script creates a text file index of all files in a directory, including subdirectories. The output is formatted nicely by indentation level. It uses the path of the currently open Explorer window and creates tree_files.txt. 
 
