@@ -4,6 +4,8 @@
 # 1) list of members seperated by [[br]], to be copied into exposed-file.cpp 's inline documentation
 # 2) list of members separated by newline, for the editor .api autocomplete.
 
+# as of 0.50, see compile.txt instead for instructions on how to generate the .api file
+
 arWind=[]
 arCpanel=[]
 arCpanelXp=[]
