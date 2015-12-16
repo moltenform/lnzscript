@@ -163,14 +163,17 @@ namespace launchorz_functions
 		
 		int nStatus = util_run_getstatus(strExecutable, astrArgs);
 		if (program == G_WinCommonDialog)
+		{
 			return QScriptValue(eng, nStatus); // What is nice is that WinCommonDialog actually returns its result through the return code.
+		}
 		else if (program == G_WinCommonGdi)
 		{
-			printf("dbg--status is %d\n", nStatus);
 			return QScriptValue(eng, nStatus == 0); // non-zero status indicates failure
 		}
-		else 
+		else
+		{
 			return ctx->throwError("Internal error. Bad external command.2");
+		}
 	}
 	
 	// "Custom", i.e. captures stdout and returns a string. If this returns "", this should be an exceptional case (User clicked cancel, or error occurred)
