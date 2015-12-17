@@ -7,7 +7,7 @@ Write a script to automate a repeated action in any program, or write tests for 
 
 [LnzScript.zip](https://github.com/moltenform/lnzscript/releases/download/v0.50/lnzscript_0.50.zip) (portable, 3.3MB)
 
-See the [Tutorials](https://moltenform.com/page/lnzscript/doc/tutorials.html) and [Complete API Reference](https://moltenform.com/page/lnzscript/doc/api/index.html#version_v0_50)
+See the [Tutorials](https://moltenform.com/page/lnzscript/doc/tutorials.html) and [Complete API Reference](https://moltenform.com/page/lnzscript/doc/api/#version_v0_50)
 
 <p>&nbsp;</p>
 
