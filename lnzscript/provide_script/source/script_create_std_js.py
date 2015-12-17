@@ -33,5 +33,5 @@ for file in allfiles:
 
 fout.close()
 if nWritten==0:
-	raise Exception, 'No js files were found.'
+	raise Exception('No js files were found.')
 	

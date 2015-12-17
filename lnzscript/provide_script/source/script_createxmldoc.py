@@ -1,3 +1,4 @@
+
 import sys
 import os
 import operator 
@@ -9,7 +10,7 @@ if len(sys.argv)>1:
 
 import script_create
 
-class Section_repr():
+class Section_repr(object):
 	name = ''
 	doc = ''
 	namespaces = None
@@ -17,7 +18,7 @@ class Section_repr():
 		self.namespaces = []
 		self.name = strName
 
-class Namespace_repr():
+class Namespace_repr(object):
 	name = ''
 	doc = None
 	sectionname = None
@@ -40,7 +41,7 @@ def createDoc():
 			if sectionname not in sections:
 				sections[sectionname] = Section_repr(sectionname)
 				sections[sectionname].doc = '' 
-				print sectionname
+				print(sectionname)
 				#no general documentation for sections yet.
 			
 	#now, create namespace objects
@@ -62,7 +63,7 @@ def createDoc():
 				namespaces[currentNamespace.name] = currentNamespace
 				#assign to its section
 				if currentNamespace.sectionname==None: raise Exception, 'Error: No section designated for namespace %s',currentNamespace.name
-				if currentNamespace.sectionname not in sections:  raise Exception, 'Error: section %s not found, specified by namespace %s'%(currentNamespace.sectionname, currentNamespace.name)
+				if currentNamespace.sectionname not in sections:  raise Exception('Error: section %s not found, specified by namespace %s'%(currentNamespace.sectionname, currentNamespace.name))
 				sections[currentNamespace.sectionname].namespaces.append(currentNamespace)
 				currentNamespace = None
 			elif param=='Doc':
@@ -75,7 +76,7 @@ def createDoc():
 	aFunctions = script_create.processAllSource()
 	for obj in aFunctions:
 		ns = obj.namespace
-		if ns not in namespaces: raise Exception, 'In function %s, namespace %s does not exist.'%(obj.functionname, obj.namespace)
+		if ns not in namespaces: raise Exception('In function %s, namespace %s does not exist.'%(obj.functionname, obj.namespace))
 		namespaces[ns].functions.append(obj)
 	
 
@@ -92,7 +93,7 @@ def createDoc():
 	
 	i = 0
 	#actually, don't sort the keys, so that "launchors" is before "language"
-	for key in sections.keys():
+	for key in list(sections.keys()):
 		section = sections[key]
 		fout.write('<section name="%s">'%xmlescape(section.name))
 		if section.doc: fout.write('<section_doc>%s</section_doc>'%xmlescape(section.doc))
@@ -117,14 +118,14 @@ def createDoc():
 	
 	fout.write('</launchorzdoc>')
 	fout.close()
-	print len(aFunctions), i
+	print(len(aFunctions) + ' ' + str(i))
 	
 
 def xmlescape(s):
 	return s.replace('\r\n','\n').replace('\n','[[br]]').replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;').replace("'",'&apos;')
 	
 def main():
-	print
+	print()
 	createDoc()
 	
 main()

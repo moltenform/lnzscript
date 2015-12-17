@@ -9,7 +9,7 @@ File.zipCreate(strDirectory)
 import os
 import zipfile
 
-from cStringIO import StringIO
+from io import StringIO
 
 
 def zipfile_list( filename, includeFolders=False):
@@ -20,7 +20,7 @@ def zipfile_list( filename, includeFolders=False):
     except: return False
     
     namelist = zf.namelist()
-    if not includeFolders: namelist = filter( lambda x: not x.endswith( '/' ), namelist )
+    if not includeFolders: namelist = [x for x in namelist if not x.endswith( '/' )]
     return namelist
 
 #http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/465649
@@ -31,8 +31,8 @@ def zipfile_extract( filename, dir ):
     except zipfile.BadZipFile: return False
     except: return False
     namelist = zf.namelist()
-    dirlist = filter( lambda x: x.endswith( '/' ), namelist )
-    filelist = filter( lambda x: not x.endswith( '/' ), namelist )
+    dirlist = [x for x in namelist if x.endswith( '/' )]
+    filelist = [x for x in namelist if not x.endswith( '/' )]
     # make base
     pushd = os.getcwd()
     if not os.path.isdir( dir ):
@@ -84,7 +84,7 @@ def zipfile_create(strDirectory, strFilename):
     try:
         for dirpath, dirnames, filenames in os.walk(strDirectory):
             for filename in filenames:
-                print dirpath + '/' + filename
+                print(dirpath + '/' + filename)
         
     except:
         err = True
@@ -96,7 +96,7 @@ if __name__=='__main__':
     testf = r'C:\Documents and Settings\bfisher\My Documents\winrhythm.zip'
     #~ testf = r'C:\Documents and Settings\bfisher\My Documents\web hosting.txt'
     z = zipfile.ZipFile(testf, 'r')
-    print z.namelist()
+    print(z.namelist())
     
     strDirectory = r'C:\Documents and Settings\bfisher\My Documents\lnzbinary'
     os.chdir(strDirectory)
@@ -104,7 +104,7 @@ if __name__=='__main__':
         for filename in filenames:
             if dirpath.startswith(strDirectory):
                 dirpath
-            print dirpath + '/' + filename
+            print(dirpath + '/' + filename)
     
     #~ z = zipfile.ZipFile('test.zip','w', zipfile.ZIP_DEFLATED)
     #~ z.write('test.txt')

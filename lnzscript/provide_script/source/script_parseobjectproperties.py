@@ -28,16 +28,16 @@ if not arWind or not arCpanel or not arCpanelXp or not arjSpecfolder:
 
 #1)
 for ar in arWind,arCpanel,arCpanelXp, arjSpecfolder:
-	print '[[br]]'.join(ar)
+	print('[[br]]'.join(ar))
 
 #2)
-print '--------';
+print('--------')
 arWind.insert(0, 'WindowStyle')
 arCpanel.insert(0, 'ControlPanel')
 arCpanelXp.insert(0, 'ControlPanelXp')
 arjSpecfolder.insert(0, 'SpecialFolder')
 for ar in arWind,arCpanel,arCpanelXp, arjSpecfolder:
 	for item in ar[1:]:
-		print ar[0] + '.'+item
+		print(ar[0] + '.'+item)
 	
 	

@@ -13,7 +13,7 @@ aFunctions = script_create.processAllSource()
 
 for currentFn in aFunctions:
 	if currentFn.implementation!='Javascript' and not currentFn.functionname.startswith('_'):
-		print currentFn.namespace, currentFn.functionname
+		print(str(currentFn.namespace) + ' ' + str(currentFn.functionname))
 		fout.write(currentFn.namespace + '.' + currentFn.functionname + '\n')
 
 fout.close()

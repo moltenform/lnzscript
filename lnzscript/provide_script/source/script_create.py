@@ -5,7 +5,7 @@ qtconversiontypecheck = { 'int':'isNumber()', 'bool':'isBoolean()', 'string':'is
 qtconversiontypeconstant = { 'int':'LNZTYPE_int', 'bool':'LNZTYPE_bool', 'string':'LNZTYPE_string','ControlPanel':'LNZTYPE_controlpanel','SpecialFolder':'LNZTYPE_specialfolder'}
 cpptypes = { 'int':'int', 'bool':'bool', 'string':'QString', 'ControlPanel':'QString', 'SpecialFolder':'QString'}
 
-class ExposedFunctionArg():
+class ExposedFunctionArg(object):
 	def __init__(self, arg, n, bOptional=False):
 		if not bOptional:
 			self.type, self.name = arg.strip().split(' ')
@@ -35,7 +35,7 @@ class ExposedFunctionArg():
 		method = qtconversion[self.type] # toString()
 		return 'if (ctx->argumentCount()>=%d)'%(self.n+1)  + ' {\n\t\t' + self.renderCheckCorrectType(strFnName) + '\n\t\t%s = ctx->argument(%d).%s;}' % (self.name, self.n, method)
 
-class ExposedFunction():
+class ExposedFunction(object):
 	namespace = ''
 	functionname = ''
 	doc = ''
@@ -101,7 +101,7 @@ class ExposedFunction():
 		
 	def checkValidity(self):
 		if self.implementation==None:
-			raise Exception, 'no implementation found for function %s.'%self.functionname
+			raise Exception('no implementation found for function %s.'%self.functionname)
 		if self.args != '' and not self.implementation.startswith('Javascript'):
 			#First check all args are used
 			allcode = ' '.join(self.codeArray)
@@ -110,13 +110,13 @@ class ExposedFunction():
 				arg = arg.split('=')[0].strip()
 				argtype, argname = arg.split(' ')
 				if argname not in allcode:
-					raise Exception, 'Error - Argument not used in function %s: type %s name %s' % (self.functionname, argtype, argname)
+					raise Exception('Error - Argument not used in function %s: type %s name %s' % (self.functionname, argtype, argname))
 			#Now check that optional args can't be before required args.
 			bprev = 'mandatory'
 			for arg in self.args.split(','):
 				bcurrent = 'opt' if ('=' in arg) else 'mandatory'
 				if bcurrent=='mandatory' and bprev=='opt':
-					raise Exception, 'Error - Optional arguments cannot be followed by mandatory args, in function %s , arg %s' %(self.functionname, arg)
+					raise Exception('Error - Optional arguments cannot be followed by mandatory args, in function %s , arg %s' %(self.functionname, arg))
 				bprev = bcurrent
 			
 	def renderHeader(self):
@@ -166,7 +166,7 @@ def parse(s, AllExposed = None):
 		if line.startswith('///'):
 			param, data = parseParamEntry(line)
 			if param=='Function':
-				print '... '+data
+				print('... '+data)
 				currentFn = ExposedFunction()
 				currentFn.namespace, currentFn.functionname = data.split('.')
 			elif param=='Arguments':
@@ -182,7 +182,7 @@ def parse(s, AllExposed = None):
 			elif param=='InstanceMethod':
 				if data=='true': currentFn.instanceMethod=True
 				elif data=='false': currentFn.instanceMethod=False
-				else: raise Exception, 'Function %s, instanceMethod parameter should be true or false, not %s' %(currentFn.functionname, data)
+				else: raise Exception('Function %s, instanceMethod parameter should be true or false, not %s' %(currentFn.functionname, data))
 			else:
 				raise 'Param not recognized: '+param
 			
@@ -253,5 +253,5 @@ if __name__=='__main__':
 '''
 	r = parse(testin)
 	for fn in r:
-		print fn.renderCode()
+		print(fn.renderCode())
 

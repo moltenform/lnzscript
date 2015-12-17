@@ -1,8 +1,9 @@
+
 import os,sys
 try:
     os.chdir('input_files')
 except:
-    print 'cannot find directory input_files. try unzipping the inputfiles.zip.'
+    print('cannot find directory input_files. try unzipping the inputfiles.zip.')
     sys.exit(1)
 
 order = '''math.gen.txt
@@ -16,7 +17,7 @@ misc.gen.txt
 '''.replace('\r\n','\n').split('\n')
 files=[file for file in os.listdir('.') if file.endswith('.gen.txt')]
 for file in files: 
-    if file not in order: raise Exception, 'File '+file+' not in order.'
+    if file not in order: raise Exception('File '+file+' not in order.')
 
 
 def main():
@@ -30,7 +31,7 @@ def main():
     
     for filename in order:
         if filename:
-            print filename
+            print(filename)
             alltxt = open(filename,'r').read()
             alltxt = alltxt.replace('<!!!>','')
             
@@ -101,7 +102,7 @@ def xmlescape(s):
     return s.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('"','&quot;').replace("'",'&apos;')
 
 
-class FnRepr():
+class FnRepr(object):
     name = ''
     syntax = ''
     header = ''

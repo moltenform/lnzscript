@@ -1,7 +1,7 @@
 import sys
 import os
 
-import StringIO
+import io
 
 # Set the working directory to the first parameter passed to me
 d = sys.argv[1]
@@ -55,14 +55,14 @@ class ImplementationOutputFile():
 	outCode=None
 	strFilename = None
 	def __init__(self, strFilename):
-		self.outHeaders = StringIO.StringIO()
-		self.outCode = StringIO.StringIO()
+		self.outHeaders = io.StringIO()
+		self.outCode = io.StringIO()
 		self.strFilename = strFilename
-		print >>self.outCode,'\n','//THIS IS A GENERATED FILE Do not make changes to this file - they will be overwritten','\n'
+		print('\n','//THIS IS A GENERATED FILE Do not make changes to this file - they will be overwritten','\n', file=self.outCode)
 	def addHeader(self, s):
-		print >> self.outHeaders,s
+		print(s, file=self.outHeaders)
 	def addCode(self, s):
-		print >> self.outCode, s
+		print(s, file=self.outCode)
 	
 	def writeFile(self, dictCustomReplacements = None): 
 		strTemplate = script_create.readfile(self.strFilename+'.cpp.template')
@@ -88,12 +88,12 @@ class ConnectionToScriptOutputFile():
 	outConnection = None
 	strFilename = None
 	def __init__(self, strFilename):
-		self.outConnection = StringIO.StringIO()
+		self.outConnection = io.StringIO()
 		self.nameSpacesSeen = {}
 		self.strFilename = strFilename
 	def addMethod(self, objMethod):
 		self.nameSpacesSeen[objMethod.namespace] = 1
-		print >>self.outConnection, 'obj%s.setProperty("%s", eng->newFunction(%s));' %(objMethod.namespace, objMethod.functionname, objMethod.getImplName())
+		print('obj%s.setProperty("%s", eng->newFunction(%s));' %(objMethod.namespace, objMethod.functionname, objMethod.getImplName()), file=self.outConnection)
 	def writeFile(self):
 		strOut = ''
 		strOut += '\n\t' + self._renderNamespaceCode()

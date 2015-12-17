@@ -9,7 +9,7 @@ import re
 
 os.chdir('source')
 
-class Section_repr():
+class Section_repr(object):
     name = ''
     doc = ''
     namespaces = None
@@ -17,7 +17,7 @@ class Section_repr():
         self.namespaces = []
         self.name = strName
 
-class Namespace_repr():
+class Namespace_repr(object):
     name = ''
     doc = ''
     docArray = None
@@ -30,7 +30,7 @@ class Namespace_repr():
         self.doc = ''.join(self.docArray).replace('    ','\t').replace('  ',' ').strip()
         del self.docArray
 
-class Function_repr():
+class Function_repr(object):
     name = ''
     doc = ''
     syntax = ''
@@ -97,7 +97,7 @@ def process(fout, s):
         elif line.startswith('// '):
             continue # a comment
         elif line.lstrip().startswith('.. function::') or line.lstrip().startswith('.. method::'):
-            if bInModDocumentation: raise Exception, 'not allowed- function inside module docs ' + line
+            if bInModDocumentation: raise Exception('not allowed- function inside module docs ' + line)
             bInFnDocumentation = True
             header, syntax = line.split('::')
             syntax = syntax.strip()
@@ -114,7 +114,7 @@ def process(fout, s):
             if line.lstrip().startswith('.. function::'): currentFunction.static=True
             elif line.lstrip().startswith('.. method::'): currentFunction.static=False
         elif line.lstrip().startswith('.. class::') or line.lstrip().startswith('.. attribute::') or line.lstrip().startswith('.. data::'):
-            raise Exception, 'You probably missed something here: '+line
+            raise Exception('You probably missed something here: '+line)
             
         else:
             # keep the line break ??
@@ -144,7 +144,7 @@ def process(fout, s):
                 global g_count; g_count+=1
                 
                 fout.write('<function name="%s" fullsyntax="%s"  '%(xmlescape(function.name),xmlescape(function.syntax)))
-                print function.name
+                print(function.name)
                 if  function.static: fout.write(' >')
                 else: fout.write('instance="true">')
                 if function.doc: fout.write('<doc>%s</doc>'%xmlescape(function.doc))
@@ -163,7 +163,7 @@ def go():
     for file in files:
         if file.startswith('pythondoc_') and file.endswith('.txt'):
             if file not in fordering:
-                raise Exception, "Warning Index in python_index.txt does not include file %s"%file
+                raise Exception("Warning Index in python_index.txt does not include file %s"%file)
     
     #now write the output
     fout = open('..\\pythondoc.xml','w')
@@ -176,7 +176,7 @@ def go():
         
     writefooter(fout)
     fout.close()
-    print g_count
+    print(g_count)
 
 def writeheader(fout):
     fout.write('<?xml version="1.0" encoding="UTF-8"?>')
@@ -193,7 +193,7 @@ def splitheader(s): #takes ===Section:Text====== and returns 'Section','Text'
 if __name__=='__main__':
     def test():
         assert unstructuretext('a :joe :: and :bob: how are: you ::') == 'a :joe :: and  how are: you ::'
-        print unstructuretext('''
+        print(unstructuretext('''
         This is some text
         
         .. index::
@@ -204,9 +204,9 @@ if __name__=='__main__':
 
 
         and this
-        '''.replace('\r\n','\n'))
+        '''.replace('\r\n','\n')))
         
-        print unstructuretext('''
+        print(unstructuretext('''
         test
         
            .. versionchanged:: 2.1 this should be gone
@@ -223,7 +223,7 @@ if __name__=='__main__':
               but not this I guess
         
         end
-        ''')
+        '''))
         
         
     def main():

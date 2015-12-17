@@ -62,14 +62,14 @@ def process(lastName, lastProto, lastDoc):
     lastProto = striptags(lastProto).strip()
     lastDoc = striptags(lastDoc).strip()
     lastDoc = lastDoc.replace('\n     ','\n')
-    print '---'+lastName
-    print lastProto
-    print '---!header'
-    print headername
-    print '---!doc'
-    print lastDoc
-    print '---!end'
-    print
+    print('---'+lastName)
+    print(lastProto)
+    print('---!header')
+    print(headername)
+    print('---!doc')
+    print(lastDoc)
+    print('---!end')
+    print()
         
 # ([^ ]+) (.*)
 # ---:\1\r\nint \1(int character); \r\n---!doc\r\n\2\r\n---!end\r\n
