@@ -62,7 +62,7 @@ def createDoc():
 				#place in dict
 				namespaces[currentNamespace.name] = currentNamespace
 				#assign to its section
-				if currentNamespace.sectionname==None: raise Exception, 'Error: No section designated for namespace %s',currentNamespace.name
+				if currentNamespace.sectionname==None: raise Exception('Error: No section designated for namespace %s' % currentNamespace.name)
 				if currentNamespace.sectionname not in sections:  raise Exception('Error: section %s not found, specified by namespace %s'%(currentNamespace.sectionname, currentNamespace.name))
 				sections[currentNamespace.sectionname].namespaces.append(currentNamespace)
 				currentNamespace = None
@@ -118,7 +118,7 @@ def createDoc():
 	
 	fout.write('</launchorzdoc>')
 	fout.close()
-	print(len(aFunctions) + ' ' + str(i))
+	print(len(aFunctions), i)
 	
 
 def xmlescape(s):

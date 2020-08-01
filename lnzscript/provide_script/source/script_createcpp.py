@@ -1,7 +1,10 @@
 import sys
 import os
 
-import io
+try:
+	import io
+except ImportError:
+	import StringIO as io
 
 # Set the working directory to the first parameter passed to me
 d = sys.argv[1]
