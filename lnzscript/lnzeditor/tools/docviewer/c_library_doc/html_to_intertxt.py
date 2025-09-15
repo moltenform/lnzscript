@@ -1,10 +1,9 @@
 import re
 
-#Source: http://www.acm.uiuc.edu/webmonkeys/book/c_guide/
+# Reference: http://www.acm.uiuc.edu/webmonkeys/book/c_guide/
 
-#html into intermediate
+# html into intermediate
 
-#~ target = r'stdio-char.h.txt'
 headername = 'time.h'
 
 
@@ -16,7 +15,6 @@ def striptags(s):
 
 
 def main():
-    #~ alltext = open(target).read().replace('\r\n','\n').split('\n')
     alltext = data.replace('\r\n','\n').split('\n')
     
     lastName = None
@@ -31,7 +29,7 @@ def main():
         m = rename.match(line)
         if m:
             strName = str(m.group(1))
-            #~ print 'Found',strName
+            # print ('Found',strName)
             
             if lastName!=None:
                 process(lastName, lastProto, lastDoc)

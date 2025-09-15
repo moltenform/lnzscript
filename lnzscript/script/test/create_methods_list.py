@@ -1,5 +1,5 @@
 
-#intended to be run in its own directory
+# intended to be run in its own directory
 fout = open('methods_list.txt','w')
 
 import sys, os
@@ -9,7 +9,6 @@ os.chdir(r'..\..\provide_script\source')
 import script_create
 
 aFunctions = script_create.processAllSource()
-
 
 for currentFn in aFunctions:
 	if currentFn.implementation!='Javascript' and not currentFn.functionname.startswith('_'):

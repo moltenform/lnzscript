@@ -58,9 +58,9 @@ class ExposedFunction(object):
 		largs = self.args.split(',')
 		astrResult.append('const char* FUNCTIONNAME = "%s.%s";'%(self.namespace, self.functionname))
 		if self.args=='':
-			astrResult.append('\t' + 'if (ctx->argumentCount()!=%d) return g_ExceptionWrongNumberArgs(ctx,FUNCTIONNAME,%d);' % (0, 0));
+			astrResult.append('\t' + 'if (ctx->argumentCount()!=%d) return g_ExceptionWrongNumberArgs(ctx,FUNCTIONNAME,%d);' % (0, 0))
 		elif '=' not in self.args: #simple case, no optional arguments
-			astrResult.append('\t' + 'if (ctx->argumentCount()!=%d) return g_ExceptionWrongNumberArgs(ctx,FUNCTIONNAME,%d);' % (len(largs), len(largs)));
+			astrResult.append('\t' + 'if (ctx->argumentCount()!=%d) return g_ExceptionWrongNumberArgs(ctx,FUNCTIONNAME,%d);' % (len(largs), len(largs)))
 			aArgs = [ExposedFunctionArg(largs[i], i) for i in range(len(largs))]
 			#render type checks
 			for arg in aArgs:
@@ -83,8 +83,8 @@ class ExposedFunction(object):
 			# just for conveniance, accept too many arguments. Maybe fix later.
 			#so you should have at least len( Aargs)
 			if len(Aargs)>0:
-				astrResult.append('\t' + 'if (ctx->argumentCount()<%d) return g_ExceptionNotEnoughArgs(ctx,FUNCTIONNAME,%d);' % (len(Aargs), len(Aargs)));
-			astrResult.append('\t' + 'if (ctx->argumentCount()>%d) return g_ExceptionTooManyArgs(ctx,FUNCTIONNAME,%d);' % (len(AoptionalArgs)+len(Aargs), len(AoptionalArgs)+len(Aargs)));
+				astrResult.append('\t' + 'if (ctx->argumentCount()<%d) return g_ExceptionNotEnoughArgs(ctx,FUNCTIONNAME,%d);' % (len(Aargs), len(Aargs)))
+			astrResult.append('\t' + 'if (ctx->argumentCount()>%d) return g_ExceptionTooManyArgs(ctx,FUNCTIONNAME,%d);' % (len(AoptionalArgs)+len(Aargs), len(AoptionalArgs)+len(Aargs)))
 			
 			# Do non-optional arguments
 			#render type checks

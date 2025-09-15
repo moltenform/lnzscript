@@ -53,7 +53,7 @@ def alreadyExists(strFilename, strWholeFile):
 	strWholeExistingFile = script_create.readfile(strFilename)
 	return strWholeFile==strWholeExistingFile
 
-class ImplementationOutputFile():
+class ImplementationOutputFile(object):
 	outHeaders =None
 	outCode=None
 	strFilename = None
@@ -86,7 +86,7 @@ class ImplementationOutputFile():
 			fout.close()
 			
 
-class ConnectionToScriptOutputFile():
+class ConnectionToScriptOutputFile(object):
 	nameSpacesSeen = None
 	outConnection = None
 	strFilename = None

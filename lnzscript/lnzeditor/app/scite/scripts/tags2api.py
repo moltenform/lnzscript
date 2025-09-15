@@ -129,5 +129,5 @@ for line in fileinput.input():
 					apis.add(entityName)
 			else:
 				apis.add(entityName)
-print "\n".join(sorted(list(apis)))
+print("\n".join(sorted(list(apis))))
 
